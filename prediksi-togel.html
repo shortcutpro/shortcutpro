@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gambar Cs Tvtoto - Premium</title>
+    <style>
+        /* ================ */
+        /* VARIABLES         */
+        /* ================ */
+        :root {
+          --primary-color: rgb(255, 0, 0); /* Gold color for premium feel */
+          --secondary-color: #ff0000; /* Bronze accent */
+          --bg-color: #0a0a0a;
+          --card-bg: #1a1a1a;
+          --text-color: #f0f0f0;
+          --border-color: rgb(255, 0, 0);
+          --submenu-bg: #252525;
+          --highlight-color: rgba(212, 175, 55, 0.1);
+        }
+
+        /* ================ */
+        /* BASE STYLES      */
+        /* ================ */
+        body {
+          font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: var(--text-color);
+          margin: 0;
+          padding: 0;
+          line-height: 1.6;
+          background: 
+              radial-gradient(ellipse at center, rgba(26, 26, 26, 0.9) 0%, rgba(10, 10, 10, 0.95) 100%),
+              url('https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80') no-repeat center center fixed;
+          background-size: cover;
+          min-height: 100vh;
+        }
+
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: rgba(26, 26, 26, 0.9);
+          border-radius: 15px;
+          box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+          margin-top: 20px;
+          margin-bottom: 20px;
+          border: 1px solid var(--border-color);
+          backdrop-filter: blur(5px);
+        }
+
+        /* ================ */
+        /* TYPOGRAPHY       */
+        /* ================ */
+        h1, h2, h3 {
+          font-weight: 600;
+          letter-spacing: 0.5px;
+        }
+
+        /* ================ */
+        /* HEADER EFFECTS   */
+        /* ================ */
+        header {
+          text-align: center;
+          margin-bottom: 30px;
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 20px;
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(to bottom, 
+                      rgba(26, 26, 26, 0.9) 0%, 
+                      rgba(10, 10, 10, 0.7) 100%);
+          box-shadow: 0 4px 30px rgba(212, 175, 55, 0.1);
+          border-radius: 0 0 15px 15px;
+          padding: 20px;
+        }
+
+        header::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: 
+            radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
+            radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.1) 0%, transparent 40%);
+          z-index: -1;
+        }
+
+        /* ================ */
+        /* LOGO EFFECTS     */
+        /* ================ */
+        .logo {
+          max-width: 200px;
+          height: auto;
+          margin: 0 auto;
+          display: block;
+          cursor: pointer;
+          filter: drop-shadow(0 2px 8px rgba(212, 175, 55, 0.5));
+          transition: all 0.3s ease;
+        }
+
+        .logo:hover {
+          transform: scale(1.05);
+          filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.7));
+        }
+
+        /* ================ */
+        /* ANIMATED TITLE EFFECT */
+        /* ================ */
+        .animated-title {
+          font-size: 2.5rem;
+          margin: 20px 0;
+          background: linear-gradient(to right, 
+                      #ff0000, 
+                      #ff0000, 
+                      #ff0000);
+          background-size: 200% auto;
+          color: transparent;
+          -webkit-background-clip: text;
+          background-clip: text;
+          text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+          position: relative;
+          display: inline-block;
+          animation: shine 3s linear infinite;
+          font-weight: 700;
+          letter-spacing: 1.5px;
+          text-transform: uppercase;
+        }
+
+        .animated-title::after {
+          content: '';
+          position: absolute;
+          bottom: -10px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 50%;
+          height: 3px;
+          background: linear-gradient(to right, 
+                      transparent, 
+                      var(--primary-color), 
+                      transparent);
+          border-radius: 3px;
+        }
+
+        @keyframes shine {
+          0% {
+            background-position: 0% center;
+          }
+          100% {
+            background-position: 200% center;
+          }
+        }
+
+        /* ================ */
+        /* MENU GRID        */
+        /* ================ */
+        .menu-row {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 25px;
+          margin-bottom: 25px;
+        }
+
+        .menu-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 25px;
+          margin-bottom: 40px;
+        }
+
+        .menu-card {
+          background: linear-gradient(145deg, #1e1e1e, #252525);
+          border-radius: 12px;
+          padding: 25px;
+          text-align: center;
+          transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+          border: 1px solid var(--border-color);
+          box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          min-height: 280px;
+          flex: 0 0 calc(33.333% - 25px);
+          max-width: calc(33.333% - 25px);
+          box-sizing: border-box;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .menu-card::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(45deg, transparent, var(--highlight-color), transparent);
+          transform: translateX(-100%);
+          transition: transform 0.6s ease;
+        }
+
+        .menu-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 12px 20px rgba(212, 175, 55, 0.2);
+          border-color: var(--primary-color);
+        }
+
+        .menu-card:hover::before {
+          transform: translateX(100%);
+        }
+
+        .menu-card h2 {
+          color: var(--primary-color);
+          margin: 0 0 20px 0;
+          font-size: 1.6rem;
+          width: 100%;
+          position: relative;
+          z-index: 1;
+        }
+
+        .menu-card p {
+          margin: 0 0 20px 0;
+          width: 100%;
+          color: #ccc;
+          position: relative;
+          z-index: 1;
+        }
+
+        .menu-card img {
+          margin: 0 auto 20px auto;
+          display: block;
+          max-width: 100%;
+          height: auto;
+          border-radius: 8px;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* ================ */
+        /* BUTTONS          */
+        /* ================ */
+        .btn {
+          display: inline-block;
+          background: linear-gradient(to right, #d4af37, #f1e5ac, #d4af37);
+          background-size: 200% auto;
+          color: #1a1a1a;
+          padding: 12px 25px;
+          border-radius: 30px;
+          text-decoration: none;
+          font-weight: bold;
+          transition: all 0.4s ease;
+          border: none;
+          cursor: pointer;
+          margin: 0 auto;
+          width: auto;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          font-size: 0.9rem;
+          z-index: 1;
+        }
+
+        .btn::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(to right, #d4af37, #f1e5ac);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          z-index: -1;
+        }
+
+        .btn:hover {
+          background-position: right center;
+          transform: translateY(-3px);
+          box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn:hover::before {
+          opacity: 1;
+        }
+
+        .back-btn {
+          margin-top: 30px;
+          display: block;
+          margin-left: auto;
+          margin-right: auto;
+          padding: 12px 30px;
+        }
+
+        /* ================ */
+        /* CONTENT PAGES    */
+        /* ================ */
+        .content-page {
+          display: none;
+          background: linear-gradient(145deg, #1e1e1e, #252525);
+          border-radius: 12px;
+          padding: 30px;
+          margin-top: 20px;
+          border: 1px solid var(--border-color);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .content-page h2 {
+          color: var(--primary-color);
+          border-bottom: 1px solid var(--border-color);
+          padding-bottom: 15px;
+          margin-top: 0;
+          margin-bottom: 25px;
+          text-align: center;
+          font-size: 2rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        /* ================ */
+        /* SUBMENU          */
+        /* ================ */
+        .submenu-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+          margin-top: 30px;
+        }
+
+        .submenu-card {
+          background: linear-gradient(145deg, #252525, #1e1e1e);
+          border-radius: 10px;
+          padding: 15px;
+          text-align: center;
+          transition: all 0.3s ease;
+          border: 1px solid #333;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          justify-content: flex-start;
+          align-items: center;
+          min-height: 280px;
+          box-sizing: border-box;
+          position: relative;
+          overflow: hidden;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .submenu-card::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 3px;
+          background: var(--primary-color);
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: transform 0.3s ease;
+        }
+
+        .submenu-card:hover {
+          border-color: var(--primary-color);
+          transform: translateY(-5px);
+          box-shadow: 0 8px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .submenu-card:hover::after {
+          transform: scaleX(1);
+        }
+
+        .submenu-card h3 {
+          margin: 10px 0 0 0;
+          color: var(--primary-color);
+          font-size: 1rem;
+          width: 100%;
+          position: relative;
+          z-index: 1;
+          text-align: center;
+          padding: 0 5px;
+        }
+
+        /* Special 3-column grid */
+        .submenu-grid.grid-3 {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 25px;
+          margin-top: 30px;
+        }
+
+        .submenu-grid.grid-3 .submenu-card {
+          flex: none;
+          max-width: 100%;
+        }
+
+        /* Special 4-column grid */
+        .submenu-grid.grid-4 {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
+          margin-top: 30px;
+        }
+
+        /* Special 5-column grid */
+        .submenu-grid.grid-5 {
+          display: grid;
+          grid-template-columns: repeat(5, 1fr);
+          gap: 20px;
+          margin-top: 30px;
+        }
+
+        /* ================ */
+        /* IMAGE CONTAINERS */
+        /* ================ */
+        .image-container {
+          margin: 0 0 15px 0;
+          width: 100%;
+          height: 180px;
+          border-radius: 8px;
+          overflow: hidden;
+          position: relative;
+          transition: all 0.3s ease;
+        }
+
+        .image-container::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(212, 175, 55, 0.1);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          z-index: 1;
+        }
+
+        .image-container:hover::before {
+          opacity: 1;
+        }
+
+        .image-container img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 8px;
+          border: 1px solid #333;
+          display: block;
+          transition: all 0.3s ease;
+        }
+
+        .submenu-card:hover .image-container img {
+          transform: scale(1.02);
+          border-color: var(--primary-color);
+        }
+
+        /* ================ */
+        /* MODAL            */
+        /* ================ */
+        #imageModal {
+          display: none;
+          position: fixed;
+          z-index: 10000;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.7);
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          padding: 20px;
+          box-sizing: border-box;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none; /* Allow clicks to pass through when not visible */
+        }
+        
+        #imageModal.show {
+          opacity: 1;
+          display: flex;
+          pointer-events: auto; /* Enable interaction when modal is visible */
+        }
+        
+        #imageModal.show ~ .container {
+          filter: blur(2px);
+        }
+        
+        #copyOverlay, #copyNotification {
+          display: none;
+        }
+        
+        #imageModal img {
+          max-width: 90%;
+          max-height: 75vh;
+          border-radius: 12px;
+          box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+          border: 3px solid var(--primary-color);
+          position: relative;
+          transform: scale(0.9);
+          transition: transform 0.3s ease;
+        }
+        
+        #imageModal.show img {
+          transform: scale(1);
+        }
+
+        #modalClose {
+          position: fixed;
+          top: 30px;
+          right: 40px;
+          color: white;
+          font-size: 40px;
+          font-weight: bold;
+          cursor: pointer;
+          user-select: none;
+          transition: all 0.3s ease;
+          z-index: 10001;
+          text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+          display: none;
+        }
+
+        #modalClose:hover {
+          color: var(--primary-color);
+          transform: rotate(90deg);
+        }
+
+        #copyOverlay {
+          position: fixed;
+          bottom: 55px;
+          background: linear-gradient(to right, #d4af37, #f1e5ac);
+          color: #1a1a1a;
+          padding: 10px 20px;
+          font-weight: bold;
+          border-radius: 30px;
+          cursor: pointer;
+          user-select: none;
+          text-align: center;
+          width: fit-content;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          box-shadow: 0 4px 10px rgba(212, 175, 55, 0.3);
+          transition: all 0.3s ease;
+          display: none;
+        }
+
+        #copyOverlay:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 6px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        #copyNotification {
+          position: fixed;
+          bottom: 8px;
+          color: #4CAF50;
+          font-weight: bold;
+          text-align: center;
+          background: rgba(76, 175, 80, 0.1);
+          padding: 8px 15px;
+          border-radius: 30px;
+          display: none;
+        }
+
+        /* ================ */
+        /* FOOTER           */
+        /* ================ */
+        footer {
+          text-align: center;
+          margin-top: 50px;
+          padding-top: 20px;
+          border-top: 1px solid var(--border-color);
+          color: #888;
+          font-size: 0.9rem;
+        }
+
+        /* ================ */
+        /* DECORATIVE ELEMENTS */
+        /* ================ */
+        .corner-decoration {
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          border-color: var(--primary-color);
+          border-style: solid;
+          border-width: 0;
+          opacity: 0.5;
+          transition: all 0.3s ease;
+        }
+
+        .corner-top-left {
+          top: 10px;
+          left: 10px;
+          border-top-width: 2px;
+          border-left-width: 2px;
+        }
+
+        .corner-top-right {
+          top: 10px;
+          right: 10px;
+          border-top-width: 2px;
+          border-right-width: 2px;
+        }
+
+        .corner-bottom-left {
+          bottom: 10px;
+          left: 10px;
+          border-bottom-width: 2px;
+          border-left-width: 2px;
+        }
+
+        .corner-bottom-right {
+          bottom: 10px;
+          right: 10px;
+          border-bottom-width: 2px;
+          border-right-width: 2px;
+        }
+
+        .menu-card:hover .corner-decoration {
+          width: 20px;
+          height: 20px;
+          opacity: 1;
+        }
+
+        /* ================ */
+        /* RESPONSIVE       */
+        /* ================ */
+        @media (max-width: 1200px) {
+          .submenu-grid.grid-5 {
+            grid-template-columns: repeat(4, 1fr);
+          }
+          
+          .animated-title {
+            font-size: 2.2rem;
+          }
+        }
+
+        @media (max-width: 992px) {
+          .submenu-grid.grid-5 {
+            grid-template-columns: repeat(3, 1fr);
+          }
+          
+          .submenu-grid.grid-3, 
+          .submenu-grid.grid-4 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .menu-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          }
+
+          .menu-card {
+            min-height: 250px;
+            flex: 0 0 calc(50% - 25px);
+            max-width: calc(50% - 25px);
+          }
+          
+          .animated-title {
+            font-size: 2rem;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .submenu-grid.grid-5,
+          .submenu-grid.grid-4 {
+            grid-template-columns: repeat(2, 1fr);
+          }
+
+          .menu-grid {
+            grid-template-columns: 1fr;
+          }
+          
+          .animated-title {
+            font-size: 1.8rem;
+          }
+          
+          .logo {
+            max-width: 160px;
+          }
+          
+          #modalClose {
+            top: 20px;
+            right: 25px;
+            font-size: 35px;
+          }
+          
+          #copyOverlay {
+            bottom: 30px;
+          }
+          
+          #copyNotification {
+            bottom: 80px;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .submenu-grid.grid-5,
+          .submenu-grid.grid-4,
+          .submenu-grid.grid-3 {
+            grid-template-columns: 1fr;
+          }
+
+          .menu-card {
+            min-height: 220px;
+            flex: 0 0 100%;
+            max-width: 100%;
+          }
+          
+          .animated-title {
+            font-size: 1.5rem;
+          }
+          
+          .logo {
+            max-width: 140px;
+          }
+          
+          .container {
+            padding: 15px;
+          }
+          
+          .content-page {
+            padding: 20px;
+          }
+          
+          #imageModal img {
+            max-width: 95%;
+            max-height: 70vh;
+          }
+        }
+    </style>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <meta name="theme-color" content="#d4af37">
+</head>
+<body>
+    <!-- Modal untuk preview gambar -->
+    <div id="imageModal">
+        <span id="modalClose">&times;</span>
+        <img id="modalImage" src="">
+        <div id="copyOverlay">Copy Gambar</div>
+        <div id="copyNotification">Gambar berhasil disalin ke clipboard!</div>
+    </div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container" onclick="showMainMenu()">
+                <img src="https://tvtoto89100.com/resources/images/logo.png" alt="Tvtoto Logo" class="logo">
+            </div>
+            <h1 class="animated-title">Gambar Cs Tvtoto</h1>
+        </header>
+        
+        <!-- Menu Utama -->
+        <div id="main-menu">
+            <div class="menu-row">
+                <div class="menu-card" onclick="showPage('betting-page')">
+                    <div class="corner-decoration corner-top-left"></div>
+                    <div class="corner-decoration corner-top-right"></div>
+                    <div class="corner-decoration corner-bottom-left"></div>
+                    <div class="corner-decoration corner-bottom-right"></div>
+                    <h2>Gambar Cara Betting Togel</h2>
+                    <p>Panduan lengkap cara melakukan betting togel.</p>
+                    <button class="btn">Buka</button>
+                </div>
+                
+                <div class="menu-card" onclick="showPage('event-page')">
+                    <div class="corner-decoration corner-top-left"></div>
+                    <div class="corner-decoration corner-top-right"></div>
+                    <div class="corner-decoration corner-bottom-left"></div>
+                    <div class="corner-decoration corner-bottom-right"></div>
+                    <h2>Gambar Event Tvtoto</h2>
+                    <p>Lihat gambar event dan Tvtoto terbaru.</p>
+                    <button class="btn">Buka</button>
+                </div>
+            </div>
+            
+            <div class="menu-row">
+                <div class="menu-card" onclick="showPage('bank-page')">
+                    <div class="corner-decoration corner-top-left"></div>
+                    <div class="corner-decoration corner-top-right"></div>
+                    <div class="corner-decoration corner-bottom-left"></div>
+                    <div class="corner-decoration corner-bottom-right"></div>
+                    <h2>Gambar Profile Bank & E-wallet</h2>
+                    <p>Atur data bank Anda untuk transaksi.</p>
+                    <button class="btn">Buka</button>
+                </div>
+                
+                <div class="menu-card" onclick="showPage('qris-page')">
+                    <div class="corner-decoration corner-top-left"></div>
+                    <div class="corner-decoration corner-top-right"></div>
+                    <div class="corner-decoration corner-bottom-left"></div>
+                    <div class="corner-decoration corner-bottom-right"></div>
+                    <h2>Gambar RRN Qris</h2>
+                    <p>Informasi mengenai transaksi QRIS.</p>
+                    <button class="btn">Buka</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Halaman Betting - 5 card per baris -->
+        <div id="betting-page" class="content-page">
+            <h2>Gambar Cara Betting Togel</h2>
+            <p>Pilih jenis betting ditanyakan member :</p>
+            
+            <div class="submenu-grid grid-5">
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/sAT9he1.jpg" alt="Cara Bet 4D 3D 2D" loading="lazy">
+                    </div>
+                    <h3>1.1 Cara Bet 4D 3D 2D</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/4uosxH1.jpg" alt="Cara Bet Bb" loading="lazy">
+                    </div>
+                    <h3>1.2 Cara Bet Bb</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/fzw0OQl.jpg" alt="Cara Bet Bbfs" loading="lazy">
+                    </div>
+                    <h3>1.3 Cara Bet Bbfs (Bb Campuran)</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/uctIKzf.jpg" alt="Cara Bet Angka Tarung" loading="lazy">
+                    </div>
+                    <h3>1.4 Cara Bet Angka Tarung</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/Q50jW4e.jpg" alt="Cara Bet Fast 4D" loading="lazy">
+                    </div>
+                    <h3>1.5 Cara Bet Fast 4D</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/XHfBtfL.jpg" alt="Cara Bet 4D 3D 2D Easy" loading="lazy">
+                    </div>
+                    <h3>1.6 Cara Bet 4D, 3D, 2D Easy</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/uJFQarG.jpg" alt="Cara Bet 3D" loading="lazy">
+                    </div>
+                    <h3>1.7 Cara Bet 3D</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/7gyU5lO.jpg" alt="Cara Bet 2D Belakang" loading="lazy">
+                    </div>
+                    <h3>1.8 Cara Bet 2D Belakang</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/Wh9LLZH.jpg" alt="Cara Bet 2D Depan" loading="lazy">
+                    </div>
+                    <h3>1.9 Cara Bet 2D Depan</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/3HjkZCu.jpg" alt="Cara Bet 2D Tengah" loading="lazy">
+                    </div>
+                    <h3>2.0 Cara Bet 2D Tengah</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/a4NHaIk.jpg" alt="Cara Bet Colok Bebas" loading="lazy">
+                    </div>
+                    <h3>2.1 Cara Bet Colok Bebas</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/qtxc3tv.jpg" alt="Cara Bet Colok Bebas 2D" loading="lazy">
+                    </div>
+                    <h3>2.2 Cara Bet Colok Bebas 2D</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/JNCWCqu.jpg" alt="Cara Bet Colok Naga" loading="lazy">
+                    </div>
+                    <h3>2.3 Cara Bet Colok Naga</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/n39qLYT.jpg" alt="Cara Bermain Colok Jitu" loading="lazy">
+                    </div>
+                    <h3>2.4 Cara Bermain Dan Pengertian Colok Jitu</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/E54ZOyy.jpg" alt="Cara Bermain Tengah Tepi" loading="lazy">
+                    </div>
+                    <h3>2.5 Cara Bermain Tengah Tepi</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/gBLLJlh.jpg" alt="Cara Bermain Togel Menu Bet" loading="lazy">
+                    </div>
+                    <h3>2.6 Cara Bermain Togel Menu Bet [Dasar]</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/fT8OwHk.jpg" alt="Cara Bermain Togel 50-50" loading="lazy">
+                    </div>
+                    <h3>2.7 Cara Bermain Dan Bet Togel 50-50</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/XUmmNBE.jpg" alt="Cara Betting Shio" loading="lazy">
+                    </div>
+                    <h3>2.8 Cara Betting Shio</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/jW3gHDi.jpg" alt="Cara Bermain Silang Homo" loading="lazy">
+                    </div>
+                    <h3>2.9 Seputaran Pengertian Dan Cara Bermain Silang Homo</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/1ZG3LGW.jpg" alt="Cara Bermain Kembang Kempis" loading="lazy">
+                    </div>
+                    <h3>3.0 Seputaran Pengertian Dan Cara Bermain Kembang Kempis</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/p6wPJon.jpg" alt="Cara Bermain Kombinasi" loading="lazy">
+                    </div>
+                    <h3>3.1 Seputaran Pengertian Dan Cara Bermain Kombinasi</h3>
+                </div>
+            </div>
+            
+            <button class="btn back-btn" onclick="showMainMenu()">Kembali ke Menu</button>
+        </div>
+        
+        <!-- Halaman Event - 3 card per baris -->
+        <div id="event-page" class="content-page">
+            <h2>Gambar Event Tvtoto</h2>
+            
+            <div class="submenu-grid grid-3">
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://imgur.com/lhwhdNN.jpg" alt="Event Scatter Mahjong Ways" loading="lazy">
+                    </div>
+                    <h3>Event Scatter Mahjong Ways I & II</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/SvIOKZp.jpg" alt="Event Buy Spin" loading="lazy">
+                    </div>
+                    <h3>Event Buy Spin</h3>
+                </div>
+
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/gRxw4y3.jpg" alt="Event Free Spin" loading="lazy">
+                    </div>
+                    <h3>Event Free Spin</h3>
+                </div>
+
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/Nnx34w7.jpg" alt="Screenshot Mendapatkan Scatter" loading="lazy">
+                    </div>
+                    <h3>Screenshot Mendapatkan Scatter</h3>
+                </div>
+
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/G1jNPpI.jpg" alt="Screenshot History Kemenangan" loading="lazy">
+                    </div>
+                    <h3>Screenshot History Kemenangan</h3>
+                </div>
+
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/1jvJz0f.jpg" alt="Screenshot Kemenangan Akhir" loading="lazy">
+                    </div>
+                    <h3>Screenshot Kemenangan Akhir</h3>
+                </div>
+            </div>
+
+            <button class="btn back-btn" onclick="showMainMenu()">Kembali ke Menu</button>
+        </div>
+        
+        <!-- Halaman Bank - 5 card per baris -->
+        <div id="bank-page" class="content-page">
+            <h2>Gambar Profile Bank</h2>
+            
+            <div class="submenu-grid grid-5">
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/50UQyns.jpg" alt="Profile BNI" loading="lazy">
+                    </div>
+                    <h3>Profile BNI</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/7wsbtSg.jpg" alt="Profile BRI" loading="lazy">
+                    </div>
+                    <h3>Profile BRI</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/asXZlXB.jpg" alt="Profile BSI" loading="lazy">
+                    </div>
+                    <h3>Profile BSI</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/rwBDD3B.jpg" alt="Profile CIMB" loading="lazy">
+                    </div>
+                    <h3>Profile CIMB</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/wFPI7JC.jpg" alt="Profile Danamon" loading="lazy">
+                    </div>
+                    <h3>Profile Danamon</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/pDjfgzf.jpg" alt="Profile m-BCA" loading="lazy">
+                    </div>
+                    <h3>Profile m-BCA</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/u8w9RnH.jpg" alt="Profile myBCA" loading="lazy">
+                    </div>
+                    <h3>Profile myBCA</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/rG6ltcp.jpg" alt="Profile Mandiri" loading="lazy">
+                    </div>
+                    <h3>Profile Mandiri</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/xfdBFLm.jpg" alt="Profile Maybank" loading="lazy">
+                    </div>
+                    <h3>Profile Maybank</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/F4hrnFp.jpg" alt="Profile SeaBank" loading="lazy">
+                    </div>
+                    <h3>Profile SeaBank</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/JkU6gSP.jpg" alt="Profile Wondr" loading="lazy">
+                    </div>
+                    <h3>Profile Wondr</h3>
+                </div>
+            </div>
+            
+            <h2 style="margin-top: 40px; color: var(--primary-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; text-align: center;">
+                Gambar Profile E-wallet
+            </h2>
+
+            <div class="submenu-grid grid-4">
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/moYdLjS.jpg" alt="Profile DANA" loading="lazy">
+                    </div>
+                    <h3>Profile DANA</h3>
+                </div>
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/pqdf1Dn.jpg" alt="Profile GOPAY" loading="lazy">
+                    </div>
+                    <h3>Profile GOPAY</h3>
+                </div>
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/M9B9xfh.jpg" alt="Profile LINKAJA" loading="lazy">
+                    </div>
+                    <h3>Profile LINKAJA</h3>
+                </div>
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/fz5jzry.jpg" alt="Profile OVO" loading="lazy">
+                    </div>
+                    <h3>Profile OVO</h3>
+                </div>
+            </div>
+            
+            <button class="btn back-btn" onclick="showMainMenu()">Kembali ke Menu</button>
+        </div>
+        
+        <!-- Halaman QRIS - 5 card per baris -->
+        <div id="qris-page" class="content-page">
+            <h2>Gambar RRN Qris</h2>
+            
+            <div class="submenu-grid grid-5">
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/RSDKX5k.jpg" alt="QRIS Aladin" loading="lazy">
+                    </div>
+                    <h3>Aladin</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/ulijoG1.jpg" alt="QRIS Allobank" loading="lazy">
+                    </div>
+                    <h3>Allobank</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://imgur.com/e2kwpzY.jpg" alt="QRIS Bank Jateng" loading="lazy">
+                    </div>
+                    <h3>Bank Jateng</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/Lh74wFD.jpg" alt="QRIS Bank Mega" loading="lazy">
+                    </div>
+                    <h3>Bank Mega</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/dxvJtsR.jpg" alt="QRIS Bank Jago" loading="lazy">
+                    </div>
+                    <h3>Bank Jago</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/tXEVQvf.jpg" alt="QRIS BNI" loading="lazy">
+                    </div>
+                    <h3>BNI</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/WCCpLmK.jpg" alt="QRIS BNI WONDR" loading="lazy">
+                    </div>
+                    <h3>BNI WONDR</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/C1QN8fx.jpg" alt="QRIS BRI" loading="lazy">
+                    </div>
+                    <h3>BRI</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/IbS4gJt.jpg" alt="QRIS BSI" loading="lazy">
+                    </div>
+                    <h3>BSI</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/yw6ESvm.jpg" alt="QRIS BTN" loading="lazy">
+                    </div>
+                    <h3>BTN</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/TQaVDei.jpg" alt="QRIS CIMB" loading="lazy">
+                    </div>
+                    <h3>CIMB</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/RO51TZy.jpg" alt="QRIS Dana" loading="lazy">
+                    </div>
+                    <h3>Dana</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/Kv8pzJA.jpg" alt="QRIS DANAMON" loading="lazy">
+                    </div>
+                    <h3>DANAMON</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/6lYN1Hn.jpg" alt="QRIS Gopay" loading="lazy">
+                    </div>
+                    <h3>Gopay</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/eZU0kvI.jpg" alt="QRIS I.Saku" loading="lazy">
+                    </div>
+                    <h3>I.Saku</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/uXKrmn0.jpg" alt="QRIS LinkAja" loading="lazy">
+                    </div>
+                    <h3>LinkAja</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/qUYslmO.jpg" alt="QRIS m-BCA" loading="lazy">
+                    </div>
+                    <h3>m-BCA</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/rcfaMj9" alt="QRIS Mandiri/Livin" loading="lazy">
+                    </div>
+                    <h3>Mandiri/Livin</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/C3khnds.jpg" alt="QRIS my-BCA" loading="lazy">
+                    </div>
+                    <h3>my-BCA</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/q5KlqPT.jpg" alt="QRIS OCBC" loading="lazy">
+                    </div>
+                    <h3>OCBC</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/xclIAma.jpg" alt="QRIS OVO" loading="lazy">
+                    </div>
+                    <h3>OVO</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/4t0smej.jpg" alt="QRIS SeaBank" loading="lazy">
+                    </div>
+                    <h3>SeaBank</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://i.imgur.com/azJ4wCy.jpg" alt="QRIS ShopeePay" loading="lazy">
+                    </div>
+                    <h3>ShopeePay</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://imgur.com/lTLrVkK.jpg" alt="QRIS SINARMAS" loading="lazy">
+                    </div>
+                    <h3>SINARMAS</h3>
+                </div>
+                
+                <div class="submenu-card">
+                    <div class="image-container">
+                        <img src="https://imgur.com/kB2YUab.jpg" alt="QRIS UOB" loading="lazy">
+                    </div>
+                    <h3>UOB</h3>
+                </div>
+            </div>
+            
+            <button class="btn back-btn" onclick="showMainMenu()">Kembali ke Menu</button>
+        </div>
+    </div>
+
+    <script>
+        // ====================== NAVIGASI HALAMAN ======================
+        function showPage(pageId) {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.content-page').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Sembunyikan menu utama
+            document.getElementById('main-menu').style.display = 'none';
+            
+            // Tampilkan halaman yang diminta
+            const page = document.getElementById(pageId);
+            if (page) page.style.display = 'block';
+            
+            // Scroll ke atas
+            window.scrollTo(0, 0);
+        }
+
+        function showMainMenu() {
+            // Sembunyikan semua halaman
+            document.querySelectorAll('.content-page').forEach(page => {
+                page.style.display = 'none';
+            });
+            
+            // Tampilkan menu utama
+            document.getElementById('main-menu').style.display = 'block';
+            
+            // Scroll ke atas
+            window.scrollTo(0, 0);
+        }
+
+        // ====================== MODAL GAMBAR ======================
+        const modalElements = {
+            modal: document.getElementById('imageModal'),
+            image: document.getElementById('modalImage'),
+            closeBtn: document.getElementById('modalClose'),
+            overlay: document.getElementById('copyOverlay'),
+            notification: document.getElementById('copyNotification')
+        };
+
+        function initModalState() {
+            modalElements.modal.style.display = 'none';
+            modalElements.overlay.style.display = 'none';
+            modalElements.notification.style.display = 'none';
+            modalElements.closeBtn.style.display = 'none';
+        }
+
+        function openModal(imageSrc) {
+            modalElements.image.src = imageSrc;
+            modalElements.modal.style.display = 'flex';
+            modalElements.overlay.style.display = 'block';
+            modalElements.closeBtn.style.display = 'block';
+            modalElements.notification.style.display = 'none';
+            
+            // Trigger animation
+            setTimeout(() => {
+                modalElements.modal.classList.add('show');
+            }, 10);
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalElements.modal.classList.remove('show');
+            
+            setTimeout(() => {
+                modalElements.modal.style.display = 'none';
+                modalElements.image.src = '';
+                modalElements.overlay.style.display = 'none';
+                modalElements.closeBtn.style.display = 'none';
+                modalElements.notification.style.display = 'none';
+                
+                // Restore body scroll
+                document.body.style.overflow = 'auto';
+            }, 300);
+        }
+
+        function setupModalListeners() {
+            // Buka modal saat kartu diklik
+            document.querySelectorAll('.submenu-card').forEach(card => {
+                card.style.cursor = 'pointer';
+                card.addEventListener('click', function(e) {
+                    // Cek apakah yang diklik adalah tombol atau elemen lain
+                    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
+                        return;
+                    }
+                    
+                    const img = this.querySelector('img');
+                    if (img) {
+                        openModal(img.src);
+                    }
+                });
+            });
+
+            // Tutup modal dengan tombol close
+            modalElements.closeBtn.addEventListener('click', closeModal);
+
+            // Tutup modal saat klik di luar gambar (background modal)
+            modalElements.modal.addEventListener('click', e => {
+                if (e.target === modalElements.modal) closeModal();
+            });
+
+            // Tutup modal dengan tombol ESC
+            document.addEventListener('keydown', e => {
+                if ((e.key === 'Escape' || e.key === 'Esc') && modalElements.modal.style.display === 'flex') {
+                    closeModal();
+                }
+            });
+        }
+
+        // ====================== COPY TO CLIPBOARD ======================
+        async function copyImageToClipboard() {
+            try {
+                // Fetch the image
+                const response = await fetch(modalElements.image.src);
+                const blob = await response.blob();
+                
+                // Create a canvas element to draw the image
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+                
+                // Wait for image to load
+                await new Promise((resolve) => {
+                    img.onload = resolve;
+                    img.src = URL.createObjectURL(blob);
+                });
+                
+                // Set canvas dimensions
+                canvas.width = img.width;
+                canvas.height = img.height;
+                
+                // Draw image on canvas
+                ctx.drawImage(img, 0, 0);
+                
+                // Convert canvas to blob
+                canvas.toBlob(async (blob) => {
+                    try {
+                        // Copy to clipboard
+                        await navigator.clipboard.write([
+                            new ClipboardItem({
+                                [blob.type]: blob
+                            })
+                        ]);
+                        
+                        // Show success notification
+                        modalElements.notification.style.display = 'block';
+                        modalElements.notification.textContent = 'Gambar berhasil disalin ke clipboard!';
+                        
+                        // Hide notification after 3 seconds
+                        setTimeout(() => {
+                            modalElements.notification.style.display = 'none';
+                        }, 3000);
+                    } catch (error) {
+                        console.error('Gagal menyalin gambar:', error);
+                        modalElements.notification.textContent = 'Gagal menyalin gambar. Silakan coba lagi.';
+                        modalElements.notification.style.display = 'block';
+                        setTimeout(() => {
+                            modalElements.notification.style.display = 'none';
+                        }, 3000);
+                    }
+                }, 'image/png');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                modalElements.notification.textContent = 'Gagal memproses gambar. Silakan coba lagi.';
+                modalElements.notification.style.display = 'block';
+                setTimeout(() => {
+                    modalElements.notification.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // ====================== INITIAL SETUP ======================
+        window.addEventListener('DOMContentLoaded', () => {
+            initModalState();
+            setupModalListeners();
+
+            // Tambahkan event copy pada overlay
+            modalElements.overlay.addEventListener('click', copyImageToClipboard);
+            
+            // Preload beberapa gambar pertama untuk pengalaman lebih baik
+            const preloadImages = [
+                'https://i.imgur.com/sAT9he1.jpg',
+                'https://i.imgur.com/4uosxH1.jpg',
+                'https://i.imgur.com/fzw0OQl.jpg',
+                'https://imgur.com/lhwhdNN.jpg',
+                'https://i.imgur.com/SvIOKZp.jpg'
+            ];
+            
+            preloadImages.forEach(imgSrc => {
+                const img = new Image();
+                img.src = imgSrc;
+            });
+        });
+    </script>
+</body>
+</html>

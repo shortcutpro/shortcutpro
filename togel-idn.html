@@ -1,0 +1,2262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cara Hitung Togel IDN</title>
+    <style>
+        :root {
+            --primary-dark: #0a192f;
+            --primary-blue: #172a45;
+            --accent-blue: #64ffda;
+            --accent-yellow: #FFD700;
+            --text-light: #ccd6f6;
+            --text-dark: #8892b0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--accent-blue);
+        }
+        
+        h1 {
+            color: var(--accent-yellow);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .logo-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .logo-container img {
+            height: 60px;
+            margin: 5px;
+            filter: grayscale(30%) brightness(1.1);
+            transition: all 0.3s ease;
+        }
+        
+        .logo-container img:hover {
+            filter: grayscale(0%) brightness(1.2);
+            transform: scale(1.05);
+        }
+        
+        .menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            background-color: var(--primary-blue);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        .menu button {
+            background-color: var(--accent-blue);
+            color: var(--primary-dark);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu button:hover {
+            background-color: var(--accent-yellow);
+            transform: translateY(-2px);
+        }
+        
+        .menu button.active {
+            background-color: var(--accent-yellow);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .section-title {
+            color: var(--accent-yellow);
+            font-size: 1.8rem;
+            margin: 30px 0 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title:after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--accent-blue);
+            margin: 10px auto;
+        }
+        
+        .calculator-section {
+            display: none;
+            margin-bottom: 40px;
+            background-color: var(--primary-blue);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .calculator-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: rgba(23, 42, 69, 0.8);
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+        }
+        
+        th {
+            background-color: rgba(100, 255, 218, 0.1);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: rgba(100, 255, 218, 0.05);
+        }
+        
+        input[type="number"] {
+            width: 65%;
+            padding: 10px;
+            background-color: rgba(10, 25, 47, 0.8);
+            border: 1px solid var(--accent-blue);
+            border-radius: 4px;
+            color: var(--text-light);
+            font-size: 16px;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+        
+        .copy-btn {
+            background-color: var(--accent-blue);
+            color: var(--primary-dark);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-btn:hover {
+            background-color: var(--accent-yellow);
+        }
+        
+        .copy-btn i {
+            font-size: 14px;
+        }
+        
+        .calculation-result {
+            background-color: rgba(10, 25, 47, 0.5);
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 3px solid var(--accent-yellow);
+        }
+        
+        .success-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--accent-blue);
+            color: var(--primary-dark);
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transform: translateX(200%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .success-message.show {
+            transform: translateX(0);
+        }
+        
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent-blue), transparent);
+            margin: 40px 0;
+            border: none;
+        }
+        
+        @media (max-width: 768px) {
+            .menu {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .menu button {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Cara Hitung Togel IDN</h1>
+            <div class="logo-container">
+                <img src="https://bangkokpoolstoday.com/assets/img/bangkokpools_logo.png" alt="Bangkok Pools">
+                <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/11/26/20241126/d1f18e378e4a422b41ffe8d03065ce7d/logo-7.png" alt="Logo 7">
+                <img src="https://bruneipools.com/assets/img/brunei-logo.png" alt="Brunei Pools">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/f07d4e2a6517ef1cea9e2a897e4abb98/nz-bullseye.png" alt="NZ Bullseye">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/7c3b7b0affd7880d2dddf918ba2ac258/calottlogo.png" alt="Calott Logo">
+                <img src="https://nclottery.com/Site/GFX/NCEL_Alt.svg" alt="NC Lottery">
+                <img src="https://chelseapools.co.uk/assets/img/chelseaPools_logo.png" alt="Chelsea Pools">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/a3e564ccb04c2b751ad4fa88c06e39c1/1-removebg-preview.png" alt="Logo 1">
+                <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/12/01/20241201/288e5650fd04b013e764f0e71a9b6e59/hongkong-lotto-1.png" alt="Hongkong Lotto">
+                <img src="https://huahinlottery.com/assets/img/logo.png" alt="Huahin Lottery">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/a5fafa0102d98ab3959ceb9bb1045729/kl-logo.png" alt="KL Logo">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/8889f1c5fc738b5148145100c08a0ebc/439-4390693-magnum-pengeluaran-magnum-4d-hari-clipart-removebg-preview.png" alt="Magnum">
+                <img src="https://www.nevadalottery.us/images/logo.gif" alt="Nevada Lottery">
+                <img src="https://edit.nylottery.ny.gov/sites/default/files/logo-2179655b4229a219a9305b3f0e734bd0.png" alt="NY Lottery">
+                <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/11/26/20241126/0a72e6fa9a2d4ee4106678aeeab33624/favpng-oregon-lottery-video-lottery-terminal-game.png" alt="Oregon Lottery">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/32b1d9cb48d2c0a9f1c7e77853565fa1/pcso.png" alt="PCSO">
+                <img src="https://poipetlottery.com/img/logo.png" alt="Poipet Lottery">
+                <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/07da64b7b63e905cf7e3adde14e57424/sgp.png" alt="SGP">
+                <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/12/01/20241201/f32f7b4a1bffd956ee9a3956421200e9/logo-sydney.png" alt="Sydney">
+                <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/11/27/20241127/f7eb84038645576860451fbcb2a6c5a2/totomacau-12-photoroom-photoroom.png" alt="Toto Macau">
+                <img src="https://cdn.areabermain.club/assets/cdn/az9/2025/02/21/20250221/2eab4ead454853a692e0dbec587f6fc4/logo-2.png" alt="Logo 2">
+                <img src="https://hokidraw.com/assets/img/logo.png" alt="Hoki Draw">
+            </div>
+        </header>
+        
+        <div class="menu">
+            <button class="active" data-section="all-pasaran">All Pasaran</button>
+            <button data-section="ttm-4d">TTM 4D</button>
+            <button data-section="hoki-draw">HokiDraw</button>
+            <button data-section="kingkong-4d">Kingkong 4D</button>
+            <button data-section="prize-123">Prize 123</button>
+            <button data-section="colok-bebas">Colok Bebas</button>
+            <button data-section="colok-bebas-tm-jkt-kk-ttm">Colok Bebas TM,JKT,KK,TTM</button>
+            <button data-section="colok-bebas-hokidraw">Colok Bebas HokiDraw</button>
+            <button data-section="colok-bebas-ttm5d">Colok Bebas TTM5D</button>
+        </div>
+        
+        <!-- All Pasaran Section -->
+        <section id="all-pasaran" class="calculator-section active">
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN FULL ALL PASARAN</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D FULL</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 10,000 ( Hadiah 4D FULL ) = Rp.10,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D FULL</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 1,000 ( Hadiah 3D FULL ) = Rp.1,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D FULL</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 100 ( Hadiah 2D FULL ) = Rp.100,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN DISKON ALL PASARAN</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 4D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 66.50% ) yang anda bayar adalah Rp.335, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 3,000 ( Hadiah 4D Diskon ) = Rp.3,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 3D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 59.50% ) yang anda bayar adalah Rp.405, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 400 ( Hadiah 3D Diskon ) = Rp.400,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Belakang Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Diskon Belakang dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.705, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 70 ( Hadiah 2D Belakang Diskon ) = Rp.70,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Depan Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Depan Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.705, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 65 ( Hadiah 2D Depan Diskon ) = Rp.65,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Tengah Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Tengah Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.705, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 65 ( Hadiah 2D Tengah Diskon ) = Rp.65,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN BOLAK BALIK ALL PASARAN</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 4,000 ( Hadiah 4D Tebakan Tepat ) = Rp.4,000,000<br>
+                            Rp.1,000 x 200 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.200,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 400 ( Hadiah 3D Tebakan Tepat ) = Rp.400,000<br>
+                            Rp.1,000 x 100 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.100,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 70 ( Hadiah 2D Tebakan Tepat ) = Rp.70,000<br>
+                            Rp.1,000 x 20 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.20,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- TTM 4D Section -->
+        <section id="ttm-4d" class="calculator-section">
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN FULL TOTOMACAU</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5D FULL TOTOMACAU5D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 5D FULL TOTOMACAU5D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 88,000 ( Hadiah 5D FULL TOTOMACAU5D ) = Rp.88,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>4D FULL TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D FULL TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 9,000 ( Hadiah 4D FULL TOTOMACAU4D ) = Rp.9,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D FULL TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D FULL TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 950 ( Hadiah 3D FULL TOTOMACAU4D ) = Rp.950,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D FULL TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="100"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D FULL TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.100 maka perhitungannya sebagai berikut :<br>
+                            Rp.100 x 95 ( Hadiah 2D FULL TOTOMACAU4D ) = Rp.9,500
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN DISKON TOTOMACAU</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5D Diskon TOTOMACAU 5D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 5D Diskon TOTOMACAU 5D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 38.00% ) yang anda bayar adalah Rp.620, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 50,000 ( Hadiah 5D Diskon ) = Rp.50,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>4D Diskon TOTOMACAU 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 4D Diskon TOTOMACAU 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20.00% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 7,000 ( Hadiah 4D Diskon ) = Rp.7,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Diskon TOTOMACAU 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 3D Diskon TOTOMACAU 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20.00% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 750 ( Hadiah 3D Diskon ) = Rp.750,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Belakang Diskon TOTOMACAU 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Belakang Diskon TOTOMACAU 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20.00% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 75 ( Hadiah 2D Belakang Diskon ) = Rp.75,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Depan Diskon TOTOMACAU 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Depan Diskon TOTOMACAU 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20.00% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 75 ( Hadiah 2D Depan Diskon ) = Rp.75,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Tengah Diskon TOTOMACAU 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Tengah Diskon TOTOMACAU 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20.00% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 75 ( Hadiah 2D Tengah Diskon ) = Rp.75,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN SUPER DISKON TOTOMACAU</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Super Diskon TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 4D Super Diskon TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 66.00% ) yang anda bayar adalah Rp.340, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 3,000 ( Hadiah 4D Super Diskon ) = Rp.3,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Super Diskon TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 3D Super Diskon TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 59.00% ) yang anda bayar adalah Rp.410, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 400 ( Hadiah 3D Super Diskon ) = Rp.400,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Belakang Super Diskon TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Belakang Super Diskon TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.00% ) yang anda bayar adalah Rp.710, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 70 ( Hadiah 2D Belakang Super Diskon ) = Rp.70,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Depan Super Diskon TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Depan Super Diskon TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.00% ) yang anda bayar adalah Rp.710, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 70 ( Hadiah 2D Depan Super Diskon ) = Rp.70,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Tengah Super Diskon TOTOMACAU4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Tengah Super Diskon TOTOMACAU4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.00% ) yang anda bayar adalah Rp.710, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 70 ( Hadiah 2D Tengah Super Diskon ) = Rp.70,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN BOLAK BALIK TOTOMACAU</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 5D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 50,000 ( Hadiah 5D Tebakan Tepat ) = Rp.50,000,000<br>
+                            Rp.1,000 x 350 ( Hadiah 5D Tebakan Tidak Tepat ) = Rp.350,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>4D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 5,000 ( Hadiah 4D Tebakan Tepat ) = Rp.5,000,000<br>
+                            Rp.1,000 x 180 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.180,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 500 ( Hadiah 3D Tebakan Tepat ) = Rp.500,000<br>
+                            Rp.1,000 x 75 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.75,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 80 ( Hadiah 2D Tebakan Tepat ) = Rp.80,000<br>
+                            Rp.1,000 x 15 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.15,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- HokiDraw Section -->
+        <section id="hoki-draw" class="calculator-section">
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN FULL HOKI DRAW</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D FULL</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 9,500 ( Hadiah 4D FULL ) = Rp.9,500,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D FULL</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 950 ( Hadiah 3D FULL ) = Rp.950,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D FULL</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 95 ( Hadiah 2D FULL ) = Rp.95,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN DISKON HOKI DRAW</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 4D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 7,000 ( Hadiah 4D Diskon ) = Rp.7,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 3D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 750 ( Hadiah 3D Diskon ) = Rp.750,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 75 ( Hadiah 2D Diskon ) = Rp.75,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Depan Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Depan Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 65 ( Hadiah 2D Depan Diskon ) = Rp.65,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Tengah Diskon</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Tengah Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 65 ( Hadiah 2D belakang Diskon ) = Rp.65,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN BOLAK BALIK HOKI DRAW</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 5,000 ( Hadiah 4D Tebakan Tepat ) = Rp.5,000,000<br>
+                            Rp.1,000 x 180 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.180,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 500 ( Hadiah 3D Tebakan Tepat ) = Rp.500,000<br>
+                            Rp.1,000 x 75 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.75,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 80 ( Hadiah 2D Tebakan Tepat ) = Rp.80,000<br>
+                            Rp.1,000 x 15 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.15,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Kingkong 4D Section -->
+        <section id="kingkong-4d" class="calculator-section">
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN FULL KING KONG 4D</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D FULL KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D FULL KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 9,000 ( Hadiah 4D FULL TOTOMACAU4D ) = Rp.9,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D FULL KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D FULL KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 950 ( Hadiah 3D FULL TOTOMACAU4D ) = Rp.950,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D FULL KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D FULL KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 95 ( Hadiah 2D FULL TOTOMACAU4D ) = Rp.95,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN DISKON KING KONG 4D</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Diskon KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 4D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 33.00% ) yang anda bayar adalah Rp.670, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 6,000 ( Hadiah 4D Diskon ) = Rp.6,000,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Diskon KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 3D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 24.00% ) yang anda bayar adalah Rp.760, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 700 ( Hadiah 3D Diskon ) = Rp.700,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Diskon KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.850, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 80 ( Hadiah 2D Diskon ) = Rp.80,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Depan Diskon KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Depan Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.850, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 80 ( Hadiah 2D Depan Diskon ) = Rp.80,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Tengah Diskon KING KONG 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Perhitungan 2D Tengah Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.850, maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 80 ( Hadiah 2D Tengah Diskon ) = Rp.80,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN BOLAK BALIK KING KONG 4D</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>4D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 4,000 ( Hadiah 4D Tebakan Tepat ) = Rp.4,000,000<br>
+                            Rp.1,000 x 200 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.200,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>3D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 400 ( Hadiah 3D Tebakan Tepat ) = Rp.400,000<br>
+                            Rp.1,000 x 100 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.100,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>2D Bolak Balik</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                            Maka perhitungannya sebagai berikut :<br>
+                            Rp.1,000 x 70 ( Hadiah 2D Tebakan Tepat ) = Rp.70,000<br>
+                            Rp.1,000 x 20 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.20,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Prize 123 Section -->
+        <section id="prize-123" class="calculator-section">
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN PRIZE 1</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Prize 1 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 4D di Prize 1 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 6,500 ( Hadiah Prize 1 4D ) = 6,500,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Prize 1 3D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 3D di Prize 1 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 650 ( Hadiah Prize 1 3D ) = 650,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Prize 1 2D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 2D di Prize 1 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 70 ( Hadiah Prize 1 2D ) = 70,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN PRIZE 2</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Prize 2 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 4D di Prize 2 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 2,100 ( Hadiah Prize 2 4D ) = 2,100,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Prize 2 3D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 3D di Prize 2 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 210 ( Hadiah Prize 2 3D ) = 210,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Prize 2 2D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 2D di Prize 2 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 20 ( Hadiah Prize 2 2D ) = 20,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">CARA PERHITUNGAN BETTINGAN PRIZE 3</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Prize 3 4D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 4D di Prize 3 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 1,100 ( Hadiah Prize 3 4D ) = 1,100,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Prize 3 3D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 3D di Prize 3 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 110 ( Hadiah Prize 3 3D ) = 110,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Prize 3 2D</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 2D di Prize 3 maka perhitungannya sebagai berikut :<br>
+                            Rp. 1,000 x 8 ( Hadiah Prize 3 2D ) = 8,000
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Colok Bebas Section -->
+        <section id="colok-bebas" class="calculator-section">
+            <h2 class="section-title">COLOK BEBAS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 1,5 ( Hadiah Colok Bebas ) = Rp.1,500 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.2,440
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 3 ( Hadiah Colok Bebas 2 Angka ) = Rp.3,000 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.3,940
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 3 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 4,5 ( Hadiah Colok Bebas 3 Angka ) = Rp. 4,500 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 5,440
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 4 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 6 ( Hadiah Colok Bebas 4 Angka ) = Rp. 6,000 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 6,940
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">COLOK BEBAS 2D</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas 2D (2 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 2 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x7 ( Hadiah Colok Bebas 2D ) = Rp.7,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.7,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (3 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 3 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x11 ( Hadiah Colok Bebas 2D Kategori 3 Digit ) = Rp.11,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.11,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (4 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 4 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x18 ( Hadiah Colok Bebas 2D Kategori 4 Digit ) = Rp.18,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.18,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">SEGALA COLOK</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Naga (3 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok ( Naga Menebak bebas 3 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x23 ( Hadiah Colok Naga ) = Rp.23,000 + Rp.900 ( Modal Awal ) yang sudah dikurangkan diskon maka total menang anda adalah Rp.23,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Naga (4 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Naga ( Menebak bebas 4 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Contoh : Jika melakukan bettingan nomor 1 3 4 dan result yg keluar 1 3 3 4 maka akan di nyatakan menang dengan kategori 4D atau dengan menang 4 angka berikut perhitungannya<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x35 ( Hadiah Colok Naga 4 Angka ) = Rp.35,000 + Rp.900 ( Modal Awal )yang sudah dikurangkan diskon maka total menang anda adalah Rp.35,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Jitu</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Jitu ( Menebak jitu posisi 1 angka dari 4D )<br>
+                            Untuk Colok Jitu ( AS, KOP, Kepala, Ekor ) adalah contoh result 1234 yang dimaksud AS = 1, KOP = 2, Kepala = 3, Ekor = 4<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Jitu 6% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x8 ( Hadiah Colok Jitu ) = Rp.8,000 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.8,940
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Tengah Tepi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Tengah Tepi ( Menebak tengah/tepi dari posisi 2D diskon 2 % dan key -3% )<br>
+                            Tengah = Diantara 25 sampai 74<br>
+                            Tepi = Diantara 00 sampai 24 dan 75 sampai 99<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Tengah Tepi 2% )<br>
+                            Untuk Bettingan Tengah Tepi dikenakan kei -3(3%) maka total yang harus bayar adalah  Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Dasar</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Dasar ( Menebak ganjil/genap dan besar/kecil dari penjumlah angka-angka 2D.<br>
+                            Kecil = angka 0-4 ( Kei : 10 )<br>
+                            Besar = angka 5-9 ( Kei : -25 )<br>
+                            Ganjil = 1,3,5,7,9 ( Kei : -25 )<br>
+                            Genap = 0,2,4,6,8 ( Kei : 10 )<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Dasar 2% )<br>
+                            Untuk Bettingan Dasar ( Besar dan Ganjil ) dikenakan kei -25(25%) maka total yang harus bayar adalah Rp.980 + 245 ( Kei -25 ) = Rp. 1,225<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,225 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,225<br><br>
+                            
+                            Untuk Bettingan Dasar ( Kecil dan Genap ) nominal yang harus dibayar adalah Rp.980<br>
+                            Apabila menang maka bettingan sebesar Rp.1,000 + Rp.980 ( Modal Awal ) + Rp.100 ( Kemenangan Kei 10% ) maka total menang anda adalah Rp.2,080
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan 50 - 50</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan 50 - 50 ( Menebak Ganjil / Genap dan Besar / Kecil pada posisi tertentu dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan 50 - 50 2% )<br>
+                            Untuk Bettingan 50 - 50 dikenakan kei -3(3%) maka total yang harus bayar adalah Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Shio ( Menebak shio dari 2D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.950 ( Diskon Shio 5% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x9,5 ( Hadiah Shio ) = Rp.9,500 ditambah modal awal anda Rp.950 yang sudah dikurangkan diskon maka total menang anda adalah Rp.10,450
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Silang Homo</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Silang Homo ( Menebak dari posisi 2D depan / dari posisi 2D tengah / dari posisi 2D belakang diskon 2 % dan key -3% )<br>
+                            SILANG = Terdapat Ganjil dan Genap<br>
+                            HOMO = Terdapat 1 pasang Ganjil atau 1 pasang Genap<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Silang Homo 2% )<br>
+                            Untuk Bettingan Silang Homo dikenakan kei -3(3%) maka total yang harus bayar adalah  Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Kembang Kempis</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Struktur = ABCD<br>
+                            Jika Menebak posisi Depan maka yang menjadi fokus adalah AB<br>
+                            Jika Menebak posisi Tengah maka yang menjadi fokus adalah BC<br>
+                            Jika Menebak posisi Belakang maka yang menjadi fokus adalah CD<br><br>
+                            
+                            KEMBANG jika A < B ataupun B < C ataupun C < D<br>
+                            KEMPIS jika A > B ataupun B > C ataupun C > D<br>
+                            KEMBAR jika A = B ataupun B = C ataupun C = D<br><br>
+                            
+                            KEMPIS<br>
+                            Contoh :<br>
+                            Jika hasil Result 4321<br>
+                            Untuk betingan anda menebak posisi depan dengan memasang kempis.<br>
+                            Maka pedoman posisi Depan berarti 43<br>
+                            43 = 4 > 3 dan hasilnya adalah KEMPIS<br><br>
+                            
+                            Perhitungannya sebagai berikut<br>
+                            Jika anda melakukan Bettingan sebesar Rp.1,000<br>
+                            maka akan di kenakan Kei sebesar -3 ( 3% ) dan Diskon pada Kembang Kempis adalah 2%<br>
+                            Perhitungannya Rp.1,000 - 20 ( Diskon 2% ) = Rp.980 + 3% (Kei -3) = Rp.1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,010 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Kombinasi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Kombinasi ( Menebak kombinasi Ganjil / Genap & Besar / Kecil pada posisi tertentu )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.920 ( Diskon Kombinasi 8% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x2,6 ( Hadiah Kombinasi ) = Rp.2,600 ditambah modal awal anda Rp.920 yang sudah dikurangkan diskon maka total menang anda adalah Rp.3,520
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Macau Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Macau Shio ( Menebak SHIO dari posisi 2D DEPAN dan 2D BELAKANG )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Macau Shio 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x110 ( Hadiah Macau Shio ) = Rp.110,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.110,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Colok Bebas TM,JKT,KK,TTM Section -->
+        <section id="colok-bebas-tm-jkt-kk-ttm" class="calculator-section">
+            <h2 class="section-title">COLOK BEBAS Toto Mali, Jakarta, Kingkong, TotoMacu</h2>
+            <h2 class="section-title">COLOK BEBAS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 1,6 ( Hadiah Colok Bebas ) = Rp.1,600 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.2,540
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 3,2 ( Hadiah Colok Bebas 2 Angka ) = Rp.3,200 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.4,140
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 3 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 4,8 ( Hadiah Colok Bebas 3 Angka ) = Rp. 4,800 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 5,740
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 4 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 6,4 ( Hadiah Colok Bebas 4 Angka ) = Rp. 6,400 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 7,340
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">COLOK BEBAS 2D</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas 2D (2 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 2 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x7 ( Hadiah Colok Bebas 2D ) = Rp.7,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.7,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (3 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 3 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x13 ( Hadiah Colok Bebas 2D Kategori 3 Digit ) = Rp.13,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.13,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (4 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 4 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x21 ( Hadiah Colok Bebas 2D Kategori 4 Digit ) = Rp.21,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.21,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">SEGALA COLOK</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Naga (3 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok ( Naga Menebak bebas 3 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x27 ( Hadiah Colok Naga ) = Rp.27,000 + Rp.900 ( Modal Awal ) yang sudah dikurangkan diskon maka total menang anda adalah Rp.27,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Naga (4 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Naga ( Menebak bebas 4 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Contoh : Jika melakukan bettingan nomor 1 3 4 dan result yg keluar 1 3 3 4 maka akan di nyatakan menang dengan kategori 4D atau dengan menang 4 angka berikut perhitungannya<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x41 ( Hadiah Colok Naga 4 Angka ) = Rp.41,000 + Rp.900 ( Modal Awal )yang sudah dikurangkan diskon maka total menang anda adalah Rp.41,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Jitu</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Jitu ( Menebak jitu posisi 1 angka dari 4D )<br>
+                            Untuk Colok Jitu ( AS, KOP, Kepala, Ekor ) adalah contoh result 1234 yang dimaksud AS = 1, KOP = 2, Kepala = 3, Ekor = 4<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Jitu 6% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x8,3 ( Hadiah Colok Jitu ) = Rp.8,300 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.9,240
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Tengah Tepi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Tengah Tepi ( Menebak tengah/tepi dari posisi 2D diskon 2 % dan key -2,2% )<br>
+                            Tengah = Diantara 25 sampai 74<br>
+                            Tepi = Diantara 00 sampai 24 dan 75 sampai 99<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Tengah Tepi 2% )<br>
+                            Untuk Bettingan Tengah Tepi dikenakan kei -2,2(2,2%) maka total yang harus bayar adalah  Rp.980 + 22 ( Kei -2,2 ) = Rp. 1,002<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,002 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,002
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Dasar</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Dasar ( Menebak ganjil/genap dan besar/kecil dari penjumlah angka-angka 2D.<br>
+                            Kecil = angka 0-4 ( Kei : 10 )<br>
+                            Besar = angka 5-9 ( Kei : -25 )<br>
+                            Ganjil = 1,3,5,7,9 ( Kei : -25 )<br>
+                            Genap = 0,2,4,6,8 ( Kei : 10 )<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Dasar 2% )<br>
+                            Untuk Bettingan Dasar ( Besar dan Ganjil ) dikenakan kei -25(25%) maka total yang harus bayar adalah Rp.980 + 245 ( Kei -25 ) = Rp. 1,225<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,225 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,225<br><br>
+                            
+                            Untuk Bettingan Dasar ( Kecil dan Genap ) nominal yang harus dibayar adalah Rp.980<br>
+                            Apabila menang maka bettingan sebesar Rp.1,000 + Rp.980 ( Modal Awal ) + Rp.100 ( Kemenangan Kei 10% ) maka total menang anda adalah Rp.2,080
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan 50 - 50</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan 50 - 50 ( Menebak Ganjil / Genap dan Besar / Kecil pada posisi tertentu dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan 50 - 50 2% )<br>
+                            Untuk Bettingan 50 - 50 dikenakan kei -3(3%) maka total yang harus bayar adalah Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Shio ( Menebak shio dari 2D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.950 ( Diskon Shio 5% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x10 ( Hadiah Shio ) = Rp.10,000 ditambah modal awal anda Rp.950 yang sudah dikurangkan diskon maka total menang anda adalah Rp.10,950
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Silang Homo</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Silang Homo ( Menebak dari posisi 2D depan / dari posisi 2D tengah / dari posisi 2D belakang diskon 2 % dan key -2,2% )<br>
+                            SILANG = Terdapat Ganjil dan Genap<br>
+                            HOMO = Terdapat 1 pasang Ganjil atau 1 pasang Genap<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Silang Homo 2% )<br>
+                            Untuk Bettingan Silang Homo dikenakan kei -2,2(2,2%) maka total yang harus bayar adalah  Rp.980 + 22 ( Kei -2,2 ) = Rp. 1,002<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,002 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,002
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Kembang Kempis</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Struktur = ABCD<br>
+                            Jika Menebak posisi Depan maka yang menjadi fokus adalah AB<br>
+                            Jika Menebak posisi Tengah maka yang menjadi fokus adalah BC<br>
+                            Jika Menebak posisi Belakang maka yang menjadi fokus adalah CD<br><br>
+                            
+                            KEMBANG jika A < B ataupun B < C ataupun C < D<br>
+                            KEMPIS jika A > B ataupun B > C ataupun C > D<br>
+                            KEMBAR jika A = B ataupun B = C ataupun C = D<br><br>
+                            
+                            KEMPIS<br>
+                            Contoh :<br>
+                            Jika hasil Result 4321<br>
+                            Untuk betingan anda menebak posisi depan dengan memasang kempis.<br>
+                            Maka pedoman posisi Depan berarti 43<br>
+                            43 = 4 > 3 dan hasilnya adalah KEMPIS<br><br>
+                            
+                            Perhitungannya sebagai berikut<br>
+                            Jika anda melakukan Bettingan sebesar Rp.1,000<br>
+                            maka akan di kenakan Kei sebesar -2,2 ( 2,2% ) dan Diskon pada Kembang Kempis adalah 2%<br>
+                            Perhitungannya Rp.1,000 - 20 ( Diskon 2% ) = Rp.980 + 2,2% (Kei -2,2) = Rp.1,002<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,002 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,002
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Kombinasi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Kombinasi ( Menebak kombinasi Ganjil / Genap & Besar / Kecil pada posisi tertentu )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.920 ( Diskon Kombinasi 8% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x2,8 ( Hadiah Kombinasi ) = Rp.2,800 ditambah modal awal anda Rp.920 yang sudah dikurangkan diskon maka total menang anda adalah Rp.3,720
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Macau Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Macau Shio ( Menebak SHIO dari posisi 2D DEPAN dan 2D BELAKANG )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Macau Shio 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x110 ( Hadiah Macau Shio ) = Rp.110,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.110,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Colok Bebas HokiDraw Section -->
+        <section id="colok-bebas-hokidraw" class="calculator-section">
+            <h2 class="section-title">COLOK BEBAS Hokidraw</h2>
+            <h2 class="section-title">COLOK BEBAS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 0,9 ( Hadiah Colok Bebas ) = Rp.900 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.1,840
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 1,8 ( Hadiah Colok Bebas 2 Angka ) = Rp.1,800 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.2,740
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 3 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 2,7 ( Hadiah Colok Bebas 3 Angka ) = Rp. 2,700 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 3,640
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 4 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 3,6 ( Hadiah Colok Bebas 4 Angka ) = Rp. 3,600 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 4,540
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">COLOK BEBAS 2D</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas 2D (2 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 2 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x4 ( Hadiah Colok Bebas 2D ) = Rp.4,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.4,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (3 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 3 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x6 ( Hadiah Colok Bebas 2D Kategori 3 Digit ) = Rp.6,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.6,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (4 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 4 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x20 ( Hadiah Colok Bebas 2D Kategori 4 Digit ) = Rp.20,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.20,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">SEGALA COLOK</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Naga (3 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok ( Naga Menebak bebas 3 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x12 ( Hadiah Colok Naga ) = Rp.12,000 + Rp.900 ( Modal Awal ) yang sudah dikurangkan diskon maka total menang anda adalah Rp.12,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Naga (4 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Naga ( Menebak bebas 4 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Contoh : Jika melakukan bettingan nomor 1 3 4 dan result yg keluar 1 3 3 4 maka akan di nyatakan menang dengan kategori 4D atau dengan menang 4 angka berikut perhitungannya<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x30 ( Hadiah Colok Naga 4 Angka ) = Rp.30,000 + Rp.900 ( Modal Awal )yang sudah dikurangkan diskon maka total menang anda adalah Rp.30,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Jitu</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Jitu ( Menebak jitu posisi 1 angka dari 4D )<br>
+                            Untuk Colok Jitu ( AS, KOP, Kepala, Ekor ) adalah contoh result 1234 yang dimaksud AS = 1, KOP = 2, Kepala = 3, Ekor = 4<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Jitu 6% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x8 ( Hadiah Colok Jitu ) = Rp.8,000 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.8,940
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Tengah Tepi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Tengah Tepi ( Menebak tengah/tepi dari posisi 2D diskon 2 % dan key -2,2% )<br>
+                            Tengah = Diantara 25 sampai 74<br>
+                            Tepi = Diantara 00 sampai 24 dan 75 sampai 99<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Tengah Tepi 2% )<br>
+                            Untuk Bettingan Tengah Tepi dikenakan kei -2,2(2,2%) maka total yang harus bayar adalah  Rp.980 + 22 ( Kei -2,2 ) = Rp. 1,002<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,002 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,002
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Dasar</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Dasar ( Menebak ganjil/genap dan besar/kecil dari penjumlah angka-angka 2D.<br>
+                            Kecil = angka 0-4 ( Kei : 10 )<br>
+                            Besar = angka 5-9 ( Kei : -25 )<br>
+                            Ganjil = 1,3,5,7,9 ( Kei : -25 )<br>
+                            Genap = 0,2,4,6,8 ( Kei : 10 )<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Dasar 2% )<br>
+                            Untuk Bettingan Dasar ( Besar dan Ganjil ) dikenakan kei -25(25%) maka total yang harus bayar adalah Rp.980 + 245 ( Kei -25 ) = Rp. 1,225<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,225 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,225<br><br>
+                            
+                            Untuk Bettingan Dasar ( Kecil dan Genap ) nominal yang harus dibayar adalah Rp.980<br>
+                            Apabila menang maka bettingan sebesar Rp.1,000 + Rp.980 ( Modal Awal ) + Rp.100 ( Kemenangan Kei 10% ) maka total menang anda adalah Rp.2,080
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan 50 - 50</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan 50 - 50 ( Menebak Ganjil / Genap dan Besar / Kecil pada posisi tertentu dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan 50 - 50 2% )<br>
+                            Untuk Bettingan 50 - 50 dikenakan kei -2,2(2,2%) maka total yang harus bayar adalah Rp.980 + 22 ( Kei -2,2 ) = Rp. 1,002<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,002 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,002
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Shio ( Menebak shio dari 2D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.950 ( Diskon Shio 5% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x10 ( Hadiah Shio ) = Rp.10,000 ditambah modal awal anda Rp.950 yang sudah dikurangkan diskon maka total menang anda adalah Rp.10,950
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Silang Homo</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Silang Homo ( Menebak dari posisi 2D depan / dari posisi 2D tengah / dari posisi 2D belakang diskon 2 % dan key -3% )<br>
+                            SILANG = Terdapat Ganjil dan Genap<br>
+                            HOMO = Terdapat 1 pasang Ganjil atau 1 pasang Genap<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Silang Homo 2% )<br>
+                            Untuk Bettingan Silang Homo dikenakan kei -3(3%) maka total yang harus bayar adalah  Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Kembang Kempis</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Struktur = ABCD<br>
+                            Jika Menebak posisi Depan maka yang menjadi fokus adalah AB<br>
+                            Jika Menebak posisi Tengah maka yang menjadi fokus adalah BC<br>
+                            Jika Menebak posisi Belakang maka yang menjadi fokus adalah CD<br><br>
+                            
+                            KEMBANG jika A < B ataupun B < C ataupun C < D<br>
+                            KEMPIS jika A > B ataupun B > C ataupun C > D<br>
+                            KEMBAR jika A = B ataupun B = C ataupun C = D<br><br>
+                            
+                            KEMPIS<br>
+                            Contoh :<br>
+                            Jika hasil Result 4321<br>
+                            Untuk betingan anda menebak posisi depan dengan memasang kempis.<br>
+                            Maka pedoman posisi Depan berarti 43<br>
+                            43 = 4 > 3 dan hasilnya adalah KEMPIS<br><br>
+                            
+                            Perhitungannya sebagai berikut<br>
+                            Jika anda melakukan Bettingan sebesar Rp.1,000<br>
+                            maka akan di kenakan Kei sebesar -3 ( 3% ) dan Diskon pada Kembang Kempis adalah 2%<br>
+                            Perhitungannya Rp.1,000 - 20 ( Diskon 2% ) = Rp.980 + 3% (Kei -3) = Rp.1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,010 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Kombinasi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Kombinasi ( Menebak kombinasi Ganjil / Genap & Besar / Kecil pada posisi tertentu )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.920 ( Diskon Kombinasi 8% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x2,7 ( Hadiah Kombinasi ) = Rp.2,700 ditambah modal awal anda Rp.920 yang sudah dikurangkan diskon maka total menang anda adalah Rp.3,620
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Macau Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Macau Shio ( Menebak SHIO dari posisi 2D DEPAN dan 2D BELAKANG )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Macau Shio 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x110 ( Hadiah Macau Shio ) = Rp.110,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.110,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- Colok Bebas TTM5D Section -->
+        <section id="colok-bebas-ttm5d" class="calculator-section">
+            <h2 class="section-title">COLOK BEBAS TTM5D</h2>
+            <h2 class="section-title">COLOK BEBAS</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 0,9 ( Hadiah Colok Bebas ) = Rp.900 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.1,840
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x 1,8 ( Hadiah Colok Bebas 2 Angka ) = Rp.1,800 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.2,740
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 3 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 2,7 ( Hadiah Colok Bebas 3 Angka ) = Rp. 2,700 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 3,640
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 4 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 3,6 ( Hadiah Colok Bebas 4 Angka ) = Rp. 3,600 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 4,540
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 5 Angka</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk colok bebas jika melakukan bettingan dengan nominal Rp. 1,000 anda hanya membayar dengan nominal Rp. 940 ( Diskon Colok Bebas 6% )<br>
+                            Jika menang maka bettingan anda sebesar Rp. 1,000 x 4,5 ( Hadiah Colok Bebas 5 Angka ) = Rp. 4,500 ditambah modal awal anda Rp. 940 yang sudah dikurangkan diskon maka total menang anda adalah Rp. 5,440
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">COLOK BEBAS 2D ( COLOK MACAU )</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas 2D (2 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 2 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x4 ( Hadiah Colok Bebas 2D ) = Rp.4,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.4,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (3 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 3 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x6 ( Hadiah Colok Bebas 2D Kategori 3 Digit ) = Rp.6,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.6,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (4 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 4 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x20 ( Hadiah Colok Bebas 2D Kategori 4 Digit ) = Rp.20,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.20,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 2D (5 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 2D dengan kategori 5 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 2D 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x200 ( Hadiah Colok Bebas 2D Kategori 5 Digit ) = Rp.200,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.200,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">COLOK BEBAS 4D ( COLOK MACAU )</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Bebas 4D (4 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 4D (Colok Macau) dengan kategori 4 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 4D (Colok Macau) 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x50 ( Hadiah Colok Bebas 4D (Colok Macau) Kategori 4 Digit ) = Rp.50,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.50,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Bebas 4D (5 Digit)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Bebas 4D (Colok Macau) dengan kategori 5 digit, jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Bebas 4D (Colok Macau) 10% )<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x200 ( Hadiah Colok Bebas 4D (Colok Macau) Kategori 5 Digit ) = Rp.200,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.200,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h2 class="section-title">SEGALA COLOK</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Colok Naga (3 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok ( Naga Menebak bebas 3 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x12 ( Hadiah Colok Naga ) = Rp.12,000 + Rp.900 ( Modal Awal ) yang sudah dikurangkan diskon maka total menang anda adalah Rp.12,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Naga (4 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Naga ( Menebak bebas 3 angka dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Contoh : Jika melakukan bettingan nomor 1 3 4 dan result yg keluar 1 3 3 4 maka akan di nyatakan menang dengan kategori 4D atau dengan menang 4 angka berikut perhitungannya<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x30 ( Hadiah Colok Naga 4 Angka ) = Rp.30,000 + Rp.900 ( Modal Awal )yang sudah dikurangkan diskon maka total menang anda adalah Rp.30,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Naga (5 Angka)</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Naga ( Menebak bebas 3 angka dari 5D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Colok Naga 10% )<br>
+                            Contoh : Jika melakukan bettingan nomor 1 3 4 dan result yg keluar 1 3 3 4 4 maka akan di nyatakan menang dengan kategori 5D atau dengan menang 5 angka berikut perhitungannya<br>
+                            Jika menang maka bettingan anda sebesar Rp.1,000 x125 ( Hadiah Colok Naga 5 Angka ) = Rp.125,000 + Rp.900 ( Modal Awal )yang sudah dikurangkan diskon maka total menang anda adalah Rp.125,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Colok Jitu</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Colok Jitu ( Menebak jitu posisi 1 angka dari 5D )<br>
+                            Untuk Colok Jitu ( Posisi 1, Posisi 2, Posisi 3, Posisi 4, dan Posisi 5 ) adalah contoh result 1235 yang dimaksud Posisi 1 = 1, Posisi 2 = 2, Posisi 3 = 3, Posisi 4 = 4, dan Posisi 5 = 5<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.940 ( Diskon Colok Jitu 6% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x8 ( Hadiah Colok Jitu ) = Rp.8,000 ditambah modal awal anda Rp.940 yang sudah dikurangkan diskon maka total menang anda adalah Rp.8,940
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Tengah Tepi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Tengah Tepi ( Menebak tengah/tepi dari posisi 2D diskon 2 % dan key -2,2% )<br>
+                            Tengah = Diantara 25 sampai 74<br>
+                            Tepi = Diantara 00 sampai 24 dan 75 sampai 99<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Tengah Tepi 2% )<br>
+                            Untuk Bettingan Tengah Tepi dikenakan kei -2,2(2,2%) maka total yang harus bayar adalah  Rp.980 + 22 ( Kei -2,2 ) = Rp. 1,002<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,002 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,002
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Dasar</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Dasar ( Menebak ganjil/genap dan besar/kecil dari penjumlah angka-angka 2D.<br>
+                            Kecil = angka 0-4 ( Kei : 10 )<br>
+                            Besar = angka 5-9 ( Kei : -25 )<br>
+                            Ganjil = 1,3,5,7,9 ( Kei : -25 )<br>
+                            Genap = 0,2,4,6,8 ( Kei : 10 )<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Dasar 2% )<br>
+                            Untuk Bettingan Dasar ( Besar dan Ganjil ) dikenakan kei -25(25%) maka total yang harus bayar adalah Rp.980 + 245 ( Kei -25 ) = Rp. 1,225<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,225 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,225<br><br>
+                            
+                            Untuk Bettingan Dasar ( Kecil dan Genap ) nominal yang harus dibayar adalah Rp.980<br>
+                            Apabila menang maka bettingan sebesar Rp.1,000 + Rp.980 ( Modal Awal ) + Rp.100 ( Kemenangan Kei 10% ) maka total menang anda adalah Rp.2,080
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan 50 - 50</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan 50 - 50 ( Menebak Ganjil / Genap dan Besar / Kecil pada posisi tertentu dari 4D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan 50 - 50 2% )<br>
+                            Untuk Bettingan 50 - 50 dikenakan kei -3(3%) maka total yang harus bayar adalah Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Shio ( Menebak shio dari 2D )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.950 ( Diskon Shio 5% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x10 ( Hadiah Shio ) = Rp.10,000 ditambah modal awal anda Rp.950 yang sudah dikurangkan diskon maka total menang anda adalah Rp.10,950
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Silang Homo</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Silang Homo ( Menebak dari posisi 2D depan / dari posisi 2D tengah / dari posisi 2D belakang diskon 2 % dan key -3% )<br>
+                            SILANG = Terdapat Ganjil dan Genap<br>
+                            HOMO = Terdapat 1 pasang Ganjil atau 1 pasang Genap<br><br>
+                            
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.980 ( Diskon Bettingan Silang Homo 2% )<br>
+                            Untuk Bettingan Silang Homo dikenakan kei -3(3%) maka total yang harus bayar adalah  Rp.980 + 30 ( Kei -3 ) = Rp. 1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 + Rp.1,010 ( Modal Awal ) yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Kembang Kempis</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Struktur = ABCD<br>
+                            Jika Menebak posisi Depan maka yang menjadi fokus adalah AB<br>
+                            Jika Menebak posisi Tengah maka yang menjadi fokus adalah BC<br>
+                            Jika Menebak posisi Belakang maka yang menjadi fokus adalah CD<br><br>
+                            
+                            KEMBANG jika A < B ataupun B < C ataupun C < D<br>
+                            KEMPIS jika A > B ataupun B > C ataupun C > D<br>
+                            KEMBAR jika A = B ataupun B = C ataupun C = D<br><br>
+                            
+                            KEMPIS<br>
+                            Contoh :<br>
+                            Jika hasil Result 4321<br>
+                            Untuk betingan anda menebak posisi depan dengan memasang kempis.<br>
+                            Maka pedoman posisi Depan berarti 43<br>
+                            43 = 4 > 3 dan hasilnya adalah KEMPIS<br><br>
+                            
+                            Perhitungannya sebagai berikut<br>
+                            Jika anda melakukan Bettingan sebesar Rp.1,000<br>
+                            maka akan di kenakan Kei sebesar -3 ( 3% ) dan Diskon pada Kembang Kempis adalah 2%<br>
+                            Perhitungannya Rp.1,000 - 20 ( Diskon 2% ) = Rp.980 + 3% (Kei -3) = Rp.1,010<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 ditambah modal awal anda Rp.1,010 yang sudah dikurangkan diskon dan ditambah kei maka total menang anda adalah Rp.2,010
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Bettingan Kombinasi</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Bettingan Kombinasi ( Menebak kombinasi Ganjil / Genap & Besar / Kecil pada posisi tertentu )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.920 ( Diskon Kombinasi 8% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x2,7 ( Hadiah Kombinasi ) = Rp.2,700 ditambah modal awal anda Rp.920 yang sudah dikurangkan diskon maka total menang anda adalah Rp.3,620
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                    <tr>
+                        <td>Macau Shio</td>
+                        <td><input type="number" class="nominal-input" value="1000"></td>
+                        <td class="calculation-result">
+                            Untuk Macau Shio ( Menebak SHIO dari posisi 2D DEPAN dan 2D BELAKANG )<br>
+                            Jika melakukan bettingan dengan nominal Rp.1,000 anda hanya membayar dengan nominal Rp.900 ( Diskon Macau Shio 10% )<br>
+                            Apabila menang maka bettingan anda sebesar Rp.1,000 x110 ( Hadiah Macau Shio ) = Rp.110,000 ditambah modal awal anda Rp.900 yang sudah dikurangkan diskon maka total menang anda adalah Rp.110,900
+                        </td>
+                        <td><button class="copy-btn"><i class="fas fa-copy"></i> Copy</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <div class="success-message" id="successMessage">Berhasil di copy!</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu navigation
+            const menuButtons = document.querySelectorAll('.menu button');
+            const calculatorSections = document.querySelectorAll('.calculator-section');
+            
+            menuButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetSection = this.getAttribute('data-section');
+                    
+                    // Update active button
+                    menuButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Show target section
+                    calculatorSections.forEach(section => {
+                        section.classList.remove('active');
+                        if (section.id === targetSection) {
+                            section.classList.add('active');
+                        }
+                    });
+                });
+            });
+            
+            // Copy functionality
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            const successMessage = document.getElementById('successMessage');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const calculationText = row.querySelector('.calculation-result').textContent;
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(calculationText).then(() => {
+                        // Show success message
+                        successMessage.classList.add('show');
+                        
+                        // Hide after 3 seconds
+                        setTimeout(() => {
+                            successMessage.classList.remove('show');
+                        }, 3000);
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                    });
+                });
+            });
+            
+            // Update calculations based on nominal input
+            const nominalInputs = document.querySelectorAll('.nominal-input');
+            
+            nominalInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    const row = this.closest('tr');
+                    const calculationResult = row.querySelector('.calculation-result');
+                    const originalText = calculationResult.dataset.originalText || calculationResult.innerHTML;
+                    calculationResult.dataset.originalText = originalText;
+                    
+                    const nominal = parseFloat(this.value) || 0;
+                    const updatedText = originalText.replace(/Rp\.1,000/g, `Rp.${nominal.toLocaleString()}`);
+                    
+                    calculationResult.innerHTML = updatedText;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

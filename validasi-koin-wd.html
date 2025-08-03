@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Withdraw Koin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #7367f0;
+            --primary-light: #9e95f5;
+            --secondary-color: #a8a8a8;
+            --dark-bg: #283046;
+            --darker-bg: #161d31;
+            --card-bg: #2d374d;
+            --light-text: #f0f0f0;
+            --lighter-text: #d0d4e7;
+            --accent-color: #00cfe8;
+            --danger-color: #ea5455;
+            --success-color: #28c76f;
+            --warning-color: #ff9f43;
+            --border-color: #3b4253;
+            --hover-bg: rgba(115, 103, 240, 0.08);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            background-color: var(--dark-bg);
+            color: var(--light-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            background-color: var(--darker-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1, h2, h3 {
+            color: var(--light-text);
+            margin-top: 0;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 25px;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            border-radius: 3px;
+        }
+        
+        h2 {
+            font-size: 1.7rem;
+            margin: 30px 0 20px;
+            color: var(--lighter-text);
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            height: 70%;
+            width: 4px;
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .input-section {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .input-section p {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 30px;
+            overflow: hidden;
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+        }
+        
+        tr:first-child th:first-child {
+            border-top-left-radius: 10px;
+        }
+        
+        tr:first-child th:last-child {
+            border-top-right-radius: 10px;
+        }
+        
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 10px;
+        }
+        
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 10px;
+        }
+        
+        tr:hover {
+            background-color: var(--hover-bg);
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        tr:nth-child(even):hover {
+            background-color: var(--hover-bg);
+        }
+        
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            color: var(--light-text);
+            font-family: inherit;
+            resize: vertical;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(115, 103, 240, 0.3);
+        }
+        
+        textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-style: italic;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(115, 103, 240, 0.3);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #f08182;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #3ddc8d;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(115, 103, 240, 0.1);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pass {
+            background-color: rgba(40, 199, 111, 0.15);
+            color: var(--success-color);
+        }
+        
+        .status-fail {
+            background-color: rgba(234, 84, 85, 0.15);
+            color: var(--danger-color);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease-out;
+        }
+        
+        .modal-content {
+            background-color: var(--darker-bg);
+            margin: 10% auto;
+            padding: 30px;
+            width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            border-top: 4px solid var(--primary-color);
+            position: relative;
+            animation: slideDown 0.4s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .modal-icon {
+            font-size: 3rem;
+            color: var(--danger-color);
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--light-text);
+        }
+        
+        .modal-text {
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .modal-buttons button {
+            min-width: 100px;
+            margin: 0;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .close-modal:hover {
+            color: var(--light-text);
+        }
+        
+        .summary-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .summary-total h3 {
+            color: var(--accent-color);
+        }
+        
+        .amount-highlight {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--success-color);
+        }
+        
+        /* Remove scroll for summary table */
+        .summary-table-container {
+            max-height: none;
+            overflow: visible;
+            margin-bottom: 30px;
+        }
+        
+        /* Animation for table rows */
+        @keyframes fadeInRow {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        tbody tr {
+            animation: fadeInRow 0.3s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        tbody tr:nth-child(1) { animation-delay: 0.1s; }
+        tbody tr:nth-child(2) { animation-delay: 0.2s; }
+        tbody tr:nth-child(3) { animation-delay: 0.3s; }
+        tbody tr:nth-child(4) { animation-delay: 0.4s; }
+        tbody tr:nth-child(5) { animation-delay: 0.5s; }
+        tbody tr:nth-child(n+6) { animation-delay: 0.6s; }
+        
+        @media (max-width: 992px) {
+            .container {
+                padding: 20px;
+                margin: 15px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            th, td {
+                padding: 12px 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                margin: 10px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            th, td {
+                padding: 10px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .modal-content {
+                width: 90%;
+                margin: 20% auto;
+                padding: 20px;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fas fa-coins"></i> Dashboard Withdraw Koin</h1>
+        
+        <div class="input-section">
+            <h2><i class="fas fa-pencil-alt"></i> Input Data Withdraw</h2>
+            <p>Masukkan data dalam format: username | tanggal | jumlah | bank | nomor rekening | nama rekening | akun operator | jenis operasi | status</p>
+            <textarea id="rawData" placeholder="Contoh:
+moses17    2025-07-13 12:10:05    150,000    JAGO    102132711860    Muhammad rizky    TVTOTOBAKRON280    Withdraw    Pass
+lontearab123    2025-07-13 23:32:46    50,000    BSI    7294911426    luthfii hakim    TVTOTOAGUS163    Withdraw    Pass"></textarea>
+            
+            <div class="btn-group">
+                <button onclick="parseData()" class="btn-primary">
+                    <i class="fas fa-plus-circle"></i> Tambah Data
+                </button>
+                <button onclick="confirmClearData()" class="btn-danger">
+                    <i class="fas fa-trash-alt"></i> Hapus Semua
+                </button>
+                <button onclick="calculateSummary()" class="btn-success">
+                    <i class="fas fa-calculator"></i> Hitung Data
+                </button>
+            </div>
+        </div>
+        
+        <div class="section-header">
+            <h2><i class="fas fa-table"></i> Data Withdraw</h2>
+            <div class="section-actions">
+                <span class="badge" id="totalRecords">0 records</span>
+            </div>
+        </div>
+        
+        <div class="scrollable-table">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Akun Pemain</th>
+                        <th>Tanggal</th>
+                        <th>Jumlah</th>
+                        <th>Bank Penerima</th>
+                        <th>Nomor Rekening</th>
+                        <th>Nama Rekening</th>
+                        <th>Akun Operator</th>
+                        <th>Jenis Operasi</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data akan dimasukkan di sini -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="summary-card">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-pie"></i> Ringkasan Akun Operator</h2>
+            </div>
+            
+            <!-- Changed this section to remove scrolling -->
+            <div class="summary-table-container">
+                <table class="summary-table" id="summaryTable">
+                    <thead>
+                        <tr>
+                            <th>Akun Operator</th>
+                            <th>Form</th>
+                            <th>Nominal</th>
+                        </tr>
+                    </thead>
+                    <tbody id="summaryBody">
+                        <!-- Ringkasan akan dimasukkan di sini -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="summary-total">
+                <h3>Total Keseluruhan:</h3>
+                <div>
+                    <span id="totalForms" class="amount-highlight">0</span> form | 
+                    <span id="totalAmount" class="amount-highlight">0</span> koin
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="modal-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="modal-title">Konfirmasi Penghapusan</h3>
+            <p class="modal-text">Apakah Anda yakin ingin menghapus semua data withdraw? Tindakan ini tidak dapat dibatalkan.</p>
+            <div class="modal-buttons">
+                <button onclick="clearData()" class="btn-danger">
+                    <i class="fas fa-trash-alt"></i> Hapus
+                </button>
+                <button onclick="closeModal()" class="btn-outline">
+                    <i class="fas fa-times"></i> Batal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let withdrawData = [];
+        
+        function parseData() {
+            const rawData = document.getElementById('rawData').value;
+            const lines = rawData.split('\n').filter(line => line.trim() !== '');
+            
+            if (lines.length === 0) {
+                showAlert('Peringatan', 'Tidak ada data yang dimasukkan', 'warning');
+                return;
+            }
+            
+            let newDataCount = 0;
+            
+            lines.forEach(line => {
+                const parts = line.split('\t').map(part => part.trim());
+                if (parts.length >= 9) {
+                    const amount = parseFloat(parts[2].replace(/,/g, ''));
+                    
+                    const data = {
+                        username: parts[0],
+                        date: parts[1],
+                        amount: amount,
+                        bank: parts[3],
+                        accountNumber: parts[4],
+                        accountName: parts[5],
+                        operatorAccount: parts[6],
+                        operationType: parts[7],
+                        status: parts[8]
+                    };
+                    
+                    withdrawData.push(data);
+                    newDataCount++;
+                }
+            });
+            
+            if (newDataCount > 0) {
+                document.getElementById('rawData').value = '';
+                updateTable();
+                showAlert('Sukses', `Berhasil menambahkan ${newDataCount} data baru`, 'success');
+            } else {
+                showAlert('Error', 'Format data tidak valid. Pastikan data sesuai format yang ditentukan.', 'error');
+            }
+        }
+        
+        function updateTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            withdrawData.forEach((data, index) => {
+                const row = document.createElement('tr');
+                
+                const statusClass = data.status.toLowerCase() === 'pass' ? 'status-pass' : 'status-fail';
+                
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>${data.username}</td>
+                    <td>${data.date}</td>
+                    <td>${data.amount.toLocaleString()}</td>
+                    <td>${data.bank}</td>
+                    <td>${data.accountNumber}</td>
+                    <td>${data.accountName}</td>
+                    <td>${data.operatorAccount}</td>
+                    <td>${data.operationType}</td>
+                    <td><span class="status-badge ${statusClass}">${data.status}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
+            });
+            
+            document.getElementById('totalRecords').textContent = `${withdrawData.length} records`;
+        }
+        
+        function confirmClearData() {
+            if (withdrawData.length === 0) {
+                showAlert('Info', 'Tidak ada data yang bisa dihapus', 'info');
+                return;
+            }
+            document.getElementById('confirmModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('confirmModal').style.display = 'none';
+        }
+        
+        function clearData() {
+            withdrawData = [];
+            updateTable();
+            document.getElementById('summaryBody').innerHTML = '';
+            document.getElementById('totalForms').textContent = '0';
+            document.getElementById('totalAmount').textContent = '0';
+            closeModal();
+            showAlert('Sukses', 'Semua data telah dihapus', 'success');
+        }
+        
+        function calculateSummary() {
+            if (withdrawData.length === 0) {
+                showAlert('Peringatan', 'Tidak ada data untuk dihitung', 'warning');
+                return;
+            }
+            
+            const operatorSummary = {};
+            let totalForms = 0;
+            let totalAmount = 0;
+            
+            withdrawData.forEach(data => {
+                const operator = data.operatorAccount;
+                
+                if (!operatorSummary[operator]) {
+                    operatorSummary[operator] = {
+                        count: 0,
+                        total: 0
+                    };
+                }
+                
+                operatorSummary[operator].count++;
+                operatorSummary[operator].total += data.amount;
+                totalForms++;
+                totalAmount += data.amount;
+            });
+            
+            const summaryBody = document.getElementById('summaryBody');
+            summaryBody.innerHTML = '';
+            
+            const sortedOperators = Object.keys(operatorSummary).sort();
+            
+            sortedOperators.forEach(operator => {
+                const summary = operatorSummary[operator];
+                const row = document.createElement('tr');
+                
+                row.innerHTML = `
+                    <td>${operator}</td>
+                    <td>${summary.count.toLocaleString()}</td>
+                    <td>${summary.total.toLocaleString()}</td>
+                `;
+                
+                summaryBody.appendChild(row);
+            });
+            
+            document.getElementById('totalForms').textContent = totalForms.toLocaleString();
+            document.getElementById('totalAmount').textContent = totalAmount.toLocaleString();
+            
+            showAlert('Sukses', 'Perhitungan data selesai', 'success');
+        }
+        
+        function showAlert(title, message, type) {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.style.position = 'fixed';
+            alertDiv.style.bottom = '20px';
+            alertDiv.style.right = '20px';
+            alertDiv.style.padding = '15px 25px';
+            alertDiv.style.borderRadius = '8px';
+            alertDiv.style.color = 'white';
+            alertDiv.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 
+                                          type === 'error' ? 'var(--danger-color)' : 
+                                          type === 'warning' ? 'var(--warning-color)' : 'var(--secondary-color)';
+            alertDiv.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            alertDiv.style.zIndex = '1000';
+            alertDiv.style.display = 'flex';
+            alertDiv.style.alignItems = 'center';
+            alertDiv.style.gap = '10px';
+            alertDiv.style.animation = 'fadeIn 0.3s ease-out';
+            
+            const icon = document.createElement('i');
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 
+                           type === 'error' ? 'fas fa-times-circle' : 
+                           type === 'warning' ? 'fas fa-exclamation-circle' : 'fas fa-info-circle';
+            
+            const textDiv = document.createElement('div');
+            textDiv.innerHTML = `<strong>${title}</strong><br>${message}`;
+            
+            alertDiv.appendChild(icon);
+            alertDiv.appendChild(textDiv);
+            
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.style.animation = 'fadeOut 0.5s ease-out';
+                setTimeout(() => {
+                    document.body.removeChild(alertDiv);
+                }, 500);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

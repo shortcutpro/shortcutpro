@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Togel Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #c7d2fe;
+            --secondary: #f43f5e;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --lighter: #ffffff;
+            --gray: #94a3b8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--light);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border-radius: 24px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+            z-index: -1;
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .header {
+            background: linear-gradient(135deg, rgba(79, 70, 229, 0.8) 0%, rgba(99, 102, 241, 0.8) 100%);
+            color: white;
+            padding: 32px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            z-index: 1;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header h1 {
+            font-weight: 700;
+            font-size: 32px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-weight: 400;
+            font-size: 16px;
+            max-width: 600px;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .input-section {
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .input-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--light);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .input-label i {
+            color: var(--primary-light);
+        }
+        
+        .input-field {
+            width: 100%;
+            min-height: 200px;
+            padding: 20px;
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 15px;
+            resize: vertical;
+            transition: var(--transition);
+            background: var(--glass);
+            color: var(--light);
+            line-height: 1.6;
+        }
+        
+        .input-field::placeholder {
+            color: var(--gray);
+            opacity: 0.7;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+            background: rgba(15, 23, 42, 0.7);
+        }
+        
+        .delete-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            font-size: 14px;
+            color: var(--gray);
+            cursor: pointer;
+            transition: var(--transition);
+            background: none;
+            border: none;
+            font-family: inherit;
+            padding: 6px 12px;
+            border-radius: 8px;
+        }
+        
+        .delete-btn:hover {
+            color: var(--danger);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .delete-btn i {
+            font-size: 12px;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .result-card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 41, 59, 0.7) 100%);
+            border-radius: 20px;
+            padding: 28px;
+            text-align: center;
+            box-shadow: var(--card-shadow);
+            border: 1px solid var(--glass-border);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+            z-index: 2;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+        
+        .result-card-2d::before {
+            background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
+        }
+        
+        .result-card-3d::before {
+            background: linear-gradient(90deg, var(--warning) 0%, #f97316 100%);
+        }
+        
+        .result-card-4d::before {
+            background: linear-gradient(90deg, var(--success) 0%, #059669 100%);
+        }
+        
+        .result-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .result-label i {
+            font-size: 16px;
+        }
+        
+        .result-value {
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--lighter);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .result-value::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+        }
+        
+        .result-limit {
+            font-size: 13px;
+            color: var(--gray);
+            font-weight: 500;
+            opacity: 0.8;
+        }
+        
+        .alert {
+            padding: 18px 20px;
+            border-radius: 14px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--light);
+            border-left: 4px solid var(--danger);
+            backdrop-filter: blur(5px);
+        }
+        
+        .alert-icon {
+            margin-right: 14px;
+            font-size: 22px;
+            color: var(--danger);
+        }
+        
+        .status-bar {
+            background: var(--glass);
+            padding: 18px 24px;
+            border-radius: 14px;
+            font-size: 14px;
+            color: var(--light);
+            border-left: 4px solid var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .badge i {
+            font-size: 12px;
+        }
+        
+        .badge-primary {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-light);
+        }
+        
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+        }
+        
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: #a7f3d0;
+        }
+        
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                padding: 24px;
+            }
+            
+            .header h1 {
+                font-size: 26px;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .result-value {
+                font-size: 36px;
+            }
+        }
+        
+        /* Premium animation effects */
+        .result-card {
+            animation: fadeInUp 0.6s ease forwards;
+            opacity: 0;
+        }
+        
+        .result-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+        
+        .result-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .result-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Glow effect for important elements */
+        .header h1 {
+            text-shadow: 0 0 10px rgba(199, 210, 254, 0.5);
+        }
+        
+        .result-value {
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-chart-line"></i>
+                    Analisis Batasan Line Togel
+                </h1>
+                <p>Cek Batasan Line Togel</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <label for="dataInput" class="input-label">
+                    <i class="fas fa-paste"></i>
+                    Tempel Data Di Sini :
+                </label>
+                <textarea id="dataInput" class="input-field" placeholder="Tempel Data Di Sini"></textarea>
+                <button id="deleteData" class="delete-btn">
+                    <i class="fas fa-trash-alt"></i>
+                    Clear all data
+                </button>
+            </div>
+            
+            <div id="warningMessage" class="alert alert-danger">
+                <span class="alert-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </span>
+                <span>Warning: Melebihi batasan line !</span>
+            </div>
+            
+            <div class="results-grid">
+                <div class="result-card result-card-2d">
+                    <div class="result-label">
+                        <i class="fas fa-dice-two"></i>
+                        2D Numbers
+                    </div>
+                    <div id="2dResult" class="result-value">0</div>
+                    <div class="result-limit">Limit: 60 unique numbers</div>
+                </div>
+                
+                <div class="result-card result-card-3d">
+                    <div class="result-label">
+                        <i class="fas fa-dice-three"></i>
+                        3D Numbers
+                    </div>
+                    <div id="3dResult" class="result-value">0</div>
+                    <div class="result-limit">Limit: 900 unique numbers</div>
+                </div>
+                
+                <div class="result-card result-card-4d">
+                    <div class="result-label">
+                        <i class="fas fa-dice-four"></i>
+                        4D Numbers
+                    </div>
+                    <div id="4dResult" class="result-value">0</div>
+                    <div class="result-limit">Limit: 4,069 unique numbers</div>
+                </div>
+            </div>
+            
+            <div id="statusMessage" class="status-bar">
+                <div class="status-info">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Ready to analyze. Paste your togel data rows (without header).</span>
+                </div>
+                <div class="badges">
+                    <span class="badge badge-primary">
+                        <i class="fas fa-dice-two"></i>
+                        <span id="2dBadge">0 2D</span>
+                    </span>
+                    <span class="badge badge-warning">
+                        <i class="fas fa-dice-three"></i>
+                        <span id="3dBadge">0 3D</span>
+                    </span>
+                    <span class="badge badge-success">
+                        <i class="fas fa-dice-four"></i>
+                        <span id="4dBadge">0 4D</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dataInput = document.getElementById('dataInput');
+        const deleteData = document.getElementById('deleteData');
+        const results = {
+            '2d': document.getElementById('2dResult'),
+            '3d': document.getElementById('3dResult'),
+            '4d': document.getElementById('4dResult')
+        };
+        const badges = {
+            '2d': document.getElementById('2dBadge'),
+            '3d': document.getElementById('3dBadge'),
+            '4d': document.getElementById('4dBadge')
+        };
+        const warningMessage = document.getElementById('warningMessage');
+        const statusMessage = document.getElementById('statusMessage');
+        const statusInfo = statusMessage.querySelector('.status-info span');
+        
+        const TEBAK_COLUMN_INDEX = 7;
+        
+        dataInput.addEventListener('input', processTebak);
+        dataInput.addEventListener('paste', function() {
+            setTimeout(processTebak, 10);
+        });
+        
+        deleteData.addEventListener('click', clearAllData);
+
+        function processTebak() {
+            const input = dataInput.value.trim();
+            if (!input) {
+                resetCounts();
+                statusInfo.textContent = "Ready to analyze. Paste your togel data rows (without header).";
+                return;
+            }
+            
+            const lines = input.split('\n');
+            const counts = {
+                '2d': new Set(),
+                '3d': new Set(),
+                '4d': new Set()
+            };
+            
+            let totalLines = 0;
+            
+            // Process each line (including the first line now)
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
+                if (!line) continue;
+                
+                // Split by tab and filter out empty strings
+                const columns = line.split('\t').filter(col => col.trim() !== '');
+                
+                if (columns.length > TEBAK_COLUMN_INDEX) {
+                    const tebakValue = columns[TEBAK_COLUMN_INDEX].trim();
+                    
+                    // Handle multiple numbers separated by spaces or commas
+                    const numbers = tebakValue.split(/[\s,]+/).filter(num => num.trim() !== '');
+                    
+                    numbers.forEach(number => {
+                        if (/^\d{2,4}$/.test(number)) {
+                            totalLines++;
+                            if (number.length === 2) counts['2d'].add(number);
+                            else if (number.length === 3) counts['3d'].add(number);
+                            else if (number.length === 4) counts['4d'].add(number);
+                        }
+                    });
+                }
+            }
+            
+            // Update display
+            const limits = { '2d': 60, '3d': 900, '4d': 4069 };
+            let overLimit = false;
+            
+            for (const type in counts) {
+                const count = counts[type].size;
+                results[type].textContent = count;
+                badges[type].textContent = `${count} ${type.toUpperCase()}`;
+                
+                if (count > limits[type]) {
+                    document.querySelector(`.result-card-${type}`).style.boxShadow = '0 0 15px rgba(239, 68, 68, 0.5)';
+                    overLimit = true;
+                } else {
+                    document.querySelector(`.result-card-${type}`).style.boxShadow = '';
+                }
+            }
+            
+            warningMessage.style.display = overLimit ? 'flex' : 'none';
+            
+            statusInfo.textContent = `Analyzed ${totalLines} numbers from your data`;
+        }
+        
+        function clearAllData() {
+            dataInput.value = '';
+            resetCounts();
+            statusInfo.textContent = "Ready to analyze. Paste your togel data rows (without header).";
+        }
+        
+        function resetCounts() {
+            for (const type in results) {
+                results[type].textContent = '0';
+                badges[type].textContent = `0 ${type.toUpperCase()}`;
+                document.querySelector(`.result-card-${type}`).style.boxShadow = '';
+            }
+            
+            warningMessage.style.display = 'none';
+        }
+    </script>
+</body>
+</html>

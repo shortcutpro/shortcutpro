@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortcut Keren</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #00ff41;
+            --secondary-color: #008f11;
+            --accent-color: #00ff9d;
+            --dark-color: #0d0208;
+            --light-color: #003b00;
+            --menu-color: #ff00ff;
+            --notification-color: #ff5500;
+            --loader-color: #00ffff;
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', monospace;
+        }
+        
+        body {
+            background-color: #000;
+            color: var(--primary-color);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Matrix background */
+        #matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.15;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            color: var(--menu-color);
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px var(--menu-color);
+            position: relative;
+            display: inline-block;
+            letter-spacing: 2px;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0 20px;
+            border-radius: 10px;
+            border: 1px solid var(--menu-color);
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--menu-color);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--menu-color);
+        }
+        
+        .subtitle {
+            color: var(--menu-color);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+            text-shadow: 0 0 5px var(--menu-color);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0;
+        }
+        
+        .search-box {
+            width: 60%;
+            max-width: 600px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .search-box.focused {
+            transform: scale(1.02);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 18px 25px;
+            border-radius: 50px;
+            border: 2px solid var(--menu-color);
+            box-shadow: 0 0 15px var(--menu-color);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding-left: 60px;
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--menu-color);
+            font-family: 'Courier New', monospace;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 25px var(--menu-color);
+            border-color: var(--menu-color);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .search-box input::placeholder {
+            color: var(--menu-color);
+            opacity: 0.7;
+        }
+        
+        .search-box i {
+            position: absolute;
+            left: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--menu-color);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 5px var(--menu-color);
+        }
+        
+        .search-box.focused i {
+            transform: translateY(-50%) scale(1.1);
+            color: var(--menu-color);
+            text-shadow: 0 0 8px var(--menu-color);
+        }
+        
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 30px;
+        }
+        
+        .shortcut-item {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            padding: 30px 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #555;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+        
+        .shortcut-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+            background: rgba(20, 20, 20, 0.8);
+            border-color: #777;
+        }
+        
+        .shortcut-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: rgba(30, 30, 30, 0.9);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #555;
+        }
+        
+        .shortcut-item:hover .shortcut-icon {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+            border-color: #888;
+        }
+        
+        .shortcut-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .shortcut-item:hover .shortcut-name {
+            color: #eee;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 1200px) {
+            .shortcut-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .shortcut-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 25px;
+            }
+            
+            h1 {
+                font-size: 3rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .search-box {
+                width: 80%;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+            
+            .shortcut-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .shortcut-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .search-box {
+                width: 90%;
+            }
+            
+            .search-box input {
+                padding: 15px 20px;
+                padding-left: 50px;
+            }
+            
+            .search-box i {
+                left: 20px;
+            }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: var(--notification-color);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 85, 0, 0.3);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            border: 1px solid var(--notification-color);
+            font-weight: bold;
+        }
+        
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix background -->
+    <canvas id="matrix"></canvas>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
+    <div class="container">
+        <header>
+            <h1>Shortcut</h1>
+            <p class="subtitle">Akses cepat ke berbagai tools dan website favorit Anda dengan satu klik</p>
+        </header>
+        
+        <div class="search-container">
+            <div class="search-box" id="searchBox">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari shortcut...">
+            </div>
+        </div>
+        
+        <div class="shortcut-grid" id="shortcutGrid">
+            <!-- My IP -->
+            <div class="shortcut-item" data-name="my ip" data-category="tools">
+                <div class="shortcut-icon">
+                    <i class="fas fa-network-wired"></i>
+                </div>
+                <div class="shortcut-name">My IP</div>
+                <a href="https://whatismyipaddress.com/" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Cek nawala -->
+            <div class="shortcut-item" data-name="cek nawala" data-category="tools">
+                <div class="shortcut-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="shortcut-name">Cek nawala</div>
+                <a href="https://nawalacheck.skiddle.id/" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Reportan -->
+            <div class="shortcut-item" data-name="reportan" data-category="tools">
+                <div class="shortcut-icon">
+                    <i class="fas fa-flag"></i>
+                </div>
+                <div class="shortcut-name">Reportan</div>
+                <a href="https://rebrand.ly/tv-x-zia" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Validasi Koin Depo -->
+            <div class="shortcut-item" data-name="validasi koin depo" data-category="finance">
+                <div class="shortcut-icon">
+                    <i class="fas fa-coins"></i>
+                </div>
+                <div class="shortcut-name">Validasi Koin Depo</div>
+                <a href="https://wilson778899.github.io/shortcut/validasi-koin-depo.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Validasi Koin WD -->
+            <div class="shortcut-item" data-name="validasi koin wd" data-category="finance">
+                <div class="shortcut-icon">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="shortcut-name">Validasi Koin WD</div>
+                <a href="https://wilson778899.github.io/shortcut/validasi-koin-wd.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Selisih Qris -->
+            <div class="shortcut-item" data-name="selisih qris" data-category="finance">
+                <div class="shortcut-icon">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <div class="shortcut-name">Selisih Qris</div>
+                <a href="https://wilson778899.github.io/shortcut/selisih-qris.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Hitung Togel PNG -->
+            <div class="shortcut-item" data-name="hitung togel png" data-category="gaming">
+                <div class="shortcut-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="shortcut-name">Hitung Togel PNG</div>
+                <a href="https://wilson778899.github.io/shortcut/togel-png.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Hitung Togel IDN -->
+            <div class="shortcut-item" data-name="hitung togel idn" data-category="gaming">
+                <div class="shortcut-icon">
+                    <i class="fas fa-calculator"></i>
+                </div>
+                <div class="shortcut-name">Hitung Togel IDN</div>
+                <a href="https://wilson778899.github.io/shortcut/togel-idn.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Gamabr Tvtoto -->
+            <div class="shortcut-item" data-name="gamabr tvtoto" data-category="gaming">
+                <div class="shortcut-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="shortcut-name">Gamabr Tvtoto</div>
+                <a href="https://wilson778899.github.io/shortcut/gambar-tvtoto.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- Gamabr Zia -->
+            <div class="shortcut-item" data-name="gamabr zia" data-category="gaming">
+                <div class="shortcut-icon">
+                    <i class="fas fa-image"></i>
+                </div>
+                <div class="shortcut-name">Gamabr Zia</div>
+                <a href="https://wilson778899.github.io/shortcut/gambar-zia.html" target="_blank" style="display: none;"></a>
+            </div>
+            
+            <!-- KTP -->
+            <div class="shortcut-item" data-name="ktp" data-category="tools">
+                <div class="shortcut-icon">
+                    <i class="fas fa-id-card"></i>
+                </div>
+                <div class="shortcut-name">KTP</div>
+                <a href="https://ktpku.com/" target="_blank" style="display: none;"></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix background
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+        
+        const alphabet = katakana + latin + nums + symbols;
+        
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = Math.random() * -100;
+        }
+        
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+        
+        setInterval(draw, 30);
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase().trim();
+            const shortcutItems = document.querySelectorAll('.shortcut-item');
+            
+            shortcutItems.forEach(item => {
+                const itemName = item.getAttribute('data-name');
+                const itemCategory = item.getAttribute('data-category');
+                
+                if (itemName.includes(searchTerm) || itemCategory.includes(searchTerm)) {
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    item.style.opacity = '0';
+                    item.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        item.style.display = 'none';
+                    }, 300);
+                }
+            });
+        });
+        
+        // Search box focus effect
+        const searchBox = document.getElementById('searchBox');
+        const searchInput = document.getElementById('searchInput');
+        
+        searchInput.addEventListener('focus', () => {
+            searchBox.classList.add('focused');
+        });
+        
+        searchInput.addEventListener('blur', () => {
+            searchBox.classList.remove('focused');
+        });
+        
+        // Click shortcut item - direct opening
+        document.querySelectorAll('.shortcut-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'A') return;
+                
+                const link = this.querySelector('a');
+                if (link) {
+                    window.open(link.href, '_blank');
+                    
+                    const notification = document.getElementById('notification');
+                    notification.textContent = `Membuka: ${this.querySelector('.shortcut-name').textContent}`;
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                }
+            });
+        });
+        
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            const items = document.querySelectorAll('.shortcut-item');
+            items.forEach((item, index) => {
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QRIS Discrepancy Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --primary-light: #a29bfe;
+      --secondary: #0984e3;
+      --success: #00b894;
+      --danger: #d63031;
+      --warning: #fdcb6e;
+      --info: #00cec9;
+      --light: #2d3436;
+      --dark: #1e272e;
+      --darker: #12181b;
+      --gray: #636e72;
+      --white: #dfe6e9;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      --border-radius: 8px;
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--darker);
+      color: var(--white);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1800px;
+      margin: 0 auto;
+      background-color: var(--dark);
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+      padding: 25px 30px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 2;
+    }
+    
+    header p {
+      font-size: 16px;
+      opacity: 0.9;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .header-pattern {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+      background-size: 20px 20px;
+      z-index: 1;
+    }
+    
+    .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      background-color: var(--light);
+    }
+    
+    .stat-card {
+      background-color: var(--dark);
+      border-radius: var(--border-radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      transition: var(--transition);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    .stat-card h3 {
+      font-size: 16px;
+      color: var(--primary-light);
+      margin-bottom: 10px;
+    }
+    
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 5px;
+    }
+    
+    .stat-icon {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: var(--primary);
+    }
+    
+    .content-section {
+      padding: 25px 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--primary-light);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .section-title i {
+      margin-right: 10px;
+    }
+    
+    .input-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 25px;
+    }
+    
+    @media (max-width: 1200px) {
+      .input-container {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .input-group {
+      margin-bottom: 0;
+    }
+    
+    .input-group h4 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: var(--white);
+      font-weight: 500;
+    }
+    
+    .input-group p {
+      font-size: 14px;
+      color: var(--gray);
+      margin-bottom: 15px;
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 400px;
+      padding: 15px;
+      background-color: var(--light);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--border-radius);
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: var(--white);
+      resize: vertical;
+      transition: var(--transition);
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    
+    .btn {
+      padding: 12px 20px;
+      border-radius: var(--border-radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: var(--transition);
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .btn i {
+      margin-right: 8px;
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--secondary);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(9, 132, 227, 0.4);
+    }
+    
+    .btn-success {
+      background-color: var(--success);
+      color: var(--white);
+    }
+    
+    .btn-success:hover {
+      background-color: #00a884;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
+    }
+    
+    .btn-danger {
+      background-color: var(--danger);
+      color: var(--white);
+    }
+    
+    .btn-danger:hover {
+      background-color: #c0392b;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
+    }
+    
+    .result-section {
+      padding: 25px 30px;
+    }
+    
+    .result-group {
+      margin-bottom: 30px;
+    }
+    
+    .result-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: var(--white);
+      display: flex;
+      align-items: center;
+    }
+    
+    .result-title .badge {
+      margin-left: 10px;
+      background-color: var(--primary);
+      color: white;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+    
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    th {
+      background-color: var(--primary);
+      color: var(--white);
+      font-weight: 500;
+    }
+    
+    tr {
+      background-color: var(--dark);
+      color: var(--white);
+    }
+    
+    tr:nth-child(even) {
+      background-color: var(--light);
+    }
+    
+    tr:hover {
+      background-color: rgba(108, 92, 231, 0.1);
+    }
+    
+    .positive {
+      color: var(--success);
+      font-weight: 600;
+    }
+    
+    .negative {
+      color: var(--danger);
+      font-weight: 600;
+    }
+    
+    .alert {
+      padding: 15px;
+      border-radius: var(--border-radius);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .alert-danger {
+      background-color: rgba(214, 48, 49, 0.2);
+      color: var(--danger);
+      border-left: 4px solid var(--danger);
+    }
+    
+    .alert-success {
+      background-color: rgba(0, 184, 148, 0.2);
+      color: var(--success);
+      border-left: 4px solid var(--success);
+    }
+    
+    .alert i {
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+    
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(108, 92, 231, 0.2);
+      border-top: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    
+    .no-data {
+      text-align: center;
+      padding: 30px;
+      color: var(--gray);
+    }
+    
+    .no-data i {
+      font-size: 50px;
+      margin-bottom: 15px;
+      color: rgba(255, 255, 255, 0.1);
+    }
+    
+    .copy-btn {
+      background-color: transparent;
+      border: none;
+      color: var(--gray);
+      cursor: pointer;
+      margin-left: 10px;
+      transition: var(--transition);
+    }
+    
+    .copy-btn:hover {
+      color: var(--primary);
+    }
+    
+    @media (max-width: 768px) {
+      .stats-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .btn-group {
+        flex-direction: column;
+      }
+      
+      header h1 {
+        font-size: 24px;
+      }
+      
+      th, td {
+        padding: 8px 10px;
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-pattern"></div>
+      <h1>QRIS Transaction Discrepancy Dashboard</h1>
+      <p>Compare and analyze differences between admin data and QRIS transactions</p>
+    </header>
+    
+    <div class="stats-container" id="stats">
+      <!-- Stats will be populated here -->
+    </div>
+    
+    <div class="content-section">
+      <div class="section-title">
+        <i class="fas fa-database"></i>
+        <span>Data Input</span>
+      </div>
+      
+      <div class="input-container">
+        <div class="input-group">
+          <h4>Admin Data</h4>
+          <p>Format: Username [tab] Amount [tab] VIP Number</p>
+          <textarea id="adminData" placeholder="Example:
+azis999    25,122    Vip90435631751820770035
+zafir33    101,000   Vip113393931751820587041
+pakjon23   100,000   Vip118117221751820554784
+blackhokie 78,000    Vip57001011751820473656"></textarea>
+        </div>
+        
+        <div class="input-group">
+          <h4>QRIS Data</h4>
+          <p>Format: VIP Number [tab] Amount [tab] Reference</p>
+          <textarea id="qrisData" placeholder="Example:
+Vip90435631751820770035    25122    10013_azis999
+Vip113393931751820587041   101000   10013_zafir33
+Vip118117221751820554784   100000   10013_pakjon23"></textarea>
+        </div>
+      </div>
+      
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="compareData()">
+          <i class="fas fa-exchange-alt"></i>
+          Compare Data
+        </button>
+        <button class="btn btn-danger" onclick="clearData()">
+          <i class="fas fa-trash-alt"></i>
+          Clear Data
+        </button>
+      </div>
+    </div>
+    
+    <div class="result-section" id="results">
+      <div class="no-data">
+        <i class="fas fa-file-alt"></i>
+        <h3>No Data to Display</h3>
+        <p>Please enter admin and QRIS data, then click "Compare Data"</p>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function compareData() {
+      const adminData = document.getElementById('adminData').value.trim();
+      const qrisData = document.getElementById('qrisData').value.trim();
+      
+      if (!adminData || !qrisData) {
+        showAlert('Both admin data and QRIS data are required', 'danger');
+        return;
+      }
+      
+      // Show loading state
+      document.getElementById('results').innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+        </div>
+      `;
+      
+      // Process the data directly in the browser
+      setTimeout(() => {
+        try {
+          const comparisonResult = processComparison(adminData, qrisData);
+          displayResults(comparisonResult);
+        } catch (error) {
+          showAlert('Error processing data: ' + error.message, 'danger');
+        }
+      }, 500);
+    }
+    
+    function clearData() {
+      document.getElementById('adminData').value = '';
+      document.getElementById('qrisData').value = '';
+      document.getElementById('results').innerHTML = `
+        <div class="no-data">
+          <i class="fas fa-file-alt"></i>
+          <h3>No Data to Display</h3>
+          <p>Please enter admin and QRIS data, then click "Compare Data"</p>
+        </div>
+      `;
+      document.getElementById('stats').innerHTML = '';
+    }
+    
+    function showAlert(message, type) {
+      const alertDiv = document.createElement('div');
+      alertDiv.className = `alert alert-${type}`;
+      alertDiv.innerHTML = `
+        <i class="fas fa-${type === 'danger' ? 'exclamation-circle' : 'check-circle'}"></i>
+        ${message}
+      `;
+      
+      const results = document.getElementById('results');
+      results.innerHTML = '';
+      results.appendChild(alertDiv);
+      
+      setTimeout(() => {
+        alertDiv.remove();
+      }, 5000);
+    }
+    
+    function processComparison(adminData, qrisData) {
+      // Parse admin data
+      const adminLines = adminData.split('\n').filter(line => line.trim());
+      const adminRecords = adminLines.map(line => {
+        const parts = line.split('\t').map(part => part.trim());
+        if (parts.length < 3) {
+          throw new Error('Invalid admin data format. Each line must have username, amount, and VIP number separated by tabs.');
+        }
+        return {
+          username: parts[0],
+          amount: parseFloat(parts[1].replace(/,/g, '')),
+          vipNumber: parts[2]
+        };
+      });
+      
+      // Parse QRIS data
+      const qrisLines = qrisData.split('\n').filter(line => line.trim());
+      const qrisRecords = qrisLines.map(line => {
+        const parts = line.split('\t').map(part => part.trim());
+        if (parts.length < 3) {
+          throw new Error('Invalid QRIS data format. Each line must have VIP number, amount, and reference separated by tabs.');
+        }
+        return {
+          vipNumber: parts[0],
+          amount: parseFloat(parts[1].replace(/,/g, '')),
+          reference: parts[2]
+        };
+      });
+      
+      // Initialize result arrays
+      const matched = [];
+      const mismatched = [];
+      const adminOnly = [];
+      const qrisOnly = [...qrisRecords];
+      
+      // Process each admin record
+      adminRecords.forEach(adminRec => {
+        const qrisIndex = qrisOnly.findIndex(q => q.vipNumber === adminRec.vipNumber);
+        
+        if (qrisIndex !== -1) {
+          const qrisRec = qrisOnly[qrisIndex];
+          
+          if (adminRec.amount === qrisRec.amount) {
+            matched.push(adminRec);
+          } else {
+            mismatched.push({
+              admin: adminRec,
+              qris: qrisRec,
+              discrepancy: qrisRec.amount - adminRec.amount
+            });
+          }
+          
+          // Remove from qrisOnly since we found a match
+          qrisOnly.splice(qrisIndex, 1);
+        } else {
+          adminOnly.push(adminRec);
+        }
+      });
+      
+      return {
+        status: 'success',
+        adminCount: adminRecords.length,
+        qrisCount: qrisRecords.length,
+        matchedCount: matched.length,
+        adminOnly: adminOnly,
+        qrisOnly: qrisOnly,
+        mismatched: mismatched
+      };
+    }
+    
+    function displayResults(results) {
+      const resultsContainer = document.getElementById('results');
+      
+      if (results.error) {
+        resultsContainer.innerHTML = `
+          <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            ${results.error}
+          </div>
+        `;
+        return;
+      }
+      
+      // Update stats
+      const statsHtml = `
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Admin Records</h3>
+          <div class="stat-value">${results.adminCount}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-qrcode"></i>
+          </div>
+          <h3>QRIS Transactions</h3>
+          <div class="stat-value">${results.qrisCount}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-balance-scale"></i>
+          </div>
+          <h3>Discrepancies</h3>
+          <div class="stat-value">${results.mismatched.length + results.adminOnly.length + results.qrisOnly.length}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h3>Perfect Matches</h3>
+          <div class="stat-value">${results.matchedCount}</div>
+        </div>
+      `;
+      document.getElementById('stats').innerHTML = statsHtml;
+      
+      let resultsHtml = '';
+      
+      // Show admin only data
+      if (results.adminOnly.length > 0) {
+        resultsHtml += `
+          <div class="result-group">
+            <div class="result-title">
+              <i class="fas fa-user-shield"></i>
+              Admin Data Not Found in QRIS
+              <span class="badge">${results.adminOnly.length}</span>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>VIP Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${results.adminOnly.map(item => `
+                    <tr>
+                      <td>${item.username}</td>
+                      <td>${formatCurrency(item.amount)}</td>
+                      <td>${item.vipNumber}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Show QRIS only data
+      if (results.qrisOnly.length > 0) {
+        resultsHtml += `
+          <div class="result-group">
+            <div class="result-title">
+              <i class="fas fa-qrcode"></i>
+              QRIS Data Not Found in Admin
+              <span class="badge">${results.qrisOnly.length}</span>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>VIP Number</th>
+                    <th>Amount</th>
+                    <th>Reference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${results.qrisOnly.map(item => `
+                    <tr>
+                      <td>${item.vipNumber}</td>
+                      <td>${formatCurrency(item.amount)}</td>
+                      <td>${item.reference}</td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+      
+      // Show mismatched data
+      if (results.mismatched.length > 0) {
+        resultsHtml += `
+          <div class="result-group">
+            <div class="result-title">
+              <i class="fas fa-exclamation-triangle"></i>
+              Amount Mismatches
+              <span class="badge">${results.mismatched.length}</span>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>VIP Number</th>
+                    <th>Username</th>
+                    <th>Admin Amount</th>
+                    <th>QRIS Amount</th>
+                    <th>Difference</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${results.mismatched.map(item => {
+                    const discrepancy = item.discrepancy;
+                    const discrepancyClass = discrepancy > 0 ? 'positive' : 'negative';
+                    const discrepancySymbol = discrepancy > 0 ? '+' : '';
+                    return `
+                      <tr>
+                        <td>${item.admin.vipNumber}</td>
+                        <td>${item.admin.username}</td>
+                        <td>${formatCurrency(item.admin.amount)}</td>
+                        <td>${formatCurrency(item.qris.amount)}</td>
+                        <td class="${discrepancyClass}">${discrepancySymbol}${formatCurrency(Math.abs(discrepancy))}</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+      
+      if (results.matchedCount > 0 && resultsHtml === '') {
+        resultsHtml = `
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            All data matches perfectly! No discrepancies found between ${results.matchedCount} records.
+          </div>
+        `;
+      } else if (results.matchedCount > 0) {
+        resultsHtml += `
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i>
+            ${results.matchedCount} records matched perfectly.
+          </div>
+        `;
+      }
+      
+      resultsContainer.innerHTML = resultsHtml;
+    }
+    
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+  </script>
+</body>
+</html>

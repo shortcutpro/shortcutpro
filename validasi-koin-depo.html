@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -160,6 +161,43 @@
             transform: translateX(0);
         }
         
+        .copy-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
+        
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: bold;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .copy-btn:hover {
+            background-color: #0095b8;
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+            background-color: #007a99;
+        }
+        
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
         @media (max-width: 768px) {
             table {
                 display: block;
@@ -172,6 +210,15 @@
             
             button {
                 width: 100%;
+            }
+            
+            .copy-btn-container {
+                justify-content: center;
+            }
+            
+            .copy-btn {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
@@ -214,6 +261,14 @@
         
         <h2>Hasil Perhitungan Berdasarkan Bank Pembayaran</h2>
         <div class="result-section">
+            <div class="copy-btn-container">
+                <button id="copyBtn" class="copy-btn" onclick="copyBankData()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+                    </svg>
+                    Salin Data Bank
+                </button>
+            </div>
             <div id="hasil"></div>
         </div>
     </div>
@@ -331,7 +386,7 @@
             });
 
             let hasilOutput = `
-                <table>
+                <table id="bank-table">
                     <thead>
                         <tr>
                             <th>Bank Pembayaran</th>
@@ -366,6 +421,63 @@
             
             document.getElementById('hasil').innerHTML = hasilOutput;
             showNotification('Perhitungan transaksi berhasil berdasarkan Bank Pembayaran!');
+        }
+
+        function copyBankData() {
+            const bankTable = document.querySelector('#bank-table');
+            if (!bankTable) {
+                showNotification('Tidak ada data bank untuk disalin!', false);
+                return;
+            }
+
+            // Ambil semua baris kecuali header
+            const rows = bankTable.querySelectorAll('tbody tr');
+            if (rows.length === 0) {
+                showNotification('Tidak ada data bank untuk disalin!', false);
+                return;
+            }
+
+            let textToCopy = '';
+            
+            rows.forEach(row => {
+                const cells = row.cells;
+                const bank = cells[0].innerText;
+                const count = cells[1].innerText;
+                const total = cells[2].innerText;
+                
+                textToCopy += `${bank}\t${count}\t${total}\n`;
+            });
+
+            // Animasi tombol
+            const copyBtn = document.getElementById('copyBtn');
+            copyBtn.innerHTML = `
+                <svg viewBox="0 0 24 24">
+                    <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/>
+                </svg>
+                Tersalin!
+            `;
+            copyBtn.style.backgroundColor = 'var(--success-color)';
+
+            // Copy ke clipboard
+            navigator.clipboard.writeText(textToCopy.trim())
+                .then(() => {
+                    showNotification('Data bank berhasil disalin!');
+                })
+                .catch(err => {
+                    console.error('Gagal menyalin: ', err);
+                    showNotification('Gagal menyalin data!', false);
+                });
+
+            // Kembalikan tombol ke keadaan semula setelah 2 detik
+            setTimeout(() => {
+                copyBtn.innerHTML = `
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/>
+                    </svg>
+                    Salin Data Bank
+                `;
+                copyBtn.style.backgroundColor = 'var(--accent-color)';
+            }, 2000);
         }
     </script>
 </body>

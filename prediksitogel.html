@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Prediksi Togel</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rajdhani', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #0a0a0a;
+            background-image: radial-gradient(circle at 25% 25%, #1a1a2e 0%, #0a0a0a 70%);
+            padding: 20px;
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: rgba(20, 20, 30, 0.8);
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.1),
+                        0 0 40px rgba(79, 195, 247, 0.05),
+                        0 0 80px rgba(79, 195, 247, 0.03);
+            padding: 30px;
+            border: 1px solid rgba(79, 195, 247, 0.1);
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(79, 195, 247, 0.05) 0%, transparent 70%);
+            animation: rotate 60s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            color: #4fc3f7;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(79, 195, 247, 0.5),
+                         0 0 20px rgba(79, 195, 247, 0.3);
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
+            border-radius: 100%;
+        }
+        
+        .date {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 500;
+            color: #b0bec5;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(176, 190, 197, 0.3);
+        }
+        
+        .market-selector {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        #marketSelect {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            font-size: 16px;
+            background-color: rgba(30, 30, 40, 0.8);
+            color: #e0e0e0;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234fc3f7'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #marketSelect:hover {
+            border-color: rgba(79, 195, 247, 0.5);
+            box-shadow: 0 0 15px rgba(79, 195, 247, 0.2);
+        }
+        
+        #marketSelect:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+        }
+        
+        .prediction-result {
+            background-color: rgba(25, 25, 35, 0.7);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid rgba(79, 195, 247, 0.2);
+            margin-bottom: 25px;
+            white-space: pre-line;
+            line-height: 1.7;
+            font-size: 16px;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .prediction-result::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #4fc3f7, transparent);
+        }
+        
+        .prediction-line {
+            margin: 10px 0;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .prediction-line::before {
+            content: '»';
+            position: absolute;
+            left: 0;
+            color: #4fc3f7;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.6s ease;
+            z-index: -1;
+        }
+        
+        button:hover::before {
+            transform: translateX(100%);
+        }
+        
+        #generateBtn {
+            background-color: #2e7d32;
+            color: white;
+            box-shadow: 0 0 15px rgba(46, 125, 50, 0.3);
+        }
+        
+        #generateBtn:hover {
+            background-color: #1b5e20;
+            box-shadow: 0 0 20px rgba(46, 125, 50, 0.5);
+        }
+        
+        #copyBtn {
+            background-color: #1565c0;
+            color: white;
+            box-shadow: 0 0 15px rgba(21, 101, 192, 0.3);
+        }
+        
+        #copyBtn:hover {
+            background-color: #0d47a1;
+            box-shadow: 0 0 20px rgba(21, 101, 192, 0.5);
+        }
+        
+        #copyAllBtn {
+            background-color: #6a1b9a;
+            color: white;
+            box-shadow: 0 0 15px rgba(106, 27, 154, 0.3);
+        }
+        
+        #copyAllBtn:hover {
+            background-color: #4a148c;
+            box-shadow: 0 0 20px rgba(106, 27, 154, 0.5);
+        }
+        
+        .footer-note {
+            text-align: center;
+            margin-top: 25px;
+            color: #757575;
+            font-size: 14px;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .footer-note::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 25%;
+            width: 50%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #757575, transparent);
+        }
+        
+        .controls-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 15px;
+        }
+        
+        .date-options {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            background-color: rgba(25, 25, 35, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(79, 195, 247, 0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .date-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .date-option input[type="radio"] {
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: #4fc3f7;
+            position: relative;
+        }
+        
+        .date-option label {
+            cursor: pointer;
+            color: #e0e0e0;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+        
+        .manual-date-input {
+            display: none;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        .manual-date-input.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .manual-date-input input {
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(79, 195, 247, 0.3);
+            font-size: 14px;
+            width: 180px;
+            text-align: center;
+            background-color: rgba(30, 30, 40, 0.8);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .manual-date-input input:hover {
+            border-color: rgba(79, 195, 247, 0.5);
+        }
+        
+        .manual-date-input input:focus {
+            outline: none;
+            border-color: #4fc3f7;
+            box-shadow: 0 0 20px rgba(79, 195, 247, 0.3);
+        }
+        
+        #todayBtn {
+            padding: 12px 18px;
+            background-color: #37474f;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        #todayBtn:hover {
+            background-color: #455a64;
+            box-shadow: 0 0 20px rgba(55, 71, 79, 0.4);
+        }
+        
+        /* Animasi highlight untuk angka penting */
+        @keyframes pulse {
+            0% { text-shadow: 0 0 5px rgba(79, 195, 247, 0.5); }
+            50% { text-shadow: 0 0 15px rgba(79, 195, 247, 0.9); }
+            100% { text-shadow: 0 0 5px rgba(79, 195, 247, 0.5); }
+        }
+        
+        .highlight {
+            color: #4fc3f7;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .date-options {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+            
+            .controls-row {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .manual-date-input {
+                flex-direction: column;
+            }
+            
+            .manual-date-input input {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 id="predictionTitle">PREDIKSI TOGEL</h1>
+        <div class="date" id="currentDate"></div>
+        
+        <div class="date-options">
+            <div class="date-option">
+                <input type="radio" id="autoDate" name="dateOption" value="auto" checked>
+                <label for="autoDate">Tanggal Otomatis</label>
+            </div>
+            <div class="date-option">
+                <input type="radio" id="manualDate" name="dateOption" value="manual">
+                <label for="manualDate">Tanggal Manual</label>
+            </div>
+        </div>
+        
+        <div class="manual-date-input" id="manualDateInput">
+            <input type="date" id="customDateInput">
+            <button id="todayBtn">Hari Ini</button>
+        </div>
+        
+        <div class="market-selector">
+            <select id="marketSelect">
+                <option value="HOKIDRAW">HOKIDRAW</option>
+                <option value="TOTOMACAU PAGI">TOTOMACAU PAGI</option>
+                <option value="KENTUCKY MIDDAY">KENTUCKY MIDDAY</option>
+                <option value="FLORIDA MIDDAY">FLORIDA MIDDAY</option>
+                <option value="HUAHIN0100">HUAHIN0100</option>
+                <option value="BANGKOK 0130">BANGKOK 0130</option>
+                <option value="NEW YORK MIDDAY">NEW YORK MIDDAY</option>
+                <option value="CAROLINA DAY">CAROLINA DAY</option>
+                <option value="BRUNEI 02">BRUNEI 02</option>
+                <option value="OREGON 03">OREGON 03</option>
+                <option value="OREGON 06">OREGON 06</option>
+                <option value="CALIFORNIA">CALIFORNIA</option>
+                <option value="FLORIDA EVENING">FLORIDA EVENING</option>
+                <option value="OREGON 09">OREGON 09</option>
+                <option value="BANGKOK 0930">BANGKOK 0930</option>
+                <option value="NEW YORK EVENING">NEW YORK EVENING</option>
+                <option value="KENTUCKY EVENING">KENTUCKY EVENING</option>
+                <option value="CAROLINA EVENING">CAROLINA EVENING</option>
+                <option value="TOTO CAMBODIA">TOTO CAMBODIA</option>
+                <option value="CHELSEA 11">CHELSEA 11</option>
+                <option value="OREGON 12">OREGON 12</option>
+                <option value="BULLSEYE">BULLSEYE</option>
+                <option value="POIPET12">POIPET12</option>
+                <option value="TOTOMACAU SIANG">TOTOMACAU SIANG</option>
+                <option value="SYDNEY">SYDNEY</option>
+                <option value="HOKI DRAW 14">HOKI DRAW 14</option>
+                <option value="BRUNEI 14">BRUNEI 14</option>
+                <option value="CHELSEA 15">CHELSEA 15</option>
+                <option value="TOTOMALI 1530">TOTOMALI 1530</option>
+                <option value="POIPET15">POIPET15</option>
+                <option value="TOTOMACAU SORE">TOTOMACAU SORE</option>
+                <option value="HUAHIN 1630">HUAHIN 1630</option>
+                <option value="KING KONG 4D SORE">KING KONG 4D SORE</option>
+                <option value="SINGAPORE">SINGAPORE</option>
+                <option value="MAGNUM4D">MAGNUM4D</option>
+                <option value="TOTOMACAU MALAM I">TOTOMACAU MALAM I</option>
+                <option value="CHELSEA 19">CHELSEA 19</option>
+                <option value="POIPET19">POIPET19</option>
+                <option value="PCSO">PCSO</option>
+                <option value="TOTOMALI 2030">TOTOMALI 2030</option>
+                <option value="HUAHIN 2100">HUAHIN 2100</option>
+                <option value="CHELSEA 21">CHELSEA 21</option>
+                <option value="NEVADA">NEVADA</option>
+                <option value="BRUNEI 21">BRUNEI 21</option>
+                <option value="TOTOMACAU MALAM II">TOTOMACAU MALAM II</option>
+                <option value="POIPET22">POIPET22</option>
+                <option value="HONGKONG">HONGKONG</option>
+                <option value="TOTOMACAU MALAM III">TOTOMACAU MALAM III</option>
+                <option value="TOTOMALI 2330">TOTOMALI 2330</option>
+                <option value="KING KONG 4D MALAM">KING KONG 4D MALAM</option>
+            </select>
+        </div>
+        
+        <div class="prediction-result" id="predictionResult"></div>
+        
+        <div class="footer-note">
+            Selalu utamakan prediksi sendiri dan bermain dengan bijak
+        </div>
+        
+        <div class="controls-row">
+            <button id="generateBtn">Generate Baru</button>
+            <button id="copyBtn">Salin Hasil</button>
+        </div>
+        <div class="controls-row">
+            <button id="copyAllBtn">Salin Semua Pasaran</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const copyAllBtn = document.getElementById('copyAllBtn');
+            const marketSelect = document.getElementById('marketSelect');
+            const predictionResult = document.getElementById('predictionResult');
+            const autoDateRadio = document.getElementById('autoDate');
+            const manualDateRadio = document.getElementById('manualDate');
+            const manualDateInput = document.getElementById('manualDateInput');
+            const customDateInput = document.getElementById('customDateInput');
+            const todayBtn = document.getElementById('todayBtn');
+            
+            // Daftar semua pasaran
+            const allMarkets = Array.from(marketSelect.options).map(option => option.value);
+            
+            // Daftar shio
+            const shios = ['TIKUS', 'KERBAU', 'HARIMAU', 'KELINCI', 'NAGA', 'ULAR', 
+                          'KUDA', 'KAMBING', 'MONYET', 'AYAM', 'ANJING', 'BABI'];
+            
+            // Format tanggal
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 
+                          'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            // Fungsi untuk mengubah format tanggal dari input date ke format Indonesia
+            function formatCustomDate(dateString) {
+                const date = new Date(dateString);
+                const dayName = days[date.getDay()];
+                const day = date.getDate();
+                const month = months[date.getMonth()];
+                const year = date.getFullYear();
+                
+                return `Hari ${dayName}, ${day} ${month} ${year}`;
+            }
+            
+            // Fungsi untuk memperbarui tampilan tanggal
+            function updateDateDisplay() {
+                let dateText;
+                
+                if (autoDateRadio.checked) {
+                    const date = new Date();
+                    const dayName = days[date.getDay()];
+                    const day = date.getDate();
+                    const month = months[date.getMonth()];
+                    const year = date.getFullYear();
+                    
+                    dateText = `Hari ${dayName}, ${day} ${month} ${year}`;
+                } else {
+                    if (customDateInput.value) {
+                        dateText = formatCustomDate(customDateInput.value);
+                    } else {
+                        // Jika manual date dipilih tapi belum ada input, gunakan tanggal hari ini
+                        const today = new Date();
+                        const yyyy = today.getFullYear();
+                        const mm = String(today.getMonth() + 1).padStart(2, '0');
+                        const dd = String(today.getDate()).padStart(2, '0');
+                        customDateInput.value = `${yyyy}-${mm}-${dd}`;
+                        dateText = formatCustomDate(customDateInput.value);
+                    }
+                }
+                
+                // Update elemen tanggal di header
+                document.getElementById('currentDate').textContent = dateText;
+                
+                return dateText;
+            }
+            
+            // Fungsi untuk menyimpan prediksi ke localStorage
+            function savePredictionsToStorage(predictions) {
+                localStorage.setItem('togelPredictions', JSON.stringify(predictions));
+            }
+            
+            // Fungsi untuk memuat prediksi dari localStorage
+            function loadPredictionsFromStorage() {
+                const saved = localStorage.getItem('togelPredictions');
+                return saved ? JSON.parse(saved) : {};
+            }
+            
+            // Fungsi untuk menghasilkan angka acak unik
+            function generateUniqueNumbers(count, digits, existingNumbers = []) {
+                let numbers = [];
+                while(numbers.length < count) {
+                    let num = '';
+                    for(let j = 0; j < digits; j++) {
+                        num += Math.floor(Math.random() * 10);
+                    }
+                    
+                    // Cek duplikat
+                    if (!existingNumbers.includes(num) && !numbers.includes(num)) {
+                        numbers.push(num);
+                    }
+                }
+                return numbers;
+            }
+            
+            // Fungsi untuk menghasilkan angka kembar unik untuk Invest Twin
+            function generateUniqueTwinNumbers(count, existingNumbers = []) {
+                let twins = [];
+                while(twins.length < count) {
+                    const num = Math.floor(Math.random() * 10);
+                    const twin = num.toString() + num.toString();
+                    
+                    // Cek duplikat
+                    if (!existingNumbers.includes(twin) && !twins.includes(twin)) {
+                        twins.push(twin);
+                    }
+                }
+                return twins;
+            }
+            
+            // Fungsi untuk mengacak shio unik
+            function generateUniqueShios(existingShios = []) {
+                let result = [];
+                const availableShios = [...shios];
+                
+                // Hapus shio yang sudah ada
+                existingShios.forEach(shio => {
+                    const index = availableShios.indexOf(shio);
+                    if (index > -1) {
+                        availableShios.splice(index, 1);
+                    }
+                });
+                
+                // Pilih 3 shio acak yang berbeda
+                while(result.length < 3 && availableShios.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * availableShios.length);
+                    result.push(availableShios[randomIndex]);
+                    availableShios.splice(randomIndex, 1);
+                }
+                
+                return result;
+            }
+            
+            // Fungsi untuk membuat format prediksi dengan validasi
+            function createPredictionText(market) {
+                const currentDate = updateDateDisplay();
+                const bbfs = generateUniqueNumbers(1, 7)[0];
+                const amaic = generateUniqueNumbers(1, 5)[0];
+                const d4Numbers = generateUniqueNumbers(4, 4).join(' ');
+                const d3Numbers = generateUniqueNumbers(4, 3).join(' ');
+                const d2Numbers = generateUniqueNumbers(10, 2).join(' ');
+                
+                // Generate Colok Bebas (1 digit)
+                const colokBebas = generateUniqueNumbers(2, 1).join(' / ');
+                
+                // Generate Colok Bebas 2D (2 digit) - pastikan tidak ada digit yang sama dengan Colok Bebas
+                const colokBebasDigits = colokBebas.replace(/[^0-9]/g, '').split('');
+                let colokBebas2d;
+                let valid2d = false;
+                
+                while (!valid2d) {
+                    const temp2d = generateUniqueNumbers(3, 2);
+                    // Cek apakah ada digit dari Colok Bebas di Colok Bebas 2D
+                    const hasDuplicate = temp2d.some(num => 
+                        colokBebasDigits.some(digit => num.includes(digit))
+                    );
+                    
+                    if (!hasDuplicate) {
+                        colokBebas2d = temp2d.join(' / ');
+                        valid2d = true;
+                    }
+                }
+                
+                // Generate Shio unik
+                const shioValues = generateUniqueShios().join(' / ');
+                
+                // Generate Invest Twin (angka kembar) yang unik
+                const investTwin = generateUniqueTwinNumbers(3).join(' / ');
+                
+                // Format khusus untuk HOKIDRAW (dengan 5D)
+                if (market === 'HOKIDRAW') {
+                    const d5Numbers = generateUniqueNumbers(4, 5).join(' ');
+                    return `Prediksi ${market}
+${currentDate}
+BBFS Kuat : ${bbfs}
+Angka Ikut : ${amaic}
+5D (BB) : ${d5Numbers}
+4D (BB) : ${d4Numbers}
+3D (BB) : ${d3Numbers}
+2D (BB) : ${d2Numbers}
+Colok Bebas : ${colokBebas}
+Colok Bebas 2D : ${colokBebas2d}
+Colok Shio : ${shioValues}
+Invest Twin : ${investTwin}
+Biasakan UPS - Utamakan Prediksi Sendiri`;
+                }
+                // Format standar untuk pasaran lainnya (tanpa 5D)
+                else {
+                    return `Prediksi ${market}
+${currentDate}
+BBFS Kuat : ${bbfs}
+Angka Ikut : ${amaic}
+4D (BB) : ${d4Numbers}
+3D (BB) : ${d3Numbers}
+2D (BB) : ${d2Numbers}
+Colok Bebas : ${colokBebas}
+Colok Bebas 2D : ${colokBebas2d}
+Colok Shio : ${shioValues}
+Invest Twin : ${investTwin}
+Biasakan UPS - Utamakan Prediksi Sendiri`;
+                }
+            }
+            
+            // Fungsi untuk memperbarui prediksi
+            function updatePrediction() {
+                const selectedMarket = marketSelect.value;
+                const predictions = loadPredictionsFromStorage();
+                const currentDate = updateDateDisplay();
+                
+                // Jika sudah ada di storage, periksa apakah tanggalnya sama
+                if (predictions[selectedMarket]) {
+                    const storedPrediction = predictions[selectedMarket];
+                    // Ekstrak tanggal dari prediksi yang tersimpan
+                    const storedDateMatch = storedPrediction.match(/Prediksi .+\n(.+)\n/);
+                    
+                    if (storedDateMatch && storedDateMatch[1] === currentDate) {
+                        // Jika tanggal sama, gunakan yang ada
+                        predictionResult.textContent = storedPrediction;
+                    } else {
+                        // Jika tanggal berbeda, buat baru dengan tanggal yang benar
+                        const newPrediction = createPredictionText(selectedMarket);
+                        predictionResult.textContent = newPrediction;
+                        predictions[selectedMarket] = newPrediction;
+                        savePredictionsToStorage(predictions);
+                    }
+                } else {
+                    // Jika belum ada, buat baru dan simpan ke storage
+                    const predictionText = createPredictionText(selectedMarket);
+                    predictionResult.textContent = predictionText;
+                    predictions[selectedMarket] = predictionText;
+                    savePredictionsToStorage(predictions);
+                }
+            }
+            
+            // Fungsi untuk generate prediksi baru
+            function generateNewPrediction() {
+                const selectedMarket = marketSelect.value;
+                const predictions = loadPredictionsFromStorage();
+                const predictionText = createPredictionText(selectedMarket);
+                
+                predictionResult.textContent = predictionText;
+                predictions[selectedMarket] = predictionText;
+                savePredictionsToStorage(predictions);
+            }
+            
+            // Fungsi untuk set tanggal ke hari ini (tombol Today)
+            function setTodayDate() {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                customDateInput.value = `${yyyy}-${mm}-${dd}`;
+                updateDateDisplay();
+                updatePrediction();
+            }
+            
+            // Fungsi untuk copy hasil prediksi
+            function copyPrediction() {
+                const textToCopy = predictionResult.textContent + "\n\nSelalu Utamakan Prediksi Sendiri";
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    // Ubah sementara teks tombol untuk memberi feedback
+                    copyBtn.textContent = 'Tersalin!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Salin Hasil';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                });
+            }
+            
+            // Fungsi untuk generate prediksi untuk semua pasaran
+            function generateAllPredictions() {
+                const predictions = {};
+                updateDateDisplay();
+                
+                allMarkets.forEach(market => {
+                    predictions[market] = createPredictionText(market);
+                });
+                
+                savePredictionsToStorage(predictions);
+                return predictions;
+            }
+            
+            // Fungsi untuk copy semua pasaran
+            function copyAllPredictions() {
+                let allPredictionsText = '';
+                const currentDate = updateDateDisplay();
+                
+                // Header
+                allPredictionsText += `PREDIKSI TOGEL SEMUA PASARAN\n${currentDate}\n\n`;
+                
+                // Generate atau ambil prediksi yang sudah ada
+                let predictions = loadPredictionsFromStorage();
+                
+                // Jika belum ada prediksi untuk semua pasaran, generate dulu
+                const missingMarkets = allMarkets.filter(market => !predictions[market]);
+                if (missingMarkets.length > 0) {
+                    // Generate prediksi untuk pasaran yang belum ada
+                    missingMarkets.forEach(market => {
+                        predictions[market] = createPredictionText(market);
+                    });
+                    savePredictionsToStorage(predictions);
+                }
+                
+                // Gabungkan semua prediksi
+                allMarkets.forEach(market => {
+                    allPredictionsText += predictions[market] + '\n\n';
+                });
+                
+                // Footer
+                allPredictionsText += 'Selalu Utamakan Prediksi Sendiri';
+                
+                // Copy ke clipboard
+                navigator.clipboard.writeText(allPredictionsText).then(() => {
+                    // Ubah sementara teks tombol untuk memberi feedback
+                    copyAllBtn.textContent = 'Semua Tersalin!';
+                    setTimeout(() => {
+                        copyAllBtn.textContent = 'Salin Semua Pasaran';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Gagal menyalin teks: ', err);
+                });
+            }
+            
+            // Event listeners
+            generateBtn.addEventListener('click', generateNewPrediction);
+            marketSelect.addEventListener('change', updatePrediction);
+            copyBtn.addEventListener('click', copyPrediction);
+            copyAllBtn.addEventListener('click', copyAllPredictions);
+            todayBtn.addEventListener('click', setTodayDate);
+            
+            // Event listeners untuk opsi tanggal
+            autoDateRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    manualDateInput.classList.remove('active');
+                    updateDateDisplay();
+                    updatePrediction();
+                }
+            });
+            
+            manualDateRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    manualDateInput.classList.add('active');
+                    // Set default value untuk input date jika belum ada
+                    if (!customDateInput.value) {
+                        setTodayDate();
+                    } else {
+                        updateDateDisplay();
+                        updatePrediction();
+                    }
+                }
+            });
+            
+            customDateInput.addEventListener('change', function() {
+                updateDateDisplay();
+                updatePrediction();
+            });
+            
+            // Inisialisasi
+            updateDateDisplay();
+            
+            // Cek apakah ada prediksi yang tersimpan
+            const savedPredictions = loadPredictionsFromStorage();
+            if (Object.keys(savedPredictions).length === 0) {
+                // Jika tidak ada, buat prediksi default untuk HOKIDRAW
+                const defaultPrediction = createPredictionText('HOKIDRAW');
+                const initialPredictions = {
+                    'HOKIDRAW': defaultPrediction
+                };
+                savePredictionsToStorage(initialPredictions);
+                predictionResult.textContent = defaultPrediction;
+            } else {
+                // Jika ada, tampilkan prediksi untuk pasaran yang dipilih (default HOKIDRAW)
+                updatePrediction();
+            }
+        });
+    </script>
+</body>
+</html>

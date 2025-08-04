@@ -1,785 +1,1144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QRIS Discrepancy Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <style>
-    :root {
-      --primary: #6c5ce7;
-      --primary-light: #a29bfe;
-      --secondary: #0984e3;
-      --success: #00b894;
-      --danger: #d63031;
-      --warning: #fdcb6e;
-      --info: #00cec9;
-      --light: #2d3436;
-      --dark: #1e272e;
-      --darker: #12181b;
-      --gray: #636e72;
-      --white: #dfe6e9;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      --border-radius: 8px;
-      --transition: all 0.3s ease;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--darker);
-      color: var(--white);
-      line-height: 1.6;
-      padding: 20px;
-    }
-    
-    .container {
-      max-width: 1800px;
-      margin: 0 auto;
-      background-color: var(--dark);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    
-    header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: var(--white);
-      padding: 25px 30px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    header h1 {
-      font-size: 28px;
-      font-weight: 600;
-      margin-bottom: 5px;
-      position: relative;
-      z-index: 2;
-    }
-    
-    header p {
-      font-size: 16px;
-      opacity: 0.9;
-      position: relative;
-      z-index: 2;
-    }
-    
-    .header-pattern {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px);
-      background-size: 20px 20px;
-      z-index: 1;
-    }
-    
-    .stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 20px;
-      background-color: var(--light);
-    }
-    
-    .stat-card {
-      background-color: var(--dark);
-      border-radius: var(--border-radius);
-      padding: 20px;
-      box-shadow: var(--shadow);
-      text-align: center;
-      transition: var(--transition);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    }
-    
-    .stat-card h3 {
-      font-size: 16px;
-      color: var(--primary-light);
-      margin-bottom: 10px;
-    }
-    
-    .stat-value {
-      font-size: 28px;
-      font-weight: 700;
-      color: var(--white);
-      margin-bottom: 5px;
-    }
-    
-    .stat-icon {
-      font-size: 24px;
-      margin-bottom: 10px;
-      color: var(--primary);
-    }
-    
-    .content-section {
-      padding: 25px 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .section-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--primary-light);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-    }
-    
-    .section-title i {
-      margin-right: 10px;
-    }
-    
-    .input-container {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin-bottom: 25px;
-    }
-    
-    @media (max-width: 1200px) {
-      .input-container {
-        grid-template-columns: 1fr;
-      }
-    }
-    
-    .input-group {
-      margin-bottom: 0;
-    }
-    
-    .input-group h4 {
-      font-size: 16px;
-      margin-bottom: 10px;
-      color: var(--white);
-      font-weight: 500;
-    }
-    
-    .input-group p {
-      font-size: 14px;
-      color: var(--gray);
-      margin-bottom: 15px;
-    }
-    
-    textarea {
-      width: 100%;
-      min-height: 400px;
-      padding: 15px;
-      background-color: var(--light);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: var(--border-radius);
-      font-family: 'Courier New', monospace;
-      font-size: 14px;
-      color: var(--white);
-      resize: vertical;
-      transition: var(--transition);
-    }
-    
-    textarea:focus {
-      outline: none;
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.3);
-    }
-    
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      margin-top: 20px;
-    }
-    
-    .btn {
-      padding: 12px 20px;
-      border-radius: var(--border-radius);
-      font-weight: 500;
-      cursor: pointer;
-      transition: var(--transition);
-      border: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .btn i {
-      margin-right: 8px;
-    }
-    
-    .btn-primary {
-      background-color: var(--primary);
-      color: var(--white);
-    }
-    
-    .btn-primary:hover {
-      background-color: var(--secondary);
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(9, 132, 227, 0.4);
-    }
-    
-    .btn-success {
-      background-color: var(--success);
-      color: var(--white);
-    }
-    
-    .btn-success:hover {
-      background-color: #00a884;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0, 184, 148, 0.4);
-    }
-    
-    .btn-danger {
-      background-color: var(--danger);
-      color: var(--white);
-    }
-    
-    .btn-danger:hover {
-      background-color: #c0392b;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(214, 48, 49, 0.4);
-    }
-    
-    .result-section {
-      padding: 25px 30px;
-    }
-    
-    .result-group {
-      margin-bottom: 30px;
-    }
-    
-    .result-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      color: var(--white);
-      display: flex;
-      align-items: center;
-    }
-    
-    .result-title .badge {
-      margin-left: 10px;
-      background-color: var(--primary);
-      color: white;
-      padding: 3px 10px;
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      overflow: hidden;
-    }
-    
-    th, td {
-      padding: 12px 15px;
-      text-align: left;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    th {
-      background-color: var(--primary);
-      color: var(--white);
-      font-weight: 500;
-    }
-    
-    tr {
-      background-color: var(--dark);
-      color: var(--white);
-    }
-    
-    tr:nth-child(even) {
-      background-color: var(--light);
-    }
-    
-    tr:hover {
-      background-color: rgba(108, 92, 231, 0.1);
-    }
-    
-    .positive {
-      color: var(--success);
-      font-weight: 600;
-    }
-    
-    .negative {
-      color: var(--danger);
-      font-weight: 600;
-    }
-    
-    .alert {
-      padding: 15px;
-      border-radius: var(--border-radius);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-    }
-    
-    .alert-danger {
-      background-color: rgba(214, 48, 49, 0.2);
-      color: var(--danger);
-      border-left: 4px solid var(--danger);
-    }
-    
-    .alert-success {
-      background-color: rgba(0, 184, 148, 0.2);
-      color: var(--success);
-      border-left: 4px solid var(--success);
-    }
-    
-    .alert i {
-      margin-right: 10px;
-      font-size: 20px;
-    }
-    
-    .loading {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 30px;
-    }
-    
-    .spinner {
-      width: 40px;
-      height: 40px;
-      border: 4px solid rgba(108, 92, 231, 0.2);
-      border-top: 4px solid var(--primary);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    
-    .no-data {
-      text-align: center;
-      padding: 30px;
-      color: var(--gray);
-    }
-    
-    .no-data i {
-      font-size: 50px;
-      margin-bottom: 15px;
-      color: rgba(255, 255, 255, 0.1);
-    }
-    
-    .copy-btn {
-      background-color: transparent;
-      border: none;
-      color: var(--gray);
-      cursor: pointer;
-      margin-left: 10px;
-      transition: var(--transition);
-    }
-    
-    .copy-btn:hover {
-      color: var(--primary);
-    }
-    
-    @media (max-width: 768px) {
-      .stats-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .btn-group {
-        flex-direction: column;
-      }
-      
-      header h1 {
-        font-size: 24px;
-      }
-      
-      th, td {
-        padding: 8px 10px;
-        font-size: 14px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortcut Cari Selisih QRIS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-light: #818cf8;
+            --primary-dark: #4f46e5;
+            --secondary: #10b981;
+            --secondary-light: #34d399;
+            --danger: #ef4444;
+            --danger-light: #f87171;
+            --warning: #f59e0b;
+            --warning-light: #fbbf24;
+            --info: #3b82f6;
+            --dark: #1e293b;
+            --darker: #0f172a;
+            --darkest: #020617;
+            --light: #f1f5f9;
+            --lighter: #f8fafc;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: #334155;
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+            --danger-gradient: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--darkest);
+            padding: 0;
+            margin: 0;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        h1, h2, h3 {
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 2rem;
+            letter-spacing: -0.025em;
+        }
+        
+        .glass-card {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .summary-item {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .summary-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .summary-item:hover::before {
+            width: 100%;
+            opacity: 0.1;
+        }
+        
+        .summary-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(2, 6, 23, 0.4);
+        }
+        
+        .summary-item h3 {
+            margin-top: 0;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .summary-item .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0.5rem 0;
+            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .discrepancy-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--danger), var(--warning-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .comparison-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .table-container {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .table-container:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 1rem 1.25rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        th {
+            background-color: rgba(30, 41, 59, 0.9);
+            color: var(--text-primary);
+            position: sticky;
+            top: 0;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            backdrop-filter: blur(16px);
+        }
+        
+        tr {
+            background-color: transparent;
+            transition: all 0.2s ease;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+        
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .discrepancy-row {
+            background-color: rgba(245, 158, 11, 0.08) !important;
+            border-left: 4px solid var(--warning);
+        }
+        
+        .missing-row {
+            background-color: rgba(239, 68, 68, 0.08) !important;
+            border-left: 4px solid var(--danger);
+        }
+        
+        .input-section {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-box {
+            flex: 1;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .input-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        
+        .input-box h2 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        
+        .input-box p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        textarea {
+            width: 100%;
+            height: 250px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            resize: vertical;
+            font-family: 'Fira Code', monospace;
+            background-color: rgba(2, 6, 23, 0.5);
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+        }
+        
+        button {
+            background: var(--primary-gradient);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .legend-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+        
+        .discrepancy-color {
+            background-color: var(--warning);
+        }
+        
+        .missing-color {
+            background-color: var(--danger);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary);
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1.5rem 1.5rem 0;
+        }
+        
+        .table-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .table-actions button {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .btn-success {
+            background: var(--success-gradient);
+        }
+        
+        .btn-success:hover {
+            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+            box-shadow: 0 10px 15px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-danger {
+            background: var(--danger-gradient);
+        }
+        
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            box-shadow: 0 10px 15px rgba(239, 68, 68, 0.3);
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--success-gradient);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-10px);
+        }
+        
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--primary-light);
+            cursor: pointer;
+            padding: 0.375rem 0.75rem;
+            font-weight: 600;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-primary);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning-light);
+            border: 1px solid var(--warning);
+        }
+        
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger-light);
+            border: 1px solid var(--danger);
+        }
+        
+        .badge-success {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--secondary-light);
+            border: 1px solid var(--secondary);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 1200px) {
+            .comparison-container, .input-section {
+                flex-direction: column;
+            }
+            
+            .table-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .table-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+        
+        /* Modern scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        /* Floating action button */
+        .fab {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--primary-gradient);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .fab:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 120px;
+            background-color: var(--darker);
+            color: var(--text-primary);
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8rem;
+            border: 1px solid var(--border);
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .input-box, .glass-card {
+                padding: 1.5rem;
+            }
+            
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .button-container {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-  <div class="container">
-    <header>
-      <div class="header-pattern"></div>
-      <h1>QRIS Transaction Discrepancy Dashboard</h1>
-      <p>Compare and analyze differences between admin data and QRIS transactions</p>
-    </header>
-    
-    <div class="stats-container" id="stats">
-      <!-- Stats will be populated here -->
-    </div>
-    
-    <div class="content-section">
-      <div class="section-title">
-        <i class="fas fa-database"></i>
-        <span>Data Input</span>
-      </div>
-      
-      <div class="input-container">
-        <div class="input-group">
-          <h4>Admin Data</h4>
-          <p>Format: Username [tab] Amount [tab] VIP Number</p>
-          <textarea id="adminData" placeholder="Example:
-azis999    25,122    Vip90435631751820770035
-zafir33    101,000   Vip113393931751820587041
-pakjon23   100,000   Vip118117221751820554784
-blackhokie 78,000    Vip57001011751820473656"></textarea>
+    <div class="container">
+        <h1 class="animate__animated animate__fadeInDown">Shortcut Cari Selisih QRIS</h1>
+        
+        <div class="input-section animate__animated animate__fadeIn">
+            <div class="input-box">
+                <h2><i class="fas fa-user-shield" style="margin-right: 10px;"></i>Admin Data</h2>
+                <p>Format: UserID [tab] Nominal [tab] KodeQRIS</p>
+                <textarea id="adminData" placeholder="Tempel data Admin di sini
+apabila Qris VIP
+azis999	25,122	Vip90435631751820770035	
+apabila Qris Minera	
+auliza111	100000	Minera480758017541540194837	
+apabila Qris P2MIH	
+gembil01	20000	12582623_1754143637521"></textarea>
+            </div>
+            
+            <div class="input-box">
+                <h2><i class="fas fa-qrcode" style="margin-right: 10px;"></i>QRIS Data</h2>
+                <p>Format: KodeQRIS [tab] Nominal [tab] OptionalInfo</p>
+                <textarea id="qrisData" placeholder="Tempel data QRIS di sini
+apabila Qris VIP
+Vip90435631751820770035	25122	10013_azis999
+apabila Qris Minera	
+Minera480758017541540194837	100000
+apabila Qris P2MIH	
+12582623_1754143637521	20000"></textarea>
+            </div>
         </div>
         
-        <div class="input-group">
-          <h4>QRIS Data</h4>
-          <p>Format: VIP Number [tab] Amount [tab] Reference</p>
-          <textarea id="qrisData" placeholder="Example:
-Vip90435631751820770035    25122    10013_azis999
-Vip113393931751820587041   101000   10013_zafir33
-Vip118117221751820554784   100000   10013_pakjon23"></textarea>
+        <div class="button-container animate__animated animate__fadeIn">
+            <button id="compareBtn" class="animate__animated animate__pulse animate__infinite">
+                <i class="fas fa-exchange-alt"></i>
+                Compare Data
+            </button>
+            <button id="clearBtn" class="btn-danger">
+                <i class="fas fa-trash-alt"></i>
+                Clear Input Data
+            </button>
         </div>
-      </div>
-      
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="compareData()">
-          <i class="fas fa-exchange-alt"></i>
-          Compare Data
-        </button>
-        <button class="btn btn-danger" onclick="clearData()">
-          <i class="fas fa-trash-alt"></i>
-          Clear Data
-        </button>
-      </div>
-    </div>
-    
-    <div class="result-section" id="results">
-      <div class="no-data">
-        <i class="fas fa-file-alt"></i>
-        <h3>No Data to Display</h3>
-        <p>Please enter admin and QRIS data, then click "Compare Data"</p>
-      </div>
-    </div>
-  </div>
-  
-  <script>
-    function compareData() {
-      const adminData = document.getElementById('adminData').value.trim();
-      const qrisData = document.getElementById('qrisData').value.trim();
-      
-      if (!adminData || !qrisData) {
-        showAlert('Both admin data and QRIS data are required', 'danger');
-        return;
-      }
-      
-      // Show loading state
-      document.getElementById('results').innerHTML = `
-        <div class="loading">
-          <div class="spinner"></div>
-        </div>
-      `;
-      
-      // Process the data directly in the browser
-      setTimeout(() => {
-        try {
-          const comparisonResult = processComparison(adminData, qrisData);
-          displayResults(comparisonResult);
-        } catch (error) {
-          showAlert('Error processing data: ' + error.message, 'danger');
-        }
-      }, 500);
-    }
-    
-    function clearData() {
-      document.getElementById('adminData').value = '';
-      document.getElementById('qrisData').value = '';
-      document.getElementById('results').innerHTML = `
-        <div class="no-data">
-          <i class="fas fa-file-alt"></i>
-          <h3>No Data to Display</h3>
-          <p>Please enter admin and QRIS data, then click "Compare Data"</p>
-        </div>
-      `;
-      document.getElementById('stats').innerHTML = '';
-    }
-    
-    function showAlert(message, type) {
-      const alertDiv = document.createElement('div');
-      alertDiv.className = `alert alert-${type}`;
-      alertDiv.innerHTML = `
-        <i class="fas fa-${type === 'danger' ? 'exclamation-circle' : 'check-circle'}"></i>
-        ${message}
-      `;
-      
-      const results = document.getElementById('results');
-      results.innerHTML = '';
-      results.appendChild(alertDiv);
-      
-      setTimeout(() => {
-        alertDiv.remove();
-      }, 5000);
-    }
-    
-    function processComparison(adminData, qrisData) {
-      // Parse admin data
-      const adminLines = adminData.split('\n').filter(line => line.trim());
-      const adminRecords = adminLines.map(line => {
-        const parts = line.split('\t').map(part => part.trim());
-        if (parts.length < 3) {
-          throw new Error('Invalid admin data format. Each line must have username, amount, and VIP number separated by tabs.');
-        }
-        return {
-          username: parts[0],
-          amount: parseFloat(parts[1].replace(/,/g, '')),
-          vipNumber: parts[2]
-        };
-      });
-      
-      // Parse QRIS data
-      const qrisLines = qrisData.split('\n').filter(line => line.trim());
-      const qrisRecords = qrisLines.map(line => {
-        const parts = line.split('\t').map(part => part.trim());
-        if (parts.length < 3) {
-          throw new Error('Invalid QRIS data format. Each line must have VIP number, amount, and reference separated by tabs.');
-        }
-        return {
-          vipNumber: parts[0],
-          amount: parseFloat(parts[1].replace(/,/g, '')),
-          reference: parts[2]
-        };
-      });
-      
-      // Initialize result arrays
-      const matched = [];
-      const mismatched = [];
-      const adminOnly = [];
-      const qrisOnly = [...qrisRecords];
-      
-      // Process each admin record
-      adminRecords.forEach(adminRec => {
-        const qrisIndex = qrisOnly.findIndex(q => q.vipNumber === adminRec.vipNumber);
         
-        if (qrisIndex !== -1) {
-          const qrisRec = qrisOnly[qrisIndex];
-          
-          if (adminRec.amount === qrisRec.amount) {
-            matched.push(adminRec);
-          } else {
-            mismatched.push({
-              admin: adminRec,
-              qris: qrisRec,
-              discrepancy: qrisRec.amount - adminRec.amount
+        <div class="loading" id="loadingIndicator">
+            <div class="spinner"></div>
+            <p>Processing data...</p>
+            <div class="progress-bar" style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); margin-top: 1rem; border-radius: 2px;">
+                <div class="progress" style="height: 100%; width: 0%; background: var(--primary-gradient); border-radius: 2px; transition: width 0.3s ease;"></div>
+            </div>
+        </div>
+        
+        <div class="glass-card animate__animated animate__fadeIn" id="summarySection" style="display: none;">
+            <h2><i class="fas fa-chart-pie" style="margin-right: 10px;"></i>Comparison Summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3>Total Admin Records</h3>
+                    <div class="value" id="totalAdmin">0</div>
+                </div>
+                <div class="summary-item">
+                    <h3>Total QRIS Records</h3>
+                    <div class="value" id="totalQris">0</div>
+                </div>
+                <div class="summary-item">
+                    <h3>Total Discrepancy</h3>
+                    <div class="discrepancy-value" id="totalDiscrepancy">0</div>
+                </div>
+            </div>
+            
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <h3>Total Admin Amount</h3>
+                    <div class="value" id="totalAdminAmount">0</div>
+                </div>
+                <div class="summary-item">
+                    <h3>Total QRIS Amount</h3>
+                    <div class="value" id="totalQrisAmount">0</div>
+                </div>
+                <div class="summary-item">
+                    <h3>Amount Discrepancy</h3>
+                    <div class="discrepancy-value" id="amountDiscrepancy">0</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="legend animate__animated animate__fadeIn">
+            <div class="legend-item">
+                <div class="legend-color discrepancy-color"></div>
+                <span>Data discrepancy</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color missing-color"></div>
+                <span>Missing data</span>
+            </div>
+        </div>
+        
+        <div class="comparison-container animate__animated animate__fadeIn">
+            <div class="table-container">
+                <div class="table-header">
+                    <h2><i class="fas fa-user-cog" style="margin-right: 10px;"></i>Data tidak ada di QRIS</h2>
+                    <div class="table-actions">
+                        <button class="btn-success" id="copyAdminTableBtn">
+                            <i class="fas fa-copy"></i>
+                            Copy All Data
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
+                    <table id="adminTable">
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Admin Nominal</th>
+                                <th>Kode QRIS</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <div class="table-header">
+                    <h2><i class="fas fa-qrcode" style="margin-right: 10px;"></i>Data tidak ada di Admin</h2>
+                    <div class="table-actions">
+                        <button class="btn-success" id="copyQrisTableBtn">
+                            <i class="fas fa-copy"></i>
+                            Copy All Data
+                        </button>
+                    </div>
+                </div>
+                <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
+                    <table id="qrisTable">
+                        <thead>
+                            <tr>
+                                <th>Kode QRIS</th>
+                                <th>QRIS Nominal</th>
+                                <th>Info</th>
+                            </tr>
+                        </thead>
+                        <tbody id="qrisTableBody">
+                            <!-- Data will be inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i>
+        <span>Data berhasil di copy!</span>
+    </div>
+
+    <div class="fab tooltip" id="scrollToTop" style="display: none;">
+        <i class="fas fa-arrow-up"></i>
+        <span class="tooltip-text">Scroll to top</span>
+    </div>
+
+    <script>
+        // Global variables to store the comparison results
+        let currentMatchedRecords = [];
+        let currentAdminOnlyRecords = [];
+        let currentQrisOnlyRecords = [];
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize animations
+            initAnimations();
+            
+            // Set up event listeners
+            document.getElementById('compareBtn').addEventListener('click', compareDataHandler);
+            document.getElementById('clearBtn').addEventListener('click', clearData);
+            document.getElementById('copyAdminTableBtn').addEventListener('click', () => copyTableToClipboard('adminTable'));
+            document.getElementById('copyQrisTableBtn').addEventListener('click', () => copyTableToClipboard('qrisTable'));
+            document.getElementById('scrollToTop').addEventListener('click', scrollToTop);
+            
+            // Scroll event for floating action button
+            window.addEventListener('scroll', toggleScrollToTopButton);
+        });
+        
+        function initAnimations() {
+            // Add intersection observer for scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate__fadeIn');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.glass-card, .comparison-container, .legend').forEach(el => {
+                observer.observe(el);
             });
-          }
-          
-          // Remove from qrisOnly since we found a match
-          qrisOnly.splice(qrisIndex, 1);
-        } else {
-          adminOnly.push(adminRec);
         }
-      });
-      
-      return {
-        status: 'success',
-        adminCount: adminRecords.length,
-        qrisCount: qrisRecords.length,
-        matchedCount: matched.length,
-        adminOnly: adminOnly,
-        qrisOnly: qrisOnly,
-        mismatched: mismatched
-      };
-    }
-    
-    function displayResults(results) {
-      const resultsContainer = document.getElementById('results');
-      
-      if (results.error) {
-        resultsContainer.innerHTML = `
-          <div class="alert alert-danger">
-            <i class="fas fa-exclamation-circle"></i>
-            ${results.error}
-          </div>
-        `;
-        return;
-      }
-      
-      // Update stats
-      const statsHtml = `
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fas fa-users"></i>
-          </div>
-          <h3>Admin Records</h3>
-          <div class="stat-value">${results.adminCount}</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fas fa-qrcode"></i>
-          </div>
-          <h3>QRIS Transactions</h3>
-          <div class="stat-value">${results.qrisCount}</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fas fa-balance-scale"></i>
-          </div>
-          <h3>Discrepancies</h3>
-          <div class="stat-value">${results.mismatched.length + results.adminOnly.length + results.qrisOnly.length}</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">
-            <i class="fas fa-check-circle"></i>
-          </div>
-          <h3>Perfect Matches</h3>
-          <div class="stat-value">${results.matchedCount}</div>
-        </div>
-      `;
-      document.getElementById('stats').innerHTML = statsHtml;
-      
-      let resultsHtml = '';
-      
-      // Show admin only data
-      if (results.adminOnly.length > 0) {
-        resultsHtml += `
-          <div class="result-group">
-            <div class="result-title">
-              <i class="fas fa-user-shield"></i>
-              Admin Data Not Found in QRIS
-              <span class="badge">${results.adminOnly.length}</span>
-            </div>
-            <div class="table-responsive">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Username</th>
-                    <th>Amount</th>
-                    <th>VIP Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${results.adminOnly.map(item => `
-                    <tr>
-                      <td>${item.username}</td>
-                      <td>${formatCurrency(item.amount)}</td>
-                      <td>${item.vipNumber}</td>
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
-      }
-      
-      // Show QRIS only data
-      if (results.qrisOnly.length > 0) {
-        resultsHtml += `
-          <div class="result-group">
-            <div class="result-title">
-              <i class="fas fa-qrcode"></i>
-              QRIS Data Not Found in Admin
-              <span class="badge">${results.qrisOnly.length}</span>
-            </div>
-            <div class="table-responsive">
-              <table>
-                <thead>
-                  <tr>
-                    <th>VIP Number</th>
-                    <th>Amount</th>
-                    <th>Reference</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${results.qrisOnly.map(item => `
-                    <tr>
-                      <td>${item.vipNumber}</td>
-                      <td>${formatCurrency(item.amount)}</td>
-                      <td>${item.reference}</td>
-                    </tr>
-                  `).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
-      }
-      
-      // Show mismatched data
-      if (results.mismatched.length > 0) {
-        resultsHtml += `
-          <div class="result-group">
-            <div class="result-title">
-              <i class="fas fa-exclamation-triangle"></i>
-              Amount Mismatches
-              <span class="badge">${results.mismatched.length}</span>
-            </div>
-            <div class="table-responsive">
-              <table>
-                <thead>
-                  <tr>
-                    <th>VIP Number</th>
-                    <th>Username</th>
-                    <th>Admin Amount</th>
-                    <th>QRIS Amount</th>
-                    <th>Difference</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${results.mismatched.map(item => {
-                    const discrepancy = item.discrepancy;
-                    const discrepancyClass = discrepancy > 0 ? 'positive' : 'negative';
-                    const discrepancySymbol = discrepancy > 0 ? '+' : '';
-                    return `
-                      <tr>
-                        <td>${item.admin.vipNumber}</td>
-                        <td>${item.admin.username}</td>
-                        <td>${formatCurrency(item.admin.amount)}</td>
-                        <td>${formatCurrency(item.qris.amount)}</td>
-                        <td class="${discrepancyClass}">${discrepancySymbol}${formatCurrency(Math.abs(discrepancy))}</td>
-                      </tr>
+        
+        function toggleScrollToTopButton() {
+            const scrollToTopBtn = document.getElementById('scrollToTop');
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.style.display = 'flex';
+            } else {
+                scrollToTopBtn.style.display = 'none';
+            }
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function compareDataHandler() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const summarySection = document.getElementById('summarySection');
+            
+            // Show loading indicator with animation
+            loadingIndicator.style.display = 'block';
+            summarySection.style.display = 'none';
+            
+            // Animate progress bar
+            const progressBar = document.querySelector('.progress');
+            progressBar.style.width = '0%';
+            setTimeout(() => { progressBar.style.width = '100%' }, 10);
+            
+            // Use setTimeout to allow UI to update before heavy processing
+            setTimeout(() => {
+                compareData();
+                loadingIndicator.style.display = 'none';
+                summarySection.style.display = 'block';
+                
+                // Add animation to summary section
+                summarySection.classList.add('animate__fadeIn');
+            }, 500);
+        }
+        
+        function compareData() {
+            // Get input data
+            const adminDataText = document.getElementById('adminData').value.trim();
+            const qrisDataText = document.getElementById('qrisData').value.trim();
+            
+            if (!adminDataText || !qrisDataText) {
+                showToast('Please enter data in both fields', 'danger');
+                return;
+            }
+            
+            // Parse data
+            const adminData = parseAdminData(adminDataText);
+            const qrisData = parseQrisData(qrisDataText);
+            
+            if (adminData.length === 0 || qrisData.length === 0) {
+                showToast('No valid data found to compare', 'warning');
+                return;
+            }
+            
+            // Process comparison
+            const { matchedRecords, adminOnlyRecords, qrisOnlyRecords } = matchRecords(adminData, qrisData);
+            
+            // Store results globally
+            currentMatchedRecords = matchedRecords;
+            currentAdminOnlyRecords = adminOnlyRecords;
+            currentQrisOnlyRecords = qrisOnlyRecords;
+            
+            // Calculate totals
+            const totalAdmin = adminData.length;
+            const totalQris = qrisData.length;
+            const totalDiscrepancy = adminOnlyRecords.length + qrisOnlyRecords.length;
+            
+            const totalAdminAmount = calculateTotalAmount(adminData);
+            const totalQrisAmount = calculateTotalAmount(qrisData);
+            const amountDiscrepancy = totalAdminAmount - totalQrisAmount;
+            
+            // Update summary
+            document.getElementById('totalAdmin').textContent = totalAdmin.toLocaleString();
+            document.getElementById('totalQris').textContent = totalQris.toLocaleString();
+            document.getElementById('totalDiscrepancy').textContent = totalDiscrepancy.toLocaleString();
+            
+            document.getElementById('totalAdminAmount').textContent = formatCurrency(totalAdminAmount);
+            document.getElementById('totalQrisAmount').textContent = formatCurrency(totalQrisAmount);
+            document.getElementById('amountDiscrepancy').textContent = formatCurrency(amountDiscrepancy);
+            
+            // Populate tables
+            populateAdminTable(matchedRecords, adminOnlyRecords);
+            populateQrisTable(matchedRecords, qrisOnlyRecords);
+            
+            // Show success toast
+            showToast('Data comparison completed successfully!', 'success');
+        }
+        
+        function parseAdminData(text) {
+            if (!text) return [];
+            
+            return text.split('\n').map(line => {
+                const parts = line.split('\t');
+                if (parts.length < 3) return null;
+                
+                return {
+                    userId: parts[0].trim(),
+                    nominal: parseNumber(parts[1].trim()),
+                    qrisCode: parts[2].trim(),
+                    matched: false,
+                    rawData: line.trim()
+                };
+            }).filter(item => item !== null);
+        }
+        
+        function parseQrisData(text) {
+            if (!text) return [];
+            
+            return text.split('\n').map(line => {
+                const parts = line.split('\t');
+                if (parts.length < 2) return null;
+                
+                return {
+                    qrisCode: parts[0].trim(),
+                    nominal: parseNumber(parts[1].trim()),
+                    info: parts.length > 2 ? parts[2].trim() : '',
+                    matched: false,
+                    rawData: line.trim()
+                };
+            }).filter(item => item !== null);
+        }
+        
+        function parseNumber(numStr) {
+            // Remove commas and any non-digit characters except minus
+            const cleaned = numStr.replace(/[^\d-]/g, '');
+            return parseInt(cleaned, 10) || 0;
+        }
+        
+        function matchRecords(adminData, qrisData) {
+            const matchedRecords = [];
+            const adminOnlyRecords = [];
+            const qrisOnlyRecords = [...qrisData];
+            
+            // Create a map for QRIS data for faster lookup
+            const qrisMap = new Map();
+            qrisData.forEach(item => {
+                qrisMap.set(item.qrisCode, item);
+            });
+            
+            // Find matches
+            adminData.forEach(adminItem => {
+                const qrisItem = qrisMap.get(adminItem.qrisCode);
+                
+                if (qrisItem) {
+                    // Found a match
+                    adminItem.matched = true;
+                    qrisItem.matched = true;
+                    
+                    matchedRecords.push({
+                        adminItem,
+                        qrisItem,
+                        difference: adminItem.nominal - qrisItem.nominal
+                    });
+                    
+                    // Remove from qrisOnlyRecords
+                    const index = qrisOnlyRecords.findIndex(item => item.qrisCode === qrisItem.qrisCode);
+                    if (index !== -1) {
+                        qrisOnlyRecords.splice(index, 1);
+                    }
+                } else {
+                    // No match found
+                    adminOnlyRecords.push(adminItem);
+                }
+            });
+            
+            return {
+                matchedRecords,
+                adminOnlyRecords,
+                qrisOnlyRecords
+            };
+        }
+        
+        function calculateTotalAmount(data) {
+            return data.reduce((sum, item) => sum + item.nominal, 0);
+        }
+        
+        function populateAdminTable(matchedRecords, adminOnlyRecords) {
+            const tbody = document.getElementById('adminTableBody');
+            tbody.innerHTML = '';
+            
+            // Add matched records with discrepancies
+            matchedRecords.forEach(record => {
+                if (record.difference !== 0) {
+                    const row = document.createElement('tr');
+                    row.className = 'discrepancy-row animate__animated animate__fadeIn';
+                    
+                    row.innerHTML = `
+                        <td>${record.adminItem.userId}</td>
+                        <td>${formatCurrency(record.adminItem.nominal)}</td>
+                        <td>${record.adminItem.qrisCode}</td>
                     `;
-                  }).join('')}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        `;
-      }
-      
-      if (results.matchedCount > 0 && resultsHtml === '') {
-        resultsHtml = `
-          <div class="alert alert-success">
-            <i class="fas fa-check-circle"></i>
-            All data matches perfectly! No discrepancies found between ${results.matchedCount} records.
-          </div>
-        `;
-      } else if (results.matchedCount > 0) {
-        resultsHtml += `
-          <div class="alert alert-success">
-            <i class="fas fa-check-circle"></i>
-            ${results.matchedCount} records matched perfectly.
-          </div>
-        `;
-      }
-      
-      resultsContainer.innerHTML = resultsHtml;
-    }
-    
-    function formatCurrency(amount) {
-      return new Intl.NumberFormat('id-ID', {
-        style: 'currency',
-        currency: 'IDR',
-        minimumFractionDigits: 0
-      }).format(amount);
-    }
-  </script>
+                    
+                    tbody.appendChild(row);
+                }
+            });
+            
+            // Add admin-only records
+            adminOnlyRecords.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'missing-row animate__animated animate__fadeIn';
+                
+                row.innerHTML = `
+                    <td>${item.userId}</td>
+                    <td>${formatCurrency(item.nominal)}</td>
+                    <td>${item.qrisCode}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Add empty state if no discrepancies
+            if (tbody.children.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                        <p>No discrepancies found in Admin data</p>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+        
+        function populateQrisTable(matchedRecords, qrisOnlyRecords) {
+            const tbody = document.getElementById('qrisTableBody');
+            tbody.innerHTML = '';
+            
+            // Add matched records with discrepancies
+            matchedRecords.forEach(record => {
+                if (record.difference !== 0) {
+                    const row = document.createElement('tr');
+                    row.className = 'discrepancy-row animate__animated animate__fadeIn';
+                    
+                    row.innerHTML = `
+                        <td>${record.qrisItem.qrisCode}</td>
+                        <td>${formatCurrency(record.qrisItem.nominal)}</td>
+                        <td>${record.qrisItem.info}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                }
+            });
+            
+            // Add qris-only records
+            qrisOnlyRecords.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'missing-row animate__animated animate__fadeIn';
+                
+                row.innerHTML = `
+                    <td>${item.qrisCode}</td>
+                    <td>${formatCurrency(item.nominal)}</td>
+                    <td>${item.info}</td>
+                `;
+                
+                tbody.appendChild(row);
+            });
+            
+            // Add empty state if no discrepancies
+            if (tbody.children.length === 0) {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
+                        <p>No discrepancies found in QRIS data</p>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            }
+        }
+        
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(amount).replace('Rp', '').trim();
+        }
+        
+        function clearData() {
+            document.getElementById('adminData').value = '';
+            document.getElementById('qrisData').value = '';
+            document.getElementById('adminTableBody').innerHTML = '';
+            document.getElementById('qrisTableBody').innerHTML = '';
+            document.getElementById('summarySection').style.display = 'none';
+            
+            showToast('Input data cleared', 'info');
+        }
+        
+        function copyTableToClipboard(tableId) {
+            const table = document.getElementById(tableId);
+            const rows = table.querySelectorAll('tbody tr');
+            let textToCopy = '';
+            
+            // Only add data rows (exclude headers and empty states)
+            rows.forEach(row => {
+                // Skip the empty state row if it exists
+                if (row.querySelector('td[colspan]')) return;
+                
+                const cells = Array.from(row.querySelectorAll('td'));
+                textToCopy += cells.map(cell => cell.textContent.replace(/^\s+|\s+$/g, '')).join('\t') + '\n';
+            });
+            
+            copyToClipboard(textToCopy.trim());
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Data copied to clipboard!', 'success');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showToast('Failed to copy data', 'danger');
+            });
+        }
+        
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            
+            // Update toast content and style
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-circle' : 'info-circle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            // Set background based on type
+            toast.style.background = type === 'success' ? 'var(--success-gradient)' : 
+                                   type === 'danger' ? 'var(--danger-gradient)' : 
+                                   type === 'warning' ? 'var(--warning)' : 'var(--primary-gradient)';
+            
+            // Show toast
+            toast.classList.add('show');
+            
+            // Hide after delay
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
 </body>
 </html>

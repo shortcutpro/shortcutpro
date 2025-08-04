@@ -486,6 +486,10 @@
                 justify-content: center;
             }
         }
+
+        .btn-outline i {
+            margin-right: 5px;
+        }
     </style>
 </head>
 <body>
@@ -544,6 +548,9 @@ lontearab123    2025-07-13 23:32:46    50,000    BSI    7294911426    luthfii ha
         <div class="summary-card">
             <div class="section-header">
                 <h2><i class="fas fa-chart-pie"></i> Ringkasan Akun Operator</h2>
+                <button onclick="copySummaryTable()" class="btn-outline">
+                    <i class="fas fa-copy"></i> Copy Data
+                </button>
             </div>
             
             <!-- Changed this section to remove scrolling -->
@@ -735,6 +742,35 @@ lontearab123    2025-07-13 23:32:46    50,000    BSI    7294911426    luthfii ha
             document.getElementById('totalAmount').textContent = totalAmount.toLocaleString();
             
             showAlert('Sukses', 'Perhitungan data selesai', 'success');
+        }
+        
+        function copySummaryTable() {
+            if (withdrawData.length === 0) {
+                showAlert('Peringatan', 'Tidak ada data untuk dicopy', 'warning');
+                return;
+            }
+            
+            const rows = document.querySelectorAll('#summaryBody tr');
+            if (rows.length === 0) {
+                showAlert('Peringatan', 'Silakan hitung data terlebih dahulu', 'warning');
+                return;
+            }
+            
+            let textToCopy = '';
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                const rowText = Array.from(cells).map(cell => cell.textContent).join('\t');
+                textToCopy += rowText + '\n';
+            });
+            
+            navigator.clipboard.writeText(textToCopy.trim())
+                .then(() => {
+                    showAlert('Sukses', 'Data ringkasan berhasil disalin ke clipboard', 'success');
+                })
+                .catch(err => {
+                    showAlert('Error', 'Gagal menyalin data: ' + err, 'error');
+                });
         }
         
         function showAlert(title, message, type) {

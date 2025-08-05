@@ -594,7 +594,7 @@
         }
 
         .summary-card .secondary-value {
-            font-size: 0.85rem;
+            font-size: 0rem;
             color: rgba(255, 255, 255, 0.6);
             margin-top: 5px;
         }
@@ -977,10 +977,14 @@
 
             if (jenisSpin.includes('free spin 20%')) {
                 nominalClaim = Math.floor(currentData.totalKemenangan * 0.20);
+                // Limit to maximum 400,000
+                nominalClaim = Math.min(nominalClaim, 400000);
                 return { status: 'CLAIM FREE SPIN 20%', nominalClaim };
             } else if (jenisSpin.includes('buy spin 25%')) {
                 const afterBetting = currentData.totalKemenangan - currentData.modal;
                 nominalClaim = Math.floor(afterBetting * 0.25);
+                // Limit to maximum 400,000
+                nominalClaim = Math.min(nominalClaim, 400000);
                 return { status: 'CLAIM BUY SPIN 25%', nominalClaim };
             }
 
@@ -1044,11 +1048,11 @@
             if (Math.abs(totalKredit - currentData.totalKemenangan) < 1) {
                 validationStatus.textContent = 'COCOK PROSES';
                 validationStatus.className = 'validation-badge status-match pulse';
-                validationStatus.innerHTML = '<i class="fas fa-check-circle"></i> COCOK';
+                validationStatus.innerHTML = '<i class="fas fa-check-circle"></i> COCOK PROSES';
             } else {
                 validationStatus.textContent = 'TIDAK COCOK JANGAN PROSES';
                 validationStatus.className = 'validation-badge status-mismatch pulse';
-                validationStatus.innerHTML = '<i class="fas fa-times-circle"></i> TIDAK COCOK';
+                validationStatus.innerHTML = '<i class="fas fa-times-circle"></i> TIDAK COCOK JANGAN PROSES';
             }
 
             // Fill transaction table
@@ -1085,12 +1089,24 @@
                 modal.style.display = 'block';
                 modalImg.src = previewImg.src;
                 document.body.style.overflow = 'hidden';
+                
+                // Add event listener for ESC key
+                document.addEventListener('keydown', handleEscKey);
             }
         }
 
         function closeModal() {
             document.getElementById('imageModal').style.display = 'none';
             document.body.style.overflow = 'auto';
+            
+            // Remove event listener for ESC key
+            document.removeEventListener('keydown', handleEscKey);
+        }
+
+        function handleEscKey(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
         }
 
         // Add copy buttons to specific elements

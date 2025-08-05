@@ -1,14 +1,175 @@
-batasanline.html
-gambar-tvtoto.html
-gambar-tvtoto2.html
-gambar-zia.html
-hitungfreespin-buyspin.html
-kalkulator-parlay.html
-menu.html
-prediksi-togel.html
-prediksitogel.html
-selisih-qris.html
-togel-idn.html
-togel-png.html
-validasi-koin-depo.html
-validasi-koin-wd.html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Hitungfreespin Buyspin</title>
+</head>
+<body>
+  <h1>Hitungfreespin Buyspin</h1>
+  <p>Ini adalah halaman <strong>hitungfreespin-buyspin.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Kalkulator Parlay</title>
+</head>
+<body>
+  <h1>Kalkulator Parlay</h1>
+  <p>Ini adalah halaman <strong>kalkulator-parlay.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prediksitogel</title>
+</head>
+<body>
+  <h1>Prediksitogel</h1>
+  <p>Ini adalah halaman <strong>prediksitogel.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Prediksi Togel</title>
+</head>
+<body>
+  <h1>Prediksi Togel</h1>
+  <p>Ini adalah halaman <strong>prediksi-togel.html</strong>.</p>
+</body>
+</html>
+
+# HTML Vercel Project
+
+Proyek ini berisi file-file HTML statis yang bisa diakses langsung setelah di-deploy ke Vercel.
+
+## Cara Deploy
+
+1. Upload semua file ini ke GitHub.
+2. Di Vercel, buat proyek baru dari GitHub repo ini.
+3. Pilih **Framework Preset: Other**
+4. Biarkan Build Command dan Output Directory kosong.
+5. Deploy, dan akses file HTML satu per satu seperti:
+   - /gambar-tvtoto.html
+   - /kalkulator-parlay.html
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Selisih Qris</title>
+</head>
+<body>
+  <h1>Selisih Qris</h1>
+  <p>Ini adalah halaman <strong>selisih-qris.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Togel Idn</title>
+</head>
+<body>
+  <h1>Togel Idn</h1>
+  <p>Ini adalah halaman <strong>togel-idn.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Togel Png</title>
+</head>
+<body>
+  <h1>Togel Png</h1>
+  <p>Ini adalah halaman <strong>togel-png.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Validasi Koin Depo</title>
+</head>
+<body>
+  <h1>Validasi Koin Depo</h1>
+  <p>Ini adalah halaman <strong>validasi-koin-depo.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Validasi Koin Wd</title>
+</head>
+<body>
+  <h1>Validasi Koin Wd</h1>
+  <p>Ini adalah halaman <strong>validasi-koin-wd.html</strong>.</p>
+</body>
+</html>
+
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Batasanline</title>
+</head>
+<body>
+  <h1>Batasanline</h1>
+  <p>Ini adalah halaman <strong>batasanline.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gambar Tvtoto</title>
+</head>
+<body>
+  <h1>Gambar Tvtoto</h1>
+  <p>Ini adalah halaman <strong>gambar-tvtoto.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gambar Tvtoto2</title>
+</head>
+<body>
+  <h1>Gambar Tvtoto2</h1>
+  <p>Ini adalah halaman <strong>gambar-tvtoto2.html</strong>.</p>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Gambar Zia</title>
+</head>
+<body>
+  <h1>Gambar Zia</h1>
+  <p>Ini adalah halaman <strong>gambar-zia.html</strong>.</p>
+</body>
+</html>

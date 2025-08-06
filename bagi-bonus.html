@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Perhitungan Bonus</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #ffffff;
+            height: 81vh;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .container {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            max-width: 1920px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 15px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 2fr 1.2fr;
+            gap: 15px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .card:hover {
+            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .clear-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 5px 10px;
+            background: rgba(255, 0, 68, 0.2);
+            border: 1px solid rgba(255, 0, 68, 0.5);
+            border-radius: 15px;
+            color: #ff0044;
+            font-size: 0.8em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .clear-button:hover {
+            background: rgba(255, 0, 68, 0.3);
+            transform: scale(1.05);
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            border-left: 3px solid;
+            transition: all 0.3s ease;
+            gap: 10px;
+        }
+
+        .input-group:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateX(3px);
+        }
+
+        .category-ALL { border-left-color: #00ff88; }
+        .category-LIVEGAMES { border-left-color: #ff6b6b; }
+        .category-SPORT { border-left-color: #4ecdc4; }
+        .category-SLOT { border-left-color: #f7b731; }
+        .category-LOTTERY { border-left-color: #5f27cd; }
+        .category-FISHING { border-left-color: #00d2d3; }
+        .category-MULTIVERSE { border-left-color: #ff00ff; }
+        .day-item { border-left-color: #00d4ff; }
+
+        .input-label {
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85em;
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        input[type="text"] {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #00ff88;
+            font-size: 0.95em;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            min-width: 220px;
+            transition: all 0.3s ease;
+            text-align: right;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #00ff88;
+            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+        }
+
+        .calculation-card {
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .calc-section {
+            margin-bottom: 20px;
+        }
+
+        .calc-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .calc-item {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 10px 15px;
+            text-align: center;
+            min-width: 160px;
+            flex: 1;
+        }
+
+        .calc-label {
+            font-size: 0.75em;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .calc-value {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #00ff88;
+            font-family: 'Courier New', monospace;
+            word-break: break-all;
+            letter-spacing: 0.5px;
+        }
+
+        .calc-value.negative {
+            color: #ff0044;
+        }
+
+        .operator {
+            font-size: 1.5em;
+            color: #00d4ff;
+            padding: 0 10px;
+            flex-shrink: 0;
+        }
+
+        .validation-box {
+            padding: 15px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-top: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .validation-box.error {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.3);
+            color: #ff0044;
+        }
+
+        .validation-box.success {
+            color: #00ff88;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 20px 0;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 136, 0.3);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 136, 0.5);
+        }
+
+        /* Responsive adjustments for smaller screens */
+        @media (max-width: 1600px) {
+            .main-grid {
+                grid-template-columns: 1fr 1.8fr 1fr;
+            }
+            
+            input[type="text"] {
+                min-width: 200px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            input[type="text"] {
+                min-width: 180px;
+                font-size: 0.85em;
+                padding: 6px 10px;
+            }
+            
+            .calc-item {
+                min-width: 140px;
+            }
+            
+            .calc-value {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Dashboard Perhitungan Bonus</h1>
+        </div>
+
+        <div class="main-grid">
+            <!-- Transaksi Per Kategori -->
+            <div class="card">
+                <button class="clear-button" onclick="clearCategories()">🗑️ Hapus</button>
+                <h2 class="card-title">Transaksi Per Kategori</h2>
+                <div class="input-group category-ALL">
+                    <span class="input-label">ALL</span>
+                    <input type="text" id="cat-ALL" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group category-LIVEGAMES">
+                    <span class="input-label">LIVEGAMES</span>
+                    <input type="text" id="cat-LIVEGAMES" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group category-SPORT">
+                    <span class="input-label">SPORT</span>
+                    <input type="text" id="cat-SPORT" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group category-SLOT">
+                    <span class="input-label">SLOT</span>
+                    <input type="text" id="cat-SLOT" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group category-LOTTERY">
+                    <span class="input-label">LOTTERY</span>
+                    <input type="text" id="cat-LOTTERY" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group category-FISHING">
+                    <span class="input-label">FISHING</span>
+                    <input type="text" id="cat-FISHING" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group category-MULTIVERSE">
+                    <span class="input-label">MULTIVERSE</span>
+                    <input type="text" id="cat-MULTIVERSE" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+            </div>
+
+            <!-- Kolom Kalkulasi Tengah -->
+            <div class="card calculation-card">
+                <h2 class="card-title">Kalkulasi</h2>
+                
+                <!-- Kalkulasi Kategori -->
+                <div class="calc-section">
+                    <div class="calc-row">
+                        <div class="calc-item">
+                            <div class="calc-label">Total ALL</div>
+                            <div class="calc-value" id="totalALL">0</div>
+                        </div>
+                        <div class="operator">➖</div>
+                        <div class="calc-item">
+                            <div class="calc-label">Total Kategori</div>
+                            <div class="calc-value" id="totalCategories">0</div>
+                        </div>
+                        <div class="operator">=</div>
+                        <div class="calc-item">
+                            <div class="calc-label">Selisih Kategori</div>
+                            <div class="calc-value" id="categoryDiff">0</div>
+                        </div>
+                    </div>
+                    <div class="validation-box" id="categoryValidation">
+                        Masukkan data untuk validasi
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Kalkulasi ALL -->
+                <div class="calc-section">
+                    <div class="calc-row">
+                        <div class="calc-item">
+                            <div class="calc-label">ALL Kategori</div>
+                            <div class="calc-value" id="catAllDisplay">0</div>
+                        </div>
+                        <div class="operator">➖</div>
+                        <div class="calc-item">
+                            <div class="calc-label">ALL Harian</div>
+                            <div class="calc-value" id="dailyAllDisplay">0</div>
+                        </div>
+                        <div class="operator">=</div>
+                        <div class="calc-item">
+                            <div class="calc-label">Selisih ALL</div>
+                            <div class="calc-value" id="allDiff">0</div>
+                        </div>
+                    </div>
+                    <div class="validation-box" id="allValidation">
+                        Masukkan data untuk validasi
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Kalkulasi Harian -->
+                <div class="calc-section">
+                    <div class="calc-row">
+                        <div class="calc-item">
+                            <div class="calc-label">Total Harian ALL</div>
+                            <div class="calc-value" id="totalDailyAll">0</div>
+                        </div>
+                        <div class="operator">➖</div>
+                        <div class="calc-item">
+                            <div class="calc-label">Total 7 Hari</div>
+                            <div class="calc-value" id="totalDays">0</div>
+                        </div>
+                        <div class="operator">=</div>
+                        <div class="calc-item">
+                            <div class="calc-label">Selisih Harian</div>
+                            <div class="calc-value" id="dailyDiff">0</div>
+                        </div>
+                    </div>
+                    <div class="validation-box" id="dailyValidation">
+                        Masukkan data untuk validasi
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transaksi Harian -->
+            <div class="card">
+                <button class="clear-button" onclick="clearDaily()">🗑️ Hapus</button>
+                <h2 class="card-title">Transaksi Harian</h2>
+                <div class="input-group category-ALL">
+                    <span class="input-label">ALL</span>
+                    <input type="text" id="daily-ALL" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 1</span>
+                    <input type="text" id="day-1" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 2</span>
+                    <input type="text" id="day-2" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 3</span>
+                    <input type="text" id="day-3" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 4</span>
+                    <input type="text" id="day-4" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 5</span>
+                    <input type="text" id="day-5" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 6</span>
+                    <input type="text" id="day-6" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+                <div class="input-group day-item">
+                    <span class="input-label">HARI 7</span>
+                    <input type="text" id="day-7" placeholder="0" oninput="formatInput(this); calculate()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Store raw values
+        const rawValues = {};
+
+        function formatInput(input) {
+            // Get cursor position
+            const cursorPos = input.selectionStart;
+            
+            // Get the raw value (remove all formatting except decimal point)
+            let value = input.value.replace(/[^\d.-]/g, '');
+            
+            // Store raw value
+            rawValues[input.id] = value;
+            
+            // Format for display
+            if (value !== '' && !isNaN(parseFloat(value))) {
+                const num = parseFloat(value);
+                // Keep decimal part if exists
+                const parts = value.split('.');
+                if (parts.length > 1) {
+                    // User is typing decimal part - preserve the exact decimal digits
+                    input.value = formatNumberForDisplay(num, parts[1].length);
+                } else {
+                    input.value = formatNumberForDisplay(num, 0);
+                }
+                
+                // Try to maintain cursor position
+                setTimeout(() => {
+                    const newLength = input.value.length;
+                    const diff = newLength - value.length;
+                    input.setSelectionRange(cursorPos + diff, cursorPos + diff);
+                }, 0);
+            }
+        }
+
+        function formatNumberForDisplay(num, decimalPlaces = 2) {
+            // Format with thousand separators using comma
+            if (decimalPlaces === 0) {
+                // No decimal places
+                return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            } else {
+                // With decimal places
+                const parts = num.toFixed(decimalPlaces).split('.');
+                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                return parts.join('.');
+            }
+        }
+
+        function getNumericValue(inputId) {
+            const value = rawValues[inputId] || document.getElementById(inputId).value;
+            // Remove all commas (thousand separators) and keep dots for decimals
+            const cleanValue = value.replace(/,/g, '');
+            return parseFloat(cleanValue) || 0;
+        }
+
+        function calculate() {
+            // Get category values
+            const catAll = getNumericValue('cat-ALL');
+            const catLiveGames = getNumericValue('cat-LIVEGAMES');
+            const catSport = getNumericValue('cat-SPORT');
+            const catSlot = getNumericValue('cat-SLOT');
+            const catLottery = getNumericValue('cat-LOTTERY');
+            const catFishing = getNumericValue('cat-FISHING');
+            const catMultiverse = getNumericValue('cat-MULTIVERSE');
+
+            // Get daily values
+            const dailyAll = getNumericValue('daily-ALL');
+            const days = [];
+            for (let i = 1; i <= 7; i++) {
+                days.push(getNumericValue(`day-${i}`));
+            }
+
+            // Calculate category totals (excluding ALL)
+            const totalCategories = catLiveGames + catSport + catSlot + catLottery + catFishing + catMultiverse;
+            
+            // Calculate category difference (ALL minus all categories)
+            const categoryDiff = catAll - totalCategories;
+            
+            // Display category calculations
+            document.getElementById('totalALL').textContent = formatNumberForDisplay(catAll);
+            document.getElementById('totalCategories').textContent = formatNumberForDisplay(totalCategories);
+            document.getElementById('categoryDiff').textContent = formatNumberForDisplay(categoryDiff);
+            
+            // Category validation
+            const catValidation = document.getElementById('categoryValidation');
+            if (catAll === 0 && totalCategories === 0) {
+                catValidation.textContent = 'Masukkan data untuk validasi';
+                catValidation.className = 'validation-box';
+                document.getElementById('categoryDiff').className = 'calc-value';
+            } else if (Math.abs(categoryDiff) < 1) {
+                catValidation.textContent = '✅ SILAHKAN BAGI';
+                catValidation.className = 'validation-box success';
+                document.getElementById('categoryDiff').className = 'calc-value';
+            } else {
+                catValidation.textContent = '❌ ADA YANG ERROR NI';
+                catValidation.className = 'validation-box error';
+                document.getElementById('categoryDiff').className = 'calc-value negative';
+            }
+
+            // Calculate ALL difference (Category ALL minus Daily ALL)
+            const allDiff = catAll - dailyAll;
+            
+            // Display ALL calculations
+            document.getElementById('catAllDisplay').textContent = formatNumberForDisplay(catAll);
+            document.getElementById('dailyAllDisplay').textContent = formatNumberForDisplay(dailyAll);
+            document.getElementById('allDiff').textContent = formatNumberForDisplay(allDiff);
+            
+            // ALL validation
+            const allValidation = document.getElementById('allValidation');
+            if (catAll === 0 && dailyAll === 0) {
+                allValidation.textContent = 'Masukkan data untuk validasi';
+                allValidation.className = 'validation-box';
+                document.getElementById('allDiff').className = 'calc-value';
+            } else if (Math.abs(allDiff) < 1) {
+                allValidation.textContent = '✅ MATCH';
+                allValidation.className = 'validation-box success';
+                document.getElementById('allDiff').className = 'calc-value';
+            } else {
+                allValidation.textContent = '⚠️ TIDAK MATCH';
+                allValidation.className = 'validation-box error';
+                document.getElementById('allDiff').className = 'calc-value negative';
+            }
+
+            // Calculate daily totals
+            const totalDays = days.reduce((sum, day) => sum + day, 0);
+            const dailyDiff = dailyAll - totalDays;
+            
+            // Display daily calculations
+            document.getElementById('totalDailyAll').textContent = formatNumberForDisplay(dailyAll);
+            document.getElementById('totalDays').textContent = formatNumberForDisplay(totalDays);
+            document.getElementById('dailyDiff').textContent = formatNumberForDisplay(dailyDiff);
+            
+            // Daily validation
+            const dailyValidation = document.getElementById('dailyValidation');
+            if (dailyAll === 0 && totalDays === 0) {
+                dailyValidation.textContent = 'Masukkan data untuk validasi';
+                dailyValidation.className = 'validation-box';
+                document.getElementById('dailyDiff').className = 'calc-value';
+            } else if (Math.abs(dailyDiff) < 1) {
+                dailyValidation.textContent = '✅ BALANCE';
+                dailyValidation.className = 'validation-box success';
+                document.getElementById('dailyDiff').className = 'calc-value';
+            } else {
+                dailyValidation.textContent = '⚠️ TIDAK BALANCE';
+                dailyValidation.className = 'validation-box error';
+                document.getElementById('dailyDiff').className = 'calc-value negative';
+            }
+        }
+
+        function clearCategories() {
+            // Clear all category inputs
+            const categoryInputs = ['cat-ALL', 'cat-LIVEGAMES', 'cat-SPORT', 'cat-SLOT', 'cat-LOTTERY', 'cat-FISHING', 'cat-MULTIVERSE'];
+            categoryInputs.forEach(id => {
+                document.getElementById(id).value = '';
+                delete rawValues[id];
+            });
+            
+            // Recalculate
+            calculate();
+        }
+
+        function clearDaily() {
+            // Clear all daily inputs
+            document.getElementById('daily-ALL').value = '';
+            delete rawValues['daily-ALL'];
+            
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`day-${i}`).value = '';
+                delete rawValues[`day-${i}`];
+            }
+            
+            // Recalculate
+            calculate();
+        }
+
+        // Initialize
+        window.onload = () => {
+            calculate();
+        };
+    </script>
+</body>
+</html>

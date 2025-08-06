@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator BBFS - Professional Edition</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Animated background */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(255, 235, 59, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 50% 100%, rgba(255, 152, 0, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section {
+            background: linear-gradient(145deg, #2a2a2a, #1f1f1f);
+            border: 1px solid rgba(255, 0, 0, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #ffeb3b, #ff0000);
+            border-radius: 20px;
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+        }
+
+        .section:hover::before {
+            opacity: 0.3;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 15px 40px rgba(255, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        h2 {
+            margin-bottom: 25px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff0000, #ffeb3b, #ff6b00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        h3 {
+            color: #ffeb3b;
+            margin: 20px 0 15px;
+            font-size: 20px;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.3);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            color: #ffeb3b;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 0 0 5px rgba(255, 235, 59, 0.3);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: rgba(0, 0, 0, 0.5);
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #ffeb3b;
+            background: rgba(0, 0, 0, 0.7);
+            box-shadow: 
+                0 0 0 3px rgba(255, 235, 59, 0.2),
+                0 0 20px rgba(255, 235, 59, 0.3);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffeb3b' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        select option {
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+
+        button {
+            background: linear-gradient(135deg, #ff0000, #ff6b00);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 235, 59, 0.5);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 5px 15px rgba(255, 0, 0, 0.4),
+                0 0 30px rgba(255, 235, 59, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button span,
+        button i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .clear-button {
+            background: linear-gradient(135deg, #ffeb3b, #ff6b00);
+        }
+
+        .clear-button:hover {
+            box-shadow: 
+                0 5px 15px rgba(255, 235, 59, 0.4),
+                0 0 30px rgba(255, 107, 0, 0.3);
+        }
+
+        .notification-wrapper {
+            margin: 20px 0;
+        }
+
+        .notification {
+            background: linear-gradient(135deg, rgba(255, 0, 0, 0.2), rgba(255, 235, 59, 0.2));
+            border: 1px solid rgba(255, 235, 59, 0.3);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 
+                0 4px 6px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .notification span {
+            font-weight: 700;
+            color: #ffeb3b;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.5);
+        }
+
+        #result {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ffeb3b;
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 250px;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            line-height: 2;
+            word-wrap: break-word;
+            margin-bottom: 20px;
+            text-shadow: 0 0 5px rgba(255, 235, 59, 0.3);
+        }
+
+        #combinationOutput {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ffeb3b;
+            padding: 25px;
+            border-radius: 10px;
+            min-height: 350px;
+            max-height: 600px;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 2.2;
+            resize: vertical;
+            margin-bottom: 20px;
+            word-break: break-all;
+            text-shadow: 0 0 5px rgba(255, 235, 59, 0.3);
+        }
+
+        #combinationOutput:focus {
+            outline: none;
+            border-color: #ffeb3b;
+            box-shadow: 
+                0 0 0 3px rgba(255, 235, 59, 0.2),
+                0 0 20px rgba(255, 235, 59, 0.3);
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #ffeb3b;
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer p {
+            margin: 5px 0;
+            text-shadow: 0 0 10px rgba(255, 235, 59, 0.3);
+        }
+
+        .footer .copyright {
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: linear-gradient(135deg, #ff0000, #ffeb3b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer .year {
+            color: #ff6b00;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ff0000, #ffeb3b);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff6b00, #ffeb3b);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            h2 {
+                font-size: 24px;
+            }
+        }
+
+        /* Loading animation */
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Glow animation */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 235, 59, 0.8), 0 0 30px rgba(255, 0, 0, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(255, 0, 0, 0.5); }
+        }
+
+        .section {
+            animation: glow 3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <h2><i class="fas fa-dice"></i> Generator BBFS</h2>
+            <form id="bbfsForm">
+                <div class="input-group">
+                    <label for="bbfsInput">Masukkan Angka BBFS (maksimal 9 digit):</label>
+                    <input type="text" id="bbfsInput" name="bbfsInput" maxlength="9" pattern="[0-9]*" required>
+                </div>
+                <div class="input-group">
+                    <label for="digitInput">Pilih Tipe Angka:</label>
+                    <select id="digitInput" name="digitInput" required>
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="5">5D (5 Digit)</option>
+                        <option value="4">4D (4 Digit)</option>
+                        <option value="3">3D (3 Digit)</option>
+                        <option value="2">2D (2 Digit)</option>
+                    </select>
+                </div>
+            </form>
+            <div class="notification-wrapper">
+                <div class="notification">
+                    Jumlah: <span id="totalCombinations">–</span> | Waktu: <span id="executionTime">0</span> detik
+                </div>
+            </div>
+            <center>
+                <h3>Hasil:</h3>
+                <p id="result"></p>
+                <button type="button" onclick="generateBBFS()">
+                    <i class="icon fas fa-check"></i> <span>Generate</span>
+                </button>
+                <button type="button" class="clear-button" onclick="clearBBFS()">
+                    <i class="icon fas fa-times"></i> <span>Clear Number</span>
+                </button>
+            </center>
+        </div>
+        
+        <div class="section center">
+            <h2><i class="fas fa-layer-group"></i> Kombinasi BBFS</h2>
+            <form id="combinationForm">
+                <div class="input-group">
+                    <label for="combinationInput">Masukkan Angka :</label>
+                    <input type="text" id="combinationInput" name="combinationInput" maxlength="9" pattern="[0-9]*" required>
+                </div>
+                <div class="input-group">
+                    <label for="combinationType">Pilih Tipe Kombinasi:</label>
+                    <select id="combinationType" name="combinationType" required>
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="5">5D (5 Digit)</option>
+                        <option value="4">4D (4 Digit)</option>
+                        <option value="3">3D (3 Digit)</option>
+                        <option value="2">2D (2 Digit)</option>
+                    </select>
+                </div>
+            </form>
+            <div class="notification-wrapper">
+                <div class="notification">
+                    Jumlah kombinasi dari angka: <span id="notification">–</span>
+                </div>
+            </div>
+            <h3>Hasil:</h3>
+            <textarea id="combinationOutput" readonly></textarea>
+            <center>
+                <button type="button" onclick="generateCombinations()">
+                    <i class="icon fas fa-check"></i> <span>Generate</span>
+                </button>
+                <button type="button" class="clear-button" onclick="clearCombinations()">
+                    <i class="icon fas fa-times"></i> <span>Clear Number</span>
+                </button>
+            </center>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p class="copyright">© 2025 BBFS Generator Togel</p>
+
+    </footer>
+
+    <script>
+        // Fungsi untuk mendapatkan kombinasi dengan panjang tertentu
+        function getCombinations(arr, length) {
+            if (length === 1) return arr.map(el => [el]);
+            
+            const result = [];
+            arr.forEach((el, i) => {
+                const smallerCombinations = getCombinations(arr.slice(i + 1), length - 1);
+                smallerCombinations.forEach(combination => {
+                    result.push([el, ...combination]);
+                });
+            });
+            
+            return result;
+        }
+
+        // Fungsi untuk mendapatkan permutasi dari array
+        function getPermutations(arr) {
+            if (arr.length <= 1) return [arr];
+            
+            const result = [];
+            for (let i = 0; i < arr.length; i++) {
+                const currentElement = arr[i];
+                const remainingElements = arr.slice(0, i).concat(arr.slice(i + 1));
+                const remainingPermutations = getPermutations(remainingElements);
+                
+                for (let j = 0; j < remainingPermutations.length; j++) {
+                    result.push([currentElement].concat(remainingPermutations[j]));
+                }
+            }
+            
+            return result;
+        }
+
+        // Generator BBFS
+        function generateBBFS() {
+            const startTime = performance.now();
+            const bbfsInput = document.getElementById('bbfsInput').value.trim();
+            const digitInput = document.getElementById('digitInput').value;
+            const resultElement = document.getElementById('result');
+            const totalElement = document.getElementById('totalCombinations');
+            const timeElement = document.getElementById('executionTime');
+            
+            // Validasi input
+            if (!bbfsInput || bbfsInput.length < 2) {
+                alert('Masukkan minimal 2 digit angka!');
+                return;
+            }
+            
+            if (!/^\d+$/.test(bbfsInput)) {
+                alert('Hanya masukkan angka saja!');
+                return;
+            }
+            
+            if (!digitInput) {
+                alert('Pilih tipe angka terlebih dahulu!');
+                return;
+            }
+            
+            const digitCount = parseInt(digitInput);
+            
+            if (digitCount > bbfsInput.length) {
+                alert('Jumlah digit yang diminta lebih besar dari angka yang tersedia!');
+                return;
+            }
+            
+            // Konversi string ke array karakter unik
+            const uniqueDigits = [...new Set(bbfsInput.split(''))];
+            
+            // Generate kombinasi
+            const combinations = getCombinations(uniqueDigits, digitCount);
+            
+            // Generate permutasi untuk setiap kombinasi
+            let allResults = [];
+            combinations.forEach(combination => {
+                const permutations = getPermutations(combination);
+                permutations.forEach(perm => {
+                    allResults.push(perm.join(''));
+                });
+            });
+            
+            // Hapus duplikat jika ada
+            allResults = [...new Set(allResults)];
+            
+            // Sort hasil
+            allResults.sort();
+            
+            // Tampilkan hasil
+            resultElement.textContent = allResults.join(' ');
+            totalElement.textContent = allResults.length.toLocaleString('id-ID');
+            
+            const endTime = performance.now();
+            const executionTime = ((endTime - startTime) / 1000).toFixed(3);
+            timeElement.textContent = executionTime;
+        }
+
+        // Clear BBFS
+        function clearBBFS() {
+            document.getElementById('bbfsInput').value = '';
+            document.getElementById('digitInput').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('totalCombinations').textContent = '–';
+            document.getElementById('executionTime').textContent = '0';
+        }
+
+        // Generate Combinations (2D, 3D, 4D, 5D)
+        function generateCombinations() {
+            const input = document.getElementById('combinationInput').value.trim();
+            const combinationType = document.getElementById('combinationType').value;
+            const outputElement = document.getElementById('combinationOutput');
+            const notificationElement = document.getElementById('notification');
+            
+            // Validasi input
+            if (!input) {
+                alert('Masukkan angka terlebih dahulu!');
+                return;
+            }
+            
+            if (!/^\d+$/.test(input)) {
+                alert('Hanya masukkan angka saja!');
+                return;
+            }
+            
+            if (!combinationType) {
+                alert('Pilih tipe kombinasi terlebih dahulu!');
+                return;
+            }
+            
+            const digitCount = parseInt(combinationType);
+            
+            // Untuk kombinasi dengan pengulangan (seperti 1111, 1112, dst)
+            // kita akan menggunakan fungsi berbeda
+            const digits = input.split('');
+            let allResults = [];
+            
+            // Generate semua kombinasi dengan pengulangan
+            function generateWithRepetition(arr, length) {
+                if (length === 1) return arr.map(el => [el]);
+                
+                const result = [];
+                const smallerCombinations = generateWithRepetition(arr, length - 1);
+                
+                for (let i = 0; i < arr.length; i++) {
+                    for (let j = 0; j < smallerCombinations.length; j++) {
+                        result.push([arr[i], ...smallerCombinations[j]]);
+                    }
+                }
+                
+                return result;
+            }
+            
+            // Generate kombinasi dengan pengulangan
+            const combinations = generateWithRepetition([...new Set(digits)], digitCount);
+            
+            // Convert ke string
+            combinations.forEach(combination => {
+                allResults.push(combination.join(''));
+            });
+            
+            // Sort hasil
+            allResults.sort();
+            
+            // Format output dengan * sebagai pemisah dan 10 per baris
+            let formattedOutput = '';
+            for (let i = 0; i < allResults.length; i += 10) {
+                const row = allResults.slice(i, Math.min(i + 10, allResults.length));
+                formattedOutput += row.join('*');
+                if (i + 10 < allResults.length) {
+                    formattedOutput += '*\n';
+                }
+            }
+            
+            // Tampilkan hasil
+            outputElement.value = formattedOutput;
+            notificationElement.textContent = `${allResults.length.toLocaleString('id-ID')} (${digitCount}D)`;
+        }
+
+        // Clear Combinations
+        function clearCombinations() {
+            document.getElementById('combinationInput').value = '';
+            document.getElementById('combinationType').value = '';
+            document.getElementById('combinationOutput').value = '';
+            document.getElementById('notification').textContent = '–';
+        }
+
+        // Validasi input hanya angka
+        document.getElementById('bbfsInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('combinationInput').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Enter key triggers generate
+        document.getElementById('bbfsInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateBBFS();
+            }
+        });
+
+        document.getElementById('digitInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateBBFS();
+            }
+        });
+
+        document.getElementById('digitInput').addEventListener('change', function(e) {
+            const input = document.getElementById('bbfsInput').value.trim();
+            if (input) {
+                generateBBFS();
+            }
+        });
+
+        document.getElementById('combinationInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateCombinations();
+            }
+        });
+
+        document.getElementById('combinationType').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateCombinations();
+            }
+        });
+
+        document.getElementById('combinationType').addEventListener('change', function(e) {
+            const input = document.getElementById('combinationInput').value.trim();
+            if (input) {
+                generateCombinations();
+            }
+        });
+    </script>
+</body>
+</html>

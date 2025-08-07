@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shortcut Pro</title>
+    <!-- Favicon -->
+    <link rel="icon" href="https://cdn.areabermain.club/assets/cdn/az1/2025/08/08/20250808/8ec9df21795d4fffc141dcfdee036300/chatgpt-image-aug-8-2025-02-39-37-am.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
@@ -32,6 +34,8 @@
             padding: 20px;
             overflow-x: hidden;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
@@ -39,6 +43,7 @@
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            flex: 1;
         }
         
         /* Matrix background */
@@ -161,6 +166,7 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 30px;
+            margin-bottom: 50px;
         }
         
         .shortcut-item {
@@ -220,6 +226,22 @@
         
         .shortcut-item:hover .shortcut-name {
             color: #eee;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--menu-color);
+            font-size: 0.9rem;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin-top: auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        footer p {
+            margin: 5px 0;
         }
         
         /* Responsive styles */
@@ -491,6 +513,11 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Shortcut Pro. All Rights Reserved. | Semua hak cipta dilindungi.</p>
+    </footer>
+
     <script>
         // Matrix background
         const canvas = document.getElementById('matrix');
@@ -610,5 +637,3 @@
     </script>
 </body>
 </html>
-
-

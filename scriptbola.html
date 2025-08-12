@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Prediksi Bola TVTOTO</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .generator-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .input-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid #ffcc00;
+        }
+
+        .input-section h2 {
+            color: #ffcc00;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #ffcc00;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #660000;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 16px;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #ffcc00;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #660000;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+        }
+
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ffcc00;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #990000, #660000);
+            color: #ffcc00;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .example-text {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #cccccc;
+            margin-top: 10px;
+        }
+
+        .output-section {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid #ffcc00;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .copy-btn:hover {
+            background: #218838;
+        }
+
+        #htmlOutput {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #f8f8f2;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .preview {
+            margin-top: 20px;
+            border: 2px solid #ffcc00;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .preview h3 {
+            background: #ffcc00;
+            color: #000;
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .preview-content {
+            background: white;
+            padding: 0;
+            min-height: 200px;
+        }
+
+        /* Styles untuk preview hasil */
+        .tvtoto-preview {
+            font-family: 'Poppins', sans-serif;
+            background-color: #990000;
+            color: #ffffff;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .tvtoto-preview .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .tvtoto-preview .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ffcc00;
+        }
+
+        .tvtoto-preview .header h1 {
+            font-size: 28px;
+            color: #ffcc00;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .tvtoto-preview .header .date {
+            font-size: 18px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .tvtoto-preview .marquee {
+            background-color: #660000;
+            color: #ffcc00;
+            padding: 10px;
+            margin-bottom: 25px;
+            border-radius: 5px;
+            font-weight: 700;
+            text-align: center;
+            font-size: 18px;
+            text-transform: uppercase;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .tvtoto-preview .marquee p {
+            display: inline-block;
+            animation: marquee 15s linear infinite;
+            padding-left: 100%;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+        .tvtoto-preview .league {
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .tvtoto-preview .league-title {
+            background: linear-gradient(90deg, #660000, #990000);
+            color: #ffffff;
+            padding: 12px 15px;
+            font-size: 18px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom: 1px solid #ff3333;
+        }
+
+        .tvtoto-preview table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .tvtoto-preview th {
+            background-color: #660000;
+            color: #ffcc00;
+            padding: 12px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .tvtoto-preview td {
+            padding: 10px 12px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tvtoto-preview tr:nth-child(even) {
+            background-color: rgba(102, 0, 0, 0.3);
+        }
+
+        .tvtoto-preview tr:hover {
+            background-color: rgba(204, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="generator-container">
+        <div class="input-section">
+            <h2>🏆 Generator Prediksi Bola TVTOTO</h2>
+            
+            <div class="form-group">
+                <label>Tanggal Prediksi:</label>
+                <input type="text" id="dateInput" placeholder="Otomatis: Hari ini - Besok">
+                <div style="font-size: 12px; color: #cccccc; margin-top: 5px;">
+                    💡 Kosongkan untuk menggunakan tanggal otomatis (hari ini - besok)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Input Jadwal & Prediksi:</label>
+                <textarea id="scheduleInput" placeholder="UEFA EUROPA LEAGUE QUALIFIERS
+13/08 01:45 WIB Shelbourne VS Rijeka 0 : 2
+
+RUSSIA CUP
+12/08 20:15 WIB Akron Tolyatti VS CSKA Moscow 1 : 3
+12/08 22:30 WIB Zenit St. Petersburg VS Rubin Kazan 4 : 0"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <button class="btn" onclick="clearInput()" style=" flex: 1;">🗑️ Hapus</button>
+            </div>
+        </div>
+
+        <div class="output-section" id="outputSection">
+            <button class="copy-btn" onclick="copyHTML()" id="copyBtn">📋 Copy HTML</button>
+            <div id="copyStatus" style="display: none; color: #28a745; font-weight: bold; margin-bottom: 10px;">✅ HTML berhasil disalin ke clipboard!</div>
+            <div id="htmlOutput"></div>
+            
+            <div class="preview">
+                <h3>👀 Preview Hasil</h3>
+                <div class="preview-content">
+                    <div id="previewOutput"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getCurrentDate() {
+            const now = new Date();
+            const months = [
+                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            ];
+            
+            const today = now.getDate();
+            const currentMonth = months[now.getMonth()];
+            const currentYear = now.getFullYear();
+            
+            // Buat tanggal besok
+            const tomorrow = new Date(now);
+            tomorrow.setDate(today + 1);
+            
+            const tomorrowDay = tomorrow.getDate();
+            const tomorrowMonth = months[tomorrow.getMonth()];
+            const tomorrowYear = tomorrow.getFullYear();
+            
+            // Cek apakah besok masih bulan yang sama
+            if (now.getMonth() === tomorrow.getMonth() && now.getFullYear() === tomorrow.getFullYear()) {
+                // Bulan dan tahun sama
+                return `${today} - ${tomorrowDay} ${currentMonth} ${currentYear}`;
+            } else if (now.getFullYear() === tomorrow.getFullYear()) {
+                // Tahun sama tapi bulan berbeda
+                return `${today} ${currentMonth} - ${tomorrowDay} ${tomorrowMonth} ${currentYear}`;
+            } else {
+                // Tahun berbeda (misal 31 Des - 1 Jan)
+                return `${today} ${currentMonth} ${currentYear} - ${tomorrowDay} ${tomorrowMonth} ${tomorrowYear}`;
+            }
+        }
+
+        function parseScheduleInput(input) {
+            const lines = input.trim().split('\n');
+            const leagues = [];
+            let currentLeague = null;
+            
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+                
+                // Cek apakah ini nama liga (tidak mengandung format waktu)
+                if (!line.match(/\d{2}\/\d{2}\s+\d{2}:\d{2}\s+WIB/)) {
+                    if (currentLeague && currentLeague.matches.length > 0) {
+                        leagues.push(currentLeague);
+                    }
+                    currentLeague = {
+                        name: line,
+                        matches: []
+                    };
+                } else {
+                    // Parse pertandingan
+                    const matchRegex = /(\d{2}\/\d{2}\s+\d{2}:\d{2}\s+WIB)\s+(.+?)\s+(\d+\s*:\s*\d+)$/;
+                    const match = line.match(matchRegex);
+                    
+                    if (match && currentLeague) {
+                        const [, time, teams, score] = match;
+                        currentLeague.matches.push({
+                            time: time,
+                            teams: teams.trim(),
+                            score: score.trim()
+                        });
+                    }
+                }
+            }
+            
+            if (currentLeague && currentLeague.matches.length > 0) {
+                leagues.push(currentLeague);
+            }
+            
+            return leagues;
+        }
+
+        function generateHTML() {
+            let dateInput = document.getElementById('dateInput').value.trim();
+            
+            // Jika input tanggal kosong, gunakan tanggal otomatis
+            if (!dateInput) {
+                dateInput = getCurrentDate();
+            }
+            
+            const scheduleInput = document.getElementById('scheduleInput').value.trim();
+            
+            if (!scheduleInput) {
+                alert('Harap masukkan jadwal prediksi!');
+                return;
+            }
+            
+            const leagues = parseScheduleInput(scheduleInput);
+            
+            if (leagues.length === 0) {
+                alert('Format input tidak valid! Pastikan mengikuti format yang benar.');
+                return;
+            }
+            
+            // Generate HTML
+            let leaguesHTML = '';
+            
+            for (let league of leagues) {
+                let matchesHTML = '';
+                for (let match of league.matches) {
+                    matchesHTML += `
+                    <tr>
+                        <td class="time">${match.time}</td>
+                        <td class="match">${match.teams}</td>
+                        <td class="score">${match.score}</td>
+                    </tr>`;
+                }
+                
+                leaguesHTML += `
+                <!-- ${league.name} -->
+                <div class="league">
+                    <div class="league-title"><em>${league.name}</em></div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Waktu</th>
+                                <th>Pertandingan</th>
+                                <th>Prediksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>${matchesHTML}
+                        </tbody>
+                    </table>
+                </div>`;
+            }
+            
+            const fullHTML = `<div>
+<p></p>
+</div>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+font-family: 'Poppins', sans-serif;
+background-color: #990000;
+color: #ffffff;
+padding: 20px;
+line-height: 1.6;
+}
+
+.container {
+max-width: 1000px;
+margin: 0 auto;
+background-color: rgba(0, 0, 0, 0.3);
+border-radius: 15px;
+padding: 20px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.header {
+text-align: center;
+margin-bottom: 30px;
+padding-bottom: 15px;
+border-bottom: 2px solid #ffcc00;
+}
+
+.header h1 {
+font-size: 28px;
+color: #ffcc00;
+text-transform: uppercase;
+margin-bottom: 10px;
+}
+
+.header .date {
+font-size: 18px;
+color: #ffffff;
+font-weight: 600;
+}
+
+.marquee {
+background-color: #660000;
+color: #ffcc00;
+padding: 10px;
+margin-bottom: 25px;
+border-radius: 5px;
+font-weight: 700;
+text-align: center;
+font-size: 18px;
+text-transform: uppercase;
+overflow: hidden;
+white-space: nowrap;
+}
+
+.marquee p {
+display: inline-block;
+animation: marquee 15s linear infinite;
+padding-left: 100%;
+}
+
+@keyframes marquee {
+0% { transform: translateX(0); }
+100% { transform: translateX(-100%); }
+}
+
+.league {
+margin-bottom: 30px;
+background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.league-title {
+background: linear-gradient(90deg, #660000, #990000);
+color: #ffffff;
+padding: 12px 15px;
+font-size: 18px;
+font-weight: 700;
+text-transform: uppercase;
+border-bottom: 1px solid #ff3333;
+}
+
+.league-info {
+padding: 8px 15px;
+background-color: rgba(0, 0, 0, 0.2);
+font-size: 14px;
+color: #cccccc;
+font-style: italic;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+}
+
+th {
+background-color: #660000;
+color: #ffcc00;
+padding: 12px;
+text-align: center;
+font-weight: 600;
+}
+
+td {
+padding: 10px 12px;
+text-align: center;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+tr:nth-child(even) {
+background-color: rgba(102, 0, 0, 0.3);
+}
+
+tr:hover {
+background-color: rgba(204, 0, 0, 0.3);
+}
+
+.prediction {
+font-weight: 700;
+color: #ffcc00;
+}
+
+@media (max-width: 768px) {
+.container {
+padding: 15px;
+}
+
+th, td {
+padding: 8px 10px;
+font-size: 14px;
+}
+
+.league-title {
+font-size: 16px;
+}
+}
+
+@media (max-width: 480px) {
+.header h1 {
+font-size: 22px;
+}
+
+.marquee {
+font-size: 16px;
+padding: 8px;
+}
+
+th, td {
+padding: 6px 8px;
+font-size: 12px;
+}
+}
+</style>
+<div>
+<div class="container">
+<div class="header">
+<h1><span style="font-size: 30pt;">Prediksi Bola TVTOTO</span></h1>
+<div class="date"><span style="font-size: 30pt;">${dateInput}</span></div>
+</div>
+<div class="marquee">
+<p><span style="font-size: 20pt;">SELAMAT DATANG DI PREDIKSI BOLA TERBARU TVTOTO | PREDIKSI TVTOTO ${dateInput}</span></p>
+</div>
+</div>
+</div>
+
+${leaguesHTML}`;
+            
+            // Tampilkan hasil
+            document.getElementById('htmlOutput').textContent = fullHTML;
+            document.getElementById('previewOutput').innerHTML = `<div class="tvtoto-preview">${fullHTML}</div>`;
+            document.getElementById('outputSection').style.display = 'block';
+            
+            // Scroll ke hasil
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyHTML() {
+            const htmlContent = document.getElementById('htmlOutput').textContent;
+            
+            if (!htmlContent) {
+                showCopyStatus('❌ Tidak ada HTML untuk disalin!', '#dc3545');
+                return;
+            }
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(htmlContent).then(() => {
+                    showCopyStatus('✅ HTML berhasil disalin ke clipboard!', '#28a745');
+                }).catch(err => {
+                    console.error('Gagal menyalin: ', err);
+                    fallbackCopyTextToClipboard(htmlContent);
+                });
+            } else {
+                fallbackCopyTextToClipboard(htmlContent);
+            }
+        }
+
+        function showCopyStatus(message, color) {
+            const statusDiv = document.getElementById('copyStatus');
+            statusDiv.textContent = message;
+            statusDiv.style.color = color;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showCopyStatus('✅ HTML berhasil disalin ke clipboard!', '#28a745');
+                } else {
+                    showCopyStatus('❌ Gagal menyalin HTML', '#dc3545');
+                }
+            } catch (err) {
+                showCopyStatus('❌ Gagal menyalin HTML', '#dc3545');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function clearInput() {
+            document.getElementById('scheduleInput').value = '';
+            document.getElementById('htmlOutput').textContent = '';
+            document.getElementById('previewOutput').innerHTML = '';
+            document.getElementById('copyStatus').style.display = 'none';
+        }
+
+        // Set default date saat load dan tampilkan preview tanggal
+        window.addEventListener('load', function() {
+            const currentDateFormatted = getCurrentDate();
+            document.getElementById('dateInput').placeholder = `Contoh: ${currentDateFormatted}`;
+            
+            // Tampilkan tanggal hari ini di console untuk referensi
+            console.log('Format tanggal otomatis:', currentDateFormatted);
+        });
+
+        // Auto-generate saat user mengetik
+        let timeoutId;
+        document.getElementById('scheduleInput').addEventListener('input', function() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(() => {
+                const input = this.value.trim();
+                if (input.length > 10) { // Generate otomatis jika ada input
+                    generateHTML();
+                } else {
+                    // Clear output jika input kosong/sedikit
+                    document.getElementById('htmlOutput').textContent = '';
+                    document.getElementById('previewOutput').innerHTML = '';
+                }
+            }, 500); // Delay lebih pendek untuk respon yang lebih cepat
+        });
+    </script>
+</body>
+</html>

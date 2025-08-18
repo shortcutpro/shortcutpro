@@ -457,167 +457,190 @@ RUSSIA CUP
             
             const fullHTML = `<div>
 <p></p>
-</div>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet" />
 <style>
+/* Reset & dasar */
 * {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
 body {
-font-family: 'Poppins', sans-serif;
-background-color: #990000;
-color: #ffffff;
-padding: 20px;
-line-height: 1.6;
+    background-color: #990000;
+    color: #ffffff;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    line-height: 1.6;
 }
 
 .container {
-max-width: 1000px;
-margin: 0 auto;
-background-color: rgba(0, 0, 0, 0.3);
-border-radius: 15px;
-padding: 20px;
-box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
 
+/* Header */
 .header {
-text-align: center;
-margin-bottom: 30px;
-padding-bottom: 15px;
-border-bottom: 2px solid #ffcc00;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #ffcc00;
 }
 
 .header h1 {
-font-size: 28px;
-color: #ffcc00;
-text-transform: uppercase;
-margin-bottom: 10px;
+    font-size: 28px;
+    color: #ffcc00;
+    text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .header .date {
-font-size: 18px;
-color: #ffffff;
-font-weight: 600;
+    font-size: 18px;
+    color: #ffffff;
+    font-weight: 600;
 }
 
+/* Marquee */
 .marquee {
-background-color: #660000;
-color: #ffcc00;
-padding: 10px;
-margin-bottom: 25px;
-border-radius: 5px;
-font-weight: 700;
-text-align: center;
-font-size: 18px;
-text-transform: uppercase;
-overflow: hidden;
-white-space: nowrap;
+    background-color: #660000;
+    color: #ffcc00;
+    padding: 10px;
+    margin-bottom: 25px;
+    border-radius: 5px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 18px;
+    text-transform: uppercase;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .marquee p {
-display: inline-block;
-animation: marquee 15s linear infinite;
-padding-left: 100%;
+    display: inline-block;
+    animation: marquee 15s linear infinite;
+    padding-left: 100%;
 }
 
 @keyframes marquee {
-0% { transform: translateX(0); }
-100% { transform: translateX(-100%); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
 }
 
+/* League Box */
 .league {
-margin-bottom: 30px;
-background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
-border-radius: 10px;
-overflow: hidden;
-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .league-title {
-background: linear-gradient(90deg, #660000, #990000);
-color: #ffffff;
-padding: 12px 15px;
-font-size: 18px;
-font-weight: 700;
-text-transform: uppercase;
-border-bottom: 1px solid #ff3333;
+    background: linear-gradient(90deg, #660000, #990000);
+    color: #ffffff;
+    padding: 12px 15px;
+    font-size: 18px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ff3333;
+}
+
+.league-title em {
+    font-style: normal;
+    font-weight: 700;
 }
 
 .league-info {
-padding: 8px 15px;
-background-color: rgba(0, 0, 0, 0.2);
-font-size: 14px;
-color: #cccccc;
-font-style: italic;
+    padding: 8px 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    color: #cccccc;
+    font-style: italic;
 }
 
+/* Tabel */
 table {
-width: 100%;
-border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* Kolom sejajar */
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    word-wrap: break-word; /* Agar teks panjang tidak merusak layout */
 }
 
 th {
-background-color: #660000;
-color: #ffcc00;
-padding: 12px;
-text-align: center;
-font-weight: 600;
-}
-
-td {
-padding: 10px 12px;
-text-align: center;
-border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #660000;
+    color: #ffcc00;
+    font-weight: 600;
 }
 
 tr:nth-child(even) {
-background-color: rgba(102, 0, 0, 0.3);
+    background-color: rgba(102, 0, 0, 0.3);
 }
 
 tr:hover {
-background-color: rgba(204, 0, 0, 0.3);
+    background-color: rgba(204, 0, 0, 0.3);
 }
 
-.prediction {
-font-weight: 700;
-color: #ffcc00;
+.time {
+    width: 10%;
 }
 
+.match {
+    width: 80%;
+    text-align: center;
+    padding-left: 10px;
+}
+
+.score {
+    width: 10%;
+    font-weight: 700;
+    color: #ffcc00;
+}
+
+/* Responsif */
 @media (max-width: 768px) {
-.container {
-padding: 15px;
-}
+    .container {
+        padding: 15px;
+    }
 
-th, td {
-padding: 8px 10px;
-font-size: 14px;
-}
+    th, td {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
 
-.league-title {
-font-size: 16px;
-}
+    .league-title {
+        font-size: 16px;
+    }
 }
 
 @media (max-width: 480px) {
-.header h1 {
-font-size: 22px;
-}
+    .header h1 {
+        font-size: 22px;
+    }
 
-.marquee {
-font-size: 16px;
-padding: 8px;
-}
+    .marquee {
+        font-size: 16px;
+        padding: 8px;
+    }
 
-th, td {
-padding: 6px 8px;
-font-size: 12px;
+    th, td {
+        padding: 6px 8px;
+        font-size: 10px;
+    }
 }
-}
-</style>
-<div>
+</span></style>
 <div class="container">
 <div class="header">
 <h1><span style="font-size: 30pt;">Prediksi Bola TVTOTO</span></h1>
@@ -728,4 +751,5 @@ ${leaguesHTML}`;
         });
     </script>
 </body>
+
 </html>

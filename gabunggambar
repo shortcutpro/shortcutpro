@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabung Gambar</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="icon" href="data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22&gt;&lt;text y=%22.9em%22 font-size=%2290%22 fill=%22%234361ee%22&gt;⚡&lt;/text&gt;&lt;/svg&gt;">
+<style>
+/* ======= VARIABEL WARNA BARU ======= */
+:root {
+  --primary-red: #8B0000;
+  --primary-gold: #D4AF37;
+  --secondary-red: #A52A2A;
+  --accent-gold: #FFD700;
+  --dark-bg: #1A1A1A;
+  --text-light: #F5F5F5;
+  --border: #444444;
+  --error: #FF5252;
+  --success: #4CAF50;
+  --warning: #FF9800;
+  --reset-bg: #8B0000;
+  --reset-hover: #A52A2A;
+  --panel-bg: rgba(35, 0, 0, 0.8);
+  --input-bg: rgba(55, 0, 0, 0.6);
+}
+
+/* ======= STYLING UMUM ======= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+              url('https://cdn.areabermain.club/assets/cdn/az9/2023/12/16/20231216/f82bd18f48850e4f1b12b30900ad2efe/TVTOTO_BG_RTP_0.jpg') no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+  padding: 20px;
+  color: var(--text-light);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* ======= HEADER ======= */
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-size: 2.2rem;
+  color: var(--accent-gold);
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+h1 i {
+  color: var(--accent-gold);
+}
+
+/* ======= PANEL ======= */
+.panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--primary-gold);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.panel-title i {
+  color: var(--accent-gold);
+}
+
+.url-input-section {
+  margin-bottom: 15px;
+}
+
+.url-input-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.url-input-header h3 {
+  color: var(--accent-gold);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1rem;
+}
+
+.supported-services {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.service-badge {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid var(--primary-gold);
+  border-radius: 15px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+.url-input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.url-input-group textarea {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: var(--input-bg);
+  color: var(--text-light);
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  font-weight: 500;
+  min-height: 120px;
+  resize: vertical;
+  transition: all 0.3s;
+}
+
+.url-input-group textarea::placeholder {
+  color: rgba(245, 245, 245, 0.6);
+}
+
+.url-input-group textarea:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+.url-input-group .input-hint {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: rgba(245, 245, 245, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings {
+  margin: 20px 0;
+}
+
+.setting-group {
+  margin-bottom: 15px;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--accent-gold);
+  font-size: 1rem;
+}
+
+.setting-group select {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 8px;
+  background: var(--input-bg);
+  color: var(--text-light);
+  border: 1px solid var(--border);
+  font-weight: 500;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.setting-group select:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+.preview-container {
+  margin-top: 20px;
+}
+
+.counter {
+  margin-bottom: 15px;
+  font-size: 1rem;
+  background: rgba(35, 0, 0, 0.7);
+  padding: 10px 15px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+.image-previews {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 15px;
+  min-height: 150px;
+}
+
+.preview-item {
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s;
+  aspect-ratio: 1/1;
+  border: 1px solid var(--border);
+}
+
+.preview-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+  border-color: var(--primary-gold);
+}
+
+.preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.preview-item .remove-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(139, 0, 0, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.preview-item .remove-btn:hover {
+  background: rgba(165, 42, 42, 1);
+  transform: scale(1.1);
+}
+
+.result-container {
+  text-align: center;
+  margin-top: 25px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(35, 0, 0, 0.7);
+  border-radius: 12px;
+  border: 2px dashed var(--border);
+}
+
+#resultImage {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  display: none;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+#resultImage:hover {
+  transform: scale(1.03);
+}
+
+.placeholder {
+  color: rgba(245, 245, 245, 0.7);
+  font-style: italic;
+  padding: 25px;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.link-container {
+  margin-top: 20px;
+  width: 100%;
+  background: rgba(35, 0, 0, 0.7);
+  border-radius: 10px;
+  padding: 20px;
+  display: none;
+  animation: fadeIn 0.5s ease;
+}
+
+.link-container h4 {
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.image-link {
+  display: flex;
+  gap: 10px;
+}
+
+.image-link input {
+  flex: 1;
+  padding: 12px 15px;
+  border-radius: 8px;
+  border: none;
+  background: var(--input-bg);
+  color: var(--text-light);
+  font-size: 0.9rem;
+  border: 1px solid var(--border);
+  font-weight: 500;
+}
+
+.image-link button {
+  padding: 12px 18px;
+  background: var(--primary-red);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.image-link button:hover {
+  background: var(--secondary-red);
+  transform: translateY(-2px);
+}
+
+.download-btn {
+  margin-top: 20px;
+  padding: 15px 25px;
+  background: linear-gradient(to right, var(--primary-red), var(--primary-gold));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  display: none;
+  border: 1px solid var(--border);
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.download-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ======= TOMBOL RESET ======= */
+.reset-btn {
+  margin-top: 20px;
+  padding: 15px 25px;
+  background: linear-gradient(to right, var(--reset-bg), var(--primary-red));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  justify-content: center;
+}
+
+.reset-btn:hover {
+  background: linear-gradient(to right, var(--reset-hover), var(--secondary-red));
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ======= ANIMASI ======= */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ======= LIGHTBOX ======= */
+.lightbox {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.95);
+  z-index: 2000;
+  overflow: auto;
+  text-align: center;
+}
+
+.lightbox-content {
+  margin: 5% auto;
+  max-width: 90%;
+  max-height: 85%;
+  display: block;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  color: #f1f1f1;
+  font-size: 35px;
+  font-weight: bold;
+  transition: 0.3s;
+  cursor: pointer;
+  z-index: 2001;
+}
+
+.close-btn:hover {
+  color: #bbb;
+  text-decoration: none;
+}
+
+/* ======= NOTIFIKASI ======= */
+.copy-notification {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background: var(--success);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 8px;
+  z-index: 1000;
+  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.copy-notification.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.copy-notification i {
+  font-size: 18px;
+}
+
+/* ======= RESPONSIVE ======= */
+@media (max-width: 768px) {
+  .header {
+    padding: 15px;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  .panel {
+    padding: 15px;
+  }
+  
+  .image-previews {
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  }
+  
+  .download-btn, .reset-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+  
+  .image-previews {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+  
+  .result-container {
+    padding: 15px;
+  }
+  
+  .panel-title {
+    font-size: 1.1rem;
+  }
+  
+  .service-badge {
+    padding: 4px 8px;
+    font-size: 0.7rem;
+  }
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1><i class="fas fa-bolt"></i> Gabung Gambar <i class="fas fa-bolt"></i></h1>
+    <p style="text-align: center; color: var(--accent-gold); font-weight: 500; margin-top: 3px; font-size: 1rem;">Penggabung Gambar Otomatis</p>
+  </div>
+
+  <!-- Aplikasi Penggabung Gambar -->
+  <div id="merger-app">
+    <div class="panel">
+      <h2 class="panel-title">
+        <i class="fas fa-cogs"></i> Input &amp; Pengaturan
+      </h2>
+      
+      <div class="url-input-section">
+        <div class="url-input-group">
+          <textarea id="mergerImageUrls" placeholder="Masukkan URL gambar (pisahkan dengan koma atau enter). Contoh: https://prnt.sc/abc123, https://sleekshot.app/def456"></textarea>
+          <div class="input-hint">
+            <i class="fas fa-info-circle"></i> Gambar akan otomatis digabungkan ketika URL dimasukkan
+          </div>
+        </div>
+        
+        <div class="supported-services">
+          <span class="service-badge">
+            <i class="fas fa-check-circle"></i> prnt.sc
+          </span>
+          <span class="service-badge">
+            <i class="fas fa-check-circle"></i> sleekshot.app
+          </span>
+          <span class="service-badge">
+            <i class="fas fa-check-circle"></i> imghostr.com
+          </span>
+          <span class="service-badge">
+            <i class="fas fa-check-circle"></i> imgur.com
+          </span>
+          <span class="service-badge">
+            <i class="fas fa-check-circle"></i> gambar langsung
+          </span>
+        </div>
+      </div>
+      
+      <div class="settings">
+        <h2 class="panel-title">
+          <i class="fas fa-sliders-h"></i> Pengaturan Gabungan
+        </h2>
+        
+        <div class="setting-group">
+          <label for="layout">Tata Letak Gambar:</label>
+          <select id="layout">
+            <option value="horizontal">Horizontal (Sejajar)</option>
+            <option value="vertical">Vertikal (Bertumpuk)</option>
+            <option value="grid2">Grid 2 Kolom</option>
+            <option value="grid3">Grid 3 Kolom</option>
+          </select>
+        </div>
+        
+        <div class="setting-group">
+          <label for="spacing">Jarak Antar Gambar:</label>
+          <select id="spacing">
+            <option value="0">0px</option>
+            <option value="5" selected>5px</option>
+            <option value="10">10px</option>
+            <option value="15">15px</option>
+            <option value="20">20px</option>
+          </select>
+        </div>
+        
+        <div class="setting-group">
+          <label for="background">Latar Belakang:</label>
+          <select id="background">
+            <option value="transparent">Transparan</option>
+            <option value="white" selected>Putih</option>
+            <option value="black">Hitam</option>
+          </select>
+        </div>
+      </div>
+      
+      <button id="resetBtn" class="reset-btn">
+        <i class="fas fa-trash-alt"></i> Reset Semua
+      </button>
+    </div>
+    
+    <div class="panel">
+      <h2 class="panel-title">
+        <i class="fas fa-images"></i> Preview &amp; Hasil
+      </h2>
+      
+      <div class="preview-container">
+        <div class="counter">
+          <i class="fas fa-layer-group"></i> Gambar Terpilih: <span id="imageCount">0</span>/10
+        </div>
+        
+        <div class="image-previews" id="previewContainer">
+          <!-- Preview gambar akan muncul di sini -->
+        </div>
+      </div>
+      
+      <div class="result-container" id="resultContainer">
+        <p class="placeholder">Hasil gabungan gambar akan muncul di sini<br>Klik pada gambar untuk memperbesar</p>
+        <img id="resultImage" alt="Hasil gabungan gambar">
+        
+        <div class="link-container" id="linkContainer">
+          <h4><i class="fas fa-link"></i> Link Gambar Hasil Gabungan:</h4>
+          <div class="image-link">
+            <input type="text" id="imageLink" readonly>
+            <button id="copyLinkBtn">
+              <i class="fas fa-copy"></i> Salin
+            </button>
+          </div>
+        </div>
+        
+        <button id="downloadBtn" class="download-btn">
+          <i class="fas fa-download"></i> Unduh Gambar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox untuk tampilan gambar besar -->
+<div id="lightbox" class="lightbox">
+  <span class="close-btn">×</span>
+  <img class="lightbox-content" id="lightboxImg">
+</div>
+
+<div class="copy-notification" id="copyNotification">
+  <i class="fas fa-check-circle"></i> <span id="notificationText">Teks telah disalin!</span>
+</div>
+
+<script>
+// ======= VARIABEL GLOBAL =======
+let images = [];
+let mergedImageData = null;
+let urlProcessingTimeout = null;
+let autoMergeEnabled = true;
+
+// ======= FUNGSI UMUM =======
+
+// Fungsi untuk menampilkan notifikasi - DIPERBAIKI
+function showNotification(message, type = 'success') {
+  const notification = document.getElementById('copyNotification');
+  const notificationText = document.getElementById('notificationText');
+  
+  if (type === 'error') {
+    notification.style.background = 'var(--error)';
+  } else if (type === 'warning') {
+    notification.style.background = 'var(--warning)';
+  } else {
+    notification.style.background = 'var(--success)';
+  }
+  
+  // PERBAIKAN: Hanya menampilkan teks, tidak menambahkan ikon lagi
+  notificationText.textContent = message;
+  
+  notification.classList.add('show');
+  
+  setTimeout(() => {
+    notification.classList.remove('show');
+  }, 3000);
+}
+
+// Fungsi untuk mengekstrak URL gambar sebenarnya dari berbagai layanan - DIPERBAIKI
+async function extractImageUrl(url) {
+  try {
+    // Jika URL sudah langsung ke gambar, kembalikan langsung
+    if (/\.(jpeg|jpg|gif|png|webp|bmp)$/i.test(url)) {
+      return url;
+    }
+    
+    // Untuk layanan prnt.sc
+    if (url.includes('prnt.sc') || url.includes('prntscr.com')) {
+      // Coba beberapa alternatif proxy
+      const proxyUrls = [
+        `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+        `https://corsproxy.io/?${encodeURIComponent(url)}`,
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
+      ];
+      
+      for (const proxyUrl of proxyUrls) {
+        try {
+          const response = await fetch(proxyUrl);
+          const html = await response.text();
+          
+          // Metode 1: Cari meta property og:image
+          const ogImageRegex = /<meta\s+property="og:image"\s+content="([^"]+)"/i;
+          const ogMatch = ogImageRegex.exec(html);
+          if (ogMatch && ogMatch[1]) {
+            const imageUrl = ogMatch[1].replace(/&amp;/g, '&');
+            if (await checkImageExists(imageUrl)) return imageUrl;
+          }
+          
+          // Metode 2: Cari gambar dengan class screenshot-image
+          const classRegex = /<img[^>]+class="[^"]*screenshot-image[^"]*"[^>]+src="([^">]+)"/i;
+          const classMatch = classRegex.exec(html);
+          if (classMatch && classMatch[1]) {
+            let imageUrl = classMatch[1];
+            if (imageUrl.startsWith('//')) imageUrl = 'https:' + imageUrl;
+            if (await checkImageExists(imageUrl)) return imageUrl;
+          }
+          
+          // Metode 3: Cari semua tag gambar dan cari yang paling mungkin
+          const imgRegex = /<img[^>]+src="([^">]+)"/gi;
+          let match;
+          while ((match = imgRegex.exec(html)) !== null) {
+            if (match[1].includes('screenshot') || match[1].includes('image')) {
+              let imageUrl = match[1];
+              if (imageUrl.startsWith('//')) imageUrl = 'https:' + imageUrl;
+              if (await checkImageExists(imageUrl)) return imageUrl;
+            }
+          }
+        } catch (e) {
+          console.log(`Proxy ${proxyUrl} gagal, mencoba yang lain...`);
+          continue;
+        }
+      }
+      
+      return url;
+    }
+    
+    // Untuk layanan sleekshot.app
+    if (url.includes('sleekshot.app')) {
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      const html = await response.text();
+      const ogImageRegex = /<meta\s+property="og:image"\s+content="([^">]+)"/i;
+      const matches = ogImageRegex.exec(html);
+      if (matches && matches[1]) {
+        return matches[1];
+      }
+      return url;
+    }
+    
+    // Untuk layanan imghostr.com
+    if (url.includes('imghostr.com')) {
+      // Coba ekstrak ID gambar dari URL (contoh: https://imghostr.com/66e5d9_wl61 -> ID:66e5d9)
+      const idMatch = url.match(/imghostr\.com\/([a-zA-Z0-9]+)_/);
+      if (idMatch && idMatch[1]) {
+        const directUrl = `https://img.imghostr.com/${idMatch[1]}.png`;
+        if (await checkImageExists(directUrl)) return directUrl;
+      }
+      
+      // Jika tidak berhasil, coba parsing HTML
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      const html = await response.text();
+      const imgRegex = /<img[^>]+id="image-view"[^>]+src="([^">]+)"/i;
+      const matches = imgRegex.exec(html);
+      if (matches && matches[1]) {
+        return matches[1];
+      }
+      return url;
+    }
+    
+    // Untuk imgur.com
+    if (url.includes('imgur.com')) {
+      // Konversi URL gallery ke direct image
+      if (url.includes('/gallery/') || url.includes('/a/')) {
+        const idMatch = url.match(/\/([a-zA-Z0-9]+)$/);
+        if (idMatch && idMatch[1]) {
+          return `https://i.imgur.com/${idMatch[1]}.jpg`;
+        }
+      }
+      
+      // Untuk album imgur
+      if (url.includes('/a/')) {
+        const idMatch = url.match(/\/a\/([a-zA-Z0-9]+)/);
+        if (idMatch && idMatch[1]) {
+          // Tidak bisa mengambil gambar dari album secara langsung
+          return url;
+        }
+      }
+      
+      return url;
+    }
+    
+    // Untuk URL langsung
+    return url;
+  } catch (error) {
+    console.error('Extraction error:', error);
+    return url;
+  }
+}
+
+// Fungsi untuk memeriksa apakah gambar ada dan dapat diakses
+async function checkImageExists(url) {
+  if (!url) return false;
+  
+  try {
+    const response = await fetch(url, { method: 'HEAD' });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+}
+
+// Fungsi untuk memperbarui preview gambar
+function updatePreviews() {
+  const previewContainer = document.getElementById('previewContainer');
+  previewContainer.innerHTML = '';
+  
+  images.forEach((image, index) => {
+    const previewItem = document.createElement('div');
+    previewItem.className = 'preview-item';
+    
+    const img = document.createElement('img');
+    img.src = image.src;
+    img.alt = `Preview ${index + 1}`;
+    
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'remove-btn';
+    removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+    removeBtn.onclick = () => removeImage(index);
+    
+    previewItem.appendChild(img);
+    previewItem.appendChild(removeBtn);
+    previewContainer.appendChild(previewItem);
+  });
+  
+  document.getElementById('imageCount').textContent = images.length;
+}
+
+// Fungsi untuk menghapus gambar
+function removeImage(index) {
+  images.splice(index, 1);
+  updatePreviews();
+  showNotification('Gambar dihapus', 'info');
+  
+  // Otomatis gabungkan ulang gambar setelah menghapus
+  if (autoMergeEnabled && images.length > 0) {
+    mergeImages();
+  }
+}
+
+// Fungsi untuk memproses URL gambar - DIPERBAIKI
+async function processImageUrls(urlText) {
+  // Bersihkan dan parse URL
+  const urls = urlText
+    .split(/[\n,]+/)
+    .map(url => url.trim())
+    .filter(url => url.length > 0);
+  
+  if (urls.length === 0) return;
+  
+  let processedCount = 0;
+  let errorCount = 0;
+  
+  for (const url of urls) {
+    if (images.length >= 10) {
+      showNotification('Maksimal 10 gambar!', 'warning');
+      break;
+    }
+    
+    try {
+      // Ekstrak URL gambar sebenarnya menggunakan teknik khusus
+      const directImageUrl = await extractImageUrl(url);
+      
+      // Validasi URL gambar
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      
+      await new Promise((resolve, reject) => {
+        img.onload = () => resolve(img);
+        img.onerror = () => {
+          reject(new Error('Gagal memuat gambar'));
+        };
+        img.src = directImageUrl;
+        
+        // Timeout setelah 10 detik
+        setTimeout(() => {
+          reject(new Error('Timeout saat memuat gambar'));
+        }, 10000);
+      });
+      
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      
+      const imageData = {
+        src: canvas.toDataURL('image/png'),
+        name: 'url-image',
+        type: 'url',
+        originalUrl: url
+      };
+      
+      images.push(imageData);
+      processedCount++;
+      
+      // Perbarui preview setelah setiap gambar berhasil dimuat
+      updatePreviews();
+    } catch (error) {
+      console.error('Error:', error);
+      errorCount++;
+      
+      // Tampilkan notifikasi error untuk URL tertentu
+      showNotification(`Gagal memuat gambar: ${url.substring(0, 30)}...`, 'error');
+    }
+  }
+  
+  // Tampilkan notifikasi hasil
+  if (processedCount > 0 && errorCount === 0) {
+    showNotification(`Berhasil menambahkan ${processedCount} gambar!`, 'success');
+    
+    // Otomatis gabungkan gambar
+    if (autoMergeEnabled && images.length > 0) {
+      mergeImages();
+    }
+  } else if (processedCount > 0 && errorCount > 0) {
+    showNotification(`Berhasil menambahkan ${processedCount} gambar, ${errorCount} gagal.`, 'warning');
+    
+    // Otomatis gabungkan gambar yang berhasil
+    if (autoMergeEnabled && images.length > 0) {
+      mergeImages();
+    }
+  } else {
+    showNotification('Gagal memuat semua gambar. Pastikan URL benar dan mendukung CORS.', 'error');
+  }
+}
+
+// Fungsi untuk menggabungkan gambar
+async function mergeImages() {
+  if (images.length === 0) {
+    showNotification('Tidak ada gambar untuk digabungkan!', 'error');
+    return;
+  }
+  
+  try {
+    // Sembunyikan placeholder
+    const placeholder = document.querySelector('.placeholder');
+    if (placeholder) placeholder.style.display = 'none';
+    
+    // Buat canvas untuk penggabungan
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    
+    // Dapatkan pengaturan
+    const layout = document.getElementById('layout').value;
+    const spacing = parseInt(document.getElementById('spacing').value);
+    const background = document.getElementById('background').value;
+    
+    // Preload semua gambar
+    const imgElements = await Promise.all(images.map(imageData => {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.src = imageData.src;
+      });
+    }));
+    
+    // Hitung dimensi canvas
+    let canvasWidth = 0;
+    let canvasHeight = 0;
+    
+    if (layout === 'horizontal') {
+      canvasWidth = imgElements.reduce((sum, img) => sum + img.width, 0) + 
+                   spacing * (imgElements.length - 1);
+      canvasHeight = Math.max(...imgElements.map(img => img.height));
+    } else if (layout === 'vertical') {
+      canvasWidth = Math.max(...imgElements.map(img => img.width));
+      canvasHeight = imgElements.reduce((sum, img) => sum + img.height, 0) + 
+                    spacing * (imgElements.length - 1);
+    } else {
+      const columns = layout === 'grid2' ? 2 : 3;
+      const rows = Math.ceil(imgElements.length / columns);
+      
+      let maxWidths = Array(columns).fill(0);
+      let maxHeights = Array(rows).fill(0);
+      
+      imgElements.forEach((img, i) => {
+        const col = i % columns;
+        const row = Math.floor(i / columns);
+        
+        if (img.width > maxWidths[col]) maxWidths[col] = img.width;
+        if (img.height > maxHeights[row]) maxHeights[row] = img.height;
+      });
+      
+      canvasWidth = maxWidths.reduce((sum, w) => sum + w, 0) + 
+                   spacing * (columns - 1);
+      canvasHeight = maxHeights.reduce((sum, h) => sum + h, 0) + 
+                    spacing * (rows - 1);
+    }
+    
+    // Set ukuran canvas
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    
+    // Isi background
+    if (background === 'white') {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    } else if (background === 'black') {
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    }
+    
+    // Gambar semua gambar di canvas
+    let x = 0;
+    let y = 0;
+    
+    imgElements.forEach((img, i) => {
+      if (layout === 'horizontal') {
+        ctx.drawImage(img, x, 0);
+        x += img.width + spacing;
+      } else if (layout === 'vertical') {
+        ctx.drawImage(img, 0, y);
+        y += img.height + spacing;
+      } else {
+        const columns = layout === 'grid2' ? 2 : 3;
+        const col = i % columns;
+        const row = Math.floor(i / columns);
+        
+        // Cari lebar maks kolom sebelumnya
+        let offsetX = 0;
+        for (let c = 0; c < col; c++) {
+          let maxW = 0;
+          for (let r = row * columns; r < (row + 1) * columns; r++) {
+            if (r < imgElements.length && imgElements[r].width > maxW) {
+              maxW = imgElements[r].width;
+            }
+          }
+          offsetX += maxW + spacing;
+        }
+        
+        // Cari tinggi maks baris sebelumnya
+        let offsetY = 0;
+        for (let r = 0; r < row; r++) {
+          let maxH = 0;
+          for (let c = 0; c < columns; c++) {
+            const idx = r * columns + c;
+            if (idx < imgElements.length && imgElements[idx].height > maxH) {
+              maxH = imgElements[idx].height;
+            }
+          }
+          offsetY += maxH + spacing;
+        }
+        
+        ctx.drawImage(img, offsetX, offsetY);
+      }
+    });
+    
+    // Konversi canvas ke data URL dengan kualitas tinggi (95%)
+    const format = background === 'transparent' ? 'image/png' : 'image/jpeg';
+    mergedImageData = canvas.toDataURL(format, 0.95);
+    
+    // Tampilkan hasil
+    const resultImage = document.getElementById('resultImage');
+    resultImage.src = mergedImageData;
+    resultImage.style.display = 'block';
+    document.getElementById('downloadBtn').style.display = 'block';
+    
+    // Tampilkan link gambar
+    const imageLink = document.getElementById('imageLink');
+    imageLink.value = mergedImageData;
+    document.getElementById('linkContainer').style.display = 'block';
+    
+    // Tampilkan kembali kontainer hasil
+    document.getElementById('resultContainer').style.display = 'flex';
+    
+    showNotification('Gambar berhasil digabungkan! Klik pada gambar untuk memperbesar.', 'success');
+  } catch (error) {
+    console.error('Merge error:', error);
+    showNotification('Terjadi kesalahan saat menggabungkan gambar.', 'error');
+  }
+}
+
+// Fungsi untuk mengunduh gambar
+function downloadImage() {
+  if (!mergedImageData) return;
+  
+  const link = document.createElement('a');
+  link.href = mergedImageData;
+  const background = document.getElementById('background').value;
+  link.download = `gabungan-gambar-${new Date().getTime()}.${background === 'transparent' ? 'png' : 'jpg'}`;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  showNotification('Gambar berhasil diunduh!', 'success');
+}
+
+// Fungsi untuk menyalin link gambar
+function copyImageLink() {
+  const imageLink = document.getElementById('imageLink');
+  imageLink.select();
+  imageLink.setSelectionRange(0, 99999);
+  document.execCommand('copy');
+  showNotification('Link berhasil disalin ke clipboard!', 'success');
+}
+
+// Fungsi untuk mereset semua
+function resetAll() {
+  images = [];
+  mergedImageData = null;
+  const previewContainer = document.getElementById('previewContainer');
+  previewContainer.innerHTML = '';
+  document.getElementById('imageCount').textContent = '0';
+  const resultImage = document.getElementById('resultImage');
+  resultImage.style.display = 'none';
+  document.getElementById('linkContainer').style.display = 'none';
+  document.getElementById('downloadBtn').style.display = 'none';
+  const placeholder = document.querySelector('.placeholder');
+  if (placeholder) placeholder.style.display = 'block';
+  document.getElementById('mergerImageUrls').value = '';
+  
+  showNotification('Semua gambar telah direset', 'info');
+}
+
+// ======= EVENT LISTENERS =======
+document.addEventListener('DOMContentLoaded', function() {
+  // Event listeners untuk penggabung gambar
+  const mergerImageUrls = document.getElementById('mergerImageUrls');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const copyLinkBtn = document.getElementById('copyLinkBtn');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  const closeBtn = document.querySelector('.lightbox .close-btn');
+  
+  // Proses URL gambar secara otomatis saat input berubah
+  if (mergerImageUrls) {
+    mergerImageUrls.addEventListener('input', function() {
+      // Clear timeout sebelumnya
+      if (urlProcessingTimeout) {
+        clearTimeout(urlProcessingTimeout);
+      }
+      
+      // Set timeout untuk memproses URL setelah pengguna berhenti mengetik
+      urlProcessingTimeout = setTimeout(() => {
+        const urlText = this.value.trim();
+        if (urlText) {
+          processImageUrls(urlText);
+        }
+      }, 800); // Tunggu 0.8 detik setelah pengguna berhenti mengetik
+    });
+  }
+  
+  // Download gambar
+  if (downloadBtn) {
+    downloadBtn.addEventListener('click', downloadImage);
+  }
+  
+  // Reset form
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetAll);
+  }
+  
+  // Copy link
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', copyImageLink);
+  }
+  
+  // Lightbox
+  if (lightboxImg) {
+    const resultImage = document.getElementById('resultImage');
+    resultImage.addEventListener('click', () => {
+      if (mergedImageData) {
+        lightboxImg.src = mergedImageData;
+        lightbox.style.display = 'block';
+      }
+    });
+    
+    closeBtn.addEventListener('click', () => {
+      lightbox.style.display = 'none';
+    });
+    
+    window.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+      }
+    });
+  }
+  
+  // Pengaturan perubahan otomatis
+  document.getElementById('layout').addEventListener('change', function() {
+    if (autoMergeEnabled && images.length > 0) {
+      mergeImages();
+    }
+  });
+  
+  document.getElementById('spacing').addEventListener('change', function() {
+    if (autoMergeEnabled && images.length > 0) {
+      mergeImages();
+    }
+  });
+  
+  document.getElementById('background').addEventListener('change', function() {
+    if (autoMergeEnabled && images.length > 0) {
+      mergeImages();
+    }
+  });
+});
+</script>
+</body>
+</html>

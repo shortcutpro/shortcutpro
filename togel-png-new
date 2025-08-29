@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Togel - Perhitungan Otomatis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a0000, #330000, #660000);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid #ff0000;
+        }
+
+        .header h1 {
+            color: #ff4444;
+            font-size: 2.5em;
+            text-shadow: 0 0 20px #ff0000;
+            margin-bottom: 10px;
+        }
+
+        .logos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .logos img {
+            width: 60px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px;
+            transition: transform 0.3s;
+        }
+
+        .logos img:hover {
+            transform: scale(1.1);
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .nav-btn {
+            padding: 12px 20px;
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .nav-btn:hover {
+            background: linear-gradient(45deg, #ff3333, #ff0000);
+            transform: translateY(-2px);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #ff6666, #ff3333);
+            box-shadow: 0 6px 20px rgba(255, 0, 0, 0.5);
+        }
+
+        .section {
+            display: none;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px solid #ff0000;
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.2);
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            color: #ff4444;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .calculator-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .calculator-table th {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .calculator-table td {
+            padding: 12px;
+            border-bottom: 1px solid #ff0000;
+            vertical-align: top;
+        }
+
+        .calculator-table tr:hover {
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #ff0000;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #ff4444;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .result-text {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #ff0000;
+            border-radius: 5px;
+            padding: 10px;
+            min-height: 60px;
+            color: #fff;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #ff0000, #cc0000);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            margin-top: 5px;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(45deg, #ff3333, #ff0000);
+            transform: scale(1.05);
+        }
+
+        .success-message {
+            display: none;
+            background: #00ff00;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-top: 5px;
+            animation: fadeInOut 2s;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .subsection {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            border-left: 5px solid #ff0000;
+        }
+
+        .subsection h3 {
+            color: #ff4444;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        @media (max-width: 768px) {
+            .calculator-table {
+                font-size: 14px;
+            }
+            
+            .calculator-table th,
+            .calculator-table td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎯 KALKULATOR TOGEL 🎯</h1>
+        <p>Perhitungan Otomatis Semua Jenis Betting</p>
+        
+        <div class="logos">
+            <img src="https://bangkokpoolstoday.com/assets/img/bangkokpools_logo.png" alt="Bangkok Pools">
+            <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/11/26/20241126/d1f18e378e4a422b41ffe8d03065ce7d/logo-7.png" alt="Logo 7">
+            <img src="https://bruneipools.com/assets/img/brunei-logo.png" alt="Brunei Pools">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/f07d4e2a6517ef1cea9e2a897e4abb98/nz-bullseye.png" alt="NZ Bullseye">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/7c3b7b0affd7880d2dddf918ba2ac258/calottlogo.png" alt="Calott">
+            <img src="https://nclottery.com/Site/GFX/NCEL_Alt.svg" alt="NC Lottery">
+            <img src="https://chelseapools.co.uk/assets/img/chelseaPools_logo.png" alt="Chelsea Pools">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/a3e564ccb04c2b751ad4fa88c06e39c1/1-removebg-preview.png" alt="Logo 1">
+            <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/12/01/20241201/288e5650fd04b013e764f0e71a9b6e59/hongkong-lotto-1.png" alt="Hongkong Lotto">
+            <img src="https://huahinlottery.com/assets/img/logo.png" alt="Hua Hin">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/a5fafa0102d98ab3959ceb9bb1045729/kl-logo.png" alt="KL Logo">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/8889f1c5fc738b5148145100c08a0ebc/439-4390693-magnum-pengeluaran-magnum-4d-hari-clipart-removebg-preview.png" alt="Magnum">
+            <img src="https://www.nevadalottery.us/images/logo.gif" alt="Nevada">
+            <img src="https://edit.nylottery.ny.gov/sites/default/files/logo-2179655b4229a219a9305b3f0e734bd0.png" alt="NY Lottery">
+            <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/11/26/20241126/0a72e6fa9a2d4ee4106678aeeab33624/favpng-oregon-lottery-video-lottery-terminal-game.png" alt="Oregon">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/32b1d9cb48d2c0a9f1c7e77853565fa1/pcso.png" alt="PCSO">
+            <img src="https://poipetlottery.com/img/logo.png" alt="Poipet">
+            <img src="https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/07da64b7b63e905cf7e3adde14e57424/sgp.png" alt="Singapore">
+            <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/12/01/20241201/f32f7b4a1bffd956ee9a3956421200e9/logo-sydney.png" alt="Sydney">
+            <img src="https://cdn.areabermain.club/assets/cdn/az9/2024/11/27/20241127/f7eb84038645576860451fbcb2a6c5a2/totomacau-12-photoroom-photoroom.png" alt="Toto Macau">
+            <img src="https://cdn.areabermain.club/assets/cdn/az9/2025/02/21/20250221/2eab4ead454853a692e0dbec587f6fc4/logo-2.png" alt="Logo 2">
+            <img src="https://hokidraw.com/assets/img/logo.png" alt="HokiDraw">
+        </div>
+    </div>
+
+    <div class="nav-menu">
+        <button class="nav-btn active" onclick="showSection('all-pasaran')">All Pasaran</button>
+        <button class="nav-btn" onclick="showSection('hokidraw')">HokiDraw</button>
+        <button class="nav-btn" onclick="showSection('kingkong4d')">Kingkong 4D</button>
+        <button class="nav-btn" onclick="showSection('prize123')">Prize 123</button>
+        <button class="nav-btn" onclick="showSection('colok-bebas')">Colok Bebas</button>
+        <button class="nav-btn" onclick="showSection('colok-bebas-5d')">Colok Bebas 5D</button>
+    </div>
+
+    <!-- ALL PASARAN SECTION -->
+    <div id="all-pasaran" class="section active">
+        <h2>🎲 ALL PASARAN 🎲</h2>
+        
+        <div class="subsection">
+            <h3>📊 CARA PERHITUNGAN BETTINGAN FULL ALL PASARAN</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="full4d-input" placeholder="1000" oninput="calculateFull4D()"></td>
+                        <td>
+                            <div class="result-text" id="full4d-result">
+                                Untuk perhitungan 4D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 10,000 ( Hadiah 4D FULL ) = Rp.10,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('full4d-result')">Copy</button>
+                            <div class="success-message" id="full4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="full3d-input" placeholder="1000" oninput="calculateFull3D()"></td>
+                        <td>
+                            <div class="result-text" id="full3d-result">
+                                Untuk perhitungan 3D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 1,000 ( Hadiah 3D FULL ) = Rp.1,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('full3d-result')">Copy</button>
+                            <div class="success-message" id="full3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="full2d-input" placeholder="1000" oninput="calculateFull2D()"></td>
+                        <td>
+                            <div class="result-text" id="full2d-result">
+                                Untuk perhitungan 2D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 100 ( Hadiah 2D FULL ) = Rp.100,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('full2d-result')">Copy</button>
+                            <div class="success-message" id="full2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>💰 CARA PERHITUNGAN BETTINGAN DISKON ALL PASARAN</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Yang Dibayar (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="diskon4d-input" placeholder="1000" oninput="calculateDiskon4D()"></td>
+                        <td><div class="result-text" id="diskon4d-bayar">335</div></td>
+                        <td>
+                            <div class="result-text" id="diskon4d-result">
+                                Untuk Perhitungan 4D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 66.50% ) yang anda bayar adalah Rp.335, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 3,000 ( Hadiah 4D Diskon ) = Rp.3,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('diskon4d-result')">Copy</button>
+                            <div class="success-message" id="diskon4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="diskon3d-input" placeholder="1000" oninput="calculateDiskon3D()"></td>
+                        <td><div class="result-text" id="diskon3d-bayar">405</div></td>
+                        <td>
+                            <div class="result-text" id="diskon3d-result">
+                                Untuk Perhitungan 3D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 59.50% ) yang anda bayar adalah Rp.405, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 400 ( Hadiah 3D Diskon ) = Rp.400,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('diskon3d-result')">Copy</button>
+                            <div class="success-message" id="diskon3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Belakang Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="diskon2db-input" placeholder="1000" oninput="calculateDiskon2DB()"></td>
+                        <td><div class="result-text" id="diskon2db-bayar">705</div></td>
+                        <td>
+                            <div class="result-text" id="diskon2db-result">
+                                Untuk Perhitungan 2D Diskon Belakang dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.705, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 70 ( Hadiah 2D Belakang Diskon ) = Rp.70,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('diskon2db-result')">Copy</button>
+                            <div class="success-message" id="diskon2db-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Depan Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="diskon2dd-input" placeholder="1000" oninput="calculateDiskon2DD()"></td>
+                        <td><div class="result-text" id="diskon2dd-bayar">705</div></td>
+                        <td>
+                            <div class="result-text" id="diskon2dd-result">
+                                Untuk Perhitungan 2D Depan Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.705, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 65 ( Hadiah 2D Depan Diskon ) = Rp.65,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('diskon2dd-result')">Copy</button>
+                            <div class="success-message" id="diskon2dd-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Tengah Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="diskon2dt-input" placeholder="1000" oninput="calculateDiskon2DT()"></td>
+                        <td><div class="result-text" id="diskon2dt-bayar">705</div></td>
+                        <td>
+                            <div class="result-text" id="diskon2dt-result">
+                                Untuk Perhitungan 2D Tengah Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.705, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 65 ( Hadiah 2D Tengah Diskon ) = Rp.65,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('diskon2dt-result')">Copy</button>
+                            <div class="success-message" id="diskon2dt-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>🔄 CARA PERHITUNGAN BETTINGAN BOLAK BALIK ALL PASARAN</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="bb4d-input" placeholder="1000" oninput="calculateBB4D()"></td>
+                        <td>
+                            <div class="result-text" id="bb4d-result">
+                                Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 4,000 ( Hadiah 4D Tebakan Tepat ) = Rp.4,000,000<br>
+                                Rp.1,000 x 200 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.200,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('bb4d-result')">Copy</button>
+                            <div class="success-message" id="bb4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="bb3d-input" placeholder="1000" oninput="calculateBB3D()"></td>
+                        <td>
+                            <div class="result-text" id="bb3d-result">
+                                Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 400 ( Hadiah 3D Tebakan Tepat ) = Rp.400,000<br>
+                                Rp.1,000 x 100 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.100,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('bb3d-result')">Copy</button>
+                            <div class="success-message" id="bb3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="bb2d-input" placeholder="1000" oninput="calculateBB2D()"></td>
+                        <td>
+                            <div class="result-text" id="bb2d-result">
+                                Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 70 ( Hadiah 2D Tebakan Tepat ) = Rp.70,000<br>
+                                Rp.1,000 x 20 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.20,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('bb2d-result')">Copy</button>
+                            <div class="success-message" id="bb2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- HOKIDRAW SECTION -->
+    <div id="hokidraw" class="section">
+        <h2>🎰 HOKI DRAW 🎰</h2>
+        
+        <div class="subsection">
+            <h3>📊 CARA PERHITUNGAN BETTINGAN FULL HOKI DRAW</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>5D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-full5d-input" placeholder="1000" oninput="calculateHokiFull5D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-full5d-result">
+                                Untuk perhitungan 5D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 88,000 ( Hadiah 5D FULL ) = Rp.88,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-full5d-result')">Copy</button>
+                            <div class="success-message" id="hoki-full5d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>4D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-full4d-input" placeholder="1000" oninput="calculateHokiFull4D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-full4d-result">
+                                Untuk perhitungan 4D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 10,000 ( Hadiah 4D FULL ) = Rp.10,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-full4d-result')">Copy</button>
+                            <div class="success-message" id="hoki-full4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-full3d-input" placeholder="1000" oninput="calculateHokiFull3D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-full3d-result">
+                                Untuk perhitungan 3D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 1,000 ( Hadiah 3D FULL ) = Rp.1,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-full3d-result')">Copy</button>
+                            <div class="success-message" id="hoki-full3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D FULL</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-full2d-input" placeholder="1000" oninput="calculateHokiFull2D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-full2d-result">
+                                Untuk perhitungan 2D FULL dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 100 ( Hadiah 2D FULL ) = Rp.100,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-full2d-result')">Copy</button>
+                            <div class="success-message" id="hoki-full2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>💰 CARA PERHITUNGAN BETTINGAN DISKON HOKI DRAW</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Yang Dibayar (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>5D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-diskon5d-input" placeholder="1000" oninput="calculateHokiDiskon5D()"></td>
+                        <td><div class="result-text" id="hoki-diskon5d-bayar">620</div></td>
+                        <td>
+                            <div class="result-text" id="hoki-diskon5d-result">
+                                Untuk Perhitungan 5D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 38% ) yang anda bayar adalah Rp.620, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 50,000 ( Hadiah 5D Diskon ) = Rp.50,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-diskon5d-result')">Copy</button>
+                            <div class="success-message" id="hoki-diskon5d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>4D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-diskon4d-input" placeholder="1000" oninput="calculateHokiDiskon4D()"></td>
+                        <td><div class="result-text" id="hoki-diskon4d-bayar">800</div></td>
+                        <td>
+                            <div class="result-text" id="hoki-diskon4d-result">
+                                Untuk Perhitungan 4D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 7,000 ( Hadiah 4D Diskon ) = Rp.7,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-diskon4d-result')">Copy</button>
+                            <div class="success-message" id="hoki-diskon4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-diskon3d-input" placeholder="1000" oninput="calculateHokiDiskon3D()"></td>
+                        <td><div class="result-text" id="hoki-diskon3d-bayar">800</div></td>
+                        <td>
+                            <div class="result-text" id="hoki-diskon3d-result">
+                                Untuk Perhitungan 3D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 750 ( Hadiah 3D Diskon ) = Rp.750,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-diskon3d-result')">Copy</button>
+                            <div class="success-message" id="hoki-diskon3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-diskon2d-input" placeholder="1000" oninput="calculateHokiDiskon2D()"></td>
+                        <td><div class="result-text" id="hoki-diskon2d-bayar">800</div></td>
+                        <td>
+                            <div class="result-text" id="hoki-diskon2d-result">
+                                Untuk Perhitungan 2D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.800, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 75 ( Hadiah 2D Diskon ) = Rp.75,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-diskon2d-result')">Copy</button>
+                            <div class="success-message" id="hoki-diskon2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>🔄 CARA PERHITUNGAN BETTINGAN BOLAK BALIK HOKI DRAW</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>5D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-bb5d-input" placeholder="1000" oninput="calculateHokiBB5D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-bb5d-result">
+                                Untuk perhitungan 5D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 50,000 ( Hadiah 5D Tebakan Tepat ) = Rp.50,000,000<br>
+                                Rp.1,000 x 350 ( Hadiah 5D Tebakan Tidak Tepat ) = Rp.350,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-bb5d-result')">Copy</button>
+                            <div class="success-message" id="hoki-bb5d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>4D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-bb4d-input" placeholder="1000" oninput="calculateHokiBB4D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-bb4d-result">
+                                Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 5,000 ( Hadiah 4D Tebakan Tepat ) = Rp.5,000,000<br>
+                                Rp.1,000 x 180 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.180,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-bb4d-result')">Copy</button>
+                            <div class="success-message" id="hoki-bb4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-bb3d-input" placeholder="1000" oninput="calculateHokiBB3D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-bb3d-result">
+                                Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 500 ( Hadiah 3D Tebakan Tepat ) = Rp.500,000<br>
+                                Rp.1,000 x 75 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.75,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-bb3d-result')">Copy</button>
+                            <div class="success-message" id="hoki-bb3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Bolak Balik</strong></td>
+                        <td><input type="number" class="input-field" id="hoki-bb2d-input" placeholder="1000" oninput="calculateHokiBB2D()"></td>
+                        <td>
+                            <div class="result-text" id="hoki-bb2d-result">
+                                Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.1,000<br>
+                                Maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 80 ( Hadiah 2D Tebakan Tepat ) = Rp.80,000<br>
+                                Rp.1,000 x 15 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.15,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('hoki-bb2d-result')">Copy</button>
+                            <div class="success-message" id="hoki-bb2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- KINGKONG 4D SECTION -->
+    <div id="kingkong4d" class="section">
+        <h2>🦍 KINGKONG 4D 🦍</h2>
+        
+        <div class="subsection">
+            <h3>💰 CARA PERHITUNGAN BETTINGAN DISKON KING KONG 4D</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Yang Dibayar (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="kk-diskon4d-input" placeholder="1000" oninput="calculateKKDiskon4D()"></td>
+                        <td><div class="result-text" id="kk-diskon4d-bayar">670</div></td>
+                        <td>
+                            <div class="result-text" id="kk-diskon4d-result">
+                                Untuk Perhitungan 4D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 33.00% ) yang anda bayar adalah Rp.670, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 6,000 ( Hadiah 4D Diskon ) = Rp.6,000,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('kk-diskon4d-result')">Copy</button>
+                            <div class="success-message" id="kk-diskon4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="kk-diskon3d-input" placeholder="1000" oninput="calculateKKDiskon3D()"></td>
+                        <td><div class="result-text" id="kk-diskon3d-bayar">760</div></td>
+                        <td>
+                            <div class="result-text" id="kk-diskon3d-result">
+                                Untuk Perhitungan 3D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 24.00% ) yang anda bayar adalah Rp.760, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 700 ( Hadiah 3D Diskon ) = Rp.700,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('kk-diskon3d-result')">Copy</button>
+                            <div class="success-message" id="kk-diskon3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="kk-diskon2d-input" placeholder="1000" oninput="calculateKKDiskon2D()"></td>
+                        <td><div class="result-text" id="kk-diskon2d-bayar">850</div></td>
+                        <td>
+                            <div class="result-text" id="kk-diskon2d-result">
+                                Untuk Perhitungan 2D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.850, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 80 ( Hadiah 2D Diskon ) = Rp.80,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('kk-diskon2d-result')">Copy</button>
+                            <div class="success-message" id="kk-diskon2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Depan Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="kk-diskon2dd-input" placeholder="1000" oninput="calculateKKDiskon2DD()"></td>
+                        <td><div class="result-text" id="kk-diskon2dd-bayar">850</div></td>
+                        <td>
+                            <div class="result-text" id="kk-diskon2dd-result">
+                                Untuk Perhitungan 2D Depan Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.850, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 80 ( Hadiah 2D Depan Diskon ) = Rp.80,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('kk-diskon2dd-result')">Copy</button>
+                            <div class="success-message" id="kk-diskon2dd-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Tengah Diskon</strong></td>
+                        <td><input type="number" class="input-field" id="kk-diskon2dt-input" placeholder="1000" oninput="calculateKKDiskon2DT()"></td>
+                        <td><div class="result-text" id="kk-diskon2dt-bayar">850</div></td>
+                        <td>
+                            <div class="result-text" id="kk-diskon2dt-result">
+                                Untuk Perhitungan 2D Tengah Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.850, maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 80 ( Hadiah 2D Tengah Diskon ) = Rp.80,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('kk-diskon2dt-result')">Copy</button>
+                            <div class="success-message" id="kk-diskon2dt-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- PRIZE 123 SECTION -->
+    <div id="prize123" class="section">
+        <h2>🏆 PRIZE 123 🏆</h2>
+        
+        <div class="subsection">
+            <h3>🥇 CARA PERHITUNGAN BETTINGAN PRIZE 1</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D Prize 1</strong></td>
+                        <td><input type="number" class="input-field" id="prize1-4d-input" placeholder="1000" oninput="calculatePrize14D()"></td>
+                        <td>
+                            <div class="result-text" id="prize1-4d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 4D di Prize 1 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 6,500 ( Hadiah Prize 1 4D ) = 6,500,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize1-4d-result')">Copy</button>
+                            <div class="success-message" id="prize1-4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Prize 1</strong></td>
+                        <td><input type="number" class="input-field" id="prize1-3d-input" placeholder="1000" oninput="calculatePrize13D()"></td>
+                        <td>
+                            <div class="result-text" id="prize1-3d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 3D di Prize 1 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 650 ( Hadiah Prize 1 3D ) = 650,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize1-3d-result')">Copy</button>
+                            <div class="success-message" id="prize1-3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Prize 1</strong></td>
+                        <td><input type="number" class="input-field" id="prize1-2d-input" placeholder="1000" oninput="calculatePrize12D()"></td>
+                        <td>
+                            <div class="result-text" id="prize1-2d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 2D di Prize 1 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 70 ( Hadiah Prize 1 2D ) = 70,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize1-2d-result')">Copy</button>
+                            <div class="success-message" id="prize1-2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>🥈 CARA PERHITUNGAN BETTINGAN PRIZE 2</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D Prize 2</strong></td>
+                        <td><input type="number" class="input-field" id="prize2-4d-input" placeholder="1000" oninput="calculatePrize24D()"></td>
+                        <td>
+                            <div class="result-text" id="prize2-4d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 4D di Prize 2 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 2,100 ( Hadiah Prize 2 4D ) = 2,100,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize2-4d-result')">Copy</button>
+                            <div class="success-message" id="prize2-4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Prize 2</strong></td>
+                        <td><input type="number" class="input-field" id="prize2-3d-input" placeholder="1000" oninput="calculatePrize23D()"></td>
+                        <td>
+                            <div class="result-text" id="prize2-3d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 3D di Prize 2 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 210 ( Hadiah Prize 2 3D ) = 210,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize2-3d-result')">Copy</button>
+                            <div class="success-message" id="prize2-3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Prize 2</strong></td>
+                        <td><input type="number" class="input-field" id="prize2-2d-input" placeholder="1000" oninput="calculatePrize22D()"></td>
+                        <td>
+                            <div class="result-text" id="prize2-2d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 2D di Prize 2 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 20 ( Hadiah Prize 2 2D ) = 20,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize2-2d-result')">Copy</button>
+                            <div class="success-message" id="prize2-2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>🥉 CARA PERHITUNGAN BETTINGAN PRIZE 3</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>4D Prize 3</strong></td>
+                        <td><input type="number" class="input-field" id="prize3-4d-input" placeholder="1000" oninput="calculatePrize34D()"></td>
+                        <td>
+                            <div class="result-text" id="prize3-4d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 4D di Prize 3 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 1,100 ( Hadiah Prize 3 4D ) = 1,100,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize3-4d-result')">Copy</button>
+                            <div class="success-message" id="prize3-4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>3D Prize 3</strong></td>
+                        <td><input type="number" class="input-field" id="prize3-3d-input" placeholder="1000" oninput="calculatePrize33D()"></td>
+                        <td>
+                            <div class="result-text" id="prize3-3d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 3D di Prize 3 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 110 ( Hadiah Prize 3 3D ) = 110,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize3-3d-result')">Copy</button>
+                            <div class="success-message" id="prize3-3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2D Prize 3</strong></td>
+                        <td><input type="number" class="input-field" id="prize3-2d-input" placeholder="1000" oninput="calculatePrize32D()"></td>
+                        <td>
+                            <div class="result-text" id="prize3-2d-result">
+                                Jika Melakukan bettingan Prize123 dengan nominal Rp. 1,000 dan jika anda menang di bettingan 2D di Prize 3 maka perhitungannya sebagai berikut :<br><br>
+                                Rp. 1,000 x 8 ( Hadiah Prize 3 2D ) = 8,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('prize3-2d-result')">Copy</button>
+                            <div class="success-message" id="prize3-2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- COLOK BEBAS SECTION -->
+    <div id="colok-bebas" class="section">
+        <h2>🎯 COLOK BEBAS 🎯</h2>
+        
+        <div class="subsection">
+            <h3>📊 CARA PERHITUNGAN BETTINGAN COLOK BEBAS</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Colok Bebas 4D</strong></td>
+                        <td><input type="number" class="input-field" id="cb-4d-input" placeholder="1000" oninput="calculateCB4D()"></td>
+                        <td>
+                            <div class="result-text" id="cb-4d-result">
+                                Untuk perhitungan Colok Bebas 4D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 8 ( Hadiah Colok Bebas 4D ) = Rp.8,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('cb-4d-result')">Copy</button>
+                            <div class="success-message" id="cb-4d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Colok Bebas 3D</strong></td>
+                        <td><input type="number" class="input-field" id="cb-3d-input" placeholder="1000" oninput="calculateCB3D()"></td>
+                        <td>
+                            <div class="result-text" id="cb-3d-result">
+                                Untuk perhitungan Colok Bebas 3D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 12 ( Hadiah Colok Bebas 3D ) = Rp.12,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('cb-3d-result')">Copy</button>
+                            <div class="success-message" id="cb-3d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Colok Bebas 2D</strong></td>
+                        <td><input type="number" class="input-field" id="cb-2d-input" placeholder="1000" oninput="calculateCB2D()"></td>
+                        <td>
+                            <div class="result-text" id="cb-2d-result">
+                                Untuk perhitungan Colok Bebas 2D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 6 ( Hadiah Colok Bebas 2D ) = Rp.6,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('cb-2d-result')">Copy</button>
+                            <div class="success-message" id="cb-2d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- COLOK BEBAS 5D SECTION -->
+    <div id="colok-bebas-5d" class="section">
+        <h2>🎯 COLOK BEBAS 5D 🎯</h2>
+        
+        <div class="subsection">
+            <h3>📊 CARA PERHITUNGAN BETTINGAN COLOK BEBAS 5D</h3>
+            <table class="calculator-table">
+                <thead>
+                    <tr>
+                        <th>Jenis Betting</th>
+                        <th>Nominal (Rp)</th>
+                        <th>Perhitungan & Hasil</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Colok Bebas 5D</strong></td>
+                        <td><input type="number" class="input-field" id="cb5d-input" placeholder="1000" oninput="calculateCB5D()"></td>
+                        <td>
+                            <div class="result-text" id="cb5d-result">
+                                Untuk perhitungan Colok Bebas 5D dimana jika anda melakukan bettingan dengan nominal Rp.1,000 maka perhitungannya sebagai berikut :<br><br>
+                                Rp.1,000 x 10 ( Hadiah Colok Bebas 5D ) = Rp.10,000
+                            </div>
+                        </td>
+                        <td>
+                            <button class="copy-btn" onclick="copyText('cb5d-result')">Copy</button>
+                            <div class="success-message" id="cb5d-success">Berhasil di copy!</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Function to show different sections
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Function to format numbers with thousand separators
+        function formatNumber(num) {
+            return new Intl.NumberFormat('id-ID').format(num);
+        }
+
+        // Function to copy text to clipboard
+        function copyText(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.textContent;
+            
+            navigator.clipboard.writeText(text).then(function() {
+                // Show success message
+                const successId = elementId.replace('-result', '-success');
+                const successElement = document.getElementById(successId);
+                successElement.style.display = 'block';
+                
+                setTimeout(function() {
+                    successElement.style.display = 'none';
+                }, 2000);
+            });
+        }
+
+        // ALL PASARAN CALCULATIONS
+        function calculateFull4D() {
+            const input = document.getElementById('full4d-input').value || 1000;
+            const result = input * 10000;
+            document.getElementById('full4d-result').innerHTML = `
+                Untuk perhitungan 4D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 10,000 ( Hadiah 4D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateFull3D() {
+            const input = document.getElementById('full3d-input').value || 1000;
+            const result = input * 1000;
+            document.getElementById('full3d-result').innerHTML = `
+                Untuk perhitungan 3D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 1,000 ( Hadiah 3D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateFull2D() {
+            const input = document.getElementById('full2d-input').value || 1000;
+            const result = input * 100;
+            document.getElementById('full2d-result').innerHTML = `
+                Untuk perhitungan 2D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 100 ( Hadiah 2D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateDiskon4D() {
+            const input = document.getElementById('diskon4d-input').value || 1000;
+            const bayar = input * 0.335;
+            const result = input * 3000;
+            document.getElementById('diskon4d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('diskon4d-result').innerHTML = `
+                Untuk Perhitungan 4D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 66.50% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 3,000 ( Hadiah 4D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateDiskon3D() {
+            const input = document.getElementById('diskon3d-input').value || 1000;
+            const bayar = input * 0.405;
+            const result = input * 400;
+            document.getElementById('diskon3d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('diskon3d-result').innerHTML = `
+                Untuk Perhitungan 3D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 59.50% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 400 ( Hadiah 3D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateDiskon2DB() {
+            const input = document.getElementById('diskon2db-input').value || 1000;
+            const bayar = input * 0.705;
+            const result = input * 70;
+            document.getElementById('diskon2db-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('diskon2db-result').innerHTML = `
+                Untuk Perhitungan 2D Diskon Belakang dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 70 ( Hadiah 2D Belakang Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateDiskon2DD() {
+            const input = document.getElementById('diskon2dd-input').value || 1000;
+            const bayar = input * 0.705;
+            const result = input * 65;
+            document.getElementById('diskon2dd-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('diskon2dd-result').innerHTML = `
+                Untuk Perhitungan 2D Depan Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 65 ( Hadiah 2D Depan Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateDiskon2DT() {
+            const input = document.getElementById('diskon2dt-input').value || 1000;
+            const bayar = input * 0.705;
+            const result = input * 65;
+            document.getElementById('diskon2dt-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('diskon2dt-result').innerHTML = `
+                Untuk Perhitungan 2D Tengah Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 29.50% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 65 ( Hadiah 2D Tengah Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateBB4D() {
+            const input = document.getElementById('bb4d-input').value || 1000;
+            const result1 = input * 4000;
+            const result2 = input * 200;
+            document.getElementById('bb4d-result').innerHTML = `
+                Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 4,000 ( Hadiah 4D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 200 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        function calculateBB3D() {
+            const input = document.getElementById('bb3d-input').value || 1000;
+            const result1 = input * 400;
+            const result2 = input * 100;
+            document.getElementById('bb3d-result').innerHTML = `
+                Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 400 ( Hadiah 3D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 100 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        function calculateBB2D() {
+            const input = document.getElementById('bb2d-input').value || 1000;
+            const result1 = input * 70;
+            const result2 = input * 20;
+            document.getElementById('bb2d-result').innerHTML = `
+                Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 70 ( Hadiah 2D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 20 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        // HOKI DRAW CALCULATIONS
+        function calculateHokiFull5D() {
+            const input = document.getElementById('hoki-full5d-input').value || 1000;
+            const result = input * 88000;
+            document.getElementById('hoki-full5d-result').innerHTML = `
+                Untuk perhitungan 5D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 88,000 ( Hadiah 5D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiFull4D() {
+            const input = document.getElementById('hoki-full4d-input').value || 1000;
+            const result = input * 10000;
+            document.getElementById('hoki-full4d-result').innerHTML = `
+                Untuk perhitungan 4D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 10,000 ( Hadiah 4D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiFull3D() {
+            const input = document.getElementById('hoki-full3d-input').value || 1000;
+            const result = input * 1000;
+            document.getElementById('hoki-full3d-result').innerHTML = `
+                Untuk perhitungan 3D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 1,000 ( Hadiah 3D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiFull2D() {
+            const input = document.getElementById('hoki-full2d-input').value || 1000;
+            const result = input * 100;
+            document.getElementById('hoki-full2d-result').innerHTML = `
+                Untuk perhitungan 2D FULL dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 100 ( Hadiah 2D FULL ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiDiskon5D() {
+            const input = document.getElementById('hoki-diskon5d-input').value || 1000;
+            const bayar = input * 0.62;
+            const result = input * 50000;
+            document.getElementById('hoki-diskon5d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('hoki-diskon5d-result').innerHTML = `
+                Untuk Perhitungan 5D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 38% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 50,000 ( Hadiah 5D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiDiskon4D() {
+            const input = document.getElementById('hoki-diskon4d-input').value || 1000;
+            const bayar = input * 0.8;
+            const result = input * 7000;
+            document.getElementById('hoki-diskon4d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('hoki-diskon4d-result').innerHTML = `
+                Untuk Perhitungan 4D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 7,000 ( Hadiah 4D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiDiskon3D() {
+            const input = document.getElementById('hoki-diskon3d-input').value || 1000;
+            const bayar = input * 0.8;
+            const result = input * 750;
+            document.getElementById('hoki-diskon3d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('hoki-diskon3d-result').innerHTML = `
+                Untuk Perhitungan 3D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 750 ( Hadiah 3D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiDiskon2D() {
+            const input = document.getElementById('hoki-diskon2d-input').value || 1000;
+            const bayar = input * 0.8;
+            const result = input * 75;
+            document.getElementById('hoki-diskon2d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('hoki-diskon2d-result').innerHTML = `
+                Untuk Perhitungan 2D Diskon dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 20% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 75 ( Hadiah 2D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateHokiBB5D() {
+            const input = document.getElementById('hoki-bb5d-input').value || 1000;
+            const result1 = input * 50000;
+            const result2 = input * 350;
+            document.getElementById('hoki-bb5d-result').innerHTML = `
+                Untuk perhitungan 5D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 50,000 ( Hadiah 5D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 350 ( Hadiah 5D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        function calculateHokiBB4D() {
+            const input = document.getElementById('hoki-bb4d-input').value || 1000;
+            const result1 = input * 5000;
+            const result2 = input * 180;
+            document.getElementById('hoki-bb4d-result').innerHTML = `
+                Untuk perhitungan 4D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 5,000 ( Hadiah 4D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 180 ( Hadiah 4D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        function calculateHokiBB3D() {
+            const input = document.getElementById('hoki-bb3d-input').value || 1000;
+            const result1 = input * 500;
+            const result2 = input * 75;
+            document.getElementById('hoki-bb3d-result').innerHTML = `
+                Untuk perhitungan 3D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 500 ( Hadiah 3D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 75 ( Hadiah 3D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        function calculateHokiBB2D() {
+            const input = document.getElementById('hoki-bb2d-input').value || 1000;
+            const result1 = input * 80;
+            const result2 = input * 15;
+            document.getElementById('hoki-bb2d-result').innerHTML = `
+                Untuk perhitungan 2D Bolak Balik dimana jika melakukan bettingan Rp.${formatNumber(input)}<br>
+                Maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 80 ( Hadiah 2D Tebakan Tepat ) = Rp.${formatNumber(result1)}<br>
+                Rp.${formatNumber(input)} x 15 ( Hadiah 2D Tebakan Tidak Tepat ) = Rp.${formatNumber(result2)}
+            `;
+        }
+
+        // KINGKONG 4D CALCULATIONS
+        function calculateKKDiskon4D() {
+            const input = document.getElementById('kk-diskon4d-input').value || 1000;
+            const bayar = input * 0.67;
+            const result = input * 6000;
+            document.getElementById('kk-diskon4d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('kk-diskon4d-result').innerHTML = `
+                Untuk Perhitungan 4D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 33.00% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 6,000 ( Hadiah 4D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateKKDiskon3D() {
+            const input = document.getElementById('kk-diskon3d-input').value || 1000;
+            const bayar = input * 0.76;
+            const result = input * 700;
+            document.getElementById('kk-diskon3d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('kk-diskon3d-result').innerHTML = `
+                Untuk Perhitungan 3D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 24.00% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 700 ( Hadiah 3D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateKKDiskon2D() {
+            const input = document.getElementById('kk-diskon2d-input').value || 1000;
+            const bayar = input * 0.85;
+            const result = input * 80;
+            document.getElementById('kk-diskon2d-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('kk-diskon2d-result').innerHTML = `
+                Untuk Perhitungan 2D Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 80 ( Hadiah 2D Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateKKDiskon2DD() {
+            const input = document.getElementById('kk-diskon2dd-input').value || 1000;
+            const bayar = input * 0.85;
+            const result = input * 80;
+            document.getElementById('kk-diskon2dd-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('kk-diskon2dd-result').innerHTML = `
+                Untuk Perhitungan 2D Depan Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 80 ( Hadiah 2D Depan Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateKKDiskon2DT() {
+            const input = document.getElementById('kk-diskon2dt-input').value || 1000;
+            const bayar = input * 0.85;
+            const result = input * 80;
+            document.getElementById('kk-diskon2dt-bayar').innerHTML = formatNumber(bayar);
+            document.getElementById('kk-diskon2dt-result').innerHTML = `
+                Untuk Perhitungan 2D Tengah Diskon KING KONG 4D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka akan ada diskon ( 15.00% ) yang anda bayar adalah Rp.${formatNumber(bayar)}, maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 80 ( Hadiah 2D Tengah Diskon ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        // PRIZE 123 CALCULATIONS
+        function calculatePrize14D() {
+            const input = document.getElementById('prize1-4d-input').value || 1000;
+            const result = input * 6500;
+            document.getElementById('prize1-4d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 4D di Prize 1 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 6,500 ( Hadiah Prize 1 4D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize13D() {
+            const input = document.getElementById('prize1-3d-input').value || 1000;
+            const result = input * 650;
+            document.getElementById('prize1-3d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 3D di Prize 1 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 650 ( Hadiah Prize 1 3D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize12D() {
+            const input = document.getElementById('prize1-2d-input').value || 1000;
+            const result = input * 70;
+            document.getElementById('prize1-2d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 2D di Prize 1 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 70 ( Hadiah Prize 1 2D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize24D() {
+            const input = document.getElementById('prize2-4d-input').value || 1000;
+            const result = input * 2100;
+            document.getElementById('prize2-4d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 4D di Prize 2 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 2,100 ( Hadiah Prize 2 4D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize23D() {
+            const input = document.getElementById('prize2-3d-input').value || 1000;
+            const result = input * 210;
+            document.getElementById('prize2-3d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 3D di Prize 2 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 210 ( Hadiah Prize 2 3D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize22D() {
+            const input = document.getElementById('prize2-2d-input').value || 1000;
+            const result = input * 20;
+            document.getElementById('prize2-2d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 2D di Prize 2 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 20 ( Hadiah Prize 2 2D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize34D() {
+            const input = document.getElementById('prize3-4d-input').value || 1000;
+            const result = input * 1100;
+            document.getElementById('prize3-4d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 4D di Prize 3 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 1,100 ( Hadiah Prize 3 4D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize33D() {
+            const input = document.getElementById('prize3-3d-input').value || 1000;
+            const result = input * 110;
+            document.getElementById('prize3-3d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 3D di Prize 3 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 110 ( Hadiah Prize 3 3D ) = ${formatNumber(result)}
+            `;
+        }
+
+        function calculatePrize32D() {
+            const input = document.getElementById('prize3-2d-input').value || 1000;
+            const result = input * 8;
+            document.getElementById('prize3-2d-result').innerHTML = `
+                Jika Melakukan bettingan Prize123 dengan nominal Rp. ${formatNumber(input)} dan jika anda menang di bettingan 2D di Prize 3 maka perhitungannya sebagai berikut :<br><br>
+                Rp. ${formatNumber(input)} x 8 ( Hadiah Prize 3 2D ) = ${formatNumber(result)}
+            `;
+        }
+
+        // COLOK BEBAS CALCULATIONS
+        function calculateCB4D() {
+            const input = document.getElementById('cb-4d-input').value || 1000;
+            const result = input * 8;
+            document.getElementById('cb-4d-result').innerHTML = `
+                Untuk perhitungan Colok Bebas 4D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 8 ( Hadiah Colok Bebas 4D ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateCB3D() {
+            const input = document.getElementById('cb-3d-input').value || 1000;
+            const result = input * 12;
+            document.getElementById('cb-3d-result').innerHTML = `
+                Untuk perhitungan Colok Bebas 3D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 12 ( Hadiah Colok Bebas 3D ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        function calculateCB2D() {
+            const input = document.getElementById('cb-2d-input').value || 1000;
+            const result = input * 6;
+            document.getElementById('cb-2d-result').innerHTML = `
+                Untuk perhitungan Colok Bebas 2D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 6 ( Hadiah Colok Bebas 2D ) = Rp.${formatNumber(result)}
+            `;
+        }
+
+        // COLOK BEBAS 5D CALCULATIONS
+        function calculateCB5D() {
+            const input = document.getElementById('cb5d-input').value || 1000;
+            const result = input * 10;
+            document.getElementById('cb5d-result').innerHTML = `
+                Untuk perhitungan Colok Bebas 5D dimana jika anda melakukan bettingan dengan nominal Rp.${formatNumber(input)} maka perhitungannya sebagai berikut :<br><br>
+                Rp.${formatNumber(input)} x 10 ( Hadiah Colok Bebas 5D ) = Rp.${formatNumber(result)}
+            `;
+        }
+    </script>
+</body>
+</html>

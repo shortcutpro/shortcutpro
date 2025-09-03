@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Generator Script JP</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22></text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                url('https://cdn.areabermain.club/assets/cdn/az9/2023/12/16/20231216/f82bd18f48850e4f1b12b30900ad2efe/TVTOTO_BG_RTP_0.jpg') center/cover no-repeat fixed;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(139, 0, 0, 0.2);
+            overflow: hidden;
+            border: 1px solid rgba(218, 165, 32, 0.3);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 30%, #FF4500 60%, #DAA520 100%);
+            color: white;
+            padding: 35px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(255,215,0,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        .header h1 {
+            font-size: 2.4em;
+            margin-bottom: 10px;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            opacity: 0.95;
+            font-size: 1.1em;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .input-section {
+            padding: 35px;
+            background: linear-gradient(135deg, rgba(255, 248, 220, 0.9) 0%, rgba(255, 228, 196, 0.8) 100%);
+            position: relative;
+        }
+        
+        .input-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(218,165,32,0.1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #8B0000;
+            font-size: 1.1em;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid rgba(218, 165, 32, 0.3);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #DAA520;
+            box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.2), 0 4px 12px rgba(218, 165, 32, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .output-section {
+            padding: 35px;
+            border-top: 1px solid rgba(218, 165, 32, 0.3);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 248, 220, 0.9) 100%);
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .output-header h3 {
+            color: #8B0000;
+            font-size: 1.4em;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #8B0000, #DC143C, #FF4500);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(139, 0, 0, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 0, 0, 0.4);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #DAA520, #FF6347, #CD853F);
+        }
+        
+        .output-box {
+            background: linear-gradient(135deg, #2F1B14, #8B4513);
+            color: #FFD700;
+            padding: 25px;
+            border-radius: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            word-break: break-all;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            min-height: 200px;
+            border: 2px solid rgba(218, 165, 32, 0.5);
+            box-shadow: inset 0 4px 12px rgba(139, 69, 19, 0.3);
+        }
+        
+        .preview-section {
+            padding: 35px;
+            border-top: 1px solid rgba(218, 165, 32, 0.3);
+            background: linear-gradient(135deg, rgba(255, 248, 220, 0.9) 0%, rgba(255, 228, 196, 0.8) 100%);
+        }
+        
+        .preview-header {
+            margin-bottom: 20px;
+        }
+        
+        .preview-header h3 {
+            color: #8B0000;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+        
+        .preview-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(218, 165, 32, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            min-height: 150px;
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.1);
+        }
+        
+        /* Style untuk preview content */
+        .content .entry {
+            text-align: center;
+        }
+        
+        .content .entry img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .content .text {
+            text-align: left;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00ff00, #00ff00, #00ff00);
+            color: white;
+            padding: 18px 30px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(139, 0, 0, 0.4);
+            transform: translateX(400px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+        }
+        
+        .notification.show {
+            transform: translateX(0) scale(1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 1.9em;
+            }
+            
+            .input-section, .output-section, .preview-section {
+                padding: 25px;
+            }
+            
+            .output-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Generator Script JP</h1>
+            <p>Konversi link gambar dan teks menjadi format HTML secara otomatis</p>
+        </div>
+        
+        <div class="input-section">
+            <div class="form-group">
+                <label for="imageUrl">🖼️ Link Gambar:</label>
+                <input type="url" id="imageUrl" placeholder="https://example.com/image.gif" />
+            </div>
+            
+            <div class="form-group">
+                <label for="textContent">📝 Teks Konten:</label>
+                <textarea id="textContent" placeholder="💥Selamat Kepada [username] yang berhasil..."></textarea>
+            </div>
+        </div>
+        
+        <div class="output-section">
+            <div class="output-header">
+                <h3>📋 Script HTML Generated:</h3>
+                <button class="copy-btn" id="copyBtn">📄 Copy Script</button>
+            </div>
+            <div class="output-box" id="outputBox">Script akan muncul di sini secara otomatis...</div>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-header">
+                <h3>👁️ Preview Hasil:</h3>
+                <p style="color: #8B0000; font-size: 14px;">Pratinjau bagaimana script akan terlihat</p>
+            </div>
+            <div class="preview-box" id="previewBox">Preview akan muncul di sini...</div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        ✅ Script berhasil disalin ke clipboard!
+    </div>
+
+    <script>
+        const imageUrlInput = document.getElementById('imageUrl');
+        const textContentInput = document.getElementById('textContent');
+        const outputBox = document.getElementById('outputBox');
+        const previewBox = document.getElementById('previewBox');
+        const copyBtn = document.getElementById('copyBtn');
+        const notification = document.getElementById('notification');
+
+        function generateHTML() {
+            const imageUrl = imageUrlInput.value.trim();
+            const textContent = textContentInput.value.trim();
+            
+            if (!imageUrl && !textContent) {
+                outputBox.textContent = 'Script akan muncul di sini secara otomatis...';
+                previewBox.innerHTML = 'Preview akan muncul di sini...';
+                return;
+            }
+            
+            // Process text content - escape HTML and convert line breaks
+            let processedText = '';
+            if (textContent) {
+                // Split by line breaks and filter out empty lines
+                const lines = textContent.split(/\r?\n/).filter(line => line.trim() !== '');
+                
+                // Process each line and escape HTML characters
+                const processedLines = lines.map(line => {
+                    return line.trim()
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;');
+                });
+                
+                // Join with <br /> tags
+                processedText = processedLines.join('</i></b><br /><b><i>');
+            }
+            
+            // Generate HTML script
+            let htmlScript = '<div class="content">\n<div class="entry">';
+            
+            if (imageUrl) {
+                htmlScript += `<img src="${imageUrl}" alt="Selamat Kepada pemenang" />`;
+            }
+            
+            if (processedText) {
+                htmlScript += `\n<div class="text"><span style="color: #ff4d4d; font-size: 18px;"> <b><i>${processedText}</i></b> </span></div>`;
+            }
+            
+            htmlScript += '\n</div></div>';
+            
+            outputBox.textContent = htmlScript;
+            
+            // Update preview (for preview, don't escape HTML)
+            let previewHTML = '<div class="content"><div class="entry">';
+            
+            if (imageUrl) {
+                previewHTML += `<img src="${imageUrl}" alt="Selamat Kepada pemenang" />`;
+            }
+            
+            if (textContent) {
+                const lines = textContent.split(/\r?\n/).filter(line => line.trim() !== '');
+                const previewLines = lines.map(line => line.trim()).join('<br />');
+                previewHTML += `<div class="text"><span style="color: #ff4d4d; font-size: 18px;"> <b><i>${previewLines}</i></b> </span></div>`;
+            }
+            
+            previewHTML += '</div></div>';
+            
+            previewBox.innerHTML = previewHTML || 'Preview akan muncul di sini...';
+        }
+
+        function copyToClipboard() {
+            const textToCopy = outputBox.textContent;
+            
+            if (textToCopy === 'Script akan muncul di sini secara otomatis...') {
+                showNotification('⚠️ Tidak ada script untuk disalin!', '#DC143C');
+                return;
+            }
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                copyBtn.textContent = '✅ Tersalin!';
+                copyBtn.classList.add('copied');
+                showNotification('✅ Script berhasil disalin ke clipboard!', '#DAA520');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = '📄 Copy Script';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification('❌ Gagal menyalin script!', '#DC143C');
+            });
+        }
+
+        function showNotification(message, color = '#8B0000') {
+            notification.textContent = message;
+            notification.style.background = `linear-gradient(135deg, ${color}, #FF4500)`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Event listeners
+        imageUrlInput.addEventListener('input', generateHTML);
+        textContentInput.addEventListener('input', generateHTML);
+        copyBtn.addEventListener('click', copyToClipboard);
+
+        // Populate with example data
+        window.addEventListener('load', () => {
+            imageUrlInput.value = '';
+            textContentInput.value = '';
+            generateHTML();
+        });
+    </script>
+</body>
+</html>

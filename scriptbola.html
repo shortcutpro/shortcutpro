@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generator Prediksi Bola TVTOTO - Enhanced</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <title>Generator Prediksi Bola TVTOTO - Fixed</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -26,7 +27,6 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
-            min-height: calc(100vh - 40px);
         }
 
         .input-section {
@@ -35,21 +35,6 @@
             padding: 20px;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            display: flex;
-            flex-direction: column;
-            height: fit-content;
-            min-height: 600px;
-        }
-
-        .output-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            padding: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         h1 {
@@ -77,25 +62,14 @@
             font-size: 18px;
         }
 
-        .input-controls {
-            display: flex;
-            gap: 10px;
+        .stats-info {
+            background: rgba(255, 204, 0, 0.1);
+            border: 1px solid rgba(255, 204, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
             margin-bottom: 15px;
-            align-items: center;
-        }
-
-        .auto-expand-checkbox {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #ffffff;
-            font-size: 14px;
-        }
-
-        .auto-expand-checkbox input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            accent-color: #ffcc00;
+            font-size: 13px;
+            color: #ffcc00;
         }
 
         textarea {
@@ -110,7 +84,6 @@
             line-height: 1.5;
             resize: vertical;
             font-family: 'Poppins', sans-serif;
-            flex-grow: 1;
         }
 
         textarea::placeholder {
@@ -133,7 +106,7 @@
             font-size: 12px;
             line-height: 1.4;
             white-space: pre-wrap;
-            word-break: break-all;
+            word-break: break-word;
             margin-bottom: 10px;
         }
 
@@ -162,7 +135,6 @@
         .copy-btn:hover {
             background: linear-gradient(45deg, #cc0000, #ff0000);
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(204, 0, 0, 0.4);
         }
 
         .clear-btn:hover {
@@ -170,27 +142,16 @@
             transform: translateY(-2px);
         }
 
-        .stats-info {
-            background: rgba(255, 204, 0, 0.1);
-            border: 1px solid rgba(255, 204, 0, 0.3);
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 15px;
-            font-size: 13px;
-            color: #ffcc00;
-        }
-
         .preview-container {
-            flex-grow: 1;
-            overflow-y: auto;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
             background: rgba(0, 0, 0, 0.2);
             max-height: 500px;
+            overflow-y: auto;
             margin-top: 10px;
         }
 
-        /* Prediksi Bola Styles */
+        /* Preview styles */
         .container {
             max-width: 100%;
             width: 100%;
@@ -198,7 +159,6 @@
             background-color: rgba(0, 0, 0, 0.3);
             border-radius: 15px;
             padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
 
         .header {
@@ -231,19 +191,6 @@
             text-align: center;
             font-size: 18px;
             text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .marquee p {
-            display: inline-block;
-            animation: marquee 15s linear infinite;
-            padding-left: 100%;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
         }
 
         .league {
@@ -251,7 +198,6 @@
             background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         .league-title {
@@ -261,20 +207,18 @@
             font-size: 18px;
             font-weight: 700;
             text-transform: uppercase;
-            border-bottom: 1px solid #ff3333;
+            text-align: center;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
         }
 
         th, td {
             padding: 8px;
             text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            word-wrap: break-word;
             font-size: 12px;
         }
 
@@ -288,92 +232,21 @@
             background-color: rgba(102, 0, 0, 0.3);
         }
 
-        tr:hover {
-            background-color: rgba(204, 0, 0, 0.3);
-        }
-
-        .time {
-            width: 15%;
-        }
-
-        .match {
-            width: 70%;
-            text-align: center;
-        }
-
-        .score {
-            width: 15%;
-            font-weight: 700;
+        td {
             color: #ffcc00;
-        }
-
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .app-container {
-                gap: 15px;
-            }
-            
-            .input-section {
-                min-height: auto;
-            }
+            font-weight: 600;
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
-            }
-            
-            .input-section, .output-section {
-                padding: 15px;
-            }
-            
-            textarea {
-                height: 250px;
-                font-size: 13px;
-            }
-            
-            .script-output {
-                max-height: 250px;
-                font-size: 11px;
-            }
-            
-            th, td {
-                padding: 6px 4px;
-                font-size: 10px;
-            }
-            
-            .button-group {
-                justify-content: center;
-            }
-            
-            .clear-btn {
-                max-width: 200px;
-            }
-        }
-
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 204, 0, 0.5);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 204, 0, 0.7);
+            body { padding: 10px; }
+            .input-section { padding: 15px; }
+            textarea { height: 250px; font-size: 13px; }
+            th, td { padding: 6px 4px; font-size: 10px; }
         }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Input Section -->
         <div class="input-section">
             <h1>Generator Prediksi Bola TVTOTO</h1>
             
@@ -387,17 +260,22 @@
             
             <textarea 
                 id="predictionInput" 
-                placeholder="Contoh format:
+                placeholder="Contoh format yang didukung:
 
+Format 1 (dengan VS):
 ENGLISH PREMIER LEAGUE
-25/08 02:00 WIB Newcastle United VS Liverpool 1 : 2
+25/08 02:00 WIB Newcastle United VS Liverpool 1:2
 
-ITALY SERIE A  
-25/08 23:30 WIB Udinese VS Hellas Verona 1 : 1
-26/08 01:45 WIB Inter Milan VS Torino 2 : 0
+Format 2 (tanpa VS):
+WORLD CUP 2026 EUROPE QUALIFIERS
+06/09 20:00 WIB Latvia Serbia 0-2
+06/09 23:00 WIB Armenia Portugal 1-3
 
-Paste jadwal dan prediksi di sini...
-Semakin banyak liga dan pertandingan, semakin panjang hasil yang dihasilkan!"
+Format 3 (dengan ranking):
+LIGA PORTUGAL
+07/09 02:30 WIB [1] Estoril Praia [5] Santa Clara 0-1
+
+Paste jadwal dan prediksi di sini..."
             ></textarea>
             
             <div class="button-group">
@@ -416,66 +294,11 @@ Semakin banyak liga dan pertandingan, semakin panjang hasil yang dihasilkan!"
     </div>
 
     <script>
-        // Sample data with more comprehensive examples including different time formats
-        const sampleData = `ENGLISH PREMIER LEAGUE
-25/08 02:00 WIB Newcastle United VS Liverpool 1 : 2
-
-ITALY SERIE A
-25/08 23:30 WIB Udinese VS Hellas Verona 1 : 1
-26/08 01:45 WIB Inter Milan VS Torino 2 : 0
-
-SPAIN LA LIGA
-25/08 00:30 WIB Athletic Bilbao VS Rayo Vallecano 2 : 1
-25/08 02:30 WIB Sevilla VS Getafe 1 : 1
-
-NORWAY ELITESERIEN
-25/08 00:00 WIB [11] Sarpsborg 08 VS [13] Kristiansund 1 : 2
-
-SWEDEN ALLSVENSKAN
-25/08 00:00 WIB [6] GAIS Goteborg VS [1] Mjallby 0 : 1
-25/08 00:00 WIB [14] Osters VS [12] IFK Norrkoping 1 : 1
-
-ITALY PRIMAVERA 1 CHAMPIONSHIP
-25/08 21:30 WIB AC Milan U20 VS Sassuolo U20 1 : 2
-
-BRAZIL SERIE A
-26/08 5:00 WIB [3] Palmeiras VS [20] Sport Club do Recife 2 : 0
-26/08 7:00 WIB [1] Flamengo VS [17] Vitoria BA 3 : 0
-
-ARGENTINA LIGA PROFESIONAL
-26/08 1:00 WIB Deportivo Riestra VS Sarmiento de Junin 1 : 2
-26/08 3:00 WIB Godoy Cruz Antonio Tomba VS Velez Sarsfield 1 : 1
-26/08 5:00 WIB Belgrano de Cordoba VS Central Cordoba De Santiago Del Estero 1 : 1
-26/08 5:15 WIB Estudiantes La Plata VS CA Aldosivi 2 : 1
-26/08 7:15 WIB CA Lanus VS River Plate 1 : 2
-
-COLOMBIA PRIMERA A
-26/08 6:00 WIB [15] Boyaca Chico VS [10] Deportivo Cali 0 : 2
-
-ECUADOR LIGA PRO SERIE A
-26/08 7:00 WIB [7] Orense SC VS [12] Delfin SC 1 : 1
-
-MEXICO WOMEN PRIMERA DIVISION
-26/08 7:00 WIB [6] Pumas U.N.A.M. [w] VS [16] Club Tijuana [w] 0 : 2
-26/08 8:00 WIB [17] Puebla [w] VS [10] Club Leon [w] 1 : 1
-26/08 10:00 WIB [8] FC Juarez [w] VS [18] Mazatlan FC [w] 0 : 3
-
-ENGLISH NATIONAL LEAGUE
-25/08 21:00 WIB [24] Woking VS [12] York City 1 : 2
-25/08 21:00 WIB [19] Altrincham VS [20] Solihull Moors 0 : 1
-
-KOREA WOMEN K-LEAGUE
-25/08 17:00 WIB [7] Suwon FC [w] VS [4] Hyundai Steel Red Angels [w] 1 : 2`;
-
-        // Get current date in Indonesian format
+        // Utility functions
         function getCurrentDate() {
-            const months = [
-                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-            ];
-            const days = [
-                'Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'
-            ];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             
             const now = new Date();
             const dayName = days[now.getDay()];
@@ -486,12 +309,9 @@ KOREA WOMEN K-LEAGUE
             return `${dayName}, ${day} ${month} ${year}`;
         }
 
-        // Get date for script variable
         function getScriptDate() {
-            const months = [
-                'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-            ];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+                'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             
             const today = new Date();
             const tomorrow = new Date(today);
@@ -513,9 +333,7 @@ KOREA WOMEN K-LEAGUE
             }
         }
 
-        // Auto-resize textarea functionality - REMOVED
-
-        // Parse input and generate leagues
+        // Enhanced parsing with better team name splitting
         function parseInput(input) {
             if (!input.trim()) return [];
             
@@ -523,21 +341,16 @@ KOREA WOMEN K-LEAGUE
             let leagues = [];
             let currentLeague = null;
             
-            for (let line of lines) {
-                line = line.trim();
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i].trim();
                 if (!line) continue;
                 
-                // Enhanced regex patterns to handle various time formats
-                // Supports: 02:00 WIB, 5:00 WIB, 23:30 WIB, etc.
-                const timePatterns = [
-                    /\d{2}\/\d{2}\s+\d{1,2}:\d{2}\s+WIB/,  // Main pattern: 25/08 02:00 WIB or 26/08 5:00 WIB
-                    /\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB/, // Alternative: 5/8 5:00 WIB
-                ];
+                // Check if line contains time pattern
+                const timePattern = /\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB/;
+                const isMatchLine = timePattern.test(line);
                 
-                const isMatchLine = timePatterns.some(pattern => pattern.test(line));
-                
-                // Check if line is a league title (doesn't contain time pattern)
                 if (!isMatchLine) {
+                    // This is a league title
                     if (currentLeague && currentLeague.matches.length > 0) {
                         leagues.push(currentLeague);
                     }
@@ -546,45 +359,10 @@ KOREA WOMEN K-LEAGUE
                         matches: []
                     };
                 } else {
-                    // Enhanced regex to handle various time and match formats
-                    // Supports both single digit and double digit times
-                    const matchRegexes = [
-                        // Primary regex: handles most formats with optional brackets and rankings
-                        /(\d{2}\/\d{2}\s+\d{1,2}:\d{2}\s+WIB)\s+(?:\[[^\]]*\]\s*)?(.+?)\s+VS\s+(?:\[[^\]]*\]\s*)?(.+?)\s+(\d+\s*:\s*\d+)/i,
-                        // Alternative regex for edge cases
-                        /(\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB)\s+(?:\[[^\]]*\]\s*)?(.+?)\s+VS\s+(?:\[[^\]]*\]\s*)?(.+?)\s+(\d+\s*:\s*\d+)/i
-                    ];
-                    
-                    let match = null;
-                    for (let regex of matchRegexes) {
-                        match = line.match(regex);
-                        if (match) break;
-                    }
-                    
-                    if (match && currentLeague) {
-                        // Clean team names (remove ranking numbers in brackets and extra spaces)
-                        let homeTeam = match[2].trim()
-                            .replace(/^\[\d+\]\s*/, '')  // Remove ranking at start
-                            .replace(/\s*\[\d+\]\s*$/, '') // Remove ranking at end
-                            .replace(/\s+/g, ' ')         // Normalize spaces
-                            .trim();
-                            
-                        let awayTeam = match[3].trim()
-                            .replace(/^\[\d+\]\s*/, '')  // Remove ranking at start
-                            .replace(/\s*\[\d+\]\s*$/, '') // Remove ranking at end
-                            .replace(/\s+/g, ' ')         // Normalize spaces
-                            .trim();
-                        
-                        // Additional cleaning for special cases
-                        homeTeam = homeTeam.replace(/\s*\[w\]\s*$/i, ' [w]').trim(); // Keep women's indicator
-                        awayTeam = awayTeam.replace(/\s*\[w\]\s*$/i, ' [w]').trim();   // Keep women's indicator
-                        
-                        currentLeague.matches.push({
-                            time: match[1],
-                            homeTeam: homeTeam,
-                            awayTeam: awayTeam,
-                            score: match[4].trim()
-                        });
+                    // This is a match line
+                    const parsed = parseMatchLine(line);
+                    if (parsed && currentLeague) {
+                        currentLeague.matches.push(parsed);
                     }
                 }
             }
@@ -596,91 +374,83 @@ KOREA WOMEN K-LEAGUE
             return leagues;
         }
 
-        // Debug function to check parsing
-        function debugParsing(input) {
-            const lines = input.split('\n').filter(line => line.trim());
-            console.log('Total lines to process:', lines.length);
+        function parseMatchLine(line) {
+            // Extract time first
+            const timeMatch = line.match(/(\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB)/);
+            if (!timeMatch) return null;
             
-            let debugInfo = [];
-            let currentLeagueTitle = '';
+            const time = timeMatch[1];
+            const remainder = line.replace(time, '').trim();
             
-            for (let i = 0; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
+            // Extract score (at the end)
+            const scoreMatch = remainder.match(/(\d+[-:]\d+)(?:\s|$)/);
+            if (!scoreMatch) return null;
+            
+            const score = scoreMatch[1].replace('-', ':');
+            const teamsText = remainder.replace(scoreMatch[0], '').trim();
+            
+            // Parse teams
+            const teams = parseTeams(teamsText);
+            if (!teams) return null;
+            
+            return {
+                time: time,
+                homeTeam: teams.home,
+                awayTeam: teams.away,
+                score: score
+            };
+        }
+
+        function parseTeams(teamsText) {
+            // Remove rankings
+            teamsText = teamsText.replace(/\[[^\]]*\]/g, '').trim();
+            
+            // Method 1: Look for " VS " (case insensitive)
+            let vsMatch = teamsText.match(/^(.+?)\s+VS\s+(.+)$/i);
+            if (vsMatch) {
+                return {
+                    home: vsMatch[1].trim(),
+                    away: vsMatch[2].trim()
+                };
+            }
+            
+            // Method 2: Smart splitting based on patterns
+            const words = teamsText.split(/\s+/);
+            
+            // Look for country names, club keywords, etc.
+            const clubKeywords = ['FC', 'CF', 'AC', 'SC', 'United', 'City', 'Real', 'Atletico', 'Sporting', 'Club'];
+            
+            for (let i = 1; i < words.length; i++) {
+                const firstPart = words.slice(0, i).join(' ');
+                const secondPart = words.slice(i).join(' ');
                 
-                const timePatterns = [
-                    /\d{2}\/\d{2}\s+\d{1,2}:\d{2}\s+WIB/,
-                    /\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB/,
-                ];
-                
-                const isMatchLine = timePatterns.some(pattern => pattern.test(line));
-                
-                if (!isMatchLine) {
-                    currentLeagueTitle = line;
-                    debugInfo.push({ type: 'league', line: i + 1, content: line });
-                } else {
-                    const matchRegexes = [
-                        /(\d{2}\/\d{2}\s+\d{1,2}:\d{2}\s+WIB)\s+(?:\[[^\]]*\]\s*)?(.+?)\s+VS\s+(?:\[[^\]]*\]\s*)?(.+?)\s+(\d+\s*:\s*\d+)/i,
-                        /(\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB)\s+(?:\[[^\]]*\]\s*)?(.+?)\s+VS\s+(?:\[[^\]]*\]\s*)?(.+?)\s+(\d+\s*:\s*\d+)/i
-                    ];
-                    
-                    let match = null;
-                    for (let regex of matchRegexes) {
-                        match = line.match(regex);
-                        if (match) break;
-                    }
-                    
-                    if (match) {
-                        debugInfo.push({ 
-                            type: 'match', 
-                            line: i + 1, 
-                            league: currentLeagueTitle,
-                            content: line,
-                            parsed: {
-                                time: match[1],
-                                home: match[2].trim(),
-                                away: match[3].trim(),
-                                score: match[4].trim()
-                            }
-                        });
-                    } else {
-                        debugInfo.push({ 
-                            type: 'failed', 
-                            line: i + 1, 
-                            league: currentLeagueTitle,
-                            content: line 
-                        });
+                // Check if this split makes sense
+                if (firstPart.length > 0 && secondPart.length > 0) {
+                    // Prefer splits that separate at club keywords
+                    if (clubKeywords.some(keyword => secondPart.startsWith(keyword))) {
+                        return {
+                            home: firstPart.trim(),
+                            away: secondPart.trim()
+                        };
                     }
                 }
             }
             
-            return debugInfo;
+            // Fallback: split in the middle
+            const midPoint = Math.ceil(words.length / 2);
+            return {
+                home: words.slice(0, midPoint).join(' ').trim(),
+                away: words.slice(midPoint).join(' ').trim()
+            };
         }
 
-        // Update statistics with more detailed info
         function updateStats(leagues) {
             const totalLeagues = leagues.length;
             const totalMatches = leagues.reduce((sum, league) => sum + league.matches.length, 0);
             
-            // Count failed lines for debugging
-            const input = document.getElementById('predictionInput').value;
-            const debugInfo = debugParsing(input);
-            const failedLines = debugInfo.filter(item => item.type === 'failed').length;
-            
-            let statsText = `Liga: ${totalLeagues} | Pertandingan: ${totalMatches}`;
-            if (failedLines > 0) {
-                statsText += ` | ⚠️ ${failedLines} baris tidak ter-parse`;
-            }
-            
-            document.getElementById('statsInfo').innerHTML = statsText;
-            
-            // Log failed parsing for debugging
-            if (failedLines > 0) {
-                console.log('Failed to parse lines:', debugInfo.filter(item => item.type === 'failed'));
-            }
+            document.getElementById('statsInfo').innerHTML = `Liga: ${totalLeagues} | Pertandingan: ${totalMatches}`;
         }
 
-        // Generate league HTML
         function generateLeagueHTML(leagues) {
             let html = '';
             
@@ -699,21 +469,18 @@ KOREA WOMEN K-LEAGUE
 
                 for (let match of league.matches) {
                     html += `<tr>
-<td class="time">${match.time}</td>
-<td class="match">${match.homeTeam} VS ${match.awayTeam}</td>
-<td class="score">${match.score}</td>
+<td>${match.time}</td>
+<td>${match.homeTeam} VS ${match.awayTeam}</td>
+<td>${match.score}</td>
 </tr>`;
                 }
 
-                html += `</tbody>
-</table>
-</div>`;
+                html += `</tbody></table></div>`;
             }
             
             return html;
         }
 
-        // Generate complete script
         function generateCompleteScript(input) {
             const leagues = parseInput(input);
             if (leagues.length === 0) return '';
@@ -721,157 +488,161 @@ KOREA WOMEN K-LEAGUE
             const leagueHTML = generateLeagueHTML(leagues);
             const dateInput = getScriptDate();
             
+            // Custom script only
             return `<p></p>
+</div>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 <style>
-/* Reset & dasar */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
+margin: 0;
+padding: 0;
+box-sizing: border-box;
 }
 body {
-    background-color: #990000;
-    color: #ffffff;
-    padding: 0px;
-    display: flex;
-    justify-content: center;
-    line-height: 1.6;
+font-family: 'Poppins', sans-serif;
+background-color: 
+#990000;
+color: 
+#ffffff;
+padding: 20px;
+line-height: 1.6;
 }
 .container {
-    max-width: 100%;
-    width: 100%;
-    margin: 0 auto;
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-    padding: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+max-width: 1000px;
+margin: 0 auto;
+background-color: rgba(0, 0, 0, 0.3);
+border-radius: 15px;
+padding: 20px;
+box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 }
-/* Header */
 .header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 15px;
-    border-bottom: 2px solid #ffcc00;
+text-align: center;
+margin-bottom: 30px;
+padding-bottom: 15px;
+border-bottom: 2px solid 
+#ffcc00;
 }
 .header h1 {
-    font-size: 28px;
-    color: #ffcc00;
-    text-transform: uppercase;
-    margin-bottom: 10px;
+font-size: 28px;
+color: 
+#ffcc00;
+text-transform: uppercase;
+margin-bottom: 10px;
 }
 .header .date {
-    font-size: 18px;
-    color: #ffffff;
-    font-weight: 600;
+font-size: 18px;
+color: 
+#ffffff;
+font-weight: 600;
 }
-/* Marquee */
 .marquee {
-    background-color: #660000;
-    color: #ffcc00;
-    padding: 10px;
-    margin-bottom: 25px;
-    border-radius: 5px;
-    font-weight: 700;
-    text-align: center;
-    font-size: 18px;
-    text-transform: uppercase;
-    overflow: hidden;
-    white-space: nowrap;
+background-color: 
+#660000;
+color: 
+#ffcc00;
+padding: 10px;
+margin-bottom: 25px;
+border-radius: 5px;
+font-weight: 700;
+text-align: center;
+font-size: 18px;
+text-transform: uppercase;
+overflow: hidden;
+white-space: nowrap;
 }
 .marquee p {
-    display: inline-block;
-    animation: marquee 15s linear infinite;
-    padding-left: 100%;
+display: inline-block;
+animation: marquee 15s linear infinite;
+padding-left: 100%;
 }
 @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-100%); }
+0% { transform: translateX(0); }
+100% { transform: translateX(-100%); }
 }
-/* League Box */
 .league {
-    margin-bottom: 30px;
-    background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+margin-bottom: 30px;
+background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 .league-title {
-    background: linear-gradient(90deg, #660000, #990000);
-    color: #ffffff;
-    padding: 12px 15px;
-    font-size: 18px;
-    font-weight: 700;
-    text-transform: uppercase;
-    border-bottom: 1px solid #ff3333;
+background: linear-gradient(90deg, 
+#660000, 
+#990000);
+color: 
+#ffffff;
+padding: 12px 15px;
+font-size: 18px;
+font-weight: 700;
+text-transform: uppercase;
+border-bottom: 1px solid 
+#ff3333;
 }
-.league-title em {
-    font-style: normal;
-    font-weight: 700;
+.league-info {
+padding: 8px 15px;
+background-color: rgba(0, 0, 0, 0.2);
+font-size: 14px;
+color: 
+#cccccc;
+font-style: italic;
 }
-/* Tabel */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-th, td {
-    padding: 10px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    word-wrap: break-word;
+width: 100%;
+border-collapse: collapse;
 }
 th {
-    background-color: #660000;
-    color: #ffcc00;
-    font-weight: 600;
+background-color: 
+#660000;
+color: 
+#ffcc00;
+padding: 12px;
+text-align: center;
+font-weight: 600;
+}
+td {
+padding: 10px 12px;
+text-align: center;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 tr:nth-child(even) {
-    background-color: rgba(102, 0, 0, 0.3);
+background-color: rgba(102, 0, 0, 0.3);
 }
 tr:hover {
-    background-color: rgba(204, 0, 0, 0.3);
+background-color: rgba(204, 0, 0, 0.3);
 }
-.time {
-    width: 15%;
+.prediction {
+font-weight: 700;
+color: 
+#ffcc00;
 }
-.match {
-    width: 70%;
-    text-align: center;
-}
-.score {
-    width: 15%;
-    font-weight: 700;
-    color: #ffcc00;
-}
-/* Responsif */
 @media (max-width: 768px) {
-    .container {
-        padding: 15px;
-    }
-    th, td {
-        padding: 8px 4px;
-        font-size: 12px;
-    }
-    .league-title {
-        font-size: 16px;
-    }
+.container {
+padding: 15px;
+}
+th, td {
+padding: 8px 10px;
+font-size: 14px;
+}
+.league-title {
+font-size: 16px;
+}
 }
 @media (max-width: 480px) {
-    .header h1 {
-        font-size: 22px;
-    }
-    .marquee {
-        font-size: 16px;
-        padding: 8px;
-    }
-    th, td {
-        padding: 6px 4px;
-        font-size: 10px;
-    }
+.header h1 {
+font-size: 22px;
+}
+.marquee {
+font-size: 16px;
+padding: 8px;
+}
+th, td {
+padding: 6px 8px;
+font-size: 12px;
+}
 }
 </style>
+<div>
 <div class="container">
 <div class="header">
 <h1><span style="font-size: 30pt;">Prediksi Bola TVTOTO</span></h1>
@@ -881,10 +652,10 @@ tr:hover {
 <p><span style="font-size: 20pt;">SELAMAT DATANG DI PREDIKSI BOLA TERBARU TVTOTO | PREDIKSI TVTOTO ${dateInput}</span></p>
 </div>
 ${leagueHTML}
+</div>
 </div>`;
         }
 
-        // Generate preview HTML
         function generatePreview(input) {
             const leagues = parseInput(input);
             if (leagues.length === 0) return '<p style="color: #888; padding: 20px; text-align: center;">Masukkan prediksi untuk melihat preview...</p>';
@@ -892,11 +663,11 @@ ${leagueHTML}
             const dateInput = getScriptDate();
             let html = `<div class="container">
 <div class="header">
-<h1><span style="font-size: 30pt;">Prediksi Bola TVTOTO</span></h1>
-<div class="date"><span style="font-size: 30pt;">${dateInput}</span></div>
+<h1>Prediksi Bola TVTOTO</h1>
+<div class="date">${dateInput}</div>
 </div>
 <div class="marquee">
-<p><span style="font-size: 20pt;">SELAMAT DATANG DI PREDIKSI BOLA TERBARU TVTOTO | PREDIKSI TVTOTO ${dateInput}</span></p>
+<p>SELAMAT DATANG DI PREDIKSI BOLA TERBARU TVTOTO | PREDIKSI TVTOTO ${dateInput}</p>
 </div>`;
 
             html += generateLeagueHTML(leagues);
@@ -905,19 +676,20 @@ ${leagueHTML}
             return html;
         }
 
-        // Copy generated script to clipboard
         function copyGeneratedScript() {
             const input = document.getElementById('predictionInput').value;
             const scriptText = generateCompleteScript(input);
             
             if (!scriptText) {
+                alert('Tidak ada data untuk di-copy!');
                 return;
             }
             
             const btn = event.target;
             const originalText = btn.textContent;
             
-            if (navigator.clipboard && window.isSecureContext) {
+            // Use modern clipboard API if available
+            if (navigator.clipboard) {
                 navigator.clipboard.writeText(scriptText).then(() => {
                     btn.textContent = 'Copy Berhasil!';
                     btn.style.background = 'linear-gradient(45deg, #00cc00, #00ff00)';
@@ -934,7 +706,6 @@ ${leagueHTML}
             }
         }
         
-        // Fallback copy method
         function fallbackCopy(text, btn, originalText) {
             const textArea = document.createElement('textarea');
             textArea.value = text;
@@ -955,55 +726,35 @@ ${leagueHTML}
                     btn.style.background = 'linear-gradient(45deg, #990000, #cc0000)';
                 }, 2000);
             } catch (err) {
-                console.log('Copy failed silently');
+                alert('Copy gagal. Silakan copy manual dari kotak Script Prediksi.');
             }
             
             document.body.removeChild(textArea);
         }
 
-        // Load sample data - REMOVED
-
-        // Clear input
         function clearInput() {
             document.getElementById('predictionInput').value = '';
             updateDisplays();
         }
 
-        // Update displays
         function updateDisplays() {
             const input = document.getElementById('predictionInput').value;
             const leagues = parseInput(input);
             
-            // Update statistics
             updateStats(leagues);
-            
-            // Update preview
             document.getElementById('previewOutput').innerHTML = generatePreview(input);
-            
-            // Update generated script
             document.getElementById('generatedScript').textContent = generateCompleteScript(input);
         }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            // Set current date
             document.getElementById('currentDate').textContent = getCurrentDate();
             
             const textarea = document.getElementById('predictionInput');
             
-            // Add input listener for real-time updates
-            textarea.addEventListener('input', function() {
-                updateDisplays();
-            });
+            textarea.addEventListener('input', updateDisplays);
+            textarea.addEventListener('paste', () => setTimeout(updateDisplays, 10));
             
-            // Add paste event listener for better handling of large data
-            textarea.addEventListener('paste', function() {
-                setTimeout(() => {
-                    updateDisplays();
-                }, 10);
-            });
-            
-            // Initial update
             updateDisplays();
         });
     </script>

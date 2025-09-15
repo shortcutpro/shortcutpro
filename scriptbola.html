@@ -382,11 +382,11 @@ Paste jadwal dan prediksi di sini..."
             const time = timeMatch[1];
             const remainder = line.replace(time, '').trim();
             
-            // Extract score (at the end)
-            const scoreMatch = remainder.match(/(\d+[-:]\d+)(?:\s|$)/);
+            // Extract score (at the end) - support multiple dash types
+            const scoreMatch = remainder.match(/(\d+[–:\-]\d+)(?:\s|$)/);
             if (!scoreMatch) return null;
             
-            const score = scoreMatch[1].replace('-', ':');
+            const score = scoreMatch[1].replace(/[–\-]/g, ':');
             const teamsText = remainder.replace(scoreMatch[0], '').trim();
             
             // Parse teams
@@ -500,11 +500,9 @@ box-sizing: border-box;
 }
 body {
 font-family: 'Poppins', sans-serif;
-background-color: 
-#990000;
-color: 
-#ffcc00;
-padding: 0px;
+background-color: #990000;
+color: #ffffff;
+padding: 20px;
 line-height: 1.6;
 }
 .container {
@@ -519,27 +517,22 @@ box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
 text-align: center;
 margin-bottom: 30px;
 padding-bottom: 15px;
-border-bottom: 2px solid 
-#ffcc00;
+border-bottom: 2px solid #ffcc00;
 }
 .header h1 {
 font-size: 28px;
-color: 
-#ffcc00;
+color: #ffcc00;
 text-transform: uppercase;
 margin-bottom: 10px;
 }
 .header .date {
 font-size: 18px;
-color: 
-#ffffff;
+color: #ffffff;
 font-weight: 600;
 }
 .marquee {
-background-color: 
-#660000;
-color: 
-#ffcc00;
+background-color: #660000;
+color: #ffcc00;
 padding: 10px;
 margin-bottom: 25px;
 border-radius: 5px;
@@ -567,25 +560,20 @@ overflow: hidden;
 box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 .league-title {
-background: linear-gradient(90deg, 
-#660000, 
-#990000);
-color: 
-#ffffff;
+background: linear-gradient(90deg, #660000, #990000);
+color: #ffffff;
 padding: 12px 15px;
 font-size: 18px;
 font-weight: 700;
-text-align: center;
 text-transform: uppercase;
-border-bottom: 1px solid 
-#ff3333;
+text-align: center;
+border-bottom: 1px solid #ff3333;
 }
 .league-info {
 padding: 8px 15px;
 background-color: rgba(0, 0, 0, 0.2);
 font-size: 14px;
-color: 
-#cccccc;
+color: #cccccc;
 font-style: italic;
 }
 table {
@@ -593,19 +581,18 @@ width: 100%;
 border-collapse: collapse;
 }
 th {
-background-color: 
-#660000;
-color: 
-#ffcc00;
+background-color: #660000;
+color: #ffcc00;
 padding: 12px;
 text-align: center;
 font-weight: 600;
 }
 td {
 padding: 10px 12px;
-font-weight: 700;
 text-align: center;
 border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+color: #ffcc00;
+font-weight: 600;
 }
 tr:nth-child(even) {
 background-color: rgba(102, 0, 0, 0.3);
@@ -615,8 +602,7 @@ background-color: rgba(204, 0, 0, 0.3);
 }
 .prediction {
 font-weight: 700;
-color: 
-#ffcc00;
+color: #ffcc00;
 }
 @media (max-width: 768px) {
 .container {

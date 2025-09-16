@@ -345,8 +345,8 @@ Paste jadwal dan prediksi di sini..."
                 const line = lines[i].trim();
                 if (!line) continue;
                 
-                // Check if line contains time pattern
-                const timePattern = /\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB/;
+                // Check if line contains time pattern - both with and without WIB
+                const timePattern = /\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}/;
                 const isMatchLine = timePattern.test(line);
                 
                 if (!isMatchLine) {
@@ -375,18 +375,19 @@ Paste jadwal dan prediksi di sini..."
         }
 
         function parseMatchLine(line) {
-            // Extract time first
-            const timeMatch = line.match(/(\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2}\s+WIB)/);
+            // Extract time first - support both with and without WIB
+            const timeMatch = line.match(/(\d{1,2}\/\d{1,2}\s+\d{1,2}:\d{2})(\s+WIB)?/);
             if (!timeMatch) return null;
             
-            const time = timeMatch[1];
-            const remainder = line.replace(time, '').trim();
+            const time = timeMatch[1] + (timeMatch[2] ? timeMatch[2] : ' WIB');
+            const remainder = line.replace(timeMatch[0], '').trim();
             
-            // Extract score (at the end) - support multiple dash types
+            // Extract score (at the end) - support multiple dash types but preserve original format
             const scoreMatch = remainder.match(/(\d+[–:\-]\d+)(?:\s|$)/);
             if (!scoreMatch) return null;
             
-            const score = scoreMatch[1].replace(/[–\-]/g, ':');
+            // Keep original score format - don't convert
+            const score = scoreMatch[1];
             const teamsText = remainder.replace(scoreMatch[0], '').trim();
             
             // Parse teams

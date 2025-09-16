@@ -396,6 +396,46 @@
             border-color: #4d93ff;
         }
 
+        /* Small calculation table per card */
+        .card-calc-table {
+            margin-top: 10px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .card-calc-table.show {
+            display: block;
+        }
+
+        .card-calc-table h4 {
+            color: #FFD700;
+            margin: 0 0 8px 0;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .calc-step {
+            margin: 4px 0;
+            color: #fff;
+            line-height: 1.3;
+        }
+
+        .calc-step .formula {
+            color: #9bddff;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .calc-step .result {
+            color: #FFD700;
+            font-weight: 700;
+        }
+
         /* Beautiful Title Styles */
         .beautiful-title {
             text-align: center;
@@ -477,6 +517,7 @@
                                 <h1>KALKULATOR HADIAH TOGEL</h1>
                                 <div class="subtitle">Hitung Hadiah & Diskon Semua Pasaran</div>
                             </div>
+
 
                             <p>
 
@@ -1145,7 +1186,7 @@
                                                 output.className = 'dhp-out';
                                                 const pillPay = document.createElement('div');
                                                 pillPay.className = 'dhp-pill dhp-pay';
-                                                pillPay.textContent = 'Jika anda melakukan bettingan pada ' + game.title + ' maka yang harus di BAYAR : -';
+                                                pillPay.textContent = 'Jika anda melakukan bettingan pada ' + game.title + ' maka yang anda harus BAYAR : -';
                                                 const pillWin = document.createElement('div');
                                                 pillWin.className = 'dhp-pill dhp-win';
                                                 pillWin.textContent = 'Jika anda menang, maka anda akan di bayarkan : -';
@@ -1159,6 +1200,13 @@
                                                 pillMin.textContent = 'MIN : -';
                                                 output.append(pillPay, pillWin, pillSum, pillMin);
 
+                                                // Create calculation table
+                                                const calcTable = document.createElement('div');
+                                                calcTable.className = 'card-calc-table';
+                                                const calcTitle = document.createElement('h4');
+                                                calcTitle.textContent = 'Cara Perhitungan:';
+                                                calcTable.appendChild(calcTitle);
+
                                                 // Create card structure
                                                 const cardHeader = document.createElement('div');
                                                 cardHeader.className = 'dhp-card-header';
@@ -1170,7 +1218,7 @@
 
                                                 const cardFooter = document.createElement('div');
                                                 cardFooter.className = 'dhp-card-footer';
-                                                cardFooter.appendChild(output);
+                                                cardFooter.append(output, calcTable);
 
                                                 card.append(cardHeader, cardContent, cardFooter);
 
@@ -1183,15 +1231,30 @@
                                                     pillSum.style.display = 'none';
                                                 };
 
-                                                const showResult = (bayar, menang, total, showTotal) => {
+                                                const showResult = (bayar, menang, total, showTotal, calcSteps) => {
                                                     output.classList.add('show');
                                                     pillMin.style.display = 'none';
                                                     pillPay.style.display = 'block';
-                                                    pillPay.textContent = 'Jika anda melakukan bettingan pada ' + game.title + ' maka yang harus di BAYAR : ' + idr(bayar);
+                                                    pillPay.textContent = 'Jika anda melakukan bettingan pada ' + game.title + ' maka yang anda harus BAYAR : ' + idr(bayar);
                                                     pillWin.style.display = 'block';
                                                     pillWin.textContent = 'Jika anda menang, maka anda akan di bayarkan : ' + idr(menang);
                                                     pillSum.style.display = showTotal ? 'block' : 'none';
                                                     pillSum.textContent = 'Total hadiah yang di dapatkan di tambah dengan modal awal : ' + idr(total);
+
+                                                    // Show calculation steps
+                                                    calcTable.innerHTML = '';
+                                                    calcTitle.textContent = 'Cara Perhitungan:';
+                                                    calcTable.appendChild(calcTitle);
+
+                                                    if (calcSteps && calcSteps.length > 0) {
+                                                        calcSteps.forEach(step => {
+                                                            const stepDiv = document.createElement('div');
+                                                            stepDiv.className = 'calc-step';
+                                                            stepDiv.innerHTML = step;
+                                                            calcTable.appendChild(stepDiv);
+                                                        });
+                                                        calcTable.classList.add('show');
+                                                    }
                                                 };
 
                                                 btnHitung.addEventListener('click', () => {
@@ -1203,6 +1266,8 @@
                                                         return;
                                                     }
 
+                                                    let calcSteps = [];
+
                                                     if (isKei) {
                                                         const isMinus = /^(silang homo|50 - 50|tengah tepi|kembang - kempis - kembar|dasar ganjil - besar)$/i.test(title) ||
                                                                         (game.kei != null && game.kei < 0);
@@ -1212,24 +1277,50 @@
                                                             const pre = value + value * Math.abs(kei) / 100;
                                                             bayar = Math.ceil(pre * (1 - (diskon || 0) / 100));
                                                             menang = Math.round(value);
+
+                                                            calcSteps = [
+                                                                '1. Modal awal: <span class="result">' + idr(value) + '</span>',
+                                                                '2. Tambah kei minus: <span class="formula">' + idr(value) + ' + ' + Math.abs(kei) + '% = ' + idr(pre) + '</span>',
+                                                                '3. Yang dibayar (setelah diskon): <span class="formula">' + idr(pre) + ' - ' + (diskon || 0) + '% = ' + idr(bayar) + '</span>',
+                                                                '4. Hadiah jika menang: <span class="result">' + idr(menang) + '</span>'
+                                                            ];
                                                         } else {
                                                             bayar = Math.round(value * (1 - (diskon || 0) / 100));
                                                             menang = Math.round(value + value * ((kei || 0) / 100));
+
+                                                            calcSteps = [
+                                                                '1. Modal awal: <span class="result">' + idr(value) + '</span>',
+                                                                '2. Yang dibayar (setelah diskon): <span class="formula">' + idr(value) + ' - ' + (diskon || 0) + '% = ' + idr(bayar) + '</span>',
+                                                                '3. Hadiah jika menang: <span class="formula">' + idr(value) + ' + ' + (kei || 0) + '% = ' + idr(menang) + '</span>'
+                                                            ];
                                                         }
 
                                                         total = bayar + menang;
-                                                        showResult(bayar, menang, total, true);
+                                                        calcSteps.push('5. Total jika menang: <span class="result">' + idr(bayar) + ' + ' + idr(menang) + ' = ' + idr(total) + '</span>');
+                                                        showResult(bayar, menang, total, true, calcSteps);
                                                     } else {
                                                         const bayar = Math.round(value * (1 - (diskon || 0) / 100));
                                                         const menang = Math.round(value * (hadiah || 0));
                                                         const total = bayar + menang;
-                                                        showResult(bayar, menang, total, isPlusTotal(game.title));
+
+                                                        calcSteps = [
+                                                            '1. Modal awal: <span class="result">' + idr(value) + '</span>',
+                                                            '2. Yang dibayar (setelah diskon): <span class="formula">' + idr(value) + ' - ' + (diskon || 0) + '% = ' + idr(bayar) + '</span>',
+                                                            '3. Hadiah jika menang: <span class="formula">' + idr(value) + ' × ' + (hadiah || 0) + ' = ' + idr(menang) + '</span>'
+                                                        ];
+
+                                                        if (isPlusTotal(game.title)) {
+                                                            calcSteps.push('4. Total jika menang: <span class="result">' + idr(bayar) + ' + ' + idr(menang) + ' = ' + idr(total) + '</span>');
+                                                        }
+
+                                                        showResult(bayar, menang, total, isPlusTotal(game.title), calcSteps);
                                                     }
                                                 });
 
                                                 btnReset.addEventListener('click', () => {
                                                     input.value = '';
                                                     output.classList.remove('show');
+                                                    calcTable.classList.remove('show');
                                                 });
 
                                                 return card;

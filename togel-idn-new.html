@@ -94,11 +94,15 @@
             gap: 12px;
             align-items: center;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .dhp-title {
             font-weight: 900;
             letter-spacing: .3px;
+            color: #FFD700;
+            font-size: 16px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
         .dhp-spacer {
@@ -134,7 +138,7 @@
             margin: 16px auto 12px;
             padding: 0 16px;
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         /* Tabs */
@@ -145,6 +149,7 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .dhp-tab {
@@ -613,7 +618,7 @@
 
                                             const ttl = document.createElement('div');
                                             ttl.className = 'dhp-title';
-                                            ttl.textContent = '';
+                                            ttl.textContent = 'PILIH PASARAN TOGEL:';
 
                                             const sel = document.createElement('select');
                                             sel.id = 'dhp-sel';
@@ -645,10 +650,7 @@
                                                 sel.appendChild(option);
                                             });
 
-                                            const spacer = document.createElement('div');
-                                            spacer.className = 'dhp-spacer';
-
-                                            barIn.append(ttl, spacer, sel);
+                                            barIn.append(ttl, sel);
                                             bar.appendChild(barIn);
                                             wrap.appendChild(bar);
 

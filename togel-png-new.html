@@ -612,6 +612,13 @@
         (() => {
             'use strict';
 
+            // Prevent multiple initialization
+            if (window.dhpInitialized) {
+                console.log('[DHP] Already initialized globally, skipping...');
+                return;
+            }
+            window.dhpInitialized = true;
+
             // Error handler function
             function fatal(msg) {
                 try {
@@ -664,6 +671,15 @@
                     fatal('Tidak menemukan #dhp-embed');
                     return;
                 }
+
+                // Check if already initialized to prevent double loading
+                if (host.querySelector('.dhp-wrap')) {
+                    console.log('[DHP] Already initialized, skipping...');
+                    return;
+                }
+
+                // Clear any existing content
+                host.innerHTML = '';
 
                 // Utility functions
                 const $ = (s, r) => (r || document).querySelector(s);

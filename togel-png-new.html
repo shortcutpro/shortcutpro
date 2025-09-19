@@ -309,7 +309,7 @@
             font-weight: 800;
             text-align: center;
             outline: none;
-            font-size: 16px;
+            font-size: 15px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
@@ -1136,17 +1136,32 @@
                     empty.style.display = 'none';
                 };
 
+                // Function to get minimum bet based on game type
+                const getMinBet = (gameTitle, gameTag) => {
+                    const title = norm(gameTitle);
+                    
+                    // For "LAINNYA" category, minimum bet is 1000
+                    if (gameTag === 'lain') {
+                        return 1000;
+                    }
+                    
+                    // For all other categories (DISKON, BET FULL, PRIZE, TEPAT & BB), minimum bet is 100
+                    return 100;
+                };
+
                 // Card creation function
                 function createCard(game) {
                     const title = norm(game.title);
+                    const gameTag = tagOf(game.title);
                     const isKei = !!KEI_MINUS[title] || !!KEI_PLUS[title] || (game.kei != null);
                     const diskon = Number(game.diskon || 0);
                     const hadiah = Number(game.hadiah || 0);
                     const kei = isKei ? Number(game.kei || 0) : 0;
+                    const minBet = getMinBet(game.title, gameTag);
 
                     const card = document.createElement('div');
                     card.className = 'dhp-card';
-                    card.dataset.tag = tagOf(game.title);
+                    card.dataset.tag = gameTag;
 
                     const h3 = document.createElement('h3');
                     h3.textContent = game.title + ' :';
@@ -1165,8 +1180,8 @@
                     const input = document.createElement('input');
                     input.type = 'number';
                     input.setAttribute('inputmode', 'decimal');
-                    input.placeholder = 'Input Nominal Taruhan';
-                    input.min = '0';
+                    input.placeholder = 'Input Nominal Taruhan (Min: ' + idr(minBet) + ')';
+                    input.min = minBet;
                     input.step = 'any';
                     row.appendChild(input);
 
@@ -1196,8 +1211,7 @@
                     pillSum.textContent = 'Total hadiah yang di dapatkan di tambah dengan modal awal : -';
                     const pillMin = document.createElement('div');
                     pillMin.className = 'dhp-pill dhp-min';
-                    pillMin.style.display = 'none';
-                    pillMin.textContent = 'MIN : -';
+                    pillMin.textContent = 'MIN : ' + idr(minBet);
                     output.append(pillPay, pillWin, pillSum, pillMin);
 
                     // Create calculation table
@@ -1222,10 +1236,10 @@
 
                     card.append(cardHeader, cardContent, cardFooter);
 
-                    const showMin = value => {
+                    const showMin = () => {
                         output.classList.add('show');
                         pillMin.style.display = 'block';
-                        pillMin.textContent = 'MIN : ' + idr(value);
+                        pillMin.textContent = 'MIN : ' + idr(minBet);
                         pillPay.style.display = 'none';
                         pillWin.style.display = 'none';
                         pillSum.style.display = 'none';
@@ -1259,11 +1273,10 @@
 
                     btnHitung.addEventListener('click', () => {
                         const value = parseFloat(input.value);
-                        const minValue = isMin1000(title) ? 1000 : 100;
 
-                        if (isNaN(value) || value <= 0 || value < minValue) {
-                            showMin(minValue);
-                            showNotification('Masukkan nominal taruhan yang valid (minimal ' + idr(minValue) + ')', 'warning');
+                        if (isNaN(value) || value <= 0 || value < minBet) {
+                            showMin();
+                            showNotification('Masukkan nominal taruhan yang valid (minimal ' + idr(minBet) + ')', 'warning');
                             return;
                         }
 

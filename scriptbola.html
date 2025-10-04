@@ -382,12 +382,21 @@ Paste jadwal dan prediksi di sini..."
             const time = timeMatch[1] + (timeMatch[2] ? timeMatch[2] : ' WIB');
             const remainder = line.replace(timeMatch[0], '').trim();
             
-            // Extract score (at the end) - support multiple dash types but preserve original format
-            const scoreMatch = remainder.match(/(\d+[–:\-]\d+)(?:\s|$)/);
+            // Extract score (at the end) - support formats like "1:0", "1-0", "1 : 0", "1 - 0"
+            const scoreMatch = remainder.match(/(\d+\s*[–:\-]\s*\d+)(?:\s|$)/);
             if (!scoreMatch) return null;
             
-            // Keep original score format - don't convert
-            const score = scoreMatch[1];
+            // Keep original score format but normalize spaces around separator
+            let score = scoreMatch[1].trim();
+            // Preserve the separator but clean up spacing
+            if (score.includes(' : ')) {
+                score = score.replace(/\s*:\s*/g, ' : ');
+            } else if (score.includes(' - ')) {
+                score = score.replace(/\s*-\s*/g, ' - ');
+            } else if (score.includes(' – ')) {
+                score = score.replace(/\s*–\s*/g, ' – ');
+            }
+            
             const teamsText = remainder.replace(scoreMatch[0], '').trim();
             
             // Parse teams

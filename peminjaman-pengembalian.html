@@ -113,7 +113,7 @@
         .table-container {
             background: #1a0e0a;
             border-radius: 8px;
-            overflow-x: auto;
+            overflow: hidden;
             box-shadow: 0 2px 10px rgba(220, 20, 60, 0.3);
             border: 1px solid #DC143C;
         }
@@ -130,7 +130,6 @@
             text-align: left;
             font-weight: 600;
             font-size: 0.9rem;
-            white-space: nowrap;
         }
 
         td {
@@ -144,6 +143,22 @@
             background-color: #4a1f1f;
         }
 
+        .copy-btn {
+            background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: transform 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(220, 20, 60, 0.5);
+        }
+
         .copy-all-btn {
             background: linear-gradient(135deg, #FF6347 0%, #DC143C 100%);
             color: white;
@@ -154,7 +169,6 @@
             font-size: 1rem;
             margin-bottom: 20px;
             transition: transform 0.2s ease;
-            width: 100%;
         }
 
         .copy-all-btn:hover {
@@ -179,12 +193,6 @@
             background: #d1ecf1;
             color: #0c5460;
             border: 1px solid #bee5eb;
-        }
-
-        .status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
         }
 
         @media (max-width: 768px) {
@@ -223,21 +231,16 @@
                 <div class="input-group">
                     <label for="dataInput">Masukkan data bank (akan diproses secara real-time):</label>
                     <textarea id="dataInput" placeholder="Contoh:
-Info : Tvtoto
-Perihal : Peminjaman Dana
-Dari Situs : @GolTogel ll
-BANK KAS MANDIRI BERSIH
-Nama  Rekening : Muhamad Ramdhan Saputra
-Nomor Rekening : 1150010841072
-Nominal : Rp 50,000,000
-
 Info : Nanastoto
 Perihal : Pengembalian Dana
 Dari Situs : Tvtoto
+
 Bank DANAMON ( BERSIH )
 Nama Rekening : RIA AGUSTINA
 Nomor Rekening : 903687844088
-Nominal : Rp 50,000,000"></textarea>
+Nominal : Rp 50,000,000
+
+..."></textarea>
                 </div>
                 <div class="status" id="status"></div>
             </div>
@@ -279,7 +282,14 @@ Nominal : Rp 50,000,000"></textarea>
 
         function splitNominal(nominal) {
             const splits = [];
-            const chunkSize = 25000000;
+            let chunkSize = 25000000; // 25 juta (default)
+            
+            // Untuk nominal spesifik, gunakan chunk 39 juta
+            const specialAmounts = [100000000, 150000000, 200000000, 250000000];
+            if (specialAmounts.includes(nominal)) {
+                chunkSize = 39000000; // 39 juta
+            }
+            
             let remaining = nominal;
             
             while (remaining > 0) {
@@ -316,94 +326,59 @@ Nominal : Rp 50,000,000"></textarea>
                 'OCBC': 'OCBC',
                 'PANIN': 'Panin',
                 'BSI': 'BSI',
-                'SINARMAS': 'Sinarmas',
-                'BTN': 'BTN',
-                'MEGA': 'Mega',
-                'BUKOPIN': 'Bukopin',
-                'MAYBANK': 'Maybank',
-                'JAGO': 'Jago',
-                'JENIUS': 'Jenius',
-                'NEO': 'Neo',
-                'SEABANK': 'SeaBank'
+                'SINARMAS': 'Sinarmas'
             };
             
-            let cleanBank = bankStr.toUpperCase()
-                .replace(/\bKAS\b/gi, '')
-                .replace(/\bBERSIH\b/gi, '')
-                .replace(/\bBANK\b/gi, '')
-                .replace(/\(/g, '')
-                .replace(/\)/g, '')
-                .trim();
-            
+            const upperBank = bankStr.toUpperCase();
             for (const [key, value] of Object.entries(bankNames)) {
-                if (cleanBank.includes(key)) {
+                if (upperBank.includes(key)) {
                     return value;
                 }
             }
-            
-            return cleanBank || 'UNKNOWN';
+            return 'UNKNOWN';
         }
 
         function processData(inputText) {
-            if (!inputText || inputText.trim() === '') {
-                return [];
-            }
-
-            const cleanedText = inputText.replace(/@/g, '');
-            const sections = cleanedText.split(/(?=Info\s*:)/gi).filter(section => section.trim());
+            const sections = inputText.split(/@[A-Z]+/gi).filter(section => section.trim());
             const results = [];
             
             sections.forEach(section => {
                 const lines = section.split('\n').map(line => line.trim()).filter(line => line);
-                let infoSection = {
-                    info: '',
-                    perihal: '',
-                    dariSitus: ''
-                };
+                let infoSection = {};
                 const entries = [];
                 let currentEntry = {};
                 
                 for (let i = 0; i < lines.length; i++) {
                     const line = lines[i];
                     
-                    if (/^Info\s*:/i.test(line)) {
-                        infoSection.info = line.replace(/^Info\s*:/i, '').trim();
-                    } else if (/^Perihal\s*:/i.test(line)) {
-                        infoSection.perihal = line.replace(/^Perihal\s*:/i, '').trim();
-                    } else if (/^Dari\s+Situs\s*:/i.test(line)) {
-                        infoSection.dariSitus = line.replace(/^Dari\s+Situs\s*:/i, '').trim();
-                    } else if (/^Nama\s+Bank\s*:/i.test(line)) {
-                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                            entries.push({...currentEntry});
-                        }
-                        const bankValue = line.replace(/^Nama\s+Bank\s*:/i, '').trim();
-                        currentEntry = { bank: extractBankName(bankValue) };
-                    } else if (/bank/i.test(line) && !/(nama|nomor|nominal)/i.test(line)) {
+                    if (line.startsWith('Info :')) {
+                        infoSection.info = line.replace('Info :', '').trim();
+                    } else if (line.startsWith('Perihal :')) {
+                        infoSection.perihal = line.replace('Perihal :', '').trim();
+                    } else if (line.startsWith('Dari Situs :')) {
+                        infoSection.dariSitus = line.replace('Dari Situs :', '').trim();
+                    } else if (line.toLowerCase().includes('bank')) {
                         if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
                             entries.push({...currentEntry});
                         }
                         currentEntry = { bank: extractBankName(line) };
-                    } else if (/^Nama\s+Rekening\s*:/i.test(line)) {
-                        const value = line.replace(/^Nama\s+Rekening\s*:/i, '').trim();
-                        if (value) currentEntry.namaRekening = value;
-                    } else if (/^Nomor\s+Rekening\s*:/i.test(line)) {
-                        const value = line.replace(/^Nomor\s+Rekening\s*:/i, '').trim();
-                        if (value) currentEntry.nomorRekening = value;
-                    } else if (/^Nominal\s*:/i.test(line)) {
-                        const nominalStr = line.replace(/^Nominal\s*:/i, '').trim();
+                    } else if (line.toLowerCase().includes('nama rekening')) {
+                        currentEntry.namaRekening = line.split(':')[1]?.trim() || '';
+                    } else if (line.toLowerCase().includes('nomor rekening')) {
+                        currentEntry.nomorRekening = line.split(':')[1]?.trim() || '';
+                    } else if (line.toLowerCase().includes('nominal')) {
+                        const nominalStr = line.split(':')[1]?.trim() || '';
                         const nominal = parseNominal(nominalStr);
-                        if (nominal > 0) {
-                            currentEntry.nominal = nominal;
-                        }
+                        currentEntry.nominal = nominal;
                         
-                        if (Object.keys(currentEntry).length > 0 && currentEntry.nominal) {
+                        if (Object.keys(currentEntry).length > 0) {
                             entries.push({...currentEntry});
                             currentEntry = {};
                         }
                     }
                 }
                 
-                if (Object.keys(currentEntry).length > 0 && currentEntry.nominal) {
+                if (Object.keys(currentEntry).length > 0) {
                     entries.push(currentEntry);
                 }
                 
@@ -447,6 +422,7 @@ Nominal : Rp 50,000,000"></textarea>
             `).join('');
         }
 
+
         function copyAllData() {
             if (processedData.length === 0) {
                 showStatus('Tidak ada data untuk disalin', 'info');
@@ -481,17 +457,16 @@ Nominal : Rp 50,000,000"></textarea>
                 updateTable(processedData);
                 
                 if (processedData.length > 0) {
-                    showStatus(`✅ Berhasil memproses ${processedData.length} transaksi`, 'success');
+                    showStatus(`Berhasil memproses ${processedData.length} transaksi`, 'success');
                 } else {
-                    showStatus('⚠️ Data belum lengkap atau format tidak sesuai', 'info');
+                    showStatus('Data belum lengkap atau format tidak sesuai', 'info');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                showStatus('❌ Error memproses data: ' + error.message, 'error');
+                showStatus('Error memproses data: ' + error.message, 'error');
             }
         });
 
-        showStatus('✨ Siap memproses data...', 'info');
+        showStatus('Siap memproses data...', 'info');
     </script>
 </body>
 </html>

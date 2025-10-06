@@ -490,7 +490,57 @@
             color: white;
         }
 
+        .toast-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--green-gradient);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            animation: slideIn 0.3s ease, slideOut 0.3s ease 2.7s;
+            pointer-events: none;
+        }
+
+        .toast-notification.error {
+            background: linear-gradient(135deg, #cc0000, #ff4444);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+        }
+
         @media (max-width: 768px) {
+            .toast-notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                font-size: 0.9rem;
+            }
             .header h1 {
                 font-size: 2rem;
             }
@@ -549,7 +599,7 @@
             {name: "HOKI DRAW 00", days: "Senin s/d Minggu", tutup: "23:59 WIB", buka: "00:00 WIB", website: "https://hokidraw.com/", live: "https://www.youtube.com/@hokidraw-official", prizeType: "price1"},
             {name: "TOTO MACAU PAGI", days: "Senin s/d Minggu", tutup: "00:00 WIB", buka: "00:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "KENTUCKY MIDDAY", days: "Senin s/d Minggu", tutup: "00:05 WIB", buka: "00:20 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
-            {name: "FLORIDA MIDDAY", days: "Senin s/d Minggu", tutup: "00:20 WIB", buka: "00:30 WIB", website: "https://floridalottery.com/", live: "https://www.youtube.com/user/floridalottery", prizeType: "price123"},
+            {name: "FLORIDA MIDDAY", days: "Senin s/d Minggu", tutup: "00:20 WIB", buka: "00:30 WIB", website: "https://floridalottery.com/", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
             {name: "HUAHIN 0100", days: "Senin s/d Minggu", tutup: "00:45 WIB", buka: "01:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
             {name: "HOKI DRAW 01", days: "Senin s/d Minggu", tutup: "00:59 WIB", buka: "01:00 WIB", website: "https://hokidraw.com/", live: "https://www.youtube.com/@hokidraw-official", prizeType: "price1"},
             {name: "BANGKOK 0130", days: "Senin s/d Minggu", tutup: "01:15 WIB", buka: "01:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
@@ -786,28 +836,56 @@
             return card;
         }
 
+        function showToast(message, isError = false) {
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification' + (isError ? ' error' : '');
+            toast.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    ${isError ? 
+                        '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>' :
+                        '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
+                    }
+                </svg>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
         function handleCopy(button, pasaran, prizeType) {
             const card = button.closest('.ttg-card');
             const prize1 = card.querySelector('.prize1').value.trim();
             
             if (!prize1) {
-                alert('Harap masukkan Prize 1!');
+                showToast('Harap masukkan Prize 1!', true);
                 return;
             }
             
+            let prize2 = null;
+            let prize3 = null;
+            
             if (prizeType === 'price123') {
-                const prize2 = card.querySelector('.prize2').value.trim();
-                const prize3 = card.querySelector('.prize3').value.trim();
+                prize2 = card.querySelector('.prize2').value.trim();
+                prize3 = card.querySelector('.prize3').value.trim();
                 
                 if (!prize2 || !prize3) {
-                    alert('Harap masukkan Prize 1, Prize 2, dan Prize 3!');
+                    showToast('Harap masukkan Prize 1, Prize 2, dan Prize 3!', true);
                     return;
                 }
-                
-                showModal(pasaran, prize1, prize2, prize3);
-            } else {
-                showModal(pasaran, prize1, null, null);
             }
+            
+            // Generate text and copy directly
+            const text = generateResultText(pasaran, prize1, prize2, prize3);
+            
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('✓ Hasil berhasil dicopy!');
+            }).catch(err => {
+                showToast('✗ Gagal copy hasil', true);
+            });
         }
 
         function handleDone(button, index) {
@@ -815,7 +893,7 @@
             const prize1 = card.querySelector('.prize1').value.trim();
             
             if (!prize1) {
-                alert('Harap masukkan Prize 1 terlebih dahulu!');
+                showToast('Harap masukkan Prize 1 terlebih dahulu!', true);
                 return;
             }
             
@@ -825,7 +903,7 @@
                 const prize3 = card.querySelector('.prize3').value.trim();
                 
                 if (!prize2 || !prize3) {
-                    alert('Harap masukkan semua Prize!');
+                    showToast('Harap masukkan semua Prize!', true);
                     return;
                 }
             }
@@ -859,6 +937,8 @@
                 prize2: card.querySelector('.prize2')?.value || null,
                 prize3: card.querySelector('.prize3')?.value || null
             };
+            
+            showToast(`✓ ${pasaranData[index].name} ditandai selesai!`);
         }
 
         function handleReset(button, index) {
@@ -885,6 +965,8 @@
             
             // Clear state
             delete cardStates[index];
+            
+            showToast(`↻ ${pasaranData[index].name} direset!`);
         }
 
         function renderCards() {

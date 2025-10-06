@@ -12,11 +12,17 @@
             --red-gradient: linear-gradient(135deg, #990000, #cc3333, #ff4444, #660000);
             --red-glow: 0 0 20px rgba(153, 0, 0, 0.5);
             --red-accent: #ff4444;
+            --green-primary: #2d7a2d;
+            --green-light: #51cf66;
+            --green-dark: #1a5c1a;
+            --green-gradient: linear-gradient(135deg, #2d7a2d, #51cf66, #69db7c, #1a5c1a);
+            --green-glow: 0 0 20px rgba(45, 122, 45, 0.5);
             --bg-dark: #1a1a1a;
             --bg-card: #252525;
             --text-light: #f8f8f8;
             --text-secondary: #cccccc;
             --shadow-red: 0 4px 15px rgba(153, 0, 0, 0.3);
+            --shadow-green: 0 4px 15px rgba(45, 122, 45, 0.3);
         }
 
         * {
@@ -75,9 +81,16 @@
             border-radius: 3px;
         }
 
-        .search-container {
-            max-width: 600px;
+        .filter-container {
+            max-width: 800px;
             margin: 0 auto 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-container {
+            flex: 1;
             position: relative;
         }
 
@@ -107,6 +120,34 @@
             color: var(--red-primary);
         }
 
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 12px 20px;
+            background: var(--bg-card);
+            border: 1px solid rgba(153, 0, 0, 0.3);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover {
+            background: var(--red-primary);
+            border-color: var(--red-primary);
+        }
+
+        .filter-btn.active {
+            background: var(--red-gradient);
+            border-color: var(--red-primary);
+            font-weight: 600;
+        }
+
         .ttg-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -120,7 +161,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: var(--shadow-red);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
             border: 1px solid rgba(153, 0, 0, 0.2);
             position: relative;
         }
@@ -133,11 +174,29 @@
             right: 0;
             height: 4px;
             background: var(--red-gradient);
+            transition: background 0.3s ease;
+        }
+
+        .ttg-card.done {
+            background: rgba(45, 122, 45, 0.1);
+            border-color: rgba(81, 207, 102, 0.3);
+            box-shadow: var(--shadow-green);
+        }
+
+        .ttg-card.done::before {
+            background: var(--green-gradient);
         }
 
         .ttg-card:hover {
             transform: translateY(-8px) scale(1.02);
+        }
+
+        .ttg-card:not(.done):hover {
             box-shadow: 0 12px 30px rgba(153, 0, 0, 0.4), var(--red-glow);
+        }
+
+        .ttg-card.done:hover {
+            box-shadow: 0 12px 30px rgba(45, 122, 45, 0.4), var(--green-glow);
         }
 
         .ttg-card__title {
@@ -148,6 +207,30 @@
             border-bottom: 1px solid rgba(153, 0, 0, 0.2);
             color: var(--red-light);
             text-align: center;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .ttg-card.done .ttg-card__title {
+            color: var(--green-light);
+            background: rgba(45, 122, 45, 0.15);
+        }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.done {
+            background: var(--green-primary);
+            color: white;
         }
 
         .ttg-card__row {
@@ -173,6 +256,11 @@
             height: 18px;
             margin-right: 8px;
             color: var(--red-primary);
+            transition: color 0.3s ease;
+        }
+
+        .ttg-card.done .ttg-card__label svg {
+            color: var(--green-primary);
         }
 
         .ttg-card__value {
@@ -209,6 +297,10 @@
             text-align: center;
         }
 
+        .ttg-card.done .ttg-card__site a {
+            background: var(--green-gradient);
+        }
+
         .ttg-card__site a:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -218,6 +310,11 @@
             padding: 15px 20px;
             background: rgba(0, 0, 0, 0.3);
             border-top: 1px solid rgba(153, 0, 0, 0.2);
+        }
+
+        .ttg-card.done .input-section {
+            background: rgba(45, 122, 45, 0.1);
+            border-top-color: rgba(81, 207, 102, 0.2);
         }
 
         .input-group {
@@ -239,6 +336,12 @@
             border-radius: 4px;
             color: var(--text-light);
             font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .ttg-card.done .input-group input {
+            border-color: rgba(81, 207, 102, 0.3);
+            background: rgba(45, 122, 45, 0.05);
         }
 
         .input-group input:focus {
@@ -246,25 +349,68 @@
             border-color: var(--red-primary);
         }
 
-        .btn-copy {
-            width: 100%;
+        .ttg-card.done .input-group input:focus {
+            border-color: var(--green-primary);
+        }
+
+        .input-group input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            flex: 1;
             padding: 10px;
-            background: var(--red-gradient);
-            color: var(--bg-dark);
             border: none;
             border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 10px;
+            font-size: 0.9rem;
         }
 
-        .btn-copy:hover {
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-copy {
+            background: var(--red-gradient);
+            color: var(--bg-dark);
+        }
+
+        .btn-copy:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
-        .btn-copy:active {
+        .btn-done {
+            background: var(--green-gradient);
+            color: white;
+        }
+
+        .btn-done:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-reset {
+            background: #666;
+            color: white;
+        }
+
+        .btn-reset:hover:not(:disabled) {
+            background: #888;
+            transform: translateY(-2px);
+        }
+
+        .btn:active:not(:disabled) {
             transform: translateY(0);
         }
 
@@ -352,6 +498,13 @@
                 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
                 gap: 20px;
             }
+            .filter-container {
+                flex-direction: column;
+            }
+            .filter-buttons {
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
@@ -361,14 +514,21 @@
         <p style="color: var(--text-secondary);">Jadwal lengkap togel online</p>
     </div>
 
-    <div class="search-container">
-        <div class="search-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
+    <div class="filter-container">
+        <div class="search-container">
+            <div class="search-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+            </div>
+            <input type="text" id="searchInput" class="search-box" placeholder="Cari nama pasaran togel..." />
         </div>
-        <input type="text" id="searchInput" class="search-box" placeholder="Cari nama pasaran togel..." />
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="pending">Pending</button>
+            <button class="filter-btn" data-filter="done">Done</button>
+        </div>
     </div>
 
     <div id="jadwal-kartu" class="ttg-grid"></div>
@@ -457,9 +617,11 @@
             {name: "HOKI DRAW 23", days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:00 WIB", website: "https://hokidraw.com/", live: "https://www.youtube.com/@hokidraw-official", prizeType: "price1"},
             {name: "TOTOMACAU MALAM III", days: "Senin s/d Minggu", tutup: "23:00 WIB", buka: "23:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "TOTOMALI 2330", days: "Senin s/d Minggu", tutup: "23:15 WIB", buka: "23:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "KING KONG4D II", days: "Senin s/d Sabtu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"},
-            
+            {name: "KING KONG4D II", days: "Senin s/d Sabtu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
         ];
+
+        // Store card states in memory
+        const cardStates = {};
 
         function getShio(number) {
             const shioTable = {
@@ -542,10 +704,12 @@
             });
         }
 
-        function createCard(data) {
+        function createCard(data, index) {
             const card = document.createElement('div');
             card.className = 'ttg-card';
             card.setAttribute('data-title', data.name.toLowerCase());
+            card.setAttribute('data-index', index);
+            card.setAttribute('data-status', 'pending');
             
             const inputSection = data.prizeType === 'price123' ? `
                 <div class="input-section">
@@ -561,7 +725,11 @@
                         <label>Prize 3:</label>
                         <input type="text" class="prize3" placeholder="Masukkan angka">
                     </div>
-                    <button class="btn-copy" onclick="handleCopy(this, '${data.name}', '${data.prizeType}')">Copy Hasil</button>
+                    <div class="action-buttons">
+                        <button class="btn btn-copy" onclick="handleCopy(this, '${data.name}', '${data.prizeType}')">Copy Hasil</button>
+                        <button class="btn btn-done" onclick="handleDone(this, ${index})">Done</button>
+                    </div>
+                    <button class="btn btn-reset" onclick="handleReset(this, ${index})" style="display: none; width: 100%; margin-top: 10px;">Reset</button>
                 </div>
             ` : `
                 <div class="input-section">
@@ -569,12 +737,18 @@
                         <label>Prize 1:</label>
                         <input type="text" class="prize1" placeholder="Masukkan angka">
                     </div>
-                    <button class="btn-copy" onclick="handleCopy(this, '${data.name}', '${data.prizeType}')">Copy Hasil</button>
+                    <div class="action-buttons">
+                        <button class="btn btn-copy" onclick="handleCopy(this, '${data.name}', '${data.prizeType}')">Copy Hasil</button>
+                        <button class="btn btn-done" onclick="handleDone(this, ${index})">Done</button>
+                    </div>
+                    <button class="btn btn-reset" onclick="handleReset(this, ${index})" style="display: none; width: 100%; margin-top: 10px;">Reset</button>
                 </div>
             `;
             
             card.innerHTML = `
-                <div class="ttg-card__title">${data.name}</div>
+                <div class="ttg-card__title">
+                    ${data.name}
+                </div>
                 <div class="ttg-card__row">
                     <span class="ttg-card__label">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
@@ -636,12 +810,125 @@
             }
         }
 
+        function handleDone(button, index) {
+            const card = button.closest('.ttg-card');
+            const prize1 = card.querySelector('.prize1').value.trim();
+            
+            if (!prize1) {
+                alert('Harap masukkan Prize 1 terlebih dahulu!');
+                return;
+            }
+            
+            const prizeType = pasaranData[index].prizeType;
+            if (prizeType === 'price123') {
+                const prize2 = card.querySelector('.prize2').value.trim();
+                const prize3 = card.querySelector('.prize3').value.trim();
+                
+                if (!prize2 || !prize3) {
+                    alert('Harap masukkan semua Prize!');
+                    return;
+                }
+            }
+            
+            // Mark as done
+            card.classList.add('done');
+            card.setAttribute('data-status', 'done');
+            
+            // Update title with badge
+            const titleElement = card.querySelector('.ttg-card__title');
+            if (!titleElement.querySelector('.status-badge')) {
+                const badge = document.createElement('span');
+                badge.className = 'status-badge done';
+                badge.textContent = '✓ Done';
+                titleElement.appendChild(badge);
+            }
+            
+            // Disable inputs
+            card.querySelectorAll('input').forEach(input => {
+                input.disabled = true;
+            });
+            
+            // Toggle buttons
+            card.querySelector('.btn-done').style.display = 'none';
+            card.querySelector('.btn-reset').style.display = 'block';
+            
+            // Store state
+            cardStates[index] = {
+                isDone: true,
+                prize1: card.querySelector('.prize1').value,
+                prize2: card.querySelector('.prize2')?.value || null,
+                prize3: card.querySelector('.prize3')?.value || null
+            };
+        }
+
+        function handleReset(button, index) {
+            const card = button.closest('.ttg-card');
+            
+            // Remove done class
+            card.classList.remove('done');
+            card.setAttribute('data-status', 'pending');
+            
+            // Remove badge
+            const badge = card.querySelector('.status-badge');
+            if (badge) {
+                badge.remove();
+            }
+            
+            // Enable inputs
+            card.querySelectorAll('input').forEach(input => {
+                input.disabled = false;
+            });
+            
+            // Toggle buttons
+            card.querySelector('.btn-done').style.display = 'block';
+            card.querySelector('.btn-reset').style.display = 'none';
+            
+            // Clear state
+            delete cardStates[index];
+        }
+
         function renderCards() {
             const container = document.getElementById('jadwal-kartu');
             container.innerHTML = '';
             
-            pasaranData.forEach(data => {
-                container.appendChild(createCard(data));
+            pasaranData.forEach((data, index) => {
+                const card = createCard(data, index);
+                container.appendChild(card);
+                
+                // Restore state if exists
+                if (cardStates[index]?.isDone) {
+                    const cardElement = container.querySelector(`[data-index="${index}"]`);
+                    if (cardElement) {
+                        cardElement.querySelector('.prize1').value = cardStates[index].prize1;
+                        if (cardStates[index].prize2) {
+                            cardElement.querySelector('.prize2').value = cardStates[index].prize2;
+                        }
+                        if (cardStates[index].prize3) {
+                            cardElement.querySelector('.prize3').value = cardStates[index].prize3;
+                        }
+                        handleDone(cardElement.querySelector('.btn-done'), index);
+                    }
+                }
+            });
+        }
+
+        function applyFilters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            const cards = document.querySelectorAll('.ttg-card');
+            
+            cards.forEach(card => {
+                const title = card.getAttribute('data-title');
+                const status = card.getAttribute('data-status');
+                
+                const matchesSearch = title.includes(searchTerm);
+                const matchesFilter = activeFilter === 'all' || status === activeFilter;
+                
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
             });
         }
 
@@ -649,19 +936,14 @@
             renderCards();
             
             const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', applyFilters);
             
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.toLowerCase().trim();
-                const cards = document.querySelectorAll('.ttg-card');
-                
-                cards.forEach(card => {
-                    const title = card.getAttribute('data-title');
-                    
-                    if (title.includes(searchTerm)) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    applyFilters();
                 });
             });
             

@@ -339,65 +339,88 @@ Nominal : Rp 50,000,000
         }
 
         function processData(inputText) {
-            const sections = inputText.split(/@[A-Z]+/gi).filter(section => section.trim());
+            const lines = inputText.split('\n').map(line => line.trim()).filter(line => line);
             const results = [];
+            let infoSection = {};
+            const entries = [];
+            let currentEntry = {};
             
-            sections.forEach(section => {
-                const lines = section.split('\n').map(line => line.trim()).filter(line => line);
-                let infoSection = {};
-                const entries = [];
-                let currentEntry = {};
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
                 
-                for (let i = 0; i < lines.length; i++) {
-                    const line = lines[i];
+                // Skip baris @TVTOTO atau @ di akhir
+                if (line.match(/^@[A-Z]+$/i)) {
+                    continue;
+                }
+                
+                // Tangkap Info
+                if (line.match(/^Info\s*:/i)) {
+                    infoSection.info = line.replace(/Info\s*:\s*/i, '').trim();
+                } 
+                // Tangkap Perihal
+                else if (line.match(/^Perihal\s*:/i)) {
+                    infoSection.perihal = line.replace(/Perihal\s*:\s*/i, '').trim();
+                } 
+                // Tangkap "Dari Situs" atau "Dari"
+                else if (line.match(/^Dari\s*(Situs)?\s*:/i)) {
+                    infoSection.dariSitus = line.replace(/^Dari\s*(Situs)?\s*:\s*/i, '').replace('@', '').trim();
+                } 
+                // Tangkap format "KAS DANAMON BERSIH" atau "Nama Bank : xxx"
+                else if (line.match(/^(KAS\s+)?[A-Z]+.*?(BERSIH|KOTOR|BANK)/i) || line.match(/^Nama Bank\s*:/i)) {
+                    // Simpan entry sebelumnya jika ada
+                    if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                        entries.push({...currentEntry});
+                    }
+                    currentEntry = {};
                     
-                    if (line.startsWith('Info :')) {
-                        infoSection.info = line.replace('Info :', '').trim();
-                    } else if (line.startsWith('Perihal :')) {
-                        infoSection.perihal = line.replace('Perihal :', '').trim();
-                    } else if (line.startsWith('Dari Situs :')) {
-                        infoSection.dariSitus = line.replace('Dari Situs :', '').trim();
-                    } else if (line.toLowerCase().includes('bank')) {
-                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                            entries.push({...currentEntry});
-                        }
-                        currentEntry = { bank: extractBankName(line) };
-                    } else if (line.toLowerCase().includes('nama rekening')) {
-                        currentEntry.namaRekening = line.split(':')[1]?.trim() || '';
-                    } else if (line.toLowerCase().includes('nomor rekening')) {
-                        currentEntry.nomorRekening = line.split(':')[1]?.trim() || '';
-                    } else if (line.toLowerCase().includes('nominal')) {
-                        const nominalStr = line.split(':')[1]?.trim() || '';
-                        const nominal = parseNominal(nominalStr);
-                        currentEntry.nominal = nominal;
-                        
-                        if (Object.keys(currentEntry).length > 0) {
-                            entries.push({...currentEntry});
-                            currentEntry = {};
-                        }
+                    if (line.match(/^Nama Bank\s*:/i)) {
+                        const bankPart = line.split(':')[1]?.trim() || '';
+                        currentEntry.bank = extractBankName(bankPart);
+                    } else {
+                        currentEntry.bank = extractBankName(line);
+                    }
+                } 
+                // Tangkap Nama Rekening
+                else if (line.match(/^Nama Rekening\s*:/i)) {
+                    currentEntry.namaRekening = line.split(':')[1]?.trim() || '';
+                } 
+                // Tangkap Nomor Rekening
+                else if (line.match(/^Nomor Rekening\s*:/i)) {
+                    currentEntry.nomorRekening = line.split(':')[1]?.trim() || '';
+                } 
+                // Tangkap Nominal
+                else if (line.match(/^Nominal\s*:/i)) {
+                    const nominalStr = line.split(':')[1]?.trim() || '';
+                    const nominal = parseNominal(nominalStr);
+                    currentEntry.nominal = nominal;
+                    
+                    if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                        entries.push({...currentEntry});
+                        currentEntry = {};
                     }
                 }
-                
-                if (Object.keys(currentEntry).length > 0) {
-                    entries.push(currentEntry);
-                }
-                
-                entries.forEach(entry => {
-                    if (entry.nominal > 0 && entry.bank && entry.nomorRekening && entry.namaRekening) {
-                        const splits = splitNominal(entry.nominal);
-                        const keterangan = `${infoSection.perihal || 'Transfer'} ke ${infoSection.info || 'Unknown'}`;
-                        
-                        splits.forEach(splitAmount => {
-                            results.push({
-                                bank: entry.bank,
-                                nomorRekening: entry.nomorRekening,
-                                namaRekening: entry.namaRekening,
-                                keterangan: keterangan,
-                                nominal: splitAmount
-                            });
+            }
+            
+            // Simpan entry terakhir jika ada
+            if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                entries.push(currentEntry);
+            }
+            
+            entries.forEach(entry => {
+                if (entry.nominal > 0 && entry.bank && entry.nomorRekening && entry.namaRekening) {
+                    const splits = splitNominal(entry.nominal);
+                    const keterangan = `${infoSection.perihal || 'Transfer'} ke ${infoSection.info || 'Unknown'}`;
+                    
+                    splits.forEach(splitAmount => {
+                        results.push({
+                            bank: entry.bank,
+                            nomorRekening: entry.nomorRekening,
+                            namaRekening: entry.namaRekening,
+                            keterangan: keterangan,
+                            nominal: splitAmount
                         });
-                    }
-                });
+                    });
+                }
             });
             
             return results;

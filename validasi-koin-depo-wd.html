@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pengolahan Data Transaksi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark-bg: #0f172a;
+            --darker-bg: #020617;
+            --card-bg: #1e293b;
+            --card-hover: #334155;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+        }
+        
+        body {
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .input-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            border: 1px solid var(--border);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .format-info {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+        
+        .format-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .format-header i {
+            font-size: 24px;
+            color: var(--accent);
+        }
+        
+        .format-header h3 {
+            margin: 0;
+            color: var(--accent);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .format-description {
+            color: var(--text-muted);
+            margin: 0 0 20px 36px;
+            font-size: 0.95rem;
+        }
+        
+        .format-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .format-card {
+            background: var(--darker-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+        
+        .format-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+        
+        .format-card-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .format-card-header i {
+            font-size: 22px;
+        }
+        
+        .format-card-header span:first-of-type {
+            flex: 1;
+            font-weight: 600;
+            font-size: 1.05rem;
+        }
+        
+        .format-badge {
+            background: rgba(255, 255, 255, 0.25);
+            padding: 5px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .format-card-content {
+            padding: 20px;
+        }
+        
+        .format-fields {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .field-tag {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            color: var(--text);
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        
+        .field-tag:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.35) 0%, rgba(139, 92, 246, 0.35) 100%);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        .format-note {
+            background: rgba(6, 182, 212, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 14px 18px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+        }
+        
+        .format-note i {
+            color: var(--warning);
+            font-size: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            padding: 18px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--darker-bg);
+            color: var(--text);
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+        }
+        
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--darker-bg);
+        }
+        
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        th {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        tbody tr {
+            transition: background-color 0.2s ease;
+        }
+        
+        tbody tr:hover {
+            background: var(--card-hover);
+        }
+        
+        .result-section {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+        }
+        
+        .copy-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, var(--accent) 0%, #0891b2 100%);
+            padding: 12px 24px;
+        }
+        
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-pass {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+        
+        .status-fail {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            min-width: 300px;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
+            color: white;
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            color: white;
+        }
+        
+        .summary-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+        
+        .summary-card strong {
+            font-size: 1.1rem;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        
+        .empty-state i {
+            font-size: 64px;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .format-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .format-description {
+                margin-left: 0;
+            }
+            
+            .input-section, .result-section {
+                padding: 20px;
+            }
+            
+            .table-wrapper {
+                margin: 0 -20px;
+                border-radius: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                <i class="fas fa-chart-line"></i>
+                Sistem Pengolahan Data Transaksi
+            </h1>
+            <p>Analisis dan kelola data transaksi dengan mudah dan efisien</p>
+        </div>
+        
+        <div class="input-section">
+            <h2 class="section-title">
+                <i class="fas fa-upload"></i>
+                Input Data Transaksi
+            </h2>
+            
+            <div class="format-info">
+                <div class="format-header">
+                    <i class="fas fa-info-circle"></i>
+                    <h3>Panduan Format Data</h3>
+                </div>
+                <p class="format-description">Sistem mendukung deteksi otomatis untuk 2 format data transaksi</p>
+                
+                <div class="format-cards">
+                    <div class="format-card">
+                        <div class="format-card-header">
+                            <i class="fas fa-file-invoice"></i>
+                            <span>Format Transaksi Lengkap</span>
+                            <span class="format-badge">12 Kolom</span>
+                        </div>
+                        <div class="format-card-content">
+                            <div class="format-fields">
+                                <span class="field-tag">Akun Pemain</span>
+                                <span class="field-tag">Tanggal</span>
+                                <span class="field-tag">Jumlah</span>
+                                <span class="field-tag">Bank Pembayaran</span>
+                                <span class="field-tag">No. Rek Pembayar</span>
+                                <span class="field-tag">Nama Pembayar</span>
+                                <span class="field-tag">Bank Penerima</span>
+                                <span class="field-tag">No. Rek Penerima</span>
+                                <span class="field-tag">Nama Penerima</span>
+                                <span class="field-tag">Operator</span>
+                                <span class="field-tag">Jenis Operasi</span>
+                                <span class="field-tag">Status</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="format-card">
+                        <div class="format-card-header">
+                            <i class="fas fa-coins"></i>
+                            <span>Format Withdraw Koin</span>
+                            <span class="format-badge">9 Kolom</span>
+                        </div>
+                        <div class="format-card-content">
+                            <div class="format-fields">
+                                <span class="field-tag">Username</span>
+                                <span class="field-tag">Tanggal & Waktu</span>
+                                <span class="field-tag">Jumlah</span>
+                                <span class="field-tag">Bank</span>
+                                <span class="field-tag">No. Rekening</span>
+                                <span class="field-tag">Nama Rekening</span>
+                                <span class="field-tag">Akun Operator</span>
+                                <span class="field-tag">Jenis Operasi</span>
+                                <span class="field-tag">Status</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="format-note">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Format data menggunakan <strong>TAB</strong> sebagai pemisah kolom</span>
+                </div>
+            </div>
+            
+            <textarea id="dataInput" placeholder="Paste data transaksi di sini (gunakan TAB sebagai pemisah)..."></textarea>
+            
+            <div class="button-group">
+                <button onclick="tambahData()" class="btn-primary">
+                    <i class="fas fa-plus-circle"></i> Tambah Data
+                </button>
+                <button onclick="hapusData()" class="btn-danger">
+                    <i class="fas fa-trash-alt"></i> Hapus Semua Data
+                </button>
+                <button onclick="hitungJumlahDanTotalTransaksi()" class="btn-secondary">
+                    <i class="fas fa-calculator"></i> Hitung Per Bank
+                </button>
+            </div>
+            
+            <div class="table-wrapper">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Akun Pemain</th>
+                            <th>Tanggal</th>
+                            <th>Jumlah</th>
+                            <th>Bank Pembayaran</th>
+                            <th>Nomor Rekening</th>
+                            <th>Nama Rekening</th>
+                            <th>Bank Penerima</th>
+                            <th>Akun Operator</th>
+                            <th>Jenis Operasi</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <tr>
+                            <td colspan="11" class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <p>Belum ada data transaksi. Silakan tambahkan data untuk memulai.</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="result-section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i>
+                Hasil Perhitungan Per Bank
+            </h2>
+            <div class="copy-btn-container">
+                <button id="copyBtn" class="copy-btn" onclick="copyBankData()">
+                    <i class="fas fa-copy"></i>
+                    Salin Data Bank
+                </button>
+            </div>
+            <div id="hasil">
+                <div class="empty-state">
+                    <i class="fas fa-chart-pie"></i>
+                    <p>Klik tombol "Hitung Per Bank" untuk melihat hasil analisis</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let transactionData = [];
+        
+        function showNotification(message, isSuccess = true) {
+            const notification = document.getElementById('notification');
+            notification.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+            notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function tambahData() {
+            const dataInput = document.getElementById('dataInput').value.trim();
+            if (!dataInput) {
+                showNotification('Masukkan data terlebih dahulu!', false);
+                return;
+            }
+
+            const dataLines = dataInput.split('\n');
+            let successCount = 0;
+            let errorCount = 0;
+
+            dataLines.forEach(line => {
+                if (!line.trim()) return;
+                
+                try {
+                    const dataArray = line.match(/(?:[^\t"]+|"[^"]*")+/g)?.map(item => item.replace(/^"|"$/g, '').trim()) || [];
+                    
+                    if (dataArray.length === 12) {
+                        transactionData.push({
+                            type: 'format1',
+                            data: {
+                                accountPlayer: dataArray[0],
+                                date: dataArray[1],
+                                amount: parseInt(dataArray[2].replace(/,/g, '')),
+                                paymentBank: dataArray[3],
+                                payerAccountNumber: dataArray[4],
+                                payerAccountName: dataArray[5],
+                                recipientBank: dataArray[6],
+                                recipientAccountNumber: dataArray[7],
+                                recipientAccountName: dataArray[8],
+                                operatorAccount: dataArray[9],
+                                operationType: dataArray[10],
+                                orderStatus: dataArray[11]
+                            }
+                        });
+                        successCount++;
+                    } else if (dataArray.length === 9) {
+                        transactionData.push({
+                            type: 'format2',
+                            data: {
+                                username: dataArray[0],
+                                date: dataArray[1],
+                                amount: parseFloat(dataArray[2].replace(/,/g, '')),
+                                bank: dataArray[3],
+                                accountNumber: dataArray[4],
+                                accountName: dataArray[5],
+                                operatorAccount: dataArray[6],
+                                operationType: dataArray[7],
+                                status: dataArray[8]
+                            }
+                        });
+                        successCount++;
+                    } else {
+                        console.error('Baris tidak valid:', line);
+                        errorCount++;
+                    }
+                } catch (e) {
+                    console.error('Error processing line:', line, e);
+                    errorCount++;
+                }
+            });
+
+            document.getElementById('dataInput').value = '';
+            updateTable();
+            
+            if (successCount > 0 && errorCount === 0) {
+                showNotification(`Berhasil menambahkan ${successCount} data transaksi!`);
+            } else if (successCount > 0 && errorCount > 0) {
+                showNotification(`Berhasil menambahkan ${successCount} data, gagal ${errorCount} data.`, false);
+            } else {
+                showNotification('Gagal menambahkan data. Pastikan format data benar!', false);
+            }
+        }
+
+        function updateTable() {
+            const tableBody = document.getElementById('data-table-body');
+            
+            if (transactionData.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="11" class="empty-state">
+                            <i class="fas fa-inbox"></i>
+                            <p>Belum ada data transaksi. Silakan tambahkan data untuk memulai.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tableBody.innerHTML = '';
+            
+            transactionData.forEach((item, index) => {
+                const row = document.createElement('tr');
+                
+                if (item.type === 'format1') {
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.data.accountPlayer}</td>
+                        <td>${item.data.date}</td>
+                        <td>${item.data.amount.toLocaleString()}</td>
+                        <td>${item.data.paymentBank}</td>
+                        <td>${item.data.payerAccountNumber}</td>
+                        <td>${item.data.payerAccountName}</td>
+                        <td>${item.data.recipientBank}</td>
+                        <td>${item.data.operatorAccount}</td>
+                        <td>${item.data.operationType}</td>
+                        <td>${item.data.orderStatus}</td>
+                    `;
+                } else {
+                    const statusClass = item.data.status.toLowerCase() === 'pass' ? 'status-pass' : 'status-fail';
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${item.data.username}</td>
+                        <td>${item.data.date}</td>
+                        <td>${item.data.amount.toLocaleString()}</td>
+                        <td>${item.data.bank}</td>
+                        <td>${item.data.accountNumber}</td>
+                        <td>${item.data.accountName}</td>
+                        <td>-</td>
+                        <td>${item.data.operatorAccount}</td>
+                        <td>${item.data.operationType}</td>
+                        <td><span class="status-badge ${statusClass}">${item.data.status}</span></td>
+                    `;
+                }
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function hapusData() {
+            if (transactionData.length === 0) {
+                showNotification('Tidak ada data untuk dihapus!', false);
+                return;
+            }
+            
+            if (confirm('Apakah Anda yakin ingin menghapus semua data transaksi?')) {
+                transactionData = [];
+                updateTable();
+                document.getElementById('hasil').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Klik tombol "Hitung Per Bank" untuk melihat hasil analisis</p>
+                    </div>
+                `;
+                showNotification('Semua data telah dihapus!');
+            }
+        }
+
+        function hitungJumlahDanTotalTransaksi() {
+            if (transactionData.length === 0) {
+                showNotification('Tidak ada data untuk dihitung!', false);
+                return;
+            }
+
+            const hasil = {};
+
+            transactionData.forEach(item => {
+                let bankPembayaran, jumlah;
+                
+                if (item.type === 'format1') {
+                    bankPembayaran = item.data.paymentBank;
+                    jumlah = item.data.amount;
+                } else {
+                    bankPembayaran = item.data.bank;
+                    jumlah = item.data.amount;
+                }
+
+                if (!hasil[bankPembayaran]) {
+                    hasil[bankPembayaran] = { total: 0, count: 0 };
+                }
+
+                hasil[bankPembayaran].total += jumlah;
+                hasil[bankPembayaran].count++;
+            });
+
+            const sortedBanks = Object.entries(hasil).sort((a, b) => b[1].total - a[1].total);
+            
+            let hasilOutput = `
+                <div class="table-wrapper">
+                    <table id="bank-table">
+                        <thead>
+                            <tr>
+                                <th>Bank</th>
+                                <th>Jumlah Transaksi</th>
+                                <th>Total Jumlah</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+            sortedBanks.forEach(([bank, data]) => {
+                hasilOutput += `
+                    <tr>
+                        <td><strong>${bank}</strong></td>
+                        <td>${data.count}</td>
+                        <td>${data.total.toLocaleString()}</td>
+                    </tr>`;
+            });
+
+            hasilOutput += `</tbody></table></div>`;
+            
+            const totalTransaksi = sortedBanks.reduce((sum, [, data]) => sum + data.count, 0);
+            const totalJumlah = sortedBanks.reduce((sum, [, data]) => sum + data.total, 0);
+            
+            hasilOutput += `
+                <div class="summary-card">
+                    <i class="fas fa-chart-line"></i>
+                    <strong>Total Keseluruhan:</strong> ${totalTransaksi} transaksi dengan jumlah <strong>${totalJumlah.toLocaleString()}</strong>
+                </div>`;
+            
+            document.getElementById('hasil').innerHTML = hasilOutput;
+            showNotification('Perhitungan transaksi berhasil!');
+        }
+
+        function copyBankData() {
+            const bankTable = document.querySelector('#bank-table');
+            if (!bankTable) {
+                showNotification('Tidak ada data bank untuk disalin!', false);
+                return;
+            }
+
+            const rows = bankTable.querySelectorAll('tbody tr');
+            if (rows.length === 0) {
+                showNotification('Tidak ada data bank untuk disalin!', false);
+                return;
+            }
+
+            let textToCopy = '';
+            
+            rows.forEach(row => {
+                const cells = row.cells;
+                const bank = cells[0].innerText;
+                const count = cells[1].innerText;
+                const total = cells[2].innerText;
+                
+                textToCopy += `${bank}\t${count}\t${total}\n`;
+            });
+
+            const copyBtn = document.getElementById('copyBtn');
+            const originalHTML = copyBtn.innerHTML;
+            
+            copyBtn.innerHTML = `
+                <i class="fas fa-check"></i>
+                Tersalin!
+            `;
+            copyBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
+
+            navigator.clipboard.writeText(textToCopy.trim())
+                .then(() => {
+                    showNotification('Data bank berhasil disalin!');
+                })
+                .catch(err => {
+                    console.error('Gagal menyalin: ', err);
+                    showNotification('Gagal menyalin data!', false);
+                });
+
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHTML;
+                copyBtn.style.background = 'linear-gradient(135deg, var(--accent) 0%, #0891b2 100%)';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

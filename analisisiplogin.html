@@ -18,8 +18,8 @@
         body {
             font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
-            color: #333;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #e5e7eb;
             padding: 20px;
             min-height: 100vh;
             position: relative;
@@ -35,8 +35,8 @@
             width: 100%;
             height: 100%;
             background-image: 
-                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
             pointer-events: none;
             animation: float 15s ease-in-out infinite;
         }
@@ -49,13 +49,14 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(17, 24, 39, 0.95);
             backdrop-filter: blur(10px);
             padding: 40px;
             border-radius: 24px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 100px rgba(139, 92, 246, 0.1);
             position: relative;
             animation: slideUp 0.6s ease-out;
+            border: 1px solid rgba(139, 92, 246, 0.2);
         }
         
         @keyframes slideUp {
@@ -83,12 +84,12 @@
             transform: translateX(-50%);
             width: 100px;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
             border-radius: 2px;
         }
         
         h1 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -96,28 +97,39 @@
             font-size: 2.8rem;
             font-weight: 800;
             letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        
+        h1::before {
+            content: '📊';
+            -webkit-text-fill-color: initial;
+            background: none;
+            font-size: 2.5rem;
         }
         
         .subtitle {
-            color: #6b7280;
+            color: #9ca3af;
             font-size: 1.2rem;
             font-weight: 500;
         }
         
         .input-section {
-            background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
             padding: 30px;
             border-radius: 16px;
             margin-bottom: 35px;
-            border: 2px solid rgba(102, 126, 234, 0.2);
+            border: 2px solid rgba(139, 92, 246, 0.3);
             position: relative;
             overflow: hidden;
             transition: all 0.3s ease;
         }
         
         .input-section:hover {
-            border-color: rgba(102, 126, 234, 0.4);
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.1);
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
         }
         
         .input-section::before {
@@ -127,7 +139,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
             transition: left 0.5s;
         }
         
@@ -145,7 +157,7 @@
         .section-icon {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -154,7 +166,7 @@
         }
         
         .input-section h2 {
-            color: #1f2937;
+            color: #f3f4f6;
             font-size: 1.5rem;
             font-weight: 700;
             margin: 0;
@@ -164,20 +176,26 @@
             width: 100%;
             height: 220px;
             padding: 18px;
-            border: 2px solid #e5e7eb;
+            border: 2px solid rgba(139, 92, 246, 0.3);
             border-radius: 12px;
             font-family: 'Courier New', monospace;
             font-size: 14px;
             resize: vertical;
             margin-bottom: 20px;
             transition: all 0.3s;
-            background: white;
+            background: rgba(17, 24, 39, 0.8);
+            color: #e5e7eb;
+        }
+        
+        textarea::placeholder {
+            color: #6b7280;
         }
         
         textarea:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
+            background: rgba(17, 24, 39, 0.95);
         }
         
         .button-group {
@@ -188,7 +206,7 @@
         
         button {
             padding: 14px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
             color: white;
             border: none;
             border-radius: 12px;
@@ -223,7 +241,7 @@
         
         button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 10px 25px rgba(139, 92, 246, 0.5);
         }
         
         button:active {
@@ -240,7 +258,7 @@
         }
         
         #clear-btn:hover {
-            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.4);
+            box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5);
         }
         
         #sample-btn {
@@ -269,7 +287,7 @@
         }
         
         .results-header h2 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -285,11 +303,11 @@
         }
         
         .summary-item {
-            background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(17, 24, 39, 0.8) 100%);
             padding: 25px;
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border: 2px solid #f3f4f6;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(139, 92, 246, 0.3);
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
@@ -302,7 +320,7 @@
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s;
@@ -310,8 +328,8 @@
         
         .summary-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.2);
-            border-color: #667eea;
+            box-shadow: 0 12px 30px rgba(139, 92, 246, 0.3);
+            border-color: #8b5cf6;
         }
         
         .summary-item:hover::before {
@@ -321,7 +339,7 @@
         .summary-icon {
             width: 50px;
             height: 50px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #8b5cf6, #3b82f6);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -334,7 +352,7 @@
         .summary-value {
             font-size: 2.2rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -344,18 +362,18 @@
         
         .summary-label {
             font-size: 0.95rem;
-            color: #6b7280;
+            color: #9ca3af;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
         .table-container {
-            background: white;
+            background: rgba(17, 24, 39, 0.8);
             border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            border: 2px solid #f3f4f6;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(139, 92, 246, 0.3);
         }
         
         table {
@@ -366,11 +384,11 @@
         th, td {
             padding: 18px 20px;
             text-align: left;
-            border-bottom: 1px solid #f3f4f6;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
         }
         
         th {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%);
             color: white;
             position: sticky;
             top: 0;
@@ -382,16 +400,17 @@
         
         tbody tr {
             transition: all 0.2s;
+            color: #e5e7eb;
         }
         
         tbody tr:hover {
-            background: linear-gradient(90deg, rgba(102, 126, 234, 0.05), transparent);
+            background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), transparent);
             transform: scale(1.01);
         }
         
         .ip-count {
             font-weight: 700;
-            color: #667eea;
+            color: #8b5cf6;
             text-align: center;
             font-size: 1.1rem;
         }
@@ -400,7 +419,7 @@
             font-weight: 700;
             width: 80px;
             text-align: center;
-            color: #764ba2;
+            color: #3b82f6;
         }
         
         .highlight {
@@ -413,16 +432,50 @@
             margin-right: 5px;
         }
         
+        .warning-high {
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.2), transparent) !important;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .warning-high .ip-count {
+            color: #ef4444 !important;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+        }
+        
+        .warning-high .rank {
+            color: #ef4444 !important;
+        }
+        
+        .warning-high .percentage-fill {
+            background: linear-gradient(90deg, #ef4444, #dc2626) !important;
+        }
+        
+        .warning-high::after {
+            content: '⚠️ HIGH';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #ef4444;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        
         .instructions {
             margin-top: 25px;
             padding: 25px;
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.15) 100%);
             border-radius: 16px;
-            border: 2px solid #fbbf24;
+            border: 2px solid rgba(245, 158, 11, 0.4);
         }
         
         .instructions h3 {
-            color: #d97706;
+            color: #fbbf24;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -432,7 +485,7 @@
         
         .instructions ul {
             padding-left: 25px;
-            color: #92400e;
+            color: #d1d5db;
         }
         
         .instructions li {
@@ -441,7 +494,7 @@
         }
         
         .instructions li::marker {
-            color: #d97706;
+            color: #fbbf24;
             font-weight: bold;
         }
         
@@ -449,14 +502,14 @@
             margin-top: 40px;
             text-align: center;
             font-size: 0.9em;
-            color: #6b7280;
+            color: #9ca3af;
             padding-top: 30px;
-            border-top: 2px solid #f3f4f6;
+            border-top: 2px solid rgba(139, 92, 246, 0.3);
         }
         
         .percentage-bar {
             height: 8px;
-            background: #f3f4f6;
+            background: rgba(139, 92, 246, 0.2);
             border-radius: 4px;
             overflow: hidden;
             margin-top: 5px;
@@ -464,7 +517,7 @@
         
         .percentage-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
+            background: linear-gradient(90deg, #8b5cf6, #3b82f6);
             border-radius: 4px;
             transition: width 1s ease-out;
         }
@@ -516,7 +569,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Analisis IP Login</h1>
+            <h1>Analisis IP Login</h1>
             <p class="subtitle">Analisis dan urutkan IP berdasarkan frekuensi penggunaan</p>
         </div>
         
@@ -635,7 +688,8 @@
         const sampleData = `filterrr2,2025-11-19 23:45:11,114.122.77.177,https://tvtoto33524.com
 ruk4y4h,2025-11-19 23:45:11,149.50.215.238,https://tvtoto33524.com
 gartot,2025-11-19 23:45:10,114.5.104.140, 157.245.157.118,https://tvtoto33524.com
-doels26,2025-11-19 23:45:10,103.154.150.148,https://tvtoto80242.com`;
+doels26,2025-11-19 23:45:10,103.154.150.148,https://tvtoto80242.com
+pemburu86,2025-11-19 23:45:09,172.235.246.28, 104.23.175.45,https://jiewwijctvtoto1.com`;
 
         // Elemen DOM
         const dataInput = document.getElementById('data-input');
@@ -723,8 +777,8 @@ doels26,2025-11-19 23:45:10,103.154.150.148,https://tvtoto80242.com`;
             // Mengosongkan tabel
             ipTableBody.innerHTML = '';
             
-            // Batasi tampilan hanya 20 IP teratas
-            const maxDisplay = 20;
+            // Batasi tampilan hanya 10 IP teratas
+            const maxDisplay = 10;
             const displayData = processedData.ipArray.slice(0, maxDisplay);
             const remainingCount = processedData.ipArray.length - maxDisplay;
             
@@ -735,6 +789,12 @@ doels26,2025-11-19 23:45:10,103.154.150.148,https://tvtoto80242.com`;
                 // Menambahkan highlight untuk 5 IP teratas
                 if (index < 5) {
                     row.classList.add('highlight');
+                }
+                
+                // Tambahkan class warning untuk IP dengan count >= 500
+                if (item.count >= 500) {
+                    row.classList.add('warning-high');
+                    row.style.position = 'relative';
                 }
                 
                 const percentage = ((item.count / processedData.totalEntries) * 100).toFixed(2);
@@ -759,15 +819,15 @@ doels26,2025-11-19 23:45:10,103.154.150.148,https://tvtoto80242.com`;
             // Tambahkan baris informasi jika ada IP yang tidak ditampilkan
             if (remainingCount > 0) {
                 const infoRow = document.createElement('tr');
-                infoRow.style.backgroundColor = '#f3f4f6';
+                infoRow.style.backgroundColor = 'rgba(139, 92, 246, 0.1)';
                 infoRow.style.fontStyle = 'italic';
                 infoRow.innerHTML = `
-                    <td colspan="4" style="text-align: center; padding: 20px; color: #6b7280;">
+                    <td colspan="4" style="text-align: center; padding: 20px; color: #9ca3af;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16" style="vertical-align: middle; margin-right: 8px;">
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                             <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
                         </svg>
-                        Menampilkan 20 IP teratas dari total ${processedData.uniqueIPs} IP unik (${remainingCount} IP lainnya tidak ditampilkan)
+                        Menampilkan 10 IP teratas dari total ${processedData.uniqueIPs} IP unik (${remainingCount} IP lainnya tidak ditampilkan)
                     </td>
                 `;
                 ipTableBody.appendChild(infoRow);

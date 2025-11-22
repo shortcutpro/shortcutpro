@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TVTOTO Full Script Generator</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(26, 0, 0, 0.85) 0%, rgba(64, 0, 0, 0.85) 100%), 
+                        url('https://statics.hokibagus.club/tvtoto/background/tvtoto_backgroundweb.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #fff;
+            font-family: "Poppins", Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .converter-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(50, 0, 0, 0.75);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(255, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            text-align: center;
+            color: #ff4d4d;
+            text-shadow: 0 0 10px rgba(255, 80, 80, 0.8);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #ff9999;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #ff9999;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #a80000;
+            border-radius: 8px;
+            color: #fff;
+            font-family: monospace;
+            font-size: 13px;
+            resize: vertical;
+            backdrop-filter: blur(5px);
+        }
+
+        #imageLinks {
+            min-height: 150px;
+        }
+
+        #output {
+            min-height: 400px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #ff4d4d;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            flex: 1;
+            padding: 15px;
+            background: linear-gradient(90deg, #a80000, #400000);
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+        }
+
+        button:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 0, 0, 0.6);
+            background: linear-gradient(90deg, #ff4d4d, #400000);
+        }
+
+        button:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #555;
+        }
+
+        .success-message {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+            color: #00ff00;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: rgba(255, 255, 0, 0.08);
+            border: 1px solid #ffaa00;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            backdrop-filter: blur(5px);
+        }
+
+        .info-box ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .info-box li {
+            margin: 8px 0;
+        }
+
+        .example {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            color: #ffaa00;
+        }
+
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: none;
+        }
+
+        .status.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+        }
+
+        .status.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            color: #ff6666;
+        }
+
+        .status.info {
+            background: rgba(0, 150, 255, 0.1);
+            border: 1px solid #0096ff;
+            color: #66ccff;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-container">
+        <h1>🎯 TVTOTO Full Script Generator</h1>
+        <div class="subtitle">Generate Script Komplit - Tinggal Copy & Paste!</div>
+        
+        <div id="statusMessage" class="status"></div>
+
+        <div class="info-box">
+            <strong>📝 Cara Penggunaan:</strong>
+            <ul>
+                <li>✅ Masukkan 5 link gambar (satu link per baris)</li>
+                <li>✅ Klik tombol <strong>"Generate Full Script"</strong></li>
+                <li>✅ Script lengkap akan muncul di bawah</li>
+                <li>✅ Klik <strong>"Copy Full Script"</strong> untuk copy semua</li>
+                <li>✅ Paste langsung ke tempat tujuan Anda!</li>
+                <li>🔄 Bisa ganti link dan generate ulang kapan saja!</li>
+            </ul>
+            <div class="example">
+                <strong>Contoh format link:</strong><br>
+                https://cdn.areabermain.club/assets/.../image1.jpg<br>
+                https://cdn.areabermain.club/assets/.../image2.jpg<br>
+                https://cdn.areabermain.club/assets/.../image3.jpg<br>
+                https://cdn.areabermain.club/assets/.../image4.jpg<br>
+                https://cdn.areabermain.club/assets/.../image5.jpg
+            </div>
+        </div>
+
+        <div class="input-section">
+            <label for="imageLinks">🖼️ Masukkan 5 Link Gambar (satu per baris):</label>
+            <textarea id="imageLinks" placeholder="Paste 5 link gambar di sini...&#10;Link 1&#10;Link 2&#10;Link 3&#10;Link 4&#10;Link 5"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button id="generateBtn" onclick="generateFullScript()">🚀 Generate Full Script</button>
+            <button id="copyBtn" onclick="copyOutput()">📋 Copy Full Script</button>
+            <button onclick="clearAll()">🗑️ Clear All</button>
+        </div>
+
+        <div class="output-section">
+            <label for="output">📄 Full Script (Siap Copy):</label>
+            <textarea id="output" readonly></textarea>
+            <div class="success-message" id="successMessage">✅ Full Script berhasil di-copy! Tinggal paste di tempat tujuan!</div>
+        </div>
+    </div>
+
+    <script>
+        function showStatus(message, type) {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status ' + type;
+            statusEl.style.display = 'block';
+            
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 5000);
+        }
+
+        function generateFullScript() {
+            const input = document.getElementById('imageLinks').value.trim();
+            const output = document.getElementById('output');
+            const generateBtn = document.getElementById('generateBtn');
+
+            if (!input) {
+                showStatus('⚠️ Masukkan 5 link gambar terlebih dahulu!', 'error');
+                return;
+            }
+
+            const links = input.split('\n').filter(link => link.trim() !== '');
+
+            if (links.length !== 5) {
+                showStatus('⚠️ Harus input tepat 5 link gambar! Sekarang ada ' + links.length + ' link.', 'error');
+                return;
+            }
+
+            // Validate URLs
+            const urlPattern = /^https?:\/\/.+/i;
+            for (let i = 0; i < links.length; i++) {
+                if (!urlPattern.test(links[i].trim())) {
+                    showStatus('⚠️ Link ' + (i + 1) + ' tidak valid! Harus diawali dengan http:// atau https://', 'error');
+                    return;
+                }
+            }
+
+            // Generate full HTML script
+            const fullScript = `<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TVTOTO Syair</title>
+<style>
+  /* === General Body Styles === */
+  body {
+    margin: 0;
+    background: #1a0000;
+    color: #fff;
+    font-family: "Poppins", Arial, sans-serif;
+    line-height: 1.6;
+  }
+
+  /* === Running Text Styles === */
+  .running-bar {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(90deg, #400000, #a80000, #400000);
+    padding: 10px;
+    white-space: nowrap;
+    box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    margin: 15px auto;
+    max-width: 1200px;
+  }
+
+  .running-bar::before {
+    content: "";
+    position: absolute;
+    left: -50%;
+    top: 0;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 200, 200, 0.25) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 0, 0, 0));
+    transform: skewX(-20deg);
+    animation: shine 5s linear infinite;
+  }
+
+  @keyframes shine {
+    0% { transform: skewX(-20deg) translateX(-50%); }
+    100% { transform: skewX(-20deg) translateX(150%); }
+  }
+
+  .marquee {
+    display: inline-block;
+    animation: scroll 14s linear infinite;
+    font-weight: 800;
+    font-size: 18px;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 6px rgba(255, 80, 80, 0.8);
+    background: linear-gradient(90deg, #a80000, #400000);
+    padding: 8px 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 200, 200, 0.2);
+    margin: 0 10px;
+    border: 1px solid rgba(255, 100, 100, 0.3);
+  }
+
+  .marquee:hover {
+    animation-play-state: paused;
+    background: linear-gradient(90deg, #ff4d4d, #400000);
+    color: #fff;
+    transition: background 0.3s ease;
+  }
+
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+
+  /* === Content Section === */
+  .content {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 20px;
+    background: rgba(50, 0, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  }
+
+  .content .content {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .content .entry {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #a80000;
+    border-radius: 8px;
+    background: rgba(255, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .content .entry:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(255, 0, 0, 0.5);
+  }
+
+  .content img {
+    max-width: 655px;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #a80000;
+    margin-right: 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .content img:hover {
+    transform: scale(1.05);
+  }
+
+  .content .text {
+    flex: 1;
+    min-width: 200px;
+    font-size: 16px;
+    color: #f5dada;
+  }
+
+  .content em b {
+    color: #ff4d4d;
+    font-size: 18px;
+  }
+
+  /* === Footer === */
+  .footer {
+    padding: 20px;
+    color: #f5dada;
+  }
+
+  .footer h2 {
+    color: #ff4d4d;
+    margin-bottom: 15px;
+  }
+
+  .footer h3, .footer h4, .footer h5 {
+    color: #ff9999;
+    margin: 15px 0 10px 0;
+  }
+
+  .footer p {
+    margin: 10px 0;
+    line-height: 1.8;
+  }
+
+  /* === Responsive Design === */
+  @media (max-width: 768px) {
+    .content .entry {
+      flex-direction: column;
+      text-align: center;
+    }
+    .content img {
+      margin-right: 0;
+      margin-bottom: 15px;
+      max-width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="running-bar">
+<div class="marquee"><strong><em><span style="font-size: 18pt;">SELAMAT DATANG DI TVTOTO SYAIR AKURAT DAN TERPERCAYA INDONESIA!!!</span></em></strong></div>
+</div>
+<div class="content">
+<div class="entry"><img src="${links[0].trim()}" alt="Syair 1" /></div>
+<div class="content">
+<div class="entry"><img src="${links[1].trim()}" alt="Syair 2" /></div>
+<div class="content">
+<div class="entry"><img src="${links[2].trim()}" alt="Syair 3" /></div>
+<div class="content">
+<div class="entry"><img src="${links[3].trim()}" alt="Syair 4" /></div>
+<div class="content">
+<div class="entry"><img src="${links[4].trim()}" alt="Syair 5" /></div>
+<div class="footer">
+<h2>Syair TVTOTO bukan sekadar rangkaian kata, tapi petunjuk hoki yang bisa membuka jalan rezeki kamu!</h2>
+<p>Bagi para pecinta angka dan penikmat insting tajam, syair dari TVTOTO hadir sebagai panduan yang nggak bisa dianggap remeh. Bukan cuma berisi ramalan kosong, tapi penuh makna, simbol, dan isyarat yang bisa kamu tafsirkan jadi angka jitu. Setiap baris syairnya dirangkai dengan penuh intuisi dan kepekaan terhadap pergerakan angka langit. Dari mimpi yang kamu alami semalam, sampai firasat kecil yang tak bisa dijelaskan&mdash;semuanya bisa menemukan jawabannya lewat</p>
+<h3>Syair TVTOTO</h3>
+<h4>💡 Apa manfaatnya?</h4>
+<p>Bisa jadi petunjuk arah untuk pilih angka main hari ini. Membantu kamu menyingkirkan keraguan dan bermain lebih percaya diri. Menambah feeling dan feeling itu penting banget dalam dunia angka! Banyak member TVTOTO sudah membuktikan sendiri&mdash;dari yang awalnya coba-coba, sekarang malah jadi rutin pantau syair sebelum pasang angka. Karena mereka tahu, kadang kemenangan besar datang dari bisikan kecil yang ditulis dalam syair.</p>
+<h5>🌟 Jadi jangan ketinggalan!</h5>
+<p>Syair TVTOTO sudah update tiap hari, siap bantu kamu menjemput hoki. Baca, pahami, rasakan, dan pasang angka terbaikmu sekarang juga. Kadang keberuntungan nggak datang dua kali&mdash;tapi syair ini bisa jadi jalanmu ke arah sana!</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>`;
+
+            output.value = fullScript;
+            
+            // Show success animation
+            generateBtn.textContent = '✅ Script Generated!';
+            setTimeout(() => {
+                generateBtn.textContent = '🚀 Generate Full Script';
+            }, 2000);
+            
+            showStatus('✅ Full script berhasil di-generate! Klik "Copy Full Script" untuk menyalin.', 'success');
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('output');
+            const successMessage = document.getElementById('successMessage');
+
+            if (!output.value) {
+                showStatus('⚠️ Generate script terlebih dahulu sebelum copy!', 'error');
+                return;
+            }
+
+            output.select();
+            output.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                successMessage.style.display = 'block';
+                showStatus('✅ Script berhasil di-copy ke clipboard!', 'success');
+                
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 4000);
+            } catch (err) {
+                showStatus('⚠️ Gagal copy. Silakan copy manual dengan Ctrl+C', 'error');
+            }
+        }
+
+        function clearAll() {
+            // Langsung hapus tanpa konfirmasi
+            document.getElementById('imageLinks').value = '';
+            document.getElementById('output').value = '';
+            document.getElementById('successMessage').style.display = 'none';
+            document.getElementById('statusMessage').style.display = 'none';
+            
+            showStatus('🗑️ Semua data berhasil dihapus! Silakan input link baru.', 'info');
+            
+            // Focus ke textarea input
+            setTimeout(() => {
+                document.getElementById('imageLinks').focus();
+            }, 100);
+        }
+    </script>
+</body>
+</html>

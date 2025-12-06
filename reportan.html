@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memo Tvtoto</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="https://cdn.areabermain.club/assets/cdn/az1/2024/08/20/20240820/d4dd5539892657c7150b74d894deedfe/logo-tvtoto.png">
+  <style>
+    :root {
+      --primary-color: #1A202C;
+      --secondary-color: #2D3748;
+      --accent-color: #F6E05E;
+      --light-color: #F7FAFC;
+      --lighter-color: #E2E8F0;
+      --dark-color: #2D3748;
+      --darker-color: #1A202C;
+      --border-color: rgba(160, 174, 192, 0.2);
+      --success-color: #2e8b57;
+      --error-color: #c23b22;
+      --text-primary: #FFFFFF;
+      --text-secondary: #E2E8F0;
+      --sidebar-icon-color: #A0AEC0;
+      --sidebar-active-icon-color: #F6E05E;
+      --panel-transition: all 0.3s ease;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --sidebar-item-bg: rgba(45, 55, 72, 0.4);
+      --sidebar-item-hover-bg: rgba(45, 55, 72, 0.6);
+      --sidebar-item-active-bg: rgba(45, 55, 72, 0.6);
+      --sidebar-section-bg: rgba(26, 32, 44, 0.6);
+      --section-header-bg: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
+      --title-bg-color: rgba(74, 85, 104, 0.6);
+      --description-bg-color: rgba(45, 55, 72, 0.6);
+      --new-badge-color: #F56565;
+      --edit-bg-color: rgba(45, 55, 72, 0.9);
+
+      /* Warna menu */
+      --memo-utama-color: #4bc0c0;
+      --report-kendala-color: #ff9f40;
+      --report-linetogel-color: #9966ff;
+      --prediksi-togel-color: #F687B3;
+      --jadwal-prediksi-menu-color: #9F7AEA;
+    }
+
+    /* Loading Animation */
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26, 32, 44, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-content {
+      text-align: center;
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(246, 224, 94, 0.3);
+      border-top: 4px solid var(--accent-color);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      color: var(--accent-color);
+      font-size: 16px;
+      font-weight: 600;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      color: var(--text-primary);
+      line-height: 1.6;
+      position: relative;
+      font-weight: 500;
+      background: url('https://statics.hokibagus.club/tvtoto/background/tvtoto_backgroundweb.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+    
+    body::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(26, 32, 44, 0.85);
+      z-index: -1;
+    }
+
+    #clock {
+      position: fixed;
+      top: 20px;
+      left: 310px;
+      font-size: 14px;
+      font-weight: bold;
+      background-color: var(--secondary-color);
+      color: var(--accent-color);
+      padding: 6px 12px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      z-index: 9999;
+      font-family: 'Inter', sans-serif;
+      border: 1px solid var(--border-color);
+    }
+    
+    .sidebar {
+      width: 260px;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px;
+      background: linear-gradient(160deg, rgba(45, 55, 72, 0.95) 0%, rgba(26, 32, 44, 0.98) 100%);
+      border-right: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(5px);
+      z-index: 1;
+    }
+
+    .sidebar-header {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 25px;
+      color: var(--text-primary);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .sidebar-header i {
+      margin-right: 12px;
+      color: var(--accent-color);
+      font-size: 22px;
+    }
+    
+    .sidebar-section {
+      margin-bottom: 12px;
+      background: var(--sidebar-section-bg);
+      padding: 0;
+      border-radius: 8px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: var(--panel-transition);
+      overflow: hidden;
+    }
+
+    .sidebar-section-header {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 0;
+      color: var(--text-primary);
+      padding: 12px 15px;
+      border-bottom: none;
+      display: flex;
+      align-items: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      background: var(--section-header-bg);
+      border-radius: 0;
+      box-shadow: none;
+      border-left: 3px solid var(--accent-color);
+      transition: var(--panel-transition);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .sidebar-section-header:hover {
+      transform: translateX(5px);
+      background: rgba(45, 55, 72, 0.8);
+    }
+
+    .sidebar-section:not(.collapsed) .sidebar-section-header {
+      background: rgba(45, 55, 72, 0.8);
+    }
+
+    .sidebar-section-header i {
+      margin-right: 10px;
+      font-size: 14px;
+      color: var(--accent-color);
+    }
+
+    .sidebar-section-header .toggle-icon {
+      margin-left: auto;
+      transition: transform 0.3s ease;
+      font-size: 12px;
+    }
+
+    .sidebar-section-content {
+      max-height: 1000px;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 15px;
+    }
+
+    .sidebar-section.collapsed .sidebar-section-content {
+      max-height: 0 !important;
+      padding: 0 15px;
+      overflow: hidden;
+    }
+
+    .sidebar-section:not(.collapsed) .sidebar-section-header .toggle-icon {
+      transform: rotate(0deg);
+    }
+
+    .sidebar-section.collapsed .sidebar-section-header .toggle-icon {
+      transform: rotate(-90deg);
+    }
+
+    /* Warna header section */
+    #main-menu-header {
+      background: rgba(75, 192, 192, 0.15);
+      border-left: 3px solid var(--memo-utama-color);
+      color: var(--memo-utama-color);
+    }
+    #main-menu-header:hover {
+      background: rgba(75, 192, 192, 0.25);
+    }
+    #main-menu-header i {
+      color: var(--memo-utama-color);
+    }
+
+    #jadwal-prediksi-header {
+      background: rgba(159, 122, 234, 0.15);
+      border-left: 3px solid var(--jadwal-prediksi-menu-color);
+      color: var(--jadwal-prediksi-menu-color);
+    }
+    #jadwal-prediksi-header:hover {
+      background: rgba(159, 122, 234, 0.25);
+    }
+    #jadwal-prediksi-header i {
+      color: var(--jadwal-prediksi-menu-color);
+    }
+
+    /* Warna sub-section */
+    #memo-utama-header {
+      background: rgba(75, 192, 192, 0.15);
+      border-left: 3px solid var(--memo-utama-color);
+      color: var(--memo-utama-color);
+    }
+    #memo-utama-header:hover {
+      background: rgba(75, 192, 192, 0.25);
+    }
+    #memo-utama-header i {
+      color: var(--memo-utama-color);
+    }
+
+    #report-situs-header {
+      background: rgba(153, 102, 255, 0.15);
+      border-left: 3px solid var(--report-linetogel-color);
+      color: var(--report-linetogel-color);
+    }
+    #report-situs-header:hover {
+      background: rgba(153, 102, 255, 0.25);
+    }
+    #report-situs-header i {
+      color: var(--report-linetogel-color);
+    }
+
+    #report-tvtoto-header {
+      background: rgba(255, 159, 64, 0.15);
+      border-left: 3px solid var(--report-kendala-color);
+      color: var(--report-kendala-color);
+    }
+    #report-tvtoto-header:hover {
+      background: rgba(255, 159, 64, 0.25);
+    }
+    #report-tvtoto-header i {
+      color: var(--report-kendala-color);
+    }
+
+    #prediksi-togel-header {
+      background: rgba(246, 135, 179, 0.15);
+      border-left: 3px solid var(--prediksi-togel-color);
+      color: var(--prediksi-togel-color);
+    }
+    #prediksi-togel-header:hover {
+      background: rgba(246, 135, 179, 0.25);
+    }
+    #prediksi-togel-header i {
+      color: var(--prediksi-togel-color);
+    }
+    
+    .sidebar-item {
+      padding: 10px 12px 10px 45px;
+      margin: 5px 0;
+      background: var(--sidebar-item-bg);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-weight: 500;
+      border-left: 3px solid transparent;
+      position: relative;
+      transition: var(--panel-transition);
+      font-size: 13px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      transform: translateX(0);
+    }
+
+    .sidebar-item:hover {
+      transform: translateX(5px);
+      background: var(--sidebar-item-hover-bg);
+      border-left: 3px solid var(--accent-color);
+      color: var(--text-primary);
+    }
+
+    .sidebar-item.active {
+      color: var(--accent-color);
+      font-weight: 600;
+      border-left: 3px solid var(--accent-color);
+    }
+
+    .sidebar-item::before {
+      content: '';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--sidebar-icon-color);
+      font-size: 15px;
+      transition: var(--panel-transition);
+    }
+
+    .sidebar-item:hover::before,
+    .sidebar-item.active::before {
+      color: var(--sidebar-active-icon-color);
+    }
+
+    .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS IDN"]::before { content: '\f51e'; }
+    .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS PNG"]::before { content: '\f51e'; }
+    .sidebar-item[data-sheet="MEMO INFORMASI BANK"]::before { content: '\f19c'; }
+    .sidebar-item[data-sheet="MEMO KENDALA PERMAINAN"]::before { content: '\f11b'; }
+    .sidebar-item[data-sheet="MEMO KENDALA SISTEM"]::before { content: '\f085'; }
+    .sidebar-item[data-sheet="KETERLAMBATAN RESULT"]::before { content: '\f017'; }
+    .sidebar-item[data-sheet="SELESAI RESULT"]::before { content: '\f00c'; }
+    .sidebar-item[data-sheet="GANGGUAN SLOT"]::before { content: '\f11b'; }
+    .sidebar-item[data-sheet="SLOT MAINTENANCE"]::before { content: '\f085'; }
+    .sidebar-item[data-sheet="LIVEGAME GANGGUAN"]::before { content: '\f119'; }
+    .sidebar-item[data-sheet="LIVEGAME MAINTENANCE"]::before { content: '\f1e3'; }
+    .sidebar-item[data-sheet="TEMBAK IKAN MAINTENANCE"]::before { content: '\f6cf'; }
+    .sidebar-item[data-sheet="MAINTENANCE DAN GANGGUAN BOLA"]::before { content: '\f1e3'; }
+    .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS IDN"]::before { content: '\f0ac'; }
+    .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS PNG"]::before { content: '\f0ac'; }
+    .sidebar-item[data-sheet="REPORT KENDALA KE IDN & PNG"]::before { content: '\f188'; }
+    .sidebar-item[data-sheet="REPORT KENDALA TVTOTO"]::before { content: '\f542'; }
+    .sidebar-item[data-sheet="REPORT KENDALA BANK & EWALLET"]::before { content: '\f09d'; }
+    .sidebar-item[data-sheet="PREDIKSI TOGEL IDN"]::before { content: '\f24e'; }
+    .sidebar-item[data-sheet="PREDIKSI TOGEL PNG"]::before { content: '\f24e'; }
+    
+    .right-panel {
+      width: 260px;
+      height: 100vh;
+      overflow-y: auto;
+      padding: 20px;
+      background: linear-gradient(160deg, rgba(45, 55, 72, 0.95) 0%, rgba(26, 32, 44, 0.98) 100%);
+      border-left: 1px solid var(--border-color);
+      box-shadow: var(--card-shadow);
+      backdrop-filter: blur(5px);
+      z-index: 1;
+      display: none;
+    }
+
+    .right-panel-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .dual-logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 30px;
+      margin-bottom: 15px;
+    }
+
+    .logo-tvtoto, .logo-ziatogel {
+      height: 40px;
+      max-width: 150px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .logo-tvtoto:hover, .logo-ziatogel:hover {
+      transform: scale(1.05);
+    }
+
+    .panel-title {
+      color: white;
+      font-size: 1.4rem;
+      margin: 0;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    
+    .title-item {
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      background: var(--sidebar-item-bg);
+      border-radius: 6px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: var(--panel-transition);
+      font-size: 14px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-left: 3px solid transparent;
+      position: relative;
+      transform: translateY(0);
+    }
+
+    .title-item:hover {
+      transform: translateY(-5px);
+      background: var(--sidebar-item-hover-bg);
+      color: var(--text-primary);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .title-item.active {
+      color: var(--accent-color);
+      font-weight: 600;
+      border-left: 3px solid var(--accent-color);
+    }
+    
+    .main-content {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .center-panel {
+      flex: 1;
+      max-width: 800px;
+      padding: 25px;
+      overflow-y: auto;
+      margin: 0 auto;
+      z-index: 1;
+      background: rgba(26, 32, 44, 0.7);
+      backdrop-filter: blur(3px);
+    }
+
+    .center-search-container {
+      margin-bottom: 25px;
+      position: relative;
+      width: 100%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .center-search-input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+      background: var(--secondary-color);
+      color: var(--text-primary);
+      transition: var(--panel-transition);
+      font-weight: 500;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .center-search-input::placeholder {
+      color: var(--sidebar-icon-color);
+      font-weight: 500;
+    }
+
+    .center-search-input:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 3px rgba(246, 224, 94, 0.3);
+      background: var(--dark-color);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--sidebar-icon-color);
+      font-size: 14px;
+    }
+
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      background: var(--description-bg-color);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    #title-table {
+      background: var(--title-bg-color);
+    }
+
+    #content-table {
+      background: var(--description-bg-color);
+    }
+
+    .info-table th {
+      background: var(--title-bg-color);
+      color: var(--accent-color);
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+
+    .info-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    #title-table td {
+      background: var(--title-bg-color);
+    }
+
+    #content-table td {
+      background: var(--description-bg-color);
+    }
+
+    .info-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    #title-table tr:hover td {
+      background: rgba(74, 85, 104, 0.8);
+    }
+
+    #content-table tr:hover td {
+      background: rgba(45, 55, 72, 0.8);
+    }
+
+    .copy-btn {
+      background: var(--accent-color);
+      color: var(--darker-color);
+      border: none;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 14px;
+      min-width: 90px;
+      transition: var(--panel-transition);
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .copy-btn:hover {
+      background: #ECC94B;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .copy-btn:active {
+      transform: translateY(0);
+    }
+
+    .copy-btn.copied {
+      background: var(--success-color);
+      color: white;
+    }
+
+    .copy-btn.copied i {
+      display: none;
+    }
+
+    .copy-btn.copied::after {
+      content: ' Tersalin!';
+    }
+
+    .copy-btn i {
+      margin-right: 6px;
+      font-size: 15px;
+      color: var(--darker-color);
+      transition: var(--panel-transition);
+    }
+
+    h3 {
+      color: var(--accent-color);
+      margin-top: 30px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-color);
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+    }
+
+    h3 i {
+      margin-right: 10px;
+      color: var(--accent-color);
+      font-size: 20px;
+    }
+
+    .alert {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 20px;
+      background: var(--secondary-color);
+      color: var(--text-primary);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: var(--panel-transition);
+      font-weight: 600;
+      max-width: 300px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-color);
+      transform: translateY(-20px);
+      backdrop-filter: blur(5px);
+    }
+
+    .alert.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .alert i {
+      margin-right: 10px;
+      font-size: 20px;
+      color: var(--text-primary);
+    }
+
+    .error {
+      color: #ff6b6b;
+      padding: 15px;
+      background: rgba(255, 0, 0, 0.1);
+      border-radius: 6px;
+      text-align: center;
+      margin: 10px 0;
+      border: 1px solid #ff6b6b;
+    }
+
+    .alert.error {
+      background: var(--error-color);
+      color: white;
+    }
+
+    .alert.error i {
+      color: white;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent-color);
+      border-radius: 4px;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 60vh;
+      color: var(--text-secondary);
+      text-align: center;
+      padding: 0 25px;
+      backdrop-filter: blur(3px);
+      background: rgba(45, 55, 72, 0.5);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      font-weight: 500;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .empty-state i {
+      font-size: 60px;
+      margin-bottom: 20px;
+      color: var(--sidebar-icon-color);
+      opacity: 0.7;
+    }
+
+    .empty-state p {
+      font-size: 16px;
+      max-width: 350px;
+      line-height: 1.6;
+      margin: 0;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .table-content {
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.7;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--accent-color) 50%, transparent 100%);
+      margin: 20px 0;
+      opacity: 0.3;
+    }
+
+    .autocomplete-items {
+      position: absolute;
+      border: 1px solid var(--border-color);
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--secondary-color);
+      border-radius: 0 0 6px 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .autocomplete-items div {
+      padding: 10px 15px;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      transition: var(--panel-transition);
+    }
+
+    .autocomplete-items div:hover {
+      background: var(--sidebar-item-hover-bg);
+      color: var(--text-primary);
+    }
+
+    .autocomplete-active {
+      background: var(--accent-color) !important;
+      color: var(--darker-color) !important;
+    }
+
+    .loading {
+      color: var(--accent-color);
+      padding: 15px;
+      text-align: center;
+      font-style: italic;
+    }
+
+    .category-header {
+      background: var(--secondary-color);
+      color: var(--accent-color);
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      text-align: center;
+      box-shadow: var(--card-shadow);
+      border-left: 4px solid var(--accent-color);
+      display: none;
+      font-weight: 600;
+      backdrop-filter: blur(3px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <div class="loading-text">Memuat data...</div>
+    </div>
+  </div>
+
+  <!-- Widget Jam -->
+  <div id="clock">Memuat waktu...</div>
+  
+  <!-- Konten Utama -->
+  <div class="main-content">
+    <!-- Sidebar Kiri -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <i class="fas fa-clipboard-list"></i>
+        Daftar Memo
+      </div>
+      
+      <!-- Bagian MEMO DAN REPORT - AWALNYA DITUTUP -->
+      <div class="sidebar-section collapsed">
+        <div class="sidebar-section-header" id="main-menu-header">
+          <i class="fas fa-bars"></i>
+          MEMO DAN REPORT
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="sidebar-section-content" id="main-menu-content">
+          <!-- Bagian Memo Utama - AWALNYA DITUTUP -->
+          <div class="sidebar-section collapsed">
+            <div class="sidebar-section-header" id="memo-utama-header">
+              <i class="fas fa-sticky-note"></i>
+              Memo Utama
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="sidebar-section-content" id="memo-utama-content">
+              <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS IDN">Memo Pembagian Bonus IDN</div>
+              <div class="sidebar-item" data-sheet="MEMO PEMBAGIAN BONUS PNG">Memo Pembagian Bonus PNG</div>
+              <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK">Memo Informasi Bank</div>
+              <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN">Memo Kendala Permainan</div>
+              <div class="sidebar-item" data-sheet="MEMO KENDALA SISTEM">Memo Kendala Sistem</div>
+              <div class="sidebar-item" data-sheet="KETERLAMBATAN RESULT">Keterlambatan Result</div>
+              <div class="sidebar-item" data-sheet="SELESAI RESULT">Selesai Result</div>
+              <div class="sidebar-item" data-sheet="GANGGUAN SLOT">Gangguan Slot</div>
+              <div class="sidebar-item" data-sheet="SLOT MAINTENANCE">Slot Maintenance</div>
+              <div class="sidebar-item" data-sheet="LIVEGAME GANGGUAN">Livegame Gangguan</div>
+              <div class="sidebar-item" data-sheet="LIVEGAME MAINTENANCE">Livegame Maintenance</div>
+              <div class="sidebar-item" data-sheet="TEMBAK IKAN MAINTENANCE">Tembak Ikan Maintenance</div>
+              <div class="sidebar-item" data-sheet="MAINTENANCE DAN GANGGUAN BOLA">Maintenance & Gangguan Bola</div>
+            </div>
+          </div>
+          
+          <!-- Bagian Report Kendala Situs - AWALNYA DITUTUP -->
+          <div class="sidebar-section collapsed">
+            <div class="sidebar-section-header" id="report-situs-header">
+              <i class="fas fa-globe"></i>
+              Report Kendala Situs
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="sidebar-section-content" id="report-situs-content">
+              <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS IDN">Report Kendala All Situs IDN</div>
+              <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS PNG">Report Kendala All Situs PNG</div>
+              <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN & PNG">Report Kendala ke IDN & PNG</div>
+            </div>
+          </div>
+          
+          <!-- Bagian Report TVTOTO - AWALNYA DITUTUP -->
+          <div class="sidebar-section collapsed">
+            <div class="sidebar-section-header" id="report-tvtoto-header">
+              <i class="fas fa-laptop-code"></i>
+              Report TVTOTO
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="sidebar-section-content" id="report-tvtoto-content">
+              <div class="sidebar-item" data-sheet="REPORT KENDALA TVTOTO">Report Kendala TVTOTO</div>
+              <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET">Report Kendala Bank & E-Wallet</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Bagian PREDIKSI TOGEL - AWALNYA DITUTUP -->
+      <div class="sidebar-section collapsed">
+        <div class="sidebar-section-header" id="jadwal-prediksi-header">
+          <i class="fas fa-chart-line"></i>
+          PREDIKSI TOGEL
+          <i class="fas fa-chevron-down toggle-icon"></i>
+        </div>
+        <div class="sidebar-section-content" id="jadwal-prediksi-content">
+          <!-- Bagian Prediksi Togel - AWALNYA DITUTUP -->
+          <div class="sidebar-section collapsed">
+            <div class="sidebar-section-header" id="prediksi-togel-header">
+              <i class="fas fa-chart-line"></i>
+              Prediksi Togel
+              <i class="fas fa-chevron-down toggle-icon"></i>
+            </div>
+            <div class="sidebar-section-content" id="prediksi-togel-content">
+              <div class="sidebar-item" data-sheet="PREDIKSI TOGEL IDN">Prediksi Togel IDN</div>
+              <div class="sidebar-item" data-sheet="PREDIKSI TOGEL PNG">Prediksi Togel PNG</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Panel Tengah -->
+    <div class="center-panel">
+      <!-- Header Kategori -->
+      <div class="category-header" id="category-header"></div>
+      
+      <!-- Bar Pencarian -->
+      <div class="center-search-container">
+        <span class="search-icon">🔎</span>
+        <input type="text" class="center-search-input" id="center-search-input" placeholder="Cari judul...">
+        <div id="autocomplete-list" class="autocomplete-items"></div>
+      </div>
+      
+      <!-- State Kosong -->
+      <div class="empty-state" id="empty-state">
+        <i class="fas fa-clipboard-list"></i>
+        <p>Pilih judul dari list sebelah kiri untuk melihat detail memo</p>
+        <p style="margin-top: 10px; font-size: 14px;">Gunakan fitur pencarian untuk menemukan memo lebih cepat</p>
+      </div>
+      
+      <!-- Container Tabel -->
+      <div id="tables-container" style="display: none;"></div>
+    </div>
+
+    <!-- Panel Kanan -->
+    <div class="right-panel" id="right-panel">
+      <div class="right-panel-header">
+        <div class="dual-logo">
+          <img src="https://cdn.areabermain.club/assets/cdn/az1/2024/08/20/20240820/d4dd5539892657c7150b74d894deedfe/logo-tvtoto.png" 
+               class="logo-tvtoto" 
+               alt="Logo Tvtoto">
+          <img src="https://statics.hokibagus.club/logo_situs/logo_ziatogel.png" 
+               class="logo-ziatogel" 
+               alt="Logo Ziatogel">
+        </div>
+        <h2 class="panel-title" id="right-panel-title">Judul</h2>
+      </div>
+      <div id="title-list"></div>
+    </div>
+  </div>
+
+  <!-- Notifikasi Alert -->
+  <div class="alert" id="alert">
+    <i class="material-icons">check_circle</i>
+    <span id="alert-message">Teks berhasil disalin!</span>
+  </div>
+  
+  <script>
+    // Konfigurasi Google Sheets - GANTI DENGAN ID SPREADSHEET ANDA
+    const SHEET_ID = '1zGtyBoAB2Leh39EVGKrYO0MfF5pOeAMHsl-PY3FoE1M';
+    
+    // OPTIONAL: Jika ingin menggunakan Google Sheets API v4, isi API Key
+    // Dapatkan di: https://console.cloud.google.com/apis/credentials
+    const API_KEY = ''; // Kosongkan jika tidak menggunakan API Key
+    
+    // Daftar nama sheet (sesuaikan dengan nama sheet di Google Sheets Anda)
+    // TIDAK TERMASUK: Rekening Bank, Rekening Ewallet, Jadwal Togel
+    const SHEET_NAMES = [
+      'MEMO PEMBAGIAN BONUS IDN',
+      'MEMO PEMBAGIAN BONUS PNG',
+      'MEMO INFORMASI BANK',
+      'MEMO KENDALA PERMAINAN',
+      'MEMO KENDALA SISTEM',
+      'KETERLAMBATAN RESULT',
+      'SELESAI RESULT',
+      'GANGGUAN SLOT',
+      'SLOT MAINTENANCE',
+      'LIVEGAME GANGGUAN',
+      'LIVEGAME MAINTENANCE',
+      'TEMBAK IKAN MAINTENANCE',
+      'MAINTENANCE DAN GANGGUAN BOLA',
+      'REPORT KENDALA ALL SITUS IDN',
+      'REPORT KENDALA ALL SITUS PNG',
+      'REPORT KENDALA KE IDN & PNG',
+      'REPORT KENDALA TVTOTO',
+      'REPORT KENDALA BANK & EWALLET',
+      'PREDIKSI TOGEL IDN',
+      'PREDIKSI TOGEL PNG'
+    ];
+    
+    // State global
+    let allData = {};
+    let currentSheet = 'MEMO PEMBAGIAN BONUS IDN';
+    let currentData = [];
+    let selectedTitleIndex = -1;
+
+    // Cache elemen DOM
+    const dom = {
+      loadingOverlay: document.getElementById('loading-overlay'),
+      clock: document.getElementById('clock'),
+      sidebarItems: document.querySelectorAll('.sidebar-item'),
+      centerSearchInput: document.getElementById('center-search-input'),
+      titleList: document.getElementById('title-list'),
+      alertBox: document.getElementById('alert'),
+      alertMessage: document.getElementById('alert-message'),
+      emptyState: document.getElementById('empty-state'),
+      tablesContainer: document.getElementById('tables-container'),
+      categoryHeader: document.getElementById('category-header'),
+      autocompleteList: document.getElementById('autocomplete-list'),
+      rightPanel: document.getElementById('right-panel'),
+      mainMenuHeader: document.getElementById('main-menu-header'),
+      jadwalPrediksiHeader: document.getElementById('jadwal-prediksi-header')
+    };
+
+    // Inisialisasi saat DOM siap
+    document.addEventListener('DOMContentLoaded', function() {
+      updateClock();
+      setInterval(updateClock, 1000);
+      setupCollapsibleSections();
+      setupEventListeners();
+      loadData();
+    });
+
+    // Fungsi untuk update jam
+    function updateClock() {
+      const now = new Date();
+      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+
+      const dayName = days[now.getDay()];
+      const date = now.getDate().toString().padStart(2, '0');
+      const month = months[now.getMonth()];
+      const year = now.getFullYear();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const seconds = now.getSeconds().toString().padStart(2, '0');
+
+      const formattedTime = `${dayName}, ${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+      dom.clock.textContent = formattedTime;
+    }
+
+    // Setup collapsible sections
+    function setupCollapsibleSections() {
+      // Tutup semua section kecuali yang aktif (semua ditutup di awal)
+      document.querySelectorAll('.sidebar-section-header').forEach(header => {
+        header.addEventListener('click', function() {
+          const section = this.closest('.sidebar-section');
+          section.classList.toggle('collapsed');
+          
+          // Update aria-expanded attribute
+          const isExpanded = !section.classList.contains('collapsed');
+          this.setAttribute('aria-expanded', isExpanded);
+        });
+      });
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      dom.sidebarItems.forEach(item => {
+        item.addEventListener('click', handleSidebarClick);
+      });
+
+      dom.centerSearchInput.addEventListener('input', handleSearchInput);
+      
+      document.addEventListener('click', function(e) {
+        if (e.target.id !== 'center-search-input') {
+          dom.autocompleteList.innerHTML = '';
+        }
+      });
+    }
+
+    // Handle klik sidebar
+    function handleSidebarClick() {
+      dom.sidebarItems.forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
+      
+      currentSheet = this.getAttribute('data-sheet');
+      
+      loadSheetData(currentSheet);
+      updateCategoryHeader(currentSheet);
+      
+      // Selalu tampilkan panel kanan untuk semua memo kecuali untuk beberapa tipe khusus
+      dom.rightPanel.style.display = 'block';
+      dom.tablesContainer.style.display = 'none';
+      dom.emptyState.style.display = 'flex';
+      
+      selectedTitleIndex = -1;
+      dom.centerSearchInput.value = '';
+    }
+
+    // Fungsi untuk fetch data dari satu sheet
+    async function fetchSheetData(sheetName) {
+      try {
+        // Jika API Key tersedia, gunakan Google Sheets API v4
+        if (API_KEY && API_KEY.length > 0) {
+          console.log(`Mencoba dengan API Key untuk: ${sheetName}`);
+          const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(sheetName)}?key=${API_KEY}`;
+          
+          const response = await fetch(url);
+          
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          
+          // Konversi data dari format Google Sheets ke format yang diharapkan
+          if (!data.values || data.values.length === 0) {
+            return [];
+          }
+          
+          const result = [];
+          // Skip header row (index 0)
+          for (let i = 1; i < data.values.length; i++) {
+            const row = data.values[i];
+            // Asumsi kolom: A = Title, B = Content
+            if (row[0] && row[0].trim() !== '') {
+              result.push({
+                title: row[0],
+                content: row[1] || ''
+              });
+            }
+          }
+          
+          console.log(`Berhasil load ${result.length} items dari ${sheetName} via API`);
+          return result;
+        }
+      } catch (error) {
+        console.log(`API gagal untuk ${sheetName}, mencoba fallback method...`);
+      }
+      
+      // Fallback: menggunakan publikasi web
+      try {
+        return await fetchSheetDataPublic(sheetName);
+      } catch (fallbackError) {
+        console.error(`Fallback juga gagal untuk ${sheetName}:`, fallbackError);
+        return [];
+      }
+    }
+
+    // Fallback method menggunakan publikasi web (gviz)
+    async function fetchSheetDataPublic(sheetName) {
+      console.log(`Mencoba fallback method untuk: ${sheetName}`);
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+      
+      const response = await fetch(url);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const text = await response.text();
+      
+      // Remove the prefix: google.visualization.Query.setResponse(
+      const jsonString = text.substring(47, text.length - 2);
+      const data = JSON.parse(jsonString);
+      
+      if (!data.table || !data.table.rows) {
+        return [];
+      }
+      
+      const result = [];
+      // Skip header row
+      for (let i = 0; i < data.table.rows.length; i++) {
+        const row = data.table.rows[i];
+        // Kolom pertama: title, kolom kedua: content
+        const title = row.c[0] && row.c[0].v ? row.c[0].v : '';
+        const content = row.c[1] && row.c[1].v ? row.c[1].v : '';
+        
+        if (title && title.trim() !== '') {
+          result.push({ title, content });
+        }
+      }
+      
+      console.log(`Berhasil load ${result.length} items dari ${sheetName} via fallback`);
+      return result;
+    }
+
+    // Load data dari Google Sheets
+    async function loadData() {
+      try {
+        dom.loadingOverlay.classList.remove('hidden');
+        console.log('Memulai load data dari Google Sheets...');
+        console.log('SHEET_ID:', SHEET_ID);
+        console.log('API_KEY tersedia:', API_KEY ? 'Ya' : 'Tidak (akan gunakan fallback)');
+        
+        // Load semua sheet secara paralel
+        const promises = SHEET_NAMES.map(sheetName => fetchSheetData(sheetName));
+        const results = await Promise.all(promises);
+
+        // Simpan hasil ke allData
+        SHEET_NAMES.forEach((sheetName, index) => {
+          allData[sheetName] = results[index];
+        });
+
+        console.log('Semua data berhasil dimuat:', allData);
+        loadSheetData(currentSheet);
+        dom.loadingOverlay.classList.add('hidden');
+      } catch (error) {
+        console.error('Error loading data:', error);
+        showAlert('Gagal memuat data dari Google Sheets. Pastikan sheet sudah dipublikasikan!', 'error');
+        dom.loadingOverlay.classList.add('hidden');
+      }
+    }
+
+    // Load sheet data
+    function loadSheetData(sheetName) {
+      console.log('Loading sheet data for:', sheetName);
+      
+      if (allData[sheetName]) {
+        currentData = allData[sheetName];
+        console.log('Current data:', currentData);
+        renderTitleList();
+      } else {
+        console.log('No data found for sheet:', sheetName);
+        currentData = [];
+        renderTitleList();
+      }
+    }
+
+    // Render title list
+    function renderTitleList() {
+      dom.titleList.innerHTML = '';
+      
+      console.log('Rendering title list with', currentData.length, 'items');
+      
+      if (!currentData || currentData.length === 0) {
+        dom.titleList.innerHTML = '<div class="error">Data tidak tersedia</div>';
+        return;
+      }
+
+      currentData.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'title-item';
+        if (index === selectedTitleIndex) {
+          div.classList.add('active');
+        }
+        
+        div.textContent = item.title || 'Tidak Ada Judul';
+        
+        div.addEventListener('click', () => {
+          document.querySelectorAll('.title-item').forEach(el => {
+            el.classList.remove('active');
+          });
+          div.classList.add('active');
+          selectedTitleIndex = index;
+          showItemDetails(index);
+        });
+        
+        dom.titleList.appendChild(div);
+      });
+    }
+
+    // Show item details
+    function showItemDetails(index) {
+      dom.tablesContainer.style.display = 'block';
+      dom.emptyState.style.display = 'none';
+      
+      const item = currentData[index];
+      if (!item) return;
+
+      dom.tablesContainer.innerHTML = `
+        <h3><i class="fas fa-heading"></i> Judul</h3>
+        <div class="divider"></div>
+        <table class="info-table" id="title-table">
+          <tbody>
+            <tr>
+              <td class="table-content">${escapeHtml(item.title)}</td>
+              <td>
+                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.title)}', 'Judul')">
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <h3 style="margin-top:30px;"><i class="fas fa-align-left"></i> Deskripsi</h3>
+        <div class="divider"></div>
+        <table class="info-table" id="content-table">
+          <tbody>
+            <tr>
+              <td class="table-content">${escapeHtml(item.content)}</td>
+              <td>
+                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.content)}', 'Deskripsi')">
+                  <i class="fas fa-copy"></i> Copy
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      `;
+    }
+
+    // Handle search input
+    function handleSearchInput() {
+      const query = this.value.toLowerCase().trim();
+      dom.autocompleteList.innerHTML = '';
+      
+      if (query.length === 0) {
+        return;
+      }
+      
+      if (query.length > 0) {
+        const matches = currentData.filter(item => 
+          item.title && item.title.toLowerCase().includes(query)
+        ).slice(0, 5);
+        
+        matches.forEach(item => {
+          const div = document.createElement('div');
+          div.innerHTML = `<strong>${highlightMatch(item.title, query)}</strong>`;
+          div.addEventListener('click', () => {
+            dom.centerSearchInput.value = item.title;
+            dom.autocompleteList.innerHTML = '';
+            const index = currentData.findIndex(i => i.title === item.title);
+            if (index !== -1) {
+              showItemDetails(index);
+              const titleItems = document.querySelectorAll('.title-item');
+              titleItems.forEach(el => el.classList.remove('active'));
+              if (titleItems[index]) {
+                titleItems[index].classList.add('active');
+                titleItems[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+            }
+            selectedTitleIndex = index;
+          });
+          dom.autocompleteList.appendChild(div);
+        });
+      }
+    }
+
+    // Update category header
+    function updateCategoryHeader(sheetName) {
+      dom.categoryHeader.textContent = sheetName;
+      dom.categoryHeader.style.display = 'block';
+    }
+
+    // Copy to clipboard
+    function copyToClipboard(text, type) {
+      const decodedText = decodeHtmlEntities(text);
+      navigator.clipboard.writeText(decodedText).then(() => {
+        showAlert(`${type} berhasil disalin!`, 'success');
+      }).catch(err => {
+        const textarea = document.createElement('textarea');
+        textarea.value = decodedText;
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+          showAlert(`${type} berhasil disalin!`, 'success');
+        } catch (err) {
+          showAlert('Gagal menyalin!', 'error');
+        }
+        document.body.removeChild(textarea);
+      });
+    }
+
+    // Show alert
+    function showAlert(message, type = 'success') {
+      dom.alertMessage.textContent = message;
+      dom.alertBox.className = 'alert show';
+      if (type === 'error') {
+        dom.alertBox.classList.add('error');
+      }
+      setTimeout(() => {
+        dom.alertBox.classList.remove('show');
+      }, 2000);
+    }
+
+    // Escape HTML
+    function escapeHtml(unsafe) {
+      if (!unsafe) return '';
+      return unsafe.toString()
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Decode HTML entities
+    function decodeHtmlEntities(text) {
+      if (!text) return '';
+      const textArea = document.createElement('textarea');
+      textArea.innerHTML = text;
+      return textArea.value;
+    }
+
+    // Highlight match
+    function highlightMatch(text, query) {
+      if (!text || !query) return escapeHtml(text);
+      
+      const index = text.toLowerCase().indexOf(query.toLowerCase());
+      if (index >= 0) {
+        return escapeHtml(text.substring(0, index)) + 
+               '<span style="color: var(--accent-color); font-weight: bold;">' + 
+               escapeHtml(text.substring(index, index + query.length)) + 
+               '</span>' + 
+               escapeHtml(text.substring(index + query.length));
+      }
+      return escapeHtml(text);
+    }
+  </script>
+</body>
+</html>

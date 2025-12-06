@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generator Prediksi Bola TVTOTO</title>
-    <link rel="icon" type="image/png" href="https://statics.hokibagus.club/tvtoto/background/tvtoto_backgroundweb.png">
+    <link rel="icon" type="image/png" href="https://jamkos-a.com/tvtoto/logotvtoto.jpg">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -15,11 +15,7 @@
         
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0)), 
-                        url('https://statics.hokibagus.club/tvtoto/background/tvtoto_backgroundweb.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
+            background: linear-gradient(135deg, #990000, #660000);
             padding: 20px;
             min-height: 100vh;
         }
@@ -98,15 +94,13 @@
             padding: 15px;
             margin-bottom: 15px;
             color: #856404;
-            font-size: 13px;
+            font-size: 14px;
             line-height: 1.8;
         }
         
         .instruction strong {
-            display: block;
-            margin-bottom: 8px;
             color: #990000;
-            font-size: 14px;
+            font-size: 15px;
         }
         
         textarea {
@@ -343,7 +337,7 @@
                     <strong>Total Pertandingan : <span style="color: #990000; font-weight: 700;" id="totalMatches">0</span></strong>
                 </div>
                 
-                <textarea id="inputText" placeholder="Masukkan prediksi di sini (Auto-Generate)...&#10;&#10;Contoh:&#10;INDONESIA SUPER LEAGUE&#10;20/11 15:30 WIB Persijap Jepara VS Semen Padang FC 1 : 2&#10;20/11 19:00 WIB Persija Jakarta VS Persik Kediri 1 : 3&#10;&#10;DENMARK 1ST DIV&#10;21/11 00:30 WIB Hobro VS Hvidovre 1 : 2"></textarea>
+                <textarea id="inputText" placeholder="Masukkan prediksi di sini (Auto-Generate)...&#10;&#10;Contoh:&#10;INDONESIA SUPER LEAGUE&#10;20/11 15:30 WIB Persijap Jepara VS Semen Padang FC 1:2&#10;20/11 19:00 WIB Persija Jakarta VS Persik Kediri 1:3&#10;&#10;DENMARK 1ST DIV&#10;21/11 00:30 WIB Hobro VS Hvidovre 1:2"></textarea>
                 
                 <div class="button-group">
                     <button class="btn-clear" onclick="clearInput()">🗑️ Clear Semua</button>
@@ -414,9 +408,9 @@
         let debounceTimer;
         document.getElementById('inputText').addEventListener('input', function() {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(() => {
+            debounceTimer = setTimeout(function() {
                 generateHTML();
-            }, 500); // Wait 500ms after user stops typing
+            }, 500);
         });
         
         function generateHTML() {
@@ -430,7 +424,7 @@
                 return;
             }
             
-            const lines = input.split('\n').filter(line => line.trim() !== '');
+            const lines = input.split('\n').filter(function(line) { return line.trim() !== ''; });
             let leaguesHTML = '';
             let previewHTML = '';
             let currentLeague = '';
@@ -438,10 +432,9 @@
             let totalLeagues = 0;
             let totalMatches = 0;
             
-            lines.forEach(line => {
-                line = line.trim();
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
                 
-                // Flexible check for league name
                 const matchData = parseMatchLine(line);
                 
                 if (!matchData) {
@@ -459,7 +452,7 @@
                     // This is a match line
                     matches.push(matchData);
                 }
-            });
+            }
             
             // Don't forget the last league
             if (currentLeague && matches.length > 0) {
@@ -490,29 +483,21 @@
         }
         
         function parseMatchLine(line) {
-            // Ultra flexible regex to match various formats
-            // Supports: VS, vs, -, x as separators
-            // Supports: various time formats
-            // Supports: various score formats (1:2, 1-2, 1 : 2, 1 - 2)
-            
-            // Pattern to detect if line contains match info
-            // Look for: date/time + teams + score
             const hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}:\d{2}/.test(line);
             const hasSeparator = /\s+(vs|VS|Vs|vS|x|X|-)\s+/i.test(line);
             const hasScore = /\d+\s*[:\-]\s*\d+/.test(line);
             
             if (!hasDateOrTime && !hasSeparator && !hasScore) {
-                return null; // This is not a match line
+                return null;
             }
             
-            // Extract components with flexible regex
             let time = '';
             let team1 = '';
             let team2 = '';
             let score1 = '';
             let score2 = '';
             
-            // Extract time (if exists)
+            // Extract time
             const timeMatch = line.match(/(\d{1,2}[\/\-]\d{1,2}\s+\d{1,2}:\d{2}(?:\s+WIB)?)/);
             if (timeMatch) {
                 time = timeMatch[1];
@@ -520,20 +505,19 @@
             }
             
             // Extract score
-            const scoreMatch = line.match(/(\d+)\s*[:|\-]\s*(\d+)\s*$/);
+            const scoreMatch = line.match(/(\d+)\s*[:\-]\s*(\d+)\s*$/);
             if (scoreMatch) {
                 score1 = scoreMatch[1];
                 score2 = scoreMatch[2];
                 line = line.replace(scoreMatch[0], '').trim();
             }
             
-            // Extract teams with flexible separator
+            // Extract teams
             const teamMatch = line.match(/(.+?)\s+(vs|VS|Vs|vS|x|X|-)\s+(.+?)$/i);
             if (teamMatch) {
                 team1 = teamMatch[1].trim();
                 team2 = teamMatch[3].trim();
             } else {
-                // Try to split by common patterns
                 const parts = line.split(/\s+(vs|VS|Vs|vS|x|X)\s+/i);
                 if (parts.length >= 3) {
                     team1 = parts[0].trim();
@@ -541,7 +525,6 @@
                 }
             }
             
-            // Validate we have minimum required info
             if (team1 && team2 && score1 !== '' && score2 !== '') {
                 return {
                     time: time || '-',
@@ -557,18 +540,19 @@
         
         function generateLeagueHTML(leagueName, matches) {
             let html = '<div class="league">\n';
-            html += `<div class="league-title"><em>${leagueName}</em></div>\n`;
+            html += '<div class="league-title"><em>' + leagueName + '</em></div>\n';
             html += '<table>\n';
             html += '<thead>\n<tr>\n<th>Waktu</th>\n<th>Pertandingan</th>\n<th>Prediksi</th>\n</tr>\n</thead>\n';
             html += '<tbody>';
             
-            matches.forEach(match => {
+            for (let i = 0; i < matches.length; i++) {
+                const match = matches[i];
                 html += '<tr>\n';
-                html += `<td>${match.time}</td>\n`;
-                html += `<td>${match.team1} VS ${match.team2}</td>\n`;
-                html += `<td>${match.score1} : ${match.score2}</td>\n`;
+                html += '<td>' + match.time + '</td>\n';
+                html += '<td>' + match.team1 + ' VS ' + match.team2 + '</td>\n';
+                html += '<td>' + match.score1 + ' : ' + match.score2 + '</td>\n';
                 html += '</tr>';
-            });
+            }
             
             html += '</tbody></table></div>';
             
@@ -577,18 +561,19 @@
         
         function generatePreviewHTML(leagueName, matches) {
             let html = '<div class="preview-league">';
-            html += `<div class="preview-league-title">${leagueName}</div>`;
+            html += '<div class="preview-league-title">' + leagueName + '</div>';
             html += '<table class="preview-table">';
             html += '<thead><tr><th>Waktu</th><th>Pertandingan</th><th>Prediksi</th></tr></thead>';
             html += '<tbody>';
             
-            matches.forEach(match => {
+            for (let i = 0; i < matches.length; i++) {
+                const match = matches[i];
                 html += '<tr>';
-                html += `<td>${match.time}</td>`;
-                html += `<td>${match.team1} VS ${match.team2}</td>`;
-                html += `<td>${match.score1} : ${match.score2}</td>`;
+                html += '<td>' + match.time + '</td>';
+                html += '<td>' + match.team1 + ' VS ' + match.team2 + '</td>';
+                html += '<td>' + match.score1 + ' : ' + match.score2 + '</td>';
                 html += '</tr>';
-            });
+            }
             
             html += '</tbody></table></div>';
             
@@ -596,224 +581,8 @@
         }
         
         function generateCompleteHTML(leaguesHTML, date) {
-            return `<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prediksi Bola TVTOTO</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* === Snow Effect === */
-        .snowflake {
-            position: fixed;
-            top: -10px;
-            z-index: 9999;
-            color: #fff;
-            font-size: 1em;
-            pointer-events: none;
-            user-select: none;
-            animation-name: fall;
-            animation-timing-function: linear;
-        }
-
-        @keyframes fall {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(100vh); opacity: 0.3; }
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #990000;
-            color: #ffcc00;
-            padding: 0px;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            background-color: #990000;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-        }
-        
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #ffcc00;
-        }
-        
-        .header h1 {
-            font-size: 28px;
-            color: #ffcc00;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        
-        .header .date {
-            font-size: 18px;
-            color: #ffffff;
-            font-weight: 600;
-        }
-        
-        .marquee {
-            background-color: #660000;
-            color: #ffcc00;
-            padding: 10px;
-            margin-bottom: 25px;
-            border-radius: 5px;
-            font-weight: 700;
-            text-align: center;
-            font-size: 18px;
-            text-transform: uppercase;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-        
-        .marquee p {
-            display: inline-block;
-            animation: marquee 15s linear infinite;
-            padding-left: 100%;
-        }
-        
-        @keyframes marquee {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .league {
-            margin-bottom: 30px;
-            background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .league-title {
-            background: linear-gradient(90deg, #660000, #990000);
-            color: #ffffff;
-            padding: 12px 15px;
-            font-size: 18px;
-            font-weight: 700;
-            text-align: center;
-            text-transform: uppercase;
-            border-bottom: 1px solid #ff3333;
-        }
-        
-        .league-info {
-            padding: 8px 15px;
-            background-color: rgba(0, 0, 0, 0.2);
-            font-size: 14px;
-            color: #cccccc;
-            font-style: italic;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th {
-            background-color: #660000;
-            color: #ffcc00;
-            padding: 12px;
-            text-align: center;
-            font-weight: 600;
-        }
-        
-        td {
-            padding: 10px 12px;
-            font-weight: 700;
-            text-align: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        tr:nth-child(even) {
-            background-color: rgba(102, 0, 0, 0.3);
-        }
-        
-        tr:hover {
-            background-color: rgba(204, 0, 0, 0.3);
-        }
-        
-        .prediction {
-            font-weight: 700;
-            color: #ffcc00;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 15px;
-            }
-            th, td {
-                padding: 8px 10px;
-                font-size: 14px;
-            }
-            .league-title {
-                font-size: 16px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 22px;
-            }
-            .marquee {
-                font-size: 16px;
-                padding: 8px;
-            }
-            th, td {
-                padding: 6px 8px;
-                font-size: 12px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Prediksi Bola TVTOTO</h1>
-            <div class="date">${date}</div>
-        </div>
-        
-        <div class="marquee">
-            <p>SELAMAT DATANG DI PREDIKSI BOLA TERBARU TVTOTO | PREDIKSI TVTOTO ${date}</p>
-        </div>
-        
-        ${leaguesHTML}
-    </div>
-    
-    <script>
-        // Generate Snowflakes
-        function createSnowflake() {
-            const snowflake = document.createElement("div");
-            snowflake.classList.add("snowflake");
-            snowflake.textContent = "⚽︎";
-            snowflake.style.left = Math.random() * window.innerWidth + "px";
-            snowflake.style.fontSize = Math.random() * 15 + 10 + "px";
-            snowflake.style.animationDuration = Math.random() * 5 + 5 + "s";
-            snowflake.style.opacity = Math.random();
-
-            document.body.appendChild(snowflake);
-
-            setTimeout(() => {
-                snowflake.remove();
-            }, 10000);
-        }
-
-        setInterval(createSnowflake, 300);
-    <\/script>
-</body>
-</html>`;
+            const dateUpper = date.toUpperCase();
+            return '<p></p>\n<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&amp;display=swap" rel="stylesheet" />\n<style>\n    .snowflake {\n      position: fixed; top: -10px; z-index: 9999; color: #fff; font-size: 1em;\n      pointer-events: none; user-select: none; animation-name: fall; animation-timing-function: linear;\n    }\n    @keyframes fall {\n      0% { transform: translateY(0); opacity: 1; }\n      100% { transform: translateY(100vh); opacity: 0.3; }\n    }\n    * { margin: 0; padding: 0; box-sizing: border-box; }\n    body {\n      font-family: \'Poppins\', sans-serif;\n      background-color: #990000;\n      color: #ffcc00;\n      padding: 0px;\n      line-height: 1.6;\n    }\n    .container {\n      max-width: 1000px; margin: 0 auto; background-color: rgba(0, 0, 0, 0.3);\n      border-radius: 15px; padding: 20px; box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);\n    }\n    .header {\n      text-align: center; margin-bottom: 30px; padding-bottom: 15px;\n      border-bottom: 2px solid #ffcc00;\n    }\n    .header img {\n      max-width: 200px; margin-bottom: 10px;\n    }\n    .header .date { font-size: 18px; color: #ffffff; font-weight: 600; }\n    .marquee {\n      background-color: #660000; color: #ffcc00; padding: 10px;\n      margin-bottom: 25px; border-radius: 5px; font-weight: 700; text-align: center;\n      font-size: 18px; text-transform: uppercase; overflow: hidden; white-space: nowrap;\n    }\n    .marquee p { display: inline-block; animation: marquee 15s linear infinite; padding-left: 100%; }\n    @keyframes marquee {\n      0% { transform: translateX(0); } 100% { transform: translateX(-100%); }\n    }\n    .league {\n      margin-bottom: 30px; background: linear-gradient(135deg, rgba(102, 0, 0, 0.8), rgba(153, 0, 0, 0.8));\n      border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);\n    }\n    .league-title {\n      background: linear-gradient(90deg, #660000, #990000);\n      color: #ffffff; padding: 12px 15px; font-size: 18px; font-weight: 700;\n      text-align: center; text-transform: uppercase; border-bottom: 1px solid #ff3333;\n    }\n    table { width: 100%; border-collapse: collapse; table-layout: fixed; }\n    th {\n      background-color: #660000; color: #ffcc00; padding: 12px;\n      text-align: center; font-weight: 600; vertical-align: middle;\n    }\n    td {\n      padding: 10px 12px; font-weight: 700; text-align: center; vertical-align: middle;\n      border-bottom: 1px solid rgba(255, 255, 255, 0.1); word-wrap: break-word;\n    }\n    tr:nth-child(even) { background-color: rgba(102, 0, 0, 0.3); }\n    tr:hover { background-color: rgba(204, 0, 0, 0.3); }\n    @media (max-width: 768px) {\n      .container { padding: 15px; }\n      th, td { padding: 8px 10px; font-size: 14px; }\n      .league-title { font-size: 16px; }\n    }\n  </style>\n<div class="container">\n<div class="header"><img src="https://jamkos-a.com/tvtoto/logotvtoto.jpg" alt="Logo" />\n<div class="date">' + dateUpper + '</div>\n</div>\n<div class="marquee">\n<p>SELAMAT DATANG DI PREDIKSI BOLA TERBARU TVTOTO | PREDIKSI TVTOTO ' + dateUpper + '</p>\n</div>\n' + leaguesHTML + '</div>\n<script>\nfunction createSnowflake() {\n  const snowflake = document.createElement("div");\n  snowflake.classList.add("snowflake");\n  snowflake.textContent = "⚽︎";\n  snowflake.style.left = Math.random() * window.innerWidth + "px";\n  snowflake.style.fontSize = Math.random() * 15 + 10 + "px";\n  snowflake.style.animationDuration = Math.random() * 5 + 5 + "s";\n  snowflake.style.opacity = Math.random();\n  document.body.appendChild(snowflake);\n  setTimeout(function() { snowflake.remove(); }, 10000);\n}\nsetInterval(createSnowflake, 300);\n<\/script>';
         }
         
         function copyToClipboard() {
@@ -824,10 +593,9 @@
                 return;
             }
             
-            navigator.clipboard.writeText(output).then(() => {
+            navigator.clipboard.writeText(output).then(function() {
                 showNotification('✓ Script berhasil dicopy!', 'success');
-            }).catch(err => {
-                // Fallback method
+            }).catch(function(err) {
                 const textarea = document.createElement('textarea');
                 textarea.value = output;
                 document.body.appendChild(textarea);
@@ -838,11 +606,10 @@
             });
         }
         
-        function showNotification(message, type = 'success') {
+        function showNotification(message, type) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             
-            // Change color based on type
             if (type === 'warning') {
                 notification.style.background = '#ff9800';
             } else if (type === 'error') {
@@ -853,7 +620,7 @@
             
             notification.style.display = 'block';
             
-            setTimeout(() => {
+            setTimeout(function() {
                 notification.style.display = 'none';
             }, 3000);
         }

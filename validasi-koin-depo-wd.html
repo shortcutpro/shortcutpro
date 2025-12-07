@@ -13,29 +13,37 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #8b5cf6;
-            --accent: #06b6d4;
+            --neon-red: #ff0000;
+            --neon-red-glow: rgba(185, 28, 28, 0.6);
+            --neon-red-dark: #ff0000;
+            --neon-red-bright: #ff0000;
+            --neon-blue: #00d9ff;
+            --neon-green: #0fff50;
+            --neon-green-glow: rgba(15, 255, 80, 0.6);
+            --deposit-blue: #06b6d4;
+            --deposit-blue-dark: #0891b2;
+            --withdraw-red: #ef4444;
+            --withdraw-red-dark: #dc2626;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --card-bg: #15151f;
+            --card-hover: #1f1f2e;
+            --text: #f0f0f5;
+            --text-muted: #8888a0;
+            --border: #2a2a3e;
             --success: #10b981;
-            --danger: #ef4444;
             --warning: #f59e0b;
-            --dark-bg: #0f172a;
-            --darker-bg: #020617;
-            --card-bg: #1e293b;
-            --card-hover: #334155;
-            --text: #f1f5f9;
-            --text-muted: #94a3b8;
-            --border: #334155;
         }
         
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+            background: linear-gradient(135deg, var(--darker-bg) 0%, #1a0a0a 50%, var(--dark-bg) 100%);
             color: var(--text);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
+            position: relative;
+            overflow-x: hidden;
         }
 
         body::before {
@@ -46,10 +54,17 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(139, 92, 246, 0.08) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, var(--neon-red-glow) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(185, 28, 28, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(127, 29, 29, 0.3) 0%, transparent 50%);
             pointer-events: none;
             z-index: 0;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
         }
         
         .container {
@@ -63,9 +78,35 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+            box-shadow: 
+                0 0 40px var(--neon-red-glow),
+                0 20px 60px rgba(185, 28, 28, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent,
+                rgba(255, 255, 255, 0.1),
+                transparent
+            );
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
         }
         
         .header h1 {
@@ -76,11 +117,17 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            position: relative;
+            z-index: 1;
         }
         
         .header p {
             font-size: 1.1rem;
-            opacity: 0.9;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .main-content {
@@ -100,26 +147,32 @@
             background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(185, 28, 28, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
         }
         
         .section-title {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 25px;
-            color: var(--accent);
+            color: var(--neon-red);
             display: flex;
             align-items: center;
             gap: 10px;
+            text-shadow: 0 0 10px var(--neon-red-glow);
         }
         
         .format-info {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.15) 0%, rgba(127, 29, 29, 0.15) 100%);
             padding: 25px;
             border-radius: 12px;
             margin-bottom: 25px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(185, 28, 28, 0.4);
+            box-shadow: 0 0 20px rgba(185, 28, 28, 0.15);
         }
         
         .format-header {
@@ -131,14 +184,16 @@
         
         .format-header i {
             font-size: 24px;
-            color: var(--accent);
+            color: var(--neon-red);
+            filter: drop-shadow(0 0 8px var(--neon-red-glow));
         }
         
         .format-header h3 {
             margin: 0;
-            color: var(--accent);
+            color: var(--neon-red-bright);
             font-size: 1.3rem;
             font-weight: 600;
+            text-shadow: 0 0 10px var(--neon-red-glow);
         }
         
         .format-description {
@@ -164,20 +219,22 @@
         
         .format-card:hover {
             transform: translateY(-5px);
-            border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+            border-color: var(--neon-red);
+            box-shadow: 0 10px 30px var(--neon-red-glow);
         }
         
         .format-card-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             padding: 15px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
+            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3);
         }
         
         .format-card-header i {
             font-size: 22px;
+            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
         }
         
         .format-card-header span:first-of-type {
@@ -193,6 +250,7 @@
             font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.5px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         
         .format-card-content {
@@ -206,37 +264,39 @@
         }
         
         .field-tag {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.25) 0%, rgba(127, 29, 29, 0.25) 100%);
             color: var(--text);
             padding: 7px 14px;
             border-radius: 8px;
             font-size: 0.8rem;
-            border: 1px solid rgba(99, 102, 241, 0.4);
+            border: 1px solid rgba(185, 28, 28, 0.5);
             transition: all 0.2s ease;
             font-weight: 500;
         }
         
         .field-tag:hover {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.35) 0%, rgba(139, 92, 246, 0.35) 100%);
-            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.4) 0%, rgba(127, 29, 29, 0.4) 100%);
+            border-color: var(--neon-red);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px var(--neon-red-glow);
         }
         
         .format-note {
-            background: rgba(6, 182, 212, 0.1);
-            border-left: 4px solid var(--accent);
+            background: rgba(185, 28, 28, 0.15);
+            border-left: 4px solid var(--neon-red);
             padding: 14px 18px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 12px;
             font-size: 0.9rem;
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.15);
         }
         
         .format-note i {
             color: var(--warning);
             font-size: 20px;
+            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.5));
         }
         
         textarea {
@@ -256,8 +316,8 @@
         
         textarea:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 20px var(--neon-red-glow);
         }
 
         textarea::placeholder {
@@ -282,12 +342,37 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        button > * {
+            position: relative;
+            z-index: 1;
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
         }
         
         button:active {
@@ -297,27 +382,47 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
         }
         
         .btn-danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             color: white;
+            box-shadow: 0 4px 15px var(--neon-red-glow);
+        }
+
+        .btn-danger:hover {
+            box-shadow: 0 6px 25px var(--neon-red-glow);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
             color: white;
+            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 6px 25px rgba(109, 40, 217, 0.6);
         }
 
         .btn-accent {
-            background: linear-gradient(135deg, var(--accent) 0%, #0891b2 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-bright) 100%);
             color: white;
+            box-shadow: 0 4px 15px var(--neon-red-glow);
+        }
+
+        .btn-accent:hover {
+            box-shadow: 0 6px 25px var(--neon-red-glow);
         }
         
         .table-wrapper {
             overflow-x: auto;
             border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
         }
         
         table {
@@ -333,7 +438,7 @@
         }
         
         th {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             color: white;
             font-weight: 600;
             text-transform: uppercase;
@@ -342,6 +447,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            box-shadow: 0 2px 10px rgba(185, 28, 28, 0.3);
         }
         
         tbody tr {
@@ -350,6 +456,7 @@
         
         tbody tr:hover {
             background: var(--card-hover);
+            box-shadow: inset 0 0 10px rgba(185, 28, 28, 0.15);
         }
         
         .copy-btn-container {
@@ -359,12 +466,14 @@
         }
         
         .copy-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, #0891b2 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             padding: 12px 24px;
+            box-shadow: 0 4px 15px var(--neon-red-glow);
         }
         
         .copy-btn:hover {
-            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+            background: linear-gradient(135deg, var(--neon-red-bright) 0%, var(--neon-red) 100%);
+            box-shadow: 0 6px 25px var(--neon-red-glow);
         }
         
         .status-badge {
@@ -381,12 +490,14 @@
             background: rgba(16, 185, 129, 0.2);
             color: var(--success);
             border: 1px solid rgba(16, 185, 129, 0.4);
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
         }
         
         .status-fail {
             background: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
+            color: var(--withdraw-red);
             border: 1px solid rgba(239, 68, 68, 0.4);
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
         }
         
         .notification {
@@ -395,7 +506,7 @@
             right: 20px;
             padding: 16px 24px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
             transform: translateX(400px);
             transition: transform 0.3s ease;
             z-index: 1000;
@@ -413,23 +524,26 @@
         .notification.success {
             background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
         }
         
         .notification.error {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             color: white;
+            box-shadow: 0 10px 30px var(--neon-red-glow);
         }
         
         .summary-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 8px 24px var(--neon-red-glow);
         }
         
         .summary-card strong {
             font-size: 1.1rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
         
         .empty-state {
@@ -442,27 +556,31 @@
             font-size: 64px;
             margin-bottom: 20px;
             opacity: 0.3;
+            filter: drop-shadow(0 0 10px rgba(185, 28, 28, 0.3));
         }
 
         .data-summary {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.15) 0%, rgba(127, 29, 29, 0.15) 100%);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(185, 28, 28, 0.4);
             text-align: center;
+            box-shadow: 0 0 20px rgba(185, 28, 28, 0.15);
         }
 
         .data-summary h3 {
-            color: var(--accent);
+            color: var(--neon-red);
             margin-bottom: 10px;
             font-size: 1.2rem;
+            text-shadow: 0 0 10px var(--neon-red-glow);
         }
 
         .data-summary p {
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         /* Sidebar Styles */
@@ -472,20 +590,24 @@
             border: 1px solid var(--border);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(185, 28, 28, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
             display: flex;
             flex-direction: column;
             gap: 20px;
+            backdrop-filter: blur(10px);
         }
 
         .sidebar h3 {
-            color: var(--accent);
+            color: var(--neon-red);
             font-size: 1.3rem;
             font-weight: 700;
             letter-spacing: 1px;
             margin: 0 0 15px 0;
             text-align: center;
-            text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+            text-shadow: 0 0 15px var(--neon-red-glow);
         }
 
         .sidebar textarea {
@@ -493,16 +615,17 @@
         }
 
         .info-box {
-            background: rgba(6, 182, 212, 0.1);
-            border-left: 4px solid var(--accent);
+            background: rgba(185, 28, 28, 0.15);
+            border-left: 4px solid var(--neon-red);
             padding: 14px 18px;
             border-radius: 8px;
             font-size: 0.9rem;
             color: var(--text-muted);
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.15);
         }
 
         .info-box strong {
-            color: var(--accent);
+            color: var(--neon-red-bright);
         }
 
         .dropdown-container {
@@ -514,10 +637,11 @@
 
         .dropdown-label {
             font-size: 14px;
-            color: var(--accent);
+            color: var(--neon-red);
             font-weight: 600;
             letter-spacing: 0.5px;
             text-align: center;
+            text-shadow: 0 0 10px var(--neon-red-glow);
         }
 
         .custom-dropdown {
@@ -526,7 +650,7 @@
         }
 
         .dropdown-selected {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.2), rgba(127, 29, 29, 0.2));
             backdrop-filter: blur(10px);
             border: 2px solid var(--border);
             border-radius: 12px;
@@ -541,8 +665,8 @@
         }
 
         .dropdown-selected:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2);
+            border-color: var(--neon-red);
+            box-shadow: 0 4px 15px var(--neon-red-glow);
             transform: translateY(-2px);
         }
 
@@ -551,8 +675,9 @@
             height: 0;
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
-            border-top: 6px solid var(--accent);
+            border-top: 6px solid var(--neon-red);
             transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 3px var(--neon-red-glow));
         }
 
         .dropdown-selected.active .dropdown-arrow {
@@ -595,14 +720,15 @@
         }
 
         .dropdown-option:hover {
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(185, 28, 28, 0.25);
             padding-left: 30px;
+            box-shadow: inset 0 0 10px rgba(185, 28, 28, 0.25);
         }
 
         .dropdown-option.selected {
-            background: rgba(99, 102, 241, 0.15);
+            background: rgba(185, 28, 28, 0.2);
             font-weight: 700;
-            color: var(--accent);
+            color: var(--neon-red);
         }
 
         .search-box {
@@ -619,8 +745,8 @@
 
         .search-box:focus {
             outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            border-color: var(--neon-red);
+            box-shadow: 0 0 20px var(--neon-red-glow);
         }
 
         .search-box::placeholder {
@@ -643,17 +769,18 @@
         }
 
         .operator-list::-webkit-scrollbar-track {
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(185, 28, 28, 0.08);
             border-radius: 10px;
         }
 
         .operator-list::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.3);
+            background: rgba(185, 28, 28, 0.4);
             border-radius: 10px;
+            box-shadow: 0 0 5px var(--neon-red-glow);
         }
 
         .operator-list::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.5);
+            background: rgba(185, 28, 28, 0.6);
         }
 
         .operator-list li {
@@ -670,7 +797,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
             user-select: none;
         }
 
@@ -686,27 +813,6 @@
 
         .operator-list li:hover::after {
             opacity: 0.6;
-        }
-
-        .operator-list li[data-copied="true"]::after {
-            content: '\f00c';
-            opacity: 1;
-            color: #10b981;
-            font-weight: 900;
-        }
-
-        .operator-list li[data-copied="true"] {
-            border: 2px solid #10b981;
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-        }
-
-        .operator-list li[data-copied="true"].clicked::after {
-            animation: checkmarkBounce 0.5s ease;
-        }
-
-        @keyframes checkmarkBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
         }
 
         .operator-list li::before {
@@ -726,7 +832,6 @@
 
         .operator-list li.clicked {
             animation: clickPulse 0.5s ease;
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.6) !important;
         }
 
         @keyframes clickPulse {
@@ -735,7 +840,7 @@
             100% { transform: scale(1); }
         }
 
-        /* DEPOSIT = BIRU */
+        /* DEPOSIT = BIRU (tetap) */
         .operator-deposit {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(8, 145, 178, 0.3) 100%);
             border: 2px solid rgba(6, 182, 212, 0.5);
@@ -743,15 +848,14 @@
         }
 
         .operator-deposit::before {
-            background: var(--accent);
+            background: var(--deposit-blue);
         }
 
         .operator-deposit:hover {
-            transform: translateX(5px);
             box-shadow: 0 4px 15px rgba(6, 182, 212, 0.5);
         }
 
-        /* WITHDRAW = MERAH */
+        /* WITHDRAW = MERAH (tetap) */
         .operator-withdraw {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.3) 100%);
             border: 2px solid rgba(239, 68, 68, 0.5);
@@ -759,11 +863,10 @@
         }
 
         .operator-withdraw::before {
-            background: var(--danger);
+            background: var(--withdraw-red);
         }
 
         .operator-withdraw:hover {
-            transform: translateX(5px);
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
         }
 
@@ -779,7 +882,6 @@
         }
 
         .operator-belum:hover {
-            transform: translateX(5px);
             box-shadow: 0 4px 15px rgba(148, 163, 184, 0.3);
         }
 
@@ -795,6 +897,48 @@
 
         .operator-belum.empty-state::after {
             display: none;
+        }
+
+        /* SUDAH DIKLIK = BORDER HIJAU NEON (warna background tetap!) */
+        .operator-list li[data-copied="true"] {
+            border: 3px solid var(--neon-green) !important;
+            box-shadow: 
+                0 0 20px var(--neon-green-glow),
+                0 0 30px rgba(15, 255, 80, 0.3),
+                inset 0 0 10px rgba(15, 255, 80, 0.1) !important;
+            animation: greenGlow 1.5s ease-in-out infinite;
+        }
+
+        @keyframes greenGlow {
+            0%, 100% {
+                box-shadow: 
+                    0 0 20px var(--neon-green-glow),
+                    0 0 30px rgba(15, 255, 80, 0.3),
+                    inset 0 0 10px rgba(15, 255, 80, 0.1);
+            }
+            50% {
+                box-shadow: 
+                    0 0 30px var(--neon-green-glow),
+                    0 0 40px rgba(15, 255, 80, 0.5),
+                    inset 0 0 15px rgba(15, 255, 80, 0.2);
+            }
+        }
+
+        .operator-list li[data-copied="true"]::after {
+            content: '\f00c';
+            opacity: 1;
+            color: var(--neon-green);
+            font-weight: 900;
+            filter: drop-shadow(0 0 5px var(--neon-green-glow));
+        }
+
+        .operator-list li[data-copied="true"].clicked::after {
+            animation: checkmarkBounce 0.5s ease;
+        }
+
+        @keyframes checkmarkBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
         }
 
         @media (max-width: 1400px) {
@@ -1186,59 +1330,129 @@
                 return;
             }
 
-            const hasil = {};
+            const hasilDeposit = {};
+            const hasilWithdraw = {};
 
             transactionData.forEach(item => {
-                let bankPembayaran, jumlah;
+                let bankPenerima, jumlah, isWithdraw;
                 
                 if (item.type === 'format1') {
-                    bankPembayaran = item.data.paymentBank;
+                    // Format 12 kolom
+                    bankPenerima = item.data.recipientBank; // Bank Penerima (kolom 6)
                     jumlah = item.data.amount;
+                    isWithdraw = /withdraw/i.test(item.data.operationType);
                 } else {
-                    bankPembayaran = item.data.bank;
+                    // Format 9 kolom (biasanya withdraw)
+                    bankPenerima = item.data.bank; // Bank tujuan (kolom 3)
                     jumlah = item.data.amount;
+                    isWithdraw = /withdraw/i.test(item.data.operationType);
                 }
 
-                if (!hasil[bankPembayaran]) {
-                    hasil[bankPembayaran] = { total: 0, count: 0 };
+                // Pisahkan deposit dan withdraw
+                if (isWithdraw) {
+                    if (!hasilWithdraw[bankPenerima]) {
+                        hasilWithdraw[bankPenerima] = { total: 0, count: 0 };
+                    }
+                    hasilWithdraw[bankPenerima].total += jumlah;
+                    hasilWithdraw[bankPenerima].count++;
+                } else {
+                    if (!hasilDeposit[bankPenerima]) {
+                        hasilDeposit[bankPenerima] = { total: 0, count: 0 };
+                    }
+                    hasilDeposit[bankPenerima].total += jumlah;
+                    hasilDeposit[bankPenerima].count++;
                 }
-
-                hasil[bankPembayaran].total += jumlah;
-                hasil[bankPembayaran].count++;
             });
 
-            const sortedBanks = Object.entries(hasil).sort((a, b) => b[1].total - a[1].total);
+            const sortedDeposit = Object.entries(hasilDeposit).sort((a, b) => b[1].total - a[1].total);
+            const sortedWithdraw = Object.entries(hasilWithdraw).sort((a, b) => b[1].total - a[1].total);
             
-            let hasilOutput = `
-                <div class="table-wrapper">
-                    <table id="bank-table">
-                        <thead>
-                            <tr>
-                                <th>Bank</th>
-                                <th>Jumlah Transaksi</th>
-                                <th>Total Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
+            let hasilOutput = '';
 
-            sortedBanks.forEach(([bank, data]) => {
+            // Tabel Deposit
+            if (sortedDeposit.length > 0) {
                 hasilOutput += `
-                    <tr>
-                        <td><strong>${bank}</strong></td>
-                        <td>${data.count}</td>
-                        <td>${data.total.toLocaleString()}</td>
-                    </tr>`;
-            });
+                    <h3 style="color: var(--deposit-blue); margin-bottom: 15px; text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);"><i class="fas fa-arrow-down"></i> Rekap Deposit (Bank Penerima)</h3>
+                    <div class="table-wrapper">
+                        <table id="bank-table-deposit">
+                            <thead>
+                                <tr>
+                                    <th>Bank Penerima</th>
+                                    <th>Jumlah Transaksi</th>
+                                    <th>Total Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
 
-            hasilOutput += `</tbody></table></div>`;
-            
-            const totalTransaksi = sortedBanks.reduce((sum, [, data]) => sum + data.count, 0);
-            const totalJumlah = sortedBanks.reduce((sum, [, data]) => sum + data.total, 0);
-            
+                sortedDeposit.forEach(([bank, data]) => {
+                    hasilOutput += `
+                        <tr>
+                            <td><strong>${bank}</strong></td>
+                            <td>${data.count}</td>
+                            <td>${data.total.toLocaleString()}</td>
+                        </tr>`;
+                });
+
+                const totalDepositTransaksi = sortedDeposit.reduce((sum, [, data]) => sum + data.count, 0);
+                const totalDepositJumlah = sortedDeposit.reduce((sum, [, data]) => sum + data.total, 0);
+
+                hasilOutput += `</tbody></table></div>`;
+                hasilOutput += `
+                    <div class="summary-card" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); margin-top: 15px; box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);">
+                        <i class="fas fa-chart-line"></i>
+                        <strong>Total Deposit:</strong> ${totalDepositTransaksi} transaksi dengan jumlah <strong>${totalDepositJumlah.toLocaleString()}</strong>
+                    </div>`;
+            }
+
+            // Tabel Withdraw
+            if (sortedWithdraw.length > 0) {
+                hasilOutput += `
+                    <h3 style="color: var(--withdraw-red); margin-top: 30px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"><i class="fas fa-arrow-up"></i> Rekap Withdraw (Bank Penerima)</h3>
+                    <div class="table-wrapper">
+                        <table id="bank-table-withdraw">
+                            <thead>
+                                <tr>
+                                    <th>Bank Penerima</th>
+                                    <th>Jumlah Transaksi</th>
+                                    <th>Total Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+
+                sortedWithdraw.forEach(([bank, data]) => {
+                    hasilOutput += `
+                        <tr>
+                            <td><strong>${bank}</strong></td>
+                            <td>${data.count}</td>
+                            <td>${data.total.toLocaleString()}</td>
+                        </tr>`;
+                });
+
+                const totalWithdrawTransaksi = sortedWithdraw.reduce((sum, [, data]) => sum + data.count, 0);
+                const totalWithdrawJumlah = sortedWithdraw.reduce((sum, [, data]) => sum + data.total, 0);
+
+                hasilOutput += `</tbody></table></div>`;
+                hasilOutput += `
+                    <div class="summary-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); margin-top: 15px; box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);">
+                        <i class="fas fa-chart-line"></i>
+                        <strong>Total Withdraw:</strong> ${totalWithdrawTransaksi} transaksi dengan jumlah <strong>${totalWithdrawJumlah.toLocaleString()}</strong>
+                    </div>`;
+            }
+
+            // Grand Total
+            const grandTotalTransaksi = transactionData.length;
+            const grandTotalJumlah = transactionData.reduce((sum, item) => {
+                if (item.type === 'format1') {
+                    return sum + item.data.amount;
+                } else {
+                    return sum + item.data.amount;
+                }
+            }, 0);
+
             hasilOutput += `
-                <div class="summary-card">
-                    <i class="fas fa-chart-line"></i>
-                    <strong>Total Keseluruhan:</strong> ${totalTransaksi} transaksi dengan jumlah <strong>${totalJumlah.toLocaleString()}</strong>
+                <div class="summary-card" style="margin-top: 20px;">
+                    <i class="fas fa-chart-pie"></i>
+                    <strong>Grand Total:</strong> ${grandTotalTransaksi} transaksi dengan jumlah <strong>${grandTotalJumlah.toLocaleString()}</strong>
                 </div>`;
             
             document.getElementById('hasil').innerHTML = hasilOutput;
@@ -1246,28 +1460,46 @@
         }
 
         function copyBankData() {
-            const bankTable = document.querySelector('#bank-table');
-            if (!bankTable) {
-                showNotification('Tidak ada data bank untuk disalin!', false);
-                return;
-            }
-
-            const rows = bankTable.querySelectorAll('tbody tr');
-            if (rows.length === 0) {
+            const depositTable = document.querySelector('#bank-table-deposit');
+            const withdrawTable = document.querySelector('#bank-table-withdraw');
+            
+            if (!depositTable && !withdrawTable) {
                 showNotification('Tidak ada data bank untuk disalin!', false);
                 return;
             }
 
             let textToCopy = '';
             
-            rows.forEach(row => {
-                const cells = row.cells;
-                const bank = cells[0].innerText;
-                const count = cells[1].innerText;
-                const total = cells[2].innerText;
+            // Copy Deposit Table
+            if (depositTable) {
+                textToCopy += '=== DEPOSIT (Bank Penerima) ===\n';
+                textToCopy += 'Bank Penerima\tJumlah Transaksi\tTotal Jumlah\n';
                 
-                textToCopy += `${bank}\t${count}\t${total}\n`;
-            });
+                const depositRows = depositTable.querySelectorAll('tbody tr');
+                depositRows.forEach(row => {
+                    const cells = row.cells;
+                    const bank = cells[0].innerText;
+                    const count = cells[1].innerText;
+                    const total = cells[2].innerText;
+                    textToCopy += `${bank}\t${count}\t${total}\n`;
+                });
+                textToCopy += '\n';
+            }
+            
+            // Copy Withdraw Table
+            if (withdrawTable) {
+                textToCopy += '=== WITHDRAW (Bank Penerima) ===\n';
+                textToCopy += 'Bank Penerima\tJumlah Transaksi\tTotal Jumlah\n';
+                
+                const withdrawRows = withdrawTable.querySelectorAll('tbody tr');
+                withdrawRows.forEach(row => {
+                    const cells = row.cells;
+                    const bank = cells[0].innerText;
+                    const count = cells[1].innerText;
+                    const total = cells[2].innerText;
+                    textToCopy += `${bank}\t${count}\t${total}\n`;
+                });
+            }
 
             const copyBtn = document.getElementById('copyBtn');
             const originalHTML = copyBtn.innerHTML;
@@ -1289,7 +1521,7 @@
 
             setTimeout(() => {
                 copyBtn.innerHTML = originalHTML;
-                copyBtn.style.background = 'linear-gradient(135deg, var(--accent) 0%, #0891b2 100%)';
+                copyBtn.style.background = 'linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%)';
             }, 2000);
         }
 
@@ -1530,7 +1762,7 @@
 
         refInput.addEventListener('input', function(e) {
             // Show that it's being typed
-            refInput.style.borderColor = 'var(--accent)';
+            refInput.style.borderColor = 'var(--neon-red)';
             
             // Debounce input to avoid processing on every keystroke
             clearTimeout(refInputTimeout);

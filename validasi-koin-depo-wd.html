@@ -1080,6 +1080,14 @@
                             <i class="fas fa-lightbulb"></i>
                             <span>Format data menggunakan <strong>TAB</strong> sebagai pemisah kolom</span>
                         </div>
+
+                        <div class="format-note" style="background: rgba(6, 182, 212, 0.15); border-left-color: var(--deposit-blue); margin-top: 15px;">
+                            <i class="fas fa-university" style="color: var(--deposit-blue);"></i>
+                            <div>
+                                <strong>Bank yang Didukung:</strong><br>
+                                <span style="font-size: 0.85rem; opacity: 0.9;">BCA • MANDIRI • BNI • BRI • DANAMON • CIMB • BSI • MAYBANK • DANA • OVO • GOPAY • LINK AJA • BANK JAGO • SEABANK • PANIN • USDT</span>
+                            </div>
+                        </div>
                     </div>
                     
                     <textarea id="dataInput" placeholder="Paste data transaksi di sini (gunakan TAB sebagai pemisah)..."></textarea>
@@ -1162,6 +1170,111 @@
         let transactionData = [];
         let operatorReferensi = {};
         let currentFilter = 'all';
+        
+        // Fungsi normalisasi nama bank
+        function normalizeBankName(bankName) {
+            if (!bankName) return 'UNKNOWN';
+            
+            // Convert ke uppercase dan trim
+            let normalized = bankName.toUpperCase().trim();
+            
+            // Remove extra spaces
+            normalized = normalized.replace(/\s+/g, ' ');
+            
+            // Mapping variasi nama bank ke nama standar
+            const bankMapping = {
+                // BCA variations
+                'BCA': 'BCA',
+                'BANK BCA': 'BCA',
+                'BANK CENTRAL ASIA': 'BCA',
+                
+                // MANDIRI variations
+                'MANDIRI': 'MANDIRI',
+                'BANK MANDIRI': 'MANDIRI',
+                
+                // BNI variations
+                'BNI': 'BNI',
+                'BANK BNI': 'BNI',
+                'BANK NEGARA INDONESIA': 'BNI',
+                
+                // BRI variations
+                'BRI': 'BRI',
+                'BANK BRI': 'BRI',
+                'BANK RAKYAT INDONESIA': 'BRI',
+                
+                // DANAMON variations
+                'DANAMON': 'DANAMON',
+                'BANK DANAMON': 'DANAMON',
+                'BANK DANAMON INDONESIA': 'DANAMON',
+                
+                // CIMB variations
+                'CIMB': 'CIMB',
+                'CIMB NIAGA': 'CIMB',
+                'BANK CIMB': 'CIMB',
+                'BANK CIMB NIAGA': 'CIMB',
+                
+                // BSI variations
+                'BSI': 'BSI',
+                'BANK BSI': 'BSI',
+                'BANK SYARIAH INDONESIA': 'BSI',
+                
+                // MAYBANK variations
+                'MAYBANK': 'MAYBANK',
+                'BANK MAYBANK': 'MAYBANK',
+                'MAYBANK INDONESIA': 'MAYBANK',
+                
+                // DANA variations
+                'DANA': 'DANA',
+                
+                // OVO variations
+                'OVO': 'OVO',
+                
+                // GOPAY variations
+                'GOPAY': 'GOPAY',
+                'GO PAY': 'GOPAY',
+                'GO-PAY': 'GOPAY',
+                
+                // LINKAJA variations
+                'LINKAJA': 'LINK AJA',
+                'LINK AJA': 'LINK AJA',
+                'LINK-AJA': 'LINK AJA',
+                
+                // BANK JAGO variations
+                'JAGO': 'BANK JAGO',
+                'BANK JAGO': 'BANK JAGO',
+                
+                // SEABANK variations
+                'SEABANK': 'SEABANK',
+                'SEA BANK': 'SEABANK',
+                'BANK SEABANK': 'SEABANK',
+                
+                // PANIN variations
+                'PANIN': 'PANIN',
+                'BANK PANIN': 'PANIN',
+                'PANIN BANK': 'PANIN',
+                
+                // USDT variations
+                'USDT': 'USDT',
+                'TETHER': 'USDT',
+                'USDT TRC20': 'USDT',
+                'USDT ERC20': 'USDT'
+            };
+            
+            // Cek apakah ada di mapping
+            if (bankMapping[normalized]) {
+                return bankMapping[normalized];
+            }
+            
+            // Cek partial match untuk bank yang mengandung kata kunci
+            for (const [key, value] of Object.entries(bankMapping)) {
+                if (normalized.includes(key) || key.includes(normalized)) {
+                    return value;
+                }
+            }
+            
+            // Return original jika tidak ada mapping
+            return normalized;
+        }
         
         function showNotification(message, isSuccess = true) {
             const notification = document.getElementById('notification');
@@ -1338,12 +1451,12 @@
                 
                 if (item.type === 'format1') {
                     // Format 12 kolom
-                    bankPenerima = item.data.recipientBank; // Bank Penerima (kolom 6)
+                    bankPenerima = normalizeBankName(item.data.recipientBank); // Bank Penerima (kolom 6)
                     jumlah = item.data.amount;
                     isWithdraw = /withdraw/i.test(item.data.operationType);
                 } else {
                     // Format 9 kolom (biasanya withdraw)
-                    bankPenerima = item.data.bank; // Bank tujuan (kolom 3)
+                    bankPenerima = normalizeBankName(item.data.bank); // Bank tujuan (kolom 3)
                     jumlah = item.data.amount;
                     isWithdraw = /withdraw/i.test(item.data.operationType);
                 }
@@ -1468,37 +1581,69 @@
                 return;
             }
 
-            let textToCopy = '';
-            
-            // Copy Deposit Table
+            // Urutan bank yang fixed
+            const bankOrder = [
+                'BCA', 'MANDIRI', 'BNI', 'BRI', 'DANAMON', 'CIMB', 'BSI', 'MAYBANK',
+                'DANA', 'OVO', 'GOPAY', 'LINK AJA', 'BANK JAGO', 'SEABANK', 'PANIN', 'USDT'
+            ];
+
+            // Kumpulkan data deposit
+            const depositData = {};
             if (depositTable) {
-                textToCopy += '=== DEPOSIT (Bank Penerima) ===\n';
-                textToCopy += 'Bank Penerima\tJumlah Transaksi\tTotal Jumlah\n';
-                
                 const depositRows = depositTable.querySelectorAll('tbody tr');
                 depositRows.forEach(row => {
                     const cells = row.cells;
-                    const bank = cells[0].innerText;
+                    const bank = cells[0].innerText.toUpperCase().trim();
                     const count = cells[1].innerText;
                     const total = cells[2].innerText;
-                    textToCopy += `${bank}\t${count}\t${total}\n`;
+                    depositData[bank] = { count, total };
                 });
-                textToCopy += '\n';
             }
-            
-            // Copy Withdraw Table
+
+            // Kumpulkan data withdraw
+            const withdrawData = {};
             if (withdrawTable) {
-                textToCopy += '=== WITHDRAW (Bank Penerima) ===\n';
-                textToCopy += 'Bank Penerima\tJumlah Transaksi\tTotal Jumlah\n';
-                
                 const withdrawRows = withdrawTable.querySelectorAll('tbody tr');
                 withdrawRows.forEach(row => {
                     const cells = row.cells;
-                    const bank = cells[0].innerText;
+                    const bank = cells[0].innerText.toUpperCase().trim();
                     const count = cells[1].innerText;
                     const total = cells[2].innerText;
-                    textToCopy += `${bank}\t${count}\t${total}\n`;
+                    withdrawData[bank] = { count, total };
                 });
+            }
+
+            // HANYA Data DEPOSIT (nominal saja)
+            let depositLine = [];
+            for (const bank of bankOrder) {
+                if (depositData[bank]) {
+                    depositLine.push(depositData[bank].count);
+                    depositLine.push(depositData[bank].total);
+                } else {
+                    depositLine.push('0');
+                    depositLine.push('0');
+                }
+            }
+            
+            let textToCopy = depositLine.join('\t');
+            
+            // Data WITHDRAW (jika ada) - nominal saja, KECUALI PANIN
+            if (withdrawTable) {
+                let withdrawLine = [];
+                for (const bank of bankOrder) {
+                    // SKIP PANIN untuk withdraw
+                    if (bank === 'PANIN') {
+                        withdrawLine.push('0');
+                        withdrawLine.push('0');
+                    } else if (withdrawData[bank]) {
+                        withdrawLine.push(withdrawData[bank].count);
+                        withdrawLine.push(withdrawData[bank].total);
+                    } else {
+                        withdrawLine.push('0');
+                        withdrawLine.push('0');
+                    }
+                }
+                textToCopy += '\n' + withdrawLine.join('\t');
             }
 
             const copyBtn = document.getElementById('copyBtn');
@@ -1510,9 +1655,9 @@
             `;
             copyBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
 
-            navigator.clipboard.writeText(textToCopy.trim())
+            navigator.clipboard.writeText(textToCopy)
                 .then(() => {
-                    showNotification('Data bank berhasil disalin!');
+                    showNotification('Data nominal berhasil disalin (PANIN withdraw di-skip)!');
                 })
                 .catch(err => {
                     console.error('Gagal menyalin: ', err);

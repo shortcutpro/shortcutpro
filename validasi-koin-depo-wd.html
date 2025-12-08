@@ -13,37 +13,31 @@
         }
 
         :root {
-            --neon-red: #ff0000;
-            --neon-red-glow: rgba(185, 28, 28, 0.6);
-            --neon-red-dark: #ff0000;
-            --neon-red-bright: #ff0000;
-            --neon-blue: #00d9ff;
-            --neon-green: #0fff50;
-            --neon-green-glow: rgba(15, 255, 80, 0.6);
-            --deposit-blue: #06b6d4;
-            --deposit-blue-dark: #0891b2;
-            --withdraw-red: #ef4444;
-            --withdraw-red-dark: #dc2626;
-            --dark-bg: #0a0a0f;
-            --darker-bg: #050508;
-            --card-bg: #15151f;
-            --card-hover: #1f1f2e;
-            --text: #f0f0f5;
-            --text-muted: #8888a0;
-            --border: #2a2a3e;
-            --success: #10b981;
+            --primary: #ff0000;
+            --primary-dark: #ff0000;
+            --secondary: #ff0000;
+            --accent: #ff0000;
+            --success: #10b935;
+            --danger: #ff0000;
             --warning: #f59e0b;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #000000;
+            --card-bg: #1a0a0a;
+            --card-hover: #2a0f0f;
+            --text: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #3a1515;
+            --neon-red: #ff0000;
+            --neon-red-glow: rgba(255, 0, 64, 0.5);
         }
         
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, var(--darker-bg) 0%, #1a0a0a 50%, var(--dark-bg) 100%);
+            background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
             color: var(--text);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
-            position: relative;
-            overflow-x: hidden;
         }
 
         body::before {
@@ -54,17 +48,11 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 30%, var(--neon-red-glow) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(185, 28, 28, 0.4) 0%, transparent 40%),
-                radial-gradient(circle at 50% 50%, rgba(127, 29, 29, 0.3) 0%, transparent 50%);
+                radial-gradient(circle at 20% 30%, rgba(220, 38, 38, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(239, 68, 68, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 0, 64, 0.08) 0%, transparent 60%);
             pointer-events: none;
             z-index: 0;
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; }
-            50% { opacity: 0.9; }
         }
         
         .container {
@@ -78,35 +66,10 @@
             text-align: center;
             margin-bottom: 40px;
             padding: 30px 20px;
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             border-radius: 20px;
-            box-shadow: 
-                0 0 40px var(--neon-red-glow),
-                0 20px 60px rgba(185, 28, 28, 0.4),
-                inset 0 0 20px rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent,
-                rgba(255, 255, 255, 0.1),
-                transparent
-            );
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+            box-shadow: 0 20px 60px var(--neon-red-glow), 0 0 40px var(--neon-red-glow);
+            border: 1px solid var(--neon-red);
         }
         
         .header h1 {
@@ -117,17 +80,12 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            position: relative;
-            z-index: 1;
+            text-shadow: 0 0 20px var(--neon-red-glow);
         }
         
         .header p {
             font-size: 1.1rem;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            opacity: 0.9;
         }
 
         .main-content {
@@ -147,19 +105,15 @@
             background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(185, 28, 28, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3), 0 0 20px rgba(255, 0, 64, 0.1);
             border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
         }
         
         .section-title {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 25px;
-            color: var(--neon-red);
+            color: var(--accent);
             display: flex;
             align-items: center;
             gap: 10px;
@@ -167,12 +121,11 @@
         }
         
         .format-info {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.15) 0%, rgba(127, 29, 29, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
             padding: 25px;
             border-radius: 12px;
             margin-bottom: 25px;
-            border: 1px solid rgba(185, 28, 28, 0.4);
-            box-shadow: 0 0 20px rgba(185, 28, 28, 0.15);
+            border: 1px solid rgba(220, 38, 38, 0.3);
         }
         
         .format-header {
@@ -184,16 +137,14 @@
         
         .format-header i {
             font-size: 24px;
-            color: var(--neon-red);
-            filter: drop-shadow(0 0 8px var(--neon-red-glow));
+            color: var(--accent);
         }
         
         .format-header h3 {
             margin: 0;
-            color: var(--neon-red-bright);
+            color: var(--accent);
             font-size: 1.3rem;
             font-weight: 600;
-            text-shadow: 0 0 10px var(--neon-red-glow);
         }
         
         .format-description {
@@ -219,22 +170,20 @@
         
         .format-card:hover {
             transform: translateY(-5px);
-            border-color: var(--neon-red);
-            box-shadow: 0 10px 30px var(--neon-red-glow);
+            border-color: var(--primary);
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4), 0 0 20px var(--neon-red-glow);
         }
         
         .format-card-header {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             padding: 15px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
-            box-shadow: 0 4px 15px rgba(185, 28, 28, 0.3);
         }
         
         .format-card-header i {
             font-size: 22px;
-            filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5));
         }
         
         .format-card-header span:first-of-type {
@@ -250,7 +199,6 @@
             font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.5px;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
         
         .format-card-content {
@@ -264,39 +212,37 @@
         }
         
         .field-tag {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.25) 0%, rgba(127, 29, 29, 0.25) 100%);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
             color: var(--text);
             padding: 7px 14px;
             border-radius: 8px;
             font-size: 0.8rem;
-            border: 1px solid rgba(185, 28, 28, 0.5);
+            border: 1px solid rgba(220, 38, 38, 0.4);
             transition: all 0.2s ease;
             font-weight: 500;
         }
         
         .field-tag:hover {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.4) 0%, rgba(127, 29, 29, 0.4) 100%);
-            border-color: var(--neon-red);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.35) 0%, rgba(185, 28, 28, 0.35) 100%);
+            border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--neon-red-glow);
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
         
         .format-note {
-            background: rgba(185, 28, 28, 0.15);
-            border-left: 4px solid var(--neon-red);
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 4px solid var(--accent);
             padding: 14px 18px;
             border-radius: 8px;
             display: flex;
             align-items: center;
             gap: 12px;
             font-size: 0.9rem;
-            box-shadow: 0 0 15px rgba(185, 28, 28, 0.15);
         }
         
         .format-note i {
             color: var(--warning);
             font-size: 20px;
-            filter: drop-shadow(0 0 5px rgba(245, 158, 11, 0.5));
         }
         
         textarea {
@@ -316,8 +262,8 @@
         
         textarea:focus {
             outline: none;
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px var(--neon-red-glow);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1), 0 0 20px var(--neon-red-glow);
         }
 
         textarea::placeholder {
@@ -342,37 +288,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        button > * {
-            position: relative;
-            z-index: 1;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
         
         button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
         
         button:active {
@@ -382,47 +303,42 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-primary:hover {
-            box-shadow: 0 6px 25px rgba(16, 185, 129, 0.6);
         }
         
         .btn-danger {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: white;
-            box-shadow: 0 4px 15px var(--neon-red-glow);
+            box-shadow: 0 4px 12px var(--neon-red-glow);
         }
-
+        
         .btn-danger:hover {
-            box-shadow: 0 6px 25px var(--neon-red-glow);
+            box-shadow: 0 6px 20px var(--neon-red-glow);
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
+            box-shadow: 0 4px 12px var(--neon-red-glow);
         }
 
         .btn-secondary:hover {
-            box-shadow: 0 6px 25px rgba(109, 40, 217, 0.6);
+            box-shadow: 0 6px 20px var(--neon-red-glow);
         }
 
         .btn-accent {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-bright) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
             color: white;
-            box-shadow: 0 4px 15px var(--neon-red-glow);
+            box-shadow: 0 4px 12px var(--neon-red-glow);
         }
 
         .btn-accent:hover {
-            box-shadow: 0 6px 25px var(--neon-red-glow);
+            box-shadow: 0 6px 20px var(--neon-red-glow);
         }
         
         .table-wrapper {
             overflow-x: auto;
             border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
         }
         
         table {
@@ -438,7 +354,7 @@
         }
         
         th {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             font-weight: 600;
             text-transform: uppercase;
@@ -447,7 +363,6 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            box-shadow: 0 2px 10px rgba(185, 28, 28, 0.3);
         }
         
         tbody tr {
@@ -456,7 +371,6 @@
         
         tbody tr:hover {
             background: var(--card-hover);
-            box-shadow: inset 0 0 10px rgba(185, 28, 28, 0.15);
         }
         
         .copy-btn-container {
@@ -466,14 +380,14 @@
         }
         
         .copy-btn {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
             padding: 12px 24px;
-            box-shadow: 0 4px 15px var(--neon-red-glow);
+            box-shadow: 0 4px 12px var(--neon-red-glow);
         }
         
         .copy-btn:hover {
-            background: linear-gradient(135deg, var(--neon-red-bright) 0%, var(--neon-red) 100%);
-            box-shadow: 0 6px 25px var(--neon-red-glow);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            box-shadow: 0 6px 20px var(--neon-red-glow);
         }
         
         .status-badge {
@@ -490,14 +404,12 @@
             background: rgba(16, 185, 129, 0.2);
             color: var(--success);
             border: 1px solid rgba(16, 185, 129, 0.4);
-            box-shadow: 0 0 10px rgba(16, 185, 129, 0.2);
         }
         
         .status-fail {
             background: rgba(239, 68, 68, 0.2);
-            color: var(--withdraw-red);
+            color: var(--danger);
             border: 1px solid rgba(239, 68, 68, 0.4);
-            box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
         }
         
         .notification {
@@ -506,7 +418,7 @@
             right: 20px;
             padding: 16px 24px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
             transform: translateX(400px);
             transition: transform 0.3s ease;
             z-index: 1000;
@@ -524,26 +436,25 @@
         .notification.success {
             background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
             color: white;
-            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
         }
         
         .notification.error {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
             color: white;
             box-shadow: 0 10px 30px var(--neon-red-glow);
         }
         
         .summary-card {
-            background: linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
             box-shadow: 0 8px 24px var(--neon-red-glow);
+            border: 1px solid var(--neon-red);
         }
         
         .summary-card strong {
             font-size: 1.1rem;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
         
         .empty-state {
@@ -556,21 +467,19 @@
             font-size: 64px;
             margin-bottom: 20px;
             opacity: 0.3;
-            filter: drop-shadow(0 0 10px rgba(185, 28, 28, 0.3));
         }
 
         .data-summary {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.15) 0%, rgba(127, 29, 29, 0.15) 100%);
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(185, 28, 28, 0.1) 100%);
             padding: 20px;
             border-radius: 12px;
             margin-bottom: 20px;
-            border: 1px solid rgba(185, 28, 28, 0.4);
+            border: 1px solid rgba(220, 38, 38, 0.3);
             text-align: center;
-            box-shadow: 0 0 20px rgba(185, 28, 28, 0.15);
         }
 
         .data-summary h3 {
-            color: var(--neon-red);
+            color: var(--accent);
             margin-bottom: 10px;
             font-size: 1.2rem;
             text-shadow: 0 0 10px var(--neon-red-glow);
@@ -580,7 +489,6 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--text);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         /* Sidebar Styles */
@@ -590,24 +498,20 @@
             border: 1px solid var(--border);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.5),
-                0 0 20px rgba(185, 28, 28, 0.1),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 40px rgba(220, 38, 38, 0.3), 0 0 20px rgba(255, 0, 64, 0.1);
             display: flex;
             flex-direction: column;
             gap: 20px;
-            backdrop-filter: blur(10px);
         }
 
         .sidebar h3 {
-            color: var(--neon-red);
+            color: var(--accent);
             font-size: 1.3rem;
             font-weight: 700;
             letter-spacing: 1px;
             margin: 0 0 15px 0;
             text-align: center;
-            text-shadow: 0 0 15px var(--neon-red-glow);
+            text-shadow: 0 0 10px var(--neon-red-glow);
         }
 
         .sidebar textarea {
@@ -615,17 +519,16 @@
         }
 
         .info-box {
-            background: rgba(185, 28, 28, 0.15);
-            border-left: 4px solid var(--neon-red);
+            background: rgba(220, 38, 38, 0.1);
+            border-left: 4px solid var(--accent);
             padding: 14px 18px;
             border-radius: 8px;
             font-size: 0.9rem;
             color: var(--text-muted);
-            box-shadow: 0 0 15px rgba(185, 28, 28, 0.15);
         }
 
         .info-box strong {
-            color: var(--neon-red-bright);
+            color: var(--accent);
         }
 
         .dropdown-container {
@@ -637,11 +540,10 @@
 
         .dropdown-label {
             font-size: 14px;
-            color: var(--neon-red);
+            color: var(--accent);
             font-weight: 600;
             letter-spacing: 0.5px;
             text-align: center;
-            text-shadow: 0 0 10px var(--neon-red-glow);
         }
 
         .custom-dropdown {
@@ -650,7 +552,7 @@
         }
 
         .dropdown-selected {
-            background: linear-gradient(135deg, rgba(185, 28, 28, 0.2), rgba(127, 29, 29, 0.2));
+            background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(185, 28, 28, 0.15));
             backdrop-filter: blur(10px);
             border: 2px solid var(--border);
             border-radius: 12px;
@@ -665,8 +567,8 @@
         }
 
         .dropdown-selected:hover {
-            border-color: var(--neon-red);
-            box-shadow: 0 4px 15px var(--neon-red-glow);
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.2), 0 0 15px var(--neon-red-glow);
             transform: translateY(-2px);
         }
 
@@ -675,9 +577,8 @@
             height: 0;
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
-            border-top: 6px solid var(--neon-red);
+            border-top: 6px solid var(--accent);
             transition: transform 0.3s ease;
-            filter: drop-shadow(0 0 3px var(--neon-red-glow));
         }
 
         .dropdown-selected.active .dropdown-arrow {
@@ -720,15 +621,14 @@
         }
 
         .dropdown-option:hover {
-            background: rgba(185, 28, 28, 0.25);
+            background: rgba(220, 38, 38, 0.2);
             padding-left: 30px;
-            box-shadow: inset 0 0 10px rgba(185, 28, 28, 0.25);
         }
 
         .dropdown-option.selected {
-            background: rgba(185, 28, 28, 0.2);
+            background: rgba(220, 38, 38, 0.15);
             font-weight: 700;
-            color: var(--neon-red);
+            color: var(--accent);
         }
 
         .search-box {
@@ -745,8 +645,8 @@
 
         .search-box:focus {
             outline: none;
-            border-color: var(--neon-red);
-            box-shadow: 0 0 20px var(--neon-red-glow);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1), 0 0 15px var(--neon-red-glow);
         }
 
         .search-box::placeholder {
@@ -769,18 +669,17 @@
         }
 
         .operator-list::-webkit-scrollbar-track {
-            background: rgba(185, 28, 28, 0.08);
+            background: rgba(220, 38, 38, 0.05);
             border-radius: 10px;
         }
 
         .operator-list::-webkit-scrollbar-thumb {
-            background: rgba(185, 28, 28, 0.4);
+            background: rgba(220, 38, 38, 0.3);
             border-radius: 10px;
-            box-shadow: 0 0 5px var(--neon-red-glow);
         }
 
         .operator-list::-webkit-scrollbar-thumb:hover {
-            background: rgba(185, 28, 28, 0.6);
+            background: rgba(220, 38, 38, 0.5);
         }
 
         .operator-list li {
@@ -797,7 +696,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             user-select: none;
         }
 
@@ -813,6 +712,27 @@
 
         .operator-list li:hover::after {
             opacity: 0.6;
+        }
+
+        .operator-list li[data-copied="true"] {
+            border: 3px solid #00ff15;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .operator-list li[data-copied="true"]::after {
+            content: '\f00c';
+            opacity: 1;
+            color: #10b981;
+            font-weight: 900;
+        }
+
+        .operator-list li[data-copied="true"].clicked::after {
+            animation: checkmarkBounce 0.5s ease;
+        }
+
+        @keyframes checkmarkBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
         }
 
         .operator-list li::before {
@@ -840,7 +760,7 @@
             100% { transform: scale(1); }
         }
 
-        /* DEPOSIT = BIRU (tetap) */
+        /* DEPOSIT = BIRU */
         .operator-deposit {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(8, 145, 178, 0.3) 100%);
             border: 2px solid rgba(6, 182, 212, 0.5);
@@ -848,14 +768,14 @@
         }
 
         .operator-deposit::before {
-            background: var(--deposit-blue);
+            background: #06b6d4;
         }
 
         .operator-deposit:hover {
             box-shadow: 0 4px 15px rgba(6, 182, 212, 0.5);
         }
 
-        /* WITHDRAW = MERAH (tetap) */
+        /* WITHDRAW = MERAH */
         .operator-withdraw {
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.3) 0%, rgba(220, 38, 38, 0.3) 100%);
             border: 2px solid rgba(239, 68, 68, 0.5);
@@ -863,7 +783,7 @@
         }
 
         .operator-withdraw::before {
-            background: var(--withdraw-red);
+            background: var(--danger);
         }
 
         .operator-withdraw:hover {
@@ -897,48 +817,6 @@
 
         .operator-belum.empty-state::after {
             display: none;
-        }
-
-        /* SUDAH DIKLIK = BORDER HIJAU NEON (warna background tetap!) */
-        .operator-list li[data-copied="true"] {
-            border: 3px solid var(--neon-green) !important;
-            box-shadow: 
-                0 0 20px var(--neon-green-glow),
-                0 0 30px rgba(15, 255, 80, 0.3),
-                inset 0 0 10px rgba(15, 255, 80, 0.1) !important;
-            animation: greenGlow 1.5s ease-in-out infinite;
-        }
-
-        @keyframes greenGlow {
-            0%, 100% {
-                box-shadow: 
-                    0 0 20px var(--neon-green-glow),
-                    0 0 30px rgba(15, 255, 80, 0.3),
-                    inset 0 0 10px rgba(15, 255, 80, 0.1);
-            }
-            50% {
-                box-shadow: 
-                    0 0 30px var(--neon-green-glow),
-                    0 0 40px rgba(15, 255, 80, 0.5),
-                    inset 0 0 15px rgba(15, 255, 80, 0.2);
-            }
-        }
-
-        .operator-list li[data-copied="true"]::after {
-            content: '\f00c';
-            opacity: 1;
-            color: var(--neon-green);
-            font-weight: 900;
-            filter: drop-shadow(0 0 5px var(--neon-green-glow));
-        }
-
-        .operator-list li[data-copied="true"].clicked::after {
-            animation: checkmarkBounce 0.5s ease;
-        }
-
-        @keyframes checkmarkBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
         }
 
         @media (max-width: 1400px) {
@@ -1080,14 +958,6 @@
                             <i class="fas fa-lightbulb"></i>
                             <span>Format data menggunakan <strong>TAB</strong> sebagai pemisah kolom</span>
                         </div>
-
-                        <div class="format-note" style="background: rgba(6, 182, 212, 0.15); border-left-color: var(--deposit-blue); margin-top: 15px;">
-                            <i class="fas fa-university" style="color: var(--deposit-blue);"></i>
-                            <div>
-                                <strong>Bank yang Didukung:</strong><br>
-                                <span style="font-size: 0.85rem; opacity: 0.9;">BCA • MANDIRI • BNI • BRI • DANAMON • CIMB • BSI • MAYBANK • DANA • OVO • GOPAY • LINK AJA • BANK JAGO • SEABANK • PANIN • USDT</span>
-                            </div>
-                        </div>
                     </div>
                     
                     <textarea id="dataInput" placeholder="Paste data transaksi di sini (gunakan TAB sebagai pemisah)..."></textarea>
@@ -1171,111 +1041,6 @@
         let operatorReferensi = {};
         let currentFilter = 'all';
         
-        // Fungsi normalisasi nama bank
-        function normalizeBankName(bankName) {
-            if (!bankName) return 'UNKNOWN';
-            
-            // Convert ke uppercase dan trim
-            let normalized = bankName.toUpperCase().trim();
-            
-            // Remove extra spaces
-            normalized = normalized.replace(/\s+/g, ' ');
-            
-            // Mapping variasi nama bank ke nama standar
-            const bankMapping = {
-                // BCA variations
-                'BCA': 'BCA',
-                'BANK BCA': 'BCA',
-                'BANK CENTRAL ASIA': 'BCA',
-                
-                // MANDIRI variations
-                'MANDIRI': 'MANDIRI',
-                'BANK MANDIRI': 'MANDIRI',
-                
-                // BNI variations
-                'BNI': 'BNI',
-                'BANK BNI': 'BNI',
-                'BANK NEGARA INDONESIA': 'BNI',
-                
-                // BRI variations
-                'BRI': 'BRI',
-                'BANK BRI': 'BRI',
-                'BANK RAKYAT INDONESIA': 'BRI',
-                
-                // DANAMON variations
-                'DANAMON': 'DANAMON',
-                'BANK DANAMON': 'DANAMON',
-                'BANK DANAMON INDONESIA': 'DANAMON',
-                
-                // CIMB variations
-                'CIMB': 'CIMB',
-                'CIMB NIAGA': 'CIMB',
-                'BANK CIMB': 'CIMB',
-                'BANK CIMB NIAGA': 'CIMB',
-                
-                // BSI variations
-                'BSI': 'BSI',
-                'BANK BSI': 'BSI',
-                'BANK SYARIAH INDONESIA': 'BSI',
-                
-                // MAYBANK variations
-                'MAYBANK': 'MAYBANK',
-                'BANK MAYBANK': 'MAYBANK',
-                'MAYBANK INDONESIA': 'MAYBANK',
-                
-                // DANA variations
-                'DANA': 'DANA',
-                
-                // OVO variations
-                'OVO': 'OVO',
-                
-                // GOPAY variations
-                'GOPAY': 'GOPAY',
-                'GO PAY': 'GOPAY',
-                'GO-PAY': 'GOPAY',
-                
-                // LINKAJA variations
-                'LINKAJA': 'LINK AJA',
-                'LINK AJA': 'LINK AJA',
-                'LINK-AJA': 'LINK AJA',
-                
-                // BANK JAGO variations
-                'JAGO': 'BANK JAGO',
-                'BANK JAGO': 'BANK JAGO',
-                
-                // SEABANK variations
-                'SEABANK': 'SEABANK',
-                'SEA BANK': 'SEABANK',
-                'BANK SEABANK': 'SEABANK',
-                
-                // PANIN variations
-                'PANIN': 'PANIN',
-                'BANK PANIN': 'PANIN',
-                'PANIN BANK': 'PANIN',
-                
-                // USDT variations
-                'USDT': 'USDT',
-                'TETHER': 'USDT',
-                'USDT TRC20': 'USDT',
-                'USDT ERC20': 'USDT'
-            };
-            
-            // Cek apakah ada di mapping
-            if (bankMapping[normalized]) {
-                return bankMapping[normalized];
-            }
-            
-            // Cek partial match untuk bank yang mengandung kata kunci
-            for (const [key, value] of Object.entries(bankMapping)) {
-                if (normalized.includes(key) || key.includes(normalized)) {
-                    return value;
-                }
-            }
-            
-            // Return original jika tidak ada mapping
-            return normalized;
-        }
-        
         function showNotification(message, isSuccess = true) {
             const notification = document.getElementById('notification');
             notification.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
@@ -1343,7 +1108,6 @@
                             }
                         });
                         
-                        // Update operator status
                         const operatorName = dataArray[9].trim();
                         if (operatorName && operatorReferensi[operatorName]) {
                             const isWithdraw = /withdraw/i.test(dataArray[10]);
@@ -1371,7 +1135,6 @@
                             }
                         });
                         
-                        // Update operator status
                         const operatorName = dataArray[6].trim();
                         if (operatorName && operatorReferensi[operatorName]) {
                             const isWithdraw = /withdraw/i.test(dataArray[7]);
@@ -1416,7 +1179,6 @@
             if (confirm('Apakah Anda yakin ingin menghapus semua data transaksi?')) {
                 transactionData = [];
                 
-                // Reset operator status
                 for (const op in operatorReferensi) {
                     operatorReferensi[op].depositStatus = false;
                     operatorReferensi[op].withdrawStatus = false;
@@ -1450,18 +1212,15 @@
                 let bankPenerima, jumlah, isWithdraw;
                 
                 if (item.type === 'format1') {
-                    // Format 12 kolom
-                    bankPenerima = normalizeBankName(item.data.recipientBank); // Bank Penerima (kolom 6)
+                    bankPenerima = item.data.recipientBank;
                     jumlah = item.data.amount;
                     isWithdraw = /withdraw/i.test(item.data.operationType);
                 } else {
-                    // Format 9 kolom (biasanya withdraw)
-                    bankPenerima = normalizeBankName(item.data.bank); // Bank tujuan (kolom 3)
+                    bankPenerima = item.data.bank;
                     jumlah = item.data.amount;
                     isWithdraw = /withdraw/i.test(item.data.operationType);
                 }
 
-                // Pisahkan deposit dan withdraw
                 if (isWithdraw) {
                     if (!hasilWithdraw[bankPenerima]) {
                         hasilWithdraw[bankPenerima] = { total: 0, count: 0 };
@@ -1482,10 +1241,9 @@
             
             let hasilOutput = '';
 
-            // Tabel Deposit
             if (sortedDeposit.length > 0) {
                 hasilOutput += `
-                    <h3 style="color: var(--deposit-blue); margin-bottom: 15px; text-shadow: 0 0 10px rgba(6, 182, 212, 0.5);"><i class="fas fa-arrow-down"></i> Rekap Deposit (Bank Penerima)</h3>
+                    <h3 style="color: var(--accent); margin-bottom: 15px; text-shadow: 0 0 10px var(--neon-red-glow);"><i class="fas fa-arrow-down"></i> Rekap Deposit (Bank Penerima)</h3>
                     <div class="table-wrapper">
                         <table id="bank-table-deposit">
                             <thead>
@@ -1511,16 +1269,15 @@
 
                 hasilOutput += `</tbody></table></div>`;
                 hasilOutput += `
-                    <div class="summary-card" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); margin-top: 15px; box-shadow: 0 8px 24px rgba(6, 182, 212, 0.4);">
+                    <div class="summary-card" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); margin-top: 15px;">
                         <i class="fas fa-chart-line"></i>
                         <strong>Total Deposit:</strong> ${totalDepositTransaksi} transaksi dengan jumlah <strong>${totalDepositJumlah.toLocaleString()}</strong>
                     </div>`;
             }
 
-            // Tabel Withdraw
             if (sortedWithdraw.length > 0) {
                 hasilOutput += `
-                    <h3 style="color: var(--withdraw-red); margin-top: 30px; margin-bottom: 15px; text-shadow: 0 0 10px rgba(239, 68, 68, 0.5);"><i class="fas fa-arrow-up"></i> Rekap Withdraw (Bank Penerima)</h3>
+                    <h3 style="color: var(--danger); margin-top: 30px; margin-bottom: 15px; text-shadow: 0 0 10px var(--neon-red-glow);"><i class="fas fa-arrow-up"></i> Rekap Withdraw (Bank Penerima)</h3>
                     <div class="table-wrapper">
                         <table id="bank-table-withdraw">
                             <thead>
@@ -1546,13 +1303,12 @@
 
                 hasilOutput += `</tbody></table></div>`;
                 hasilOutput += `
-                    <div class="summary-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); margin-top: 15px; box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);">
+                    <div class="summary-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); margin-top: 15px;">
                         <i class="fas fa-chart-line"></i>
                         <strong>Total Withdraw:</strong> ${totalWithdrawTransaksi} transaksi dengan jumlah <strong>${totalWithdrawJumlah.toLocaleString()}</strong>
                     </div>`;
             }
 
-            // Grand Total
             const grandTotalTransaksi = transactionData.length;
             const grandTotalJumlah = transactionData.reduce((sum, item) => {
                 if (item.type === 'format1') {
@@ -1573,77 +1329,37 @@
         }
 
         function copyBankData() {
-            const depositTable = document.querySelector('#bank-table-deposit');
-            const withdrawTable = document.querySelector('#bank-table-withdraw');
+            const depositTable = document.querySelector('#bank-table-deposit tbody');
+            const withdrawTable = document.querySelector('#bank-table-withdraw tbody');
             
             if (!depositTable && !withdrawTable) {
                 showNotification('Tidak ada data bank untuk disalin!', false);
                 return;
             }
 
-            // Urutan bank yang fixed
-            const bankOrder = [
-                'BCA', 'MANDIRI', 'BNI', 'BRI', 'DANAMON', 'CIMB', 'BSI', 'MAYBANK',
-                'DANA', 'OVO', 'GOPAY', 'LINK AJA', 'BANK JAGO', 'SEABANK', 'PANIN', 'USDT'
-            ];
-
-            // Kumpulkan data deposit
-            const depositData = {};
+            let textToCopy = '';
+            
             if (depositTable) {
-                const depositRows = depositTable.querySelectorAll('tbody tr');
+                const depositRows = depositTable.querySelectorAll('tr');
                 depositRows.forEach(row => {
                     const cells = row.cells;
-                    const bank = cells[0].innerText.toUpperCase().trim();
+                    const bank = cells[0].innerText;
                     const count = cells[1].innerText;
                     const total = cells[2].innerText;
-                    depositData[bank] = { count, total };
+                    textToCopy += `${bank}\t${count}\t${total}\n`;
                 });
             }
-
-            // Kumpulkan data withdraw
-            const withdrawData = {};
+            
             if (withdrawTable) {
-                const withdrawRows = withdrawTable.querySelectorAll('tbody tr');
+                if (textToCopy) textToCopy += '\n';
+                const withdrawRows = withdrawTable.querySelectorAll('tr');
                 withdrawRows.forEach(row => {
                     const cells = row.cells;
-                    const bank = cells[0].innerText.toUpperCase().trim();
+                    const bank = cells[0].innerText;
                     const count = cells[1].innerText;
                     const total = cells[2].innerText;
-                    withdrawData[bank] = { count, total };
+                    textToCopy += `${bank}\t${count}\t${total}\n`;
                 });
-            }
-
-            // HANYA Data DEPOSIT (nominal saja)
-            let depositLine = [];
-            for (const bank of bankOrder) {
-                if (depositData[bank]) {
-                    depositLine.push(depositData[bank].count);
-                    depositLine.push(depositData[bank].total);
-                } else {
-                    depositLine.push('0');
-                    depositLine.push('0');
-                }
-            }
-            
-            let textToCopy = depositLine.join('\t');
-            
-            // Data WITHDRAW (jika ada) - nominal saja, KECUALI PANIN
-            if (withdrawTable) {
-                let withdrawLine = [];
-                for (const bank of bankOrder) {
-                    // SKIP PANIN untuk withdraw
-                    if (bank === 'PANIN') {
-                        withdrawLine.push('0');
-                        withdrawLine.push('0');
-                    } else if (withdrawData[bank]) {
-                        withdrawLine.push(withdrawData[bank].count);
-                        withdrawLine.push(withdrawData[bank].total);
-                    } else {
-                        withdrawLine.push('0');
-                        withdrawLine.push('0');
-                    }
-                }
-                textToCopy += '\n' + withdrawLine.join('\t');
             }
 
             const copyBtn = document.getElementById('copyBtn');
@@ -1655,9 +1371,9 @@
             `;
             copyBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
 
-            navigator.clipboard.writeText(textToCopy)
+            navigator.clipboard.writeText(textToCopy.trim())
                 .then(() => {
-                    showNotification('Data nominal berhasil disalin (PANIN withdraw di-skip)!');
+                    showNotification('Data bank berhasil disalin!');
                 })
                 .catch(err => {
                     console.error('Gagal menyalin: ', err);
@@ -1666,14 +1382,14 @@
 
             setTimeout(() => {
                 copyBtn.innerHTML = originalHTML;
-                copyBtn.style.background = 'linear-gradient(135deg, var(--neon-red) 0%, var(--neon-red-dark) 100%)';
+                copyBtn.style.background = 'linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%)';
             }, 2000);
         }
 
         function setReferensi() {
             const text = document.getElementById('refInput').value.trim();
             if (!text) {
-                return; // Silently return if empty
+                return;
             }
 
             const lines = text.split('\n');
@@ -1684,13 +1400,11 @@
                 let line = rawLine.replace(/\u00A0/g, ' ').trim();
                 if (!line) return;
                 
-                // Skip header row
                 if (idx === 0 && /operator|deposit|withdraw|no/i.test(line)) return;
 
                 const tokens = tokenizeLine(line);
                 if (tokens.length === 0) return;
 
-                // Find operator name (first non-numeric token)
                 let opIdx = tokens.findIndex(t => /[A-Za-z]/.test(t));
                 if (opIdx === -1) opIdx = 0;
 
@@ -1703,7 +1417,6 @@
                 const nama = nameParts.join(' ').replace(/[^A-Za-z0-9_\- ]/g, '').trim();
                 if (!nama) return;
 
-                // Get numeric values
                 const numeric = tokens.slice(opIdx + nameParts.length).map(t => parseInt(t.replace(/[^0-9\-]/g, ''), 10) || 0);
                 let depositVal = numeric[0] || 0;
                 let withdrawVal = numeric[1] || 0;
@@ -1723,7 +1436,6 @@
                 filterOperatorList();
                 showNotification(`✓ ${count} operator berhasil dimuat!`);
                 
-                // Clear textarea after successful processing
                 document.getElementById('refInput').value = '';
             }
         }
@@ -1733,16 +1445,13 @@
                 .then(() => {
                     showNotification(`✓ "${operatorName}" berhasil disalin!`);
                     
-                    // Mark as copied permanently
                     if (operatorReferensi[operatorName]) {
                         operatorReferensi[operatorName].isCopied = true;
                     }
                     
-                    // Add visual feedback with animation
                     element.classList.add('clicked');
                     element.setAttribute('data-copied', 'true');
                     
-                    // Remove animation class but keep copied status
                     setTimeout(() => {
                         element.classList.remove('clicked');
                     }, 500);
@@ -1773,14 +1482,12 @@
                 li.textContent = op;
                 li.dataset.operatorName = op;
                 
-                // Add click event to copy operator name
                 li.onclick = function() {
                     copyOperatorName(op, this);
                 };
 
                 const info = operatorReferensi[op];
                 
-                // Show copied status permanently
                 if (info.isCopied) {
                     li.setAttribute('data-copied', 'true');
                     li.title = '✓ Sudah disalin - Klik untuk menyalin lagi';
@@ -1790,7 +1497,6 @@
 
                 let shouldFilter = false;
 
-                // Apply current filter
                 if (currentFilter === 'deposit' && !info.hasDeposit) {
                     shouldFilter = true;
                 } else if (currentFilter === 'withdraw' && !info.hasWithdraw) {
@@ -1800,22 +1506,18 @@
                 li.dataset.filtered = shouldFilter ? 'true' : 'false';
                 if (shouldFilter) li.style.display = 'none';
 
-                // Set class based on REFERENCE data - hasDeposit dan hasWithdraw
-                // HANYA DEPOSIT = BIRU, HANYA WITHDRAW = MERAH
                 if (info.hasDeposit && !info.hasWithdraw) {
-                    li.className = 'operator-deposit'; // BIRU untuk hanya deposit
+                    li.className = 'operator-deposit';
                 } else if (!info.hasDeposit && info.hasWithdraw) {
-                    li.className = 'operator-withdraw'; // MERAH untuk hanya withdraw
+                    li.className = 'operator-withdraw';
                 } else if (info.hasDeposit && info.hasWithdraw) {
-                    // Jika keduanya ada di referensi, cek status transaksi
                     if (info.depositStatus && !info.withdrawStatus) {
-                        li.className = 'operator-deposit'; // BIRU jika ada transaksi deposit
+                        li.className = 'operator-deposit';
                     } else if (!info.depositStatus && info.withdrawStatus) {
-                        li.className = 'operator-withdraw'; // MERAH jika ada transaksi withdraw
+                        li.className = 'operator-withdraw';
                     } else if (info.depositStatus && info.withdrawStatus) {
-                        li.className = 'operator-deposit'; // BIRU jika keduanya ada, prioritas deposit
+                        li.className = 'operator-deposit';
                     } else {
-                        // Jika belum ada transaksi, tapi ada di referensi keduanya, prioritas deposit
                         li.className = 'operator-deposit';
                     }
                 }
@@ -1871,7 +1573,6 @@
             updateOperatorList();
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(e) {
             const dropdown = document.querySelector('.custom-dropdown');
             if (dropdown && !dropdown.contains(e.target)) {
@@ -1880,25 +1581,20 @@
             }
         });
 
-        // Initialize
         updateDataCount();
         updateOperatorList();
         filterOperatorList();
 
-        // Auto-process reference operator data on paste/input
         const refInput = document.getElementById('refInput');
         let refInputTimeout;
         
         refInput.addEventListener('paste', function(e) {
-            // Add processing visual feedback
             refInput.style.borderColor = 'var(--warning)';
             refInput.style.boxShadow = '0 0 0 3px rgba(245, 158, 11, 0.1)';
             
-            // Wait a bit for paste to complete
             setTimeout(() => {
                 if (refInput.value.trim()) {
                     setReferensi();
-                    // Reset border after processing
                     refInput.style.borderColor = '';
                     refInput.style.boxShadow = '';
                 }
@@ -1906,17 +1602,15 @@
         });
 
         refInput.addEventListener('input', function(e) {
-            // Show that it's being typed
-            refInput.style.borderColor = 'var(--neon-red)';
+            refInput.style.borderColor = 'var(--accent)';
             
-            // Debounce input to avoid processing on every keystroke
             clearTimeout(refInputTimeout);
             refInputTimeout = setTimeout(() => {
                 if (refInput.value.trim()) {
                     setReferensi();
                 }
                 refInput.style.borderColor = '';
-            }, 1000); // Wait 1 second after typing stops
+            }, 1000);
         });
     </script>
 </body>

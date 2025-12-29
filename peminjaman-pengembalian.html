@@ -151,29 +151,55 @@
                 0 5px 10px rgba(0, 0, 0, 0.4);
         }
 
-        .header::after {
-            content: '📌';
+        .luffy-hat-pin {
             position: absolute;
-            top: -25px;
+            top: -35px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 2rem;
-            filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+            width: 80px;
+            z-index: 10;
+        }
+
+        .luffy-hat-pin img {
+            width: 100%;
+            height: auto;
+            display: block;
         }
 
         .wanted-banner {
+            display: grid;
+            grid-template-columns: 120px 1fr 120px;
+            align-items: center;
+            gap: 20px;
             background: var(--wanted-red);
             color: white;
-            text-align: center;
-            padding: 15px;
+            padding: 15px 30px;
             font-family: 'Bangers', cursive;
-            font-size: 3rem;
-            letter-spacing: 5px;
-            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
             border: 4px solid var(--wood-dark);
             margin-bottom: 25px;
             transform: rotate(1deg);
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .wanted-banner .hat-left,
+        .wanted-banner .hat-right {
+            width: 100px;
+            height: 100px;
+        }
+
+        .wanted-banner .hat-left img,
+        .wanted-banner .hat-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .wanted-banner .wanted-text {
+            font-size: 3rem;
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+            text-align: center;
         }
 
         .header-content {
@@ -650,14 +676,15 @@
         }
 
         .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            animation: treasure-pulse 2s ease-in-out infinite;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
         }
 
-        @keyframes treasure-pulse {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.2); opacity: 1; }
+        .empty-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         /* Responsive */
@@ -685,7 +712,24 @@
             }
 
             .wanted-banner {
+                grid-template-columns: 80px 1fr 80px;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+
+            .wanted-banner .hat-left,
+            .wanted-banner .hat-right {
+                width: 70px;
+                height: 70px;
+            }
+
+            .wanted-banner .wanted-text {
                 font-size: 2rem;
+            }
+
+            .luffy-hat-pin {
+                width: 60px;
+                top: -30px;
             }
 
             .bounty-amount {
@@ -753,7 +797,22 @@
     <div class="container">
         <!-- Header - Wanted Poster Style -->
         <div class="header">
-            <div class="wanted-banner">WANTED</div>
+            <!-- Luffy Hat Pin -->
+            <div class="luffy-hat-pin">
+                <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/6d6cb9137afa39a4d7a52b4ff8af033a/one-piece-hat-luffy-hat.gif" alt="Luffy Hat">
+            </div>
+
+            <!-- Wanted Banner with Hats -->
+            <div class="wanted-banner">
+                <div class="hat-left">
+                    <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/4baa50c23c40701ae22e5cc09dce63a7/acehat-one-piece-ace-hat.gif" alt="Ace Hat">
+                </div>
+                <div class="wanted-text">WANTED</div>
+                <div class="hat-right">
+                    <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/d71fe71f6413066c7e76b9a17d1cbec4/sabohat-sabo-hat.gif" alt="Sabo Hat">
+                </div>
+            </div>
+
             <div class="header-content">
                 <div class="jolly-roger">
                     <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/05f2a433549b885f4e510a8e1e97e077/one-piece-pixel.gif" alt="One Piece">
@@ -858,7 +917,9 @@ Nominal : Rp 100,000,000"></textarea>
                             <tbody id="resultBody">
                                 <tr>
                                     <td colspan="5" class="empty-state">
-                                        <div class="empty-icon">🏴‍☠️</div>
+                                        <div class="empty-icon">
+                                            <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/0db3533a8811bee0edcdba6afa7a8c83/e.gif" alt="One Piece">
+                                        </div>
                                         <div>No Treasure Found Yet!</div>
                                         <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Start Your Adventure Above</div>
                                     </td>
@@ -1058,7 +1119,9 @@ Nominal : Rp 100,000,000"></textarea>
                 tbody.innerHTML = `
                     <tr>
                         <td colspan="5" class="empty-state">
-                            <div class="empty-icon">🏴‍☠️</div>
+                            <div class="empty-icon">
+                                <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/0db3533a8811bee0edcdba6afa7a8c83/e.gif" alt="One Piece">
+                            </div>
                             <div>No Treasure Found Yet!</div>
                             <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Start Your Adventure Above</div>
                         </td>

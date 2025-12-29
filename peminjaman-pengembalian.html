@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bank Data Processor</title>
+    <title>Bank Data Processor - One Piece Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Pirata+One&family=Righteous&family=Russo+One&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,111 +12,586 @@
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #8B0000 0%, #4B0000 100%);
-            min-height: 100vh;
-            padding: 20px;
+        :root {
+            --treasure-gold: #ffd700;
+            --ocean-blue: #1e5a8e;
+            --ocean-dark: #0a2342;
+            --straw-yellow: #f4c430;
+            --skull-white: #f8f8f8;
+            --wanted-red: #d32f2f;
+            --wood-brown: #8b4513;
+            --wood-dark: #5a2d0c;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        body {
+            font-family: 'Righteous', cursive;
+            background: linear-gradient(180deg, #1e5a8e 0%, #0a2342 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ocean waves background */
+        .ocean-bg {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            z-index: 0;
             overflow: hidden;
         }
 
+        .wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 200%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,50 Q300,100 600,50 T1200,50 L1200,120 L0,120 Z' fill='%23164a7a' opacity='0.5'/%3E%3C/svg%3E");
+            background-size: 600px 120px;
+            animation: wave-animation 15s linear infinite;
+        }
+
+        .wave:nth-child(2) {
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120'%3E%3Cpath d='M0,70 Q300,20 600,70 T1200,70 L1200,120 L0,120 Z' fill='%231e5a8e' opacity='0.7'/%3E%3C/svg%3E");
+            background-size: 600px 120px;
+            animation: wave-animation 10s linear infinite reverse;
+        }
+
+        @keyframes wave-animation {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-600px); }
+        }
+
+        /* Clouds */
+        .clouds {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            z-index: 0;
+        }
+
+        .cloud {
+            position: absolute;
+            width: 100px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50px;
+            animation: float-cloud 30s linear infinite;
+        }
+
+        .cloud::before,
+        .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .cloud::before {
+            width: 50px;
+            height: 50px;
+            top: -25px;
+            left: 10px;
+        }
+
+        .cloud::after {
+            width: 60px;
+            height: 60px;
+            top: -30px;
+            right: 10px;
+        }
+
+        .cloud:nth-child(1) { top: 20%; left: -100px; animation-duration: 40s; }
+        .cloud:nth-child(2) { top: 50%; left: -150px; animation-duration: 35s; animation-delay: 5s; }
+        .cloud:nth-child(3) { top: 70%; left: -120px; animation-duration: 45s; animation-delay: 10s; }
+
+        @keyframes float-cloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 200px)); }
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header - Wanted Poster Style */
         .header {
-            background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);
+            background: linear-gradient(135deg, #f4e4c1 0%, #d4c4a1 100%);
+            border: 8px solid var(--wood-dark);
+            border-radius: 0;
+            padding: 40px;
+            margin-bottom: 40px;
+            position: relative;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 50px rgba(139, 69, 19, 0.2);
+            transform: rotate(-1deg);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 30px;
+            background: var(--wood-brown);
+            border-radius: 5px;
+            box-shadow: 
+                inset 0 3px 5px rgba(0, 0, 0, 0.3),
+                0 5px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .header::after {
+            content: '📌';
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2rem;
+            filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.5));
+        }
+
+        .wanted-banner {
+            background: var(--wanted-red);
             color: white;
-            padding: 30px;
+            text-align: center;
+            padding: 15px;
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.5);
+            border: 4px solid var(--wood-dark);
+            margin-bottom: 25px;
+            transform: rotate(1deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
             text-align: center;
         }
 
+        .jolly-roger {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            filter: drop-shadow(3px 3px 5px rgba(0, 0, 0, 0.4));
+        }
+
+        .jolly-roger img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
         .header h1 {
+            font-family: 'Pirata One', cursive;
+            font-size: 4rem;
+            color: var(--wood-dark);
+            text-shadow: 
+                3px 3px 0px var(--treasure-gold),
+                6px 6px 0px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        .bounty-amount {
+            font-family: 'Bangers', cursive;
             font-size: 2.5rem;
-            margin-bottom: 10px;
+            color: var(--wanted-red);
+            background: white;
+            padding: 10px 30px;
+            border: 3px dashed var(--wood-dark);
+            display: inline-block;
+            transform: rotate(-2deg);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+        .bounty-amount::before {
+            content: '';
         }
 
+        .header-subtitle {
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.3rem;
+            color: var(--ocean-dark);
+            margin-top: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Content Grid */
         .content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
+        }
+
+        /* Panel - Treasure Chest/Map Style */
+        .panel {
+            background: linear-gradient(135deg, #2a1810 0%, #4a2810 100%);
+            border: 6px solid var(--treasure-gold);
+            border-radius: 15px;
             padding: 30px;
+            position: relative;
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 30px rgba(255, 215, 0, 0.1);
         }
 
-        .input-section {
-            background: #2c1810;
-            color: white;
-            padding: 25px;
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
             border-radius: 10px;
-            border: 2px solid #DC143C;
+            pointer-events: none;
         }
 
-        .input-section h2 {
-            color: #DC143C;
+        /* Corner decorations */
+        .corner-ornament {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--treasure-gold);
+            transform: rotate(45deg);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .corner-ornament.tl { top: -5px; left: -5px; }
+        .corner-ornament.tr { top: -5px; right: -5px; }
+        .corner-ornament.bl { bottom: -5px; left: -5px; }
+        .corner-ornament.br { bottom: -5px; right: -5px; }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--treasure-gold);
+        }
+
+        .panel-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .panel-icon {
+            font-size: 2.5rem;
+            animation: icon-spin 3s ease-in-out infinite;
+        }
+
+        @keyframes icon-spin {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(15deg) scale(1.1); }
+        }
+
+        .panel-title h2 {
+            font-family: 'Russo One', sans-serif;
+            font-size: 2rem;
+            color: var(--treasure-gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .crew-badge {
+            background: var(--wanted-red);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-family: 'Bangers', cursive;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 10px rgba(211, 47, 47, 0.5);
+        }
+
+        /* Input Area */
+        .input-container {
             margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.1rem;
+            color: var(--treasure-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .input-label::before {
+            content: '⚓';
             font-size: 1.5rem;
+            animation: anchor-swing 2s ease-in-out infinite;
         }
 
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #DC143C;
+        @keyframes anchor-swing {
+            0%, 100% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
         }
 
         textarea {
             width: 100%;
-            min-height: 300px;
-            padding: 15px;
-            border: 2px solid #DC143C;
-            border-radius: 8px;
+            min-height: 400px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f4e4c1 0%, #e4d4b1 100%);
+            border: 4px solid var(--wood-dark);
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
             font-size: 14px;
-            font-family: 'Consolas', monospace;
+            color: var(--wood-dark);
             resize: vertical;
-            transition: border-color 0.3s ease;
-            background: #1a0e0a;
-            color: white;
+            line-height: 1.8;
+            box-shadow: 
+                inset 0 5px 15px rgba(0, 0, 0, 0.2),
+                0 5px 15px rgba(0, 0, 0, 0.3);
         }
 
         textarea:focus {
             outline: none;
-            border-color: #FF6347;
-            box-shadow: 0 0 0 3px rgba(220, 20, 60, 0.3);
+            border-color: var(--treasure-gold);
+            box-shadow: 
+                inset 0 5px 15px rgba(0, 0, 0, 0.2),
+                0 0 20px rgba(255, 215, 0, 0.5);
         }
 
-        .output-section {
-            background: #2c1810;
-            color: white;
-            padding: 25px;
-            border-radius: 10px;
-            border: 2px solid #DC143C;
+        textarea::placeholder {
+            color: rgba(90, 45, 12, 0.5);
         }
 
-        .output-section h2 {
-            color: #DC143C;
-            margin-bottom: 20px;
+        /* Status Log */
+        .status-log {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #1e5a8e 0%, #0a2342 100%);
+            border: 3px solid var(--treasure-gold);
+            border-left-width: 8px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+            animation: statusSlide 0.5s ease;
+        }
+
+        @keyframes statusSlide {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .status-compass {
             font-size: 1.5rem;
+            animation: compass-rotate 4s linear infinite;
+        }
+
+        @keyframes compass-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            font-family: 'Russo One', sans-serif;
+            font-size: 0.95rem;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-log.success {
+            background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);
+            border-left-color: #4caf50;
+        }
+
+        .status-log.info {
+            background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+            border-left-color: #2196f3;
+        }
+
+        .status-log.error {
+            background: linear-gradient(135deg, #c62828 0%, #b71c1c 100%);
+            border-left-color: #f44336;
+        }
+
+        /* Stats - Berry System */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f4e4c1 0%, #d4c4a1 100%);
+            border: 4px solid var(--treasure-gold);
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            position: relative;
+            box-shadow: 
+                0 8px 20px rgba(0, 0, 0, 0.4),
+                inset 0 0 20px rgba(255, 215, 0, 0.2);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 215, 0, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: shine-treasure 3s linear infinite;
+        }
+
+        @keyframes shine-treasure {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(2px 2px 3px rgba(0, 0, 0, 0.3));
+        }
+
+        .stat-label {
+            font-family: 'Russo One', sans-serif;
+            font-size: 0.8rem;
+            color: var(--wood-dark);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: var(--wanted-red);
+            text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Action Button - Treasure Style */
+        .action-button {
+            width: 100%;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, var(--treasure-gold) 0%, #daa520 100%);
+            border: 5px solid var(--wood-dark);
+            border-radius: 50px;
+            font-family: 'Bangers', cursive;
+            font-size: 1.5rem;
+            color: var(--wood-dark);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 25px rgba(0, 0, 0, 0.4),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+        }
+
+        .action-button::before {
+            content: '💎';
+            position: absolute;
+            left: 20px;
+            font-size: 2rem;
+            animation: gem-sparkle 1.5s ease-in-out infinite;
+        }
+
+        @keyframes gem-sparkle {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 1; }
+            50% { transform: scale(1.3) rotate(180deg); opacity: 0.7; }
+        }
+
+        .action-button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.5),
+                inset 0 -5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .action-button:hover::after {
+            width: 300%;
+            height: 300%;
+        }
+
+        .action-button:active {
+            transform: translateY(-1px);
+        }
+
+        /* Table - Log Book Style */
+        .table-wrapper {
+            background: linear-gradient(135deg, #f4e4c1 0%, #e4d4b1 100%);
+            border: 5px solid var(--wood-dark);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.5),
+                inset 0 0 30px rgba(139, 69, 19, 0.2);
         }
 
         .table-container {
-            background: #1a0e0a;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(220, 20, 60, 0.3);
-            border: 1px solid #DC143C;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .table-container::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: var(--wood-brown);
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: var(--treasure-gold);
+            border-radius: 6px;
+            border: 2px solid var(--wood-brown);
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
         }
 
         table {
@@ -123,114 +599,192 @@
             border-collapse: collapse;
         }
 
+        thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
         th {
-            background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);
-            color: white;
-            padding: 15px 10px;
+            background: linear-gradient(135deg, var(--ocean-dark) 0%, var(--ocean-blue) 100%);
+            color: var(--treasure-gold);
+            padding: 18px 15px;
             text-align: left;
-            font-weight: 600;
+            font-family: 'Russo One', sans-serif;
+            font-weight: 700;
             font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid var(--treasure-gold);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
         td {
-            padding: 12px 10px;
-            border-bottom: 1px solid #DC143C;
-            font-size: 0.85rem;
-            color: white;
-        }
-
-        tr:hover {
-            background-color: #4a1f1f;
-        }
-
-        .copy-btn {
-            background: linear-gradient(135deg, #DC143C 0%, #8B0000 100%);
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: transform 0.2s ease;
-        }
-
-        .copy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(220, 20, 60, 0.5);
-        }
-
-        .copy-all-btn {
-            background: linear-gradient(135deg, #FF6347 0%, #DC143C 100%);
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            transition: transform 0.2s ease;
-        }
-
-        .copy-all-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(255, 99, 71, 0.5);
-        }
-
-        .status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 15px;
+            border-bottom: 2px dashed rgba(139, 69, 19, 0.3);
+            font-family: 'Courier New', monospace;
             font-size: 0.9rem;
+            color: var(--wood-dark);
+            background: rgba(255, 255, 255, 0.5);
+            transition: all 0.2s ease;
         }
 
-        .status.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
+        tr:nth-child(even) td {
+            background: rgba(244, 228, 193, 0.7);
         }
 
-        .status.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        @media (max-width: 768px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.8rem;
-            }
-            
-            th, td {
-                padding: 8px 5px;
-                font-size: 0.8rem;
-            }
+        tr:hover td {
+            background: rgba(255, 215, 0, 0.3);
+            transform: scale(1.01);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
         }
 
         .empty-state {
             text-align: center;
-            color: #DC143C;
-            padding: 40px;
-            font-style: italic;
+            padding: 60px 20px !important;
+            color: var(--wood-brown);
+            font-family: 'Russo One', sans-serif;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: treasure-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes treasure-pulse {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                transform: rotate(0deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px 10px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .wanted-banner {
+                font-size: 2rem;
+            }
+
+            .bounty-amount {
+                font-size: 1.8rem;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Floating treasure */
+        .floating-treasure {
+            position: fixed;
+            font-size: 2rem;
+            z-index: 0;
+            opacity: 0.3;
+            animation: float-treasure 20s linear infinite;
+        }
+
+        @keyframes float-treasure {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Ocean Background -->
+    <div class="ocean-bg">
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <!-- Clouds -->
+    <div class="clouds">
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+        <div class="cloud"></div>
+    </div>
+
+    <!-- Floating Treasures -->
+    <div class="floating-treasure" style="left: 10%; animation-delay: 0s;">💰</div>
+    <div class="floating-treasure" style="left: 30%; animation-delay: 5s;">💎</div>
+    <div class="floating-treasure" style="left: 50%; animation-delay: 10s;">🏴‍☠️</div>
+    <div class="floating-treasure" style="left: 70%; animation-delay: 15s;">⚓</div>
+    <div class="floating-treasure" style="left: 90%; animation-delay: 3s;">🗺️</div>
+
     <div class="container">
+        <!-- Header - Wanted Poster Style -->
         <div class="header">
-            <h1>Bank Data Processor</h1>
-            <p>Masukkan data bank untuk diproses secara otomatis dengan pemecahan nominal</p>
+            <div class="wanted-banner">WANTED</div>
+            <div class="header-content">
+                <div class="jolly-roger">
+                    <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/05f2a433549b885f4e510a8e1e97e077/one-piece-pixel.gif" alt="One Piece">
+                </div>
+                <h1>BANK PROCESSOR</h1>
+                <div class="bounty-amount">999,999,999</div>
+                <div class="header-subtitle">Grand Line Data Processing System</div>
+            </div>
         </div>
-        
+
+        <!-- Main Content -->
         <div class="content">
-            <div class="input-section">
-                <h2>Input Data</h2>
-                <div class="input-group">
-                    <label for="dataInput">Masukkan data bank (akan diproses secara real-time):</label>
-                    <textarea id="dataInput" placeholder="Contoh:
+            <!-- Input Panel - Treasure Map -->
+            <div class="panel">
+                <div class="corner-ornament tl"></div>
+                <div class="corner-ornament tr"></div>
+                <div class="corner-ornament bl"></div>
+                <div class="corner-ornament br"></div>
+
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <div class="panel-icon">🗺️</div>
+                        <h2>Crew Data Log</h2>
+                    </div>
+                    <div class="crew-badge">EAST BLUE</div>
+                </div>
+
+                <div class="input-container">
+                    <div class="input-label">Navigation Data</div>
+                    <textarea id="dataInput" placeholder="// Masukkan data petualangan di sini...
+
 Info : Nanastoto
 Perihal : Pengembalian Dana
 Dari Situs : Tvtoto
@@ -240,31 +794,78 @@ Nama Rekening : RIA AGUSTINA
 Nomor Rekening : 903687844088
 Nominal : Rp 50,000,000
 
-..."></textarea>
+Bank BCA ( BERSIH )
+Nama Rekening : JOHN DOE
+Nomor Rekening : 1234567890
+Nominal : Rp 100,000,000"></textarea>
                 </div>
-                <div class="status" id="status"></div>
+
+                <div class="status-log info" id="statusLog" style="display: none;">
+                    <div class="status-compass">🧭</div>
+                    <div class="status-text" id="statusText">READY TO SAIL</div>
+                </div>
             </div>
-            
-            <div class="output-section">
-                <h2>Hasil Pemrosesan</h2>
-                <button class="copy-all-btn" id="copyAllBtn" onclick="copyAllData()">📋 Copy Semua Data</button>
-                <div class="table-container">
-                    <table id="resultTable">
-                        <thead>
-                            <tr>
-                                <th>Bank</th>
-                                <th>Nomor Rekening</th>
-                                <th>Nama Rekening</th>
-                                <th>Keterangan</th>
-                                <th>Nominal</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultBody">
-                            <tr>
-                                <td colspan="5" class="empty-state">Masukkan data untuk melihat hasil pemrosesan</td>
-                            </tr>
-                        </tbody>
-                    </table>
+
+            <!-- Output Panel - Treasure Chest -->
+            <div class="panel">
+                <div class="corner-ornament tl"></div>
+                <div class="corner-ornament tr"></div>
+                <div class="corner-ornament bl"></div>
+                <div class="corner-ornament br"></div>
+
+                <div class="panel-header">
+                    <div class="panel-title">
+                        <div class="panel-icon">💰</div>
+                        <h2>Treasure Log</h2>
+                    </div>
+                    <div class="crew-badge">GRAND LINE</div>
+                </div>
+
+                <div class="stats-container" id="statsContainer" style="display: none;">
+                    <div class="stat-card">
+                        <div class="stat-icon">📜</div>
+                        <div class="stat-label">Total Quests</div>
+                        <div class="stat-value" id="statTotal">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏦</div>
+                        <div class="stat-label">Crew Members</div>
+                        <div class="stat-value" id="statBanks">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">💎</div>
+                        <div class="stat-label">Total</div>
+                        <div class="stat-value" id="statAmount">0</div>
+                    </div>
+                </div>
+
+                <button class="action-button" onclick="copyAllData()">
+                    Claim All Treasure
+                </button>
+
+                <div class="table-wrapper">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>🏦 Bank</th>
+                                    <th>🔢 Account No.</th>
+                                    <th>👤 Pirate Name</th>
+                                    <th>📝 Quest</th>
+                                    <th>💰 Nominal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultBody">
+                                <tr>
+                                    <td colspan="5" class="empty-state">
+                                        <div class="empty-icon">🏴‍☠️</div>
+                                        <div>No Treasure Found Yet!</div>
+                                        <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Start Your Adventure Above</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -274,20 +875,25 @@ Nominal : Rp 50,000,000
         let processedData = [];
 
         function showStatus(message, type = 'info') {
-            const status = document.getElementById('status');
-            status.textContent = message;
-            status.className = `status ${type}`;
-            status.style.display = 'block';
+            const statusLog = document.getElementById('statusLog');
+            const statusText = document.getElementById('statusText');
+            
+            statusLog.className = `status-log ${type}`;
+            statusText.textContent = message;
+            statusLog.style.display = 'flex';
+            
+            setTimeout(() => {
+                statusLog.style.display = 'none';
+            }, 5000);
         }
 
         function splitNominal(nominal) {
             const splits = [];
-            let chunkSize = 25000000; // 25 juta (default)
+            let chunkSize = 25000000;
             
-            // Untuk nominal spesifik, gunakan chunk 39 juta
             const specialAmounts = [100000000, 150000000, 200000000, 250000000];
             if (specialAmounts.includes(nominal)) {
-                chunkSize = 39000000; // 39 juta
+                chunkSize = 39000000;
             }
             
             let remaining = nominal;
@@ -306,7 +912,17 @@ Nominal : Rp 50,000,000
         }
 
         function formatCurrency(amount) {
-            return amount.toLocaleString('id-ID').replace(/\./g, ',');
+            return amount.toLocaleString('en-US');
+        }
+
+        function formatCurrencyShort(amount) {
+            if (amount >= 1000000000) {
+                return (amount / 1000000000).toFixed(1) + 'M';
+            }
+            if (amount >= 1000000) {
+                return (amount / 1000000).toFixed(1) + 'jt';
+            }
+            return amount.toLocaleString('en-US');
         }
 
         function parseNominal(nominalStr) {
@@ -316,17 +932,17 @@ Nominal : Rp 50,000,000
 
         function extractBankName(bankStr) {
             const bankNames = {
-                'MANDIRI': 'Mandiri',
+                'MANDIRI': 'MANDIRI',
                 'BNI': 'BNI',
                 'BRI': 'BRI', 
                 'BCA': 'BCA',
-                'DANAMON': 'Danamon',
+                'DANAMON': 'DANAMON',
                 'CIMB': 'CIMB',
-                'PERMATA': 'Permata',
+                'PERMATA': 'PERMATA',
                 'OCBC': 'OCBC',
-                'PANIN': 'Panin',
+                'PANIN': 'PANIN',
                 'BSI': 'BSI',
-                'SINARMAS': 'Sinarmas'
+                'SINARMAS': 'SINARMAS'
             };
             
             const upperBank = bankStr.toUpperCase();
@@ -348,26 +964,20 @@ Nominal : Rp 50,000,000
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 
-                // Skip baris @TVTOTO atau @ di akhir
                 if (line.match(/^@[A-Z]+$/i)) {
                     continue;
                 }
                 
-                // Tangkap Info
                 if (line.match(/^Info\s*:/i)) {
                     infoSection.info = line.replace(/Info\s*:\s*/i, '').trim();
                 } 
-                // Tangkap Perihal
                 else if (line.match(/^Perihal\s*:/i)) {
                     infoSection.perihal = line.replace(/Perihal\s*:\s*/i, '').trim();
                 } 
-                // Tangkap "Dari Situs" atau "Dari"
                 else if (line.match(/^Dari\s*(Situs)?\s*:/i)) {
                     infoSection.dariSitus = line.replace(/^Dari\s*(Situs)?\s*:\s*/i, '').replace('@', '').trim();
                 } 
-                // Tangkap format "KAS DANAMON BERSIH" atau "Nama Bank : xxx"
                 else if (line.match(/^(KAS\s+)?[A-Z]+.*?(BERSIH|KOTOR|BANK)/i) || line.match(/^Nama Bank\s*:/i)) {
-                    // Simpan entry sebelumnya jika ada
                     if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
                         entries.push({...currentEntry});
                     }
@@ -380,15 +990,12 @@ Nominal : Rp 50,000,000
                         currentEntry.bank = extractBankName(line);
                     }
                 } 
-                // Tangkap Nama Rekening
                 else if (line.match(/^Nama Rekening\s*:/i)) {
                     currentEntry.namaRekening = line.split(':')[1]?.trim() || '';
                 } 
-                // Tangkap Nomor Rekening
                 else if (line.match(/^Nomor Rekening\s*:/i)) {
                     currentEntry.nomorRekening = line.split(':')[1]?.trim() || '';
                 } 
-                // Tangkap Nominal
                 else if (line.match(/^Nominal\s*:/i)) {
                     const nominalStr = line.split(':')[1]?.trim() || '';
                     const nominal = parseNominal(nominalStr);
@@ -401,7 +1008,6 @@ Nominal : Rp 50,000,000
                 }
             }
             
-            // Simpan entry terakhir jika ada
             if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
                 entries.push(currentEntry);
             }
@@ -426,29 +1032,55 @@ Nominal : Rp 50,000,000
             return results;
         }
 
+        function updateStats(data) {
+            const statsContainer = document.getElementById('statsContainer');
+            
+            if (data.length === 0) {
+                statsContainer.style.display = 'none';
+                return;
+            }
+
+            statsContainer.style.display = 'grid';
+            
+            const totalTransactions = data.length;
+            const uniqueBanks = new Set(data.map(item => item.bank)).size;
+            const totalAmount = data.reduce((sum, item) => sum + item.nominal, 0);
+            
+            document.getElementById('statTotal').textContent = totalTransactions;
+            document.getElementById('statBanks').textContent = uniqueBanks;
+            document.getElementById('statAmount').textContent = formatCurrencyShort(totalAmount);
+        }
+
         function updateTable(data) {
             const tbody = document.getElementById('resultBody');
             
             if (data.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Masukkan data untuk melihat hasil pemrosesan</td></tr>';
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <div class="empty-icon">🏴‍☠️</div>
+                            <div>No Treasure Found Yet!</div>
+                            <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Start Your Adventure Above</div>
+                        </td>
+                    </tr>
+                `;
                 return;
             }
             
             tbody.innerHTML = data.map((item, index) => `
-                <tr>
-                    <td>${item.bank}</td>
+                <tr style="animation-delay: ${index * 0.05}s">
+                    <td><strong>${item.bank}</strong></td>
                     <td>${item.nomorRekening}</td>
                     <td>${item.namaRekening}</td>
                     <td>${item.keterangan}</td>
-                    <td>${formatCurrency(item.nominal)}</td>
+                    <td><strong>${formatCurrency(item.nominal)}</strong></td>
                 </tr>
             `).join('');
         }
 
-
         function copyAllData() {
             if (processedData.length === 0) {
-                showStatus('Tidak ada data untuk disalin', 'info');
+                showStatus('🏴‍☠️ No Treasure to Claim!', 'info');
                 return;
             }
             
@@ -459,9 +1091,9 @@ Nominal : Rp 50,000,000
             const text = rows.join('\n');
             
             navigator.clipboard.writeText(text).then(() => {
-                showStatus(`✅ Berhasil menyalin ${processedData.length} baris data!`, 'success');
+                showStatus(`💰 Treasure Claimed! ${processedData.length} Records Collected!`, 'success');
             }).catch(() => {
-                showStatus('❌ Gagal menyalin data', 'error');
+                showStatus('❌ Failed to Claim Treasure!', 'error');
             });
         }
 
@@ -471,25 +1103,31 @@ Nominal : Rp 50,000,000
             if (inputText.trim() === '') {
                 processedData = [];
                 updateTable(processedData);
-                showStatus('Siap memproses data...', 'info');
+                updateStats(processedData);
+                showStatus('⚓ Ready to Set Sail!', 'info');
                 return;
             }
             
             try {
                 processedData = processData(inputText);
                 updateTable(processedData);
+                updateStats(processedData);
                 
                 if (processedData.length > 0) {
-                    showStatus(`Berhasil memproses ${processedData.length} transaksi`, 'success');
+                    const totalAmount = processedData.reduce((sum, item) => sum + item.nominal, 0);
+                    showStatus(
+                        `🎉 Treasure Found! ${processedData.length} Records | Total: ${formatCurrency(totalAmount)}`, 
+                        'success'
+                    );
                 } else {
-                    showStatus('Data belum lengkap atau format tidak sesuai', 'info');
+                    showStatus('🗺️ Keep Searching for Treasure!', 'info');
                 }
             } catch (error) {
-                showStatus('Error memproses data: ' + error.message, 'error');
+                showStatus('⚠️ Navigation Error: ' + error.message, 'error');
             }
         });
 
-        showStatus('Siap memproses data...', 'info');
+        showStatus('⚓ Ready to Set Sail on the Grand Line!', 'info');
     </script>
 </body>
 </html>

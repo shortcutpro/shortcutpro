@@ -243,7 +243,7 @@
         }
 
         .bounty-amount::before {
-            content: '';
+            content: '฿';
         }
 
         .header-subtitle {
@@ -842,21 +842,40 @@
 
                 <div class="input-container">
                     <div class="input-label">Navigation Data</div>
-                    <textarea id="dataInput" placeholder="// Masukkan data petualangan di sini...
+                    <textarea id="dataInput" placeholder="// Masukkan data dengan FORMAT BEBAS - Semua format bisa dibaca!
 
+=== FORMAT 1 (Standar) ===
 Info : Nanastoto
 Perihal : Pengembalian Dana
 Dari Situs : Tvtoto
 
-Bank DANAMON ( BERSIH )
-Nama Rekening : RIA AGUSTINA
-Nomor Rekening : 903687844088
-Nominal : Rp 50,000,000
-
 Bank BCA ( BERSIH )
 Nama Rekening : JOHN DOE
 Nomor Rekening : 1234567890
-Nominal : Rp 100,000,000"></textarea>
+Nominal : Rp 100,000,000
+
+=== FORMAT 2 (Tanpa titik dua) ===
+Info Nanastoto
+Keterangan Pengembalian Dana
+
+BCA
+JOHN DOE
+1234567890
+100000000
+
+=== FORMAT 3 (Dengan label) ===
+Nama Bank: MANDIRI
+Nama: RIA AGUSTINA
+No Rekening: 903687844088
+Jumlah: 50,000,000
+
+=== FORMAT 4 (Campuran) ===
+Bank DANAMON (BERSIH)
+RIA AGUSTINA
+903687844088
+Nominal: 50000000
+
+Dan berbagai format lainnya!"></textarea>
                 </div>
 
                 <div class="status-log info" id="statusLog" style="display: none;">
@@ -893,7 +912,7 @@ Nominal : Rp 100,000,000"></textarea>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon">💎</div>
-                        <div class="stat-label">Total</div>
+                        <div class="stat-label">Total Berry</div>
                         <div class="stat-value" id="statAmount">0</div>
                     </div>
                 </div>
@@ -978,10 +997,10 @@ Nominal : Rp 100,000,000"></textarea>
 
         function formatCurrencyShort(amount) {
             if (amount >= 1000000000) {
-                return (amount / 1000000000).toFixed(1) + 'M';
+                return (amount / 1000000000).toFixed(1) + 'B';
             }
             if (amount >= 1000000) {
-                return (amount / 1000000).toFixed(1) + 'jt';
+                return (amount / 1000000).toFixed(1) + 'M';
             }
             return amount.toLocaleString('en-US');
         }
@@ -1003,80 +1022,219 @@ Nominal : Rp 100,000,000"></textarea>
                 'OCBC': 'OCBC',
                 'PANIN': 'PANIN',
                 'BSI': 'BSI',
-                'SINARMAS': 'SINARMAS'
+                'SINARMAS': 'SINARMAS',
+                'BTN': 'BTN',
+                'MEGA': 'MEGA',
+                'NIAGA': 'NIAGA',
+                'BUKOPIN': 'BUKOPIN',
+                'SEABANK': 'SEABANK',
+                'JAGO': 'JAGO',
+                'NEO': 'NEO',
+                'JENIUS': 'JENIUS',
+                'BII': 'BII',
+                'MAYBANK': 'MAYBANK',
+                'UOB': 'UOB',
+                'HSBC': 'HSBC',
+                'CITIBANK': 'CITIBANK',
+                'STANDARD CHARTERED': 'SCB',
+                'COMMONWEALTH': 'COMMONWEALTH',
+                'ANZ': 'ANZ',
+                'BANK JATIM': 'BANK JATIM',
+                'BANK JATENG': 'BANK JATENG',
+                'BANK DKI': 'BANK DKI',
+                'BJB': 'BJB',
+                'BPD': 'BPD',
+                'MUAMALAT': 'MUAMALAT',
+                'SYARIAH': 'BSI',
+                'GOPAY': 'GOPAY',
+                'OVO': 'OVO',
+                'DANA': 'DANA',
+                'LINKAJA': 'LINKAJA',
+                'SHOPEEPAY': 'SHOPEEPAY'
             };
             
             const upperBank = bankStr.toUpperCase();
+            
+            // Try exact match first
             for (const [key, value] of Object.entries(bankNames)) {
                 if (upperBank.includes(key)) {
                     return value;
                 }
             }
+            
+            // If not found, try to extract first capitalized word sequence
+            const match = bankStr.match(/[A-Z]{2,}[A-Z\s]*/);
+            if (match) {
+                return match[0].trim();
+            }
+            
             return 'UNKNOWN';
         }
 
         function processData(inputText) {
+            console.log('=== PROCESSING DATA ===');
+            console.log('Input length:', inputText.length);
+            
             const lines = inputText.split('\n').map(line => line.trim()).filter(line => line);
+            console.log('Total lines:', lines.length);
+            
             const results = [];
             let infoSection = {};
             const entries = [];
             let currentEntry = {};
             
+            // Helper function to detect if line contains bank name
+            function containsBankName(line) {
+                const bankNames = ['MANDIRI', 'BNI', 'BRI', 'BCA', 'DANAMON', 'CIMB', 'PERMATA', 
+                                   'OCBC', 'PANIN', 'BSI', 'SINARMAS', 'BTN', 'MEGA', 'NIAGA', 
+                                   'BUKOPIN', 'SEABANK', 'JAGO', 'NEO', 'JENIUS', 'BII', 'MAYBANK',
+                                   'UOB', 'HSBC', 'CITIBANK', 'STANDARD CHARTERED', 'COMMONWEALTH',
+                                   'ANZ', 'JATIM', 'JATENG', 'DKI', 'BJB', 'BPD', 'MUAMALAT',
+                                   'SYARIAH', 'GOPAY', 'OVO', 'DANA', 'LINKAJA', 'SHOPEEPAY'];
+                const upperLine = line.toUpperCase();
+                return bankNames.some(bank => upperLine.includes(bank));
+            }
+            
+            // Helper function to check if line is a field separator (new bank entry)
+            function isNewBankEntry(line) {
+                const upperLine = line.toUpperCase();
+                // Check for explicit bank indicators - ALL FORMATS
+                if (upperLine.match(/^(KAS\s+)?BANK\s*:/i) || 
+                    upperLine.match(/^(KAS\s+)?BANK\s+/i) ||
+                    upperLine.match(/^NAMA\s*BANK\s*:/i)) {
+                    return true;
+                }
+                // Check if line contains bank name and some indicator words
+                if (containsBankName(line)) {
+                    if (upperLine.match(/\(BERSIH\)/i) || 
+                        upperLine.match(/\(KOTOR\)/i) ||
+                        upperLine.match(/\(\s*KAS\s+(BERSIH|KOTOR)\s*\)/i) ||
+                        upperLine.match(/^(KAS\s+)?[A-Z]{3,}/i)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
+                const upperLine = line.toUpperCase();
+                console.log(`Line ${i}: "${line}"`);
                 
-                if (line.match(/^@[A-Z]+$/i)) {
+                // Skip lines starting with @
+                if (line.match(/^@/i)) {
+                    console.log('  → Skipping @ line');
                     continue;
                 }
                 
-                if (line.match(/^Info\s*:/i)) {
+                // Parse Info - ALL FORMATS
+                if (upperLine.match(/^INFO\s*:/i)) {
                     infoSection.info = line.replace(/Info\s*:\s*/i, '').trim();
+                    console.log('  → Info:', infoSection.info);
                 } 
-                else if (line.match(/^Perihal\s*:/i)) {
-                    infoSection.perihal = line.replace(/Perihal\s*:\s*/i, '').trim();
+                // Parse Perihal - ALL FORMATS
+                else if (upperLine.match(/^PERIHAL\s*:/i) || upperLine.match(/^KETERANGAN\s*:/i)) {
+                    infoSection.perihal = line.replace(/(Perihal|Keterangan)\s*:\s*/i, '').trim();
+                    console.log('  → Perihal:', infoSection.perihal);
                 } 
-                else if (line.match(/^Dari\s*(Situs)?\s*:/i)) {
-                    infoSection.dariSitus = line.replace(/^Dari\s*(Situs)?\s*:\s*/i, '').replace('@', '').trim();
+                // Parse Dari Situs - ALL FORMATS
+                else if (upperLine.match(/^DARI\s*(SITUS)?\s*:/i) || upperLine.match(/^SITUS\s*:/i)) {
+                    infoSection.dariSitus = line.replace(/^(Dari\s*)?(Situs\s*)?\s*:\s*/i, '').replace(/@/g, '').trim();
+                    console.log('  → Dari Situs:', infoSection.dariSitus);
                 } 
-                else if (line.match(/^(KAS\s+)?[A-Z]+.*?(BERSIH|KOTOR|BANK)/i) || line.match(/^Nama Bank\s*:/i)) {
+                // Parse Bank - ALL FORMATS (BANK :, Bank, Bank BCA, etc)
+                else if (isNewBankEntry(line)) {
+                    // Save previous entry if exists
                     if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                        console.log('  → Saving previous entry:', currentEntry);
                         entries.push({...currentEntry});
                     }
                     currentEntry = {};
                     
-                    if (line.match(/^Nama Bank\s*:/i)) {
-                        const bankPart = line.split(':')[1]?.trim() || '';
-                        currentEntry.bank = extractBankName(bankPart);
+                    // Extract bank name from anywhere in the line
+                    currentEntry.bank = extractBankName(line);
+                    console.log('  → New Bank detected:', currentEntry.bank);
+                } 
+                // Parse Nama Rekening - ALL FORMATS (Nama Rekening, NAMA REK, Nama, etc)
+                else if (upperLine.match(/^NAMA\s*(REKENING|REK|PENERIMA|PEMILIK)?(\s*:|\s+)/i) && 
+                         !upperLine.match(/NAMA\s*BANK/i)) {
+                    const namaPart = line.split(/:\s*/);
+                    if (namaPart.length > 1) {
+                        currentEntry.namaRekening = namaPart.slice(1).join(':').trim();
                     } else {
-                        currentEntry.bank = extractBankName(line);
+                        // Handle format without colon - remove the label
+                        currentEntry.namaRekening = line.replace(/^NAMA\s*(REKENING|REK|PENERIMA|PEMILIK)?\s*/i, '').trim();
                     }
+                    console.log('  → Nama Rekening:', currentEntry.namaRekening);
                 } 
-                else if (line.match(/^Nama Rekening\s*:/i)) {
-                    currentEntry.namaRekening = line.split(':')[1]?.trim() || '';
+                // Parse Nomor Rekening - ALL FORMATS (Nomor Rekening, NOMOR REK, No Rekening, NO REKENING, etc)
+                else if (upperLine.match(/^(NOMOR|NO\.?)\s*(REKENING|REK)?(\s*:|\s+)/i) && 
+                         !upperLine.match(/NAMA/i)) {
+                    const nomorPart = line.split(/:\s*/);
+                    if (nomorPart.length > 1) {
+                        currentEntry.nomorRekening = nomorPart.slice(1).join(':').trim();
+                    } else {
+                        // Handle format without colon - remove the label
+                        currentEntry.nomorRekening = line.replace(/^(NOMOR|NO\.?)\s*(REKENING|REK)?\s*/i, '').trim();
+                    }
+                    console.log('  → Nomor Rekening:', currentEntry.nomorRekening);
                 } 
-                else if (line.match(/^Nomor Rekening\s*:/i)) {
-                    currentEntry.nomorRekening = line.split(':')[1]?.trim() || '';
-                } 
-                else if (line.match(/^Nominal\s*:/i)) {
-                    const nominalStr = line.split(':')[1]?.trim() || '';
+                // Parse Nominal - ALL FORMATS (Nominal, RP, Jumlah, Amount, etc)
+                else if (upperLine.match(/^(NOMINAL|JUMLAH|AMOUNT|RP)(\s*:|\s+)/i)) {
+                    const nominalPart = line.split(/:\s*/);
+                    let nominalStr = '';
+                    if (nominalPart.length > 1) {
+                        nominalStr = nominalPart.slice(1).join(':').trim();
+                    } else {
+                        // Handle format without colon - remove the label
+                        nominalStr = line.replace(/^(NOMINAL|JUMLAH|AMOUNT|RP)\s*/i, '').trim();
+                    }
                     const nominal = parseNominal(nominalStr);
                     currentEntry.nominal = nominal;
+                    console.log('  → Nominal:', nominal);
                     
+                    // Save entry after nominal
                     if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                        console.log('  → Saving entry with nominal:', currentEntry);
                         entries.push({...currentEntry});
                         currentEntry = {};
                     }
                 }
+                // Try to detect standalone values (numbers that might be rekening/nominal)
+                else if (line.match(/^\d{10,}$/)) {
+                    // Long number, might be account number
+                    if (!currentEntry.nomorRekening) {
+                        currentEntry.nomorRekening = line;
+                        console.log('  → Detected Nomor Rekening (standalone):', currentEntry.nomorRekening);
+                    }
+                }
+                // Try to detect name (all caps text or capitalized text)
+                else if (line.match(/^[A-Z][A-Za-z\s\.]{2,}$/) && !containsBankName(line) && !upperLine.match(/BERSIH|KOTOR/)) {
+                    if (!currentEntry.namaRekening && currentEntry.bank) {
+                        currentEntry.namaRekening = line;
+                        console.log('  → Detected Nama Rekening (standalone):', currentEntry.namaRekening);
+                    }
+                }
             }
             
+            // Save last entry if exists
             if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                console.log('Saving final entry:', currentEntry);
                 entries.push(currentEntry);
             }
             
-            entries.forEach(entry => {
+            console.log('Total entries found:', entries.length);
+            console.log('Entries:', entries);
+            
+            // Process entries
+            entries.forEach((entry, index) => {
+                console.log(`Processing entry ${index}:`, entry);
+                
                 if (entry.nominal > 0 && entry.bank && entry.nomorRekening && entry.namaRekening) {
                     const splits = splitNominal(entry.nominal);
                     const keterangan = `${infoSection.perihal || 'Transfer'} ke ${infoSection.info || 'Unknown'}`;
+                    
+                    console.log(`  → Creating ${splits.length} splits`);
                     
                     splits.forEach(splitAmount => {
                         results.push({
@@ -1087,8 +1245,18 @@ Nominal : Rp 100,000,000"></textarea>
                             nominal: splitAmount
                         });
                     });
+                } else {
+                    console.log('  → Entry incomplete, skipping:', {
+                        hasNominal: entry.nominal > 0,
+                        hasBank: !!entry.bank,
+                        hasNomor: !!entry.nomorRekening,
+                        hasNama: !!entry.namaRekening
+                    });
                 }
             });
+            
+            console.log('Final results:', results.length, 'records');
+            console.log('=== END PROCESSING ===');
             
             return results;
         }
@@ -1109,7 +1277,7 @@ Nominal : Rp 100,000,000"></textarea>
             
             document.getElementById('statTotal').textContent = totalTransactions;
             document.getElementById('statBanks').textContent = uniqueBanks;
-            document.getElementById('statAmount').textContent = formatCurrencyShort(totalAmount);
+            document.getElementById('statAmount').textContent = formatCurrency(totalAmount);
         }
 
         function updateTable(data) {
@@ -1160,36 +1328,46 @@ Nominal : Rp 100,000,000"></textarea>
             });
         }
 
+        // Event listener dengan debounce
+        let debounceTimer;
         document.getElementById('dataInput').addEventListener('input', function(e) {
-            const inputText = e.target.value;
+            clearTimeout(debounceTimer);
             
-            if (inputText.trim() === '') {
-                processedData = [];
-                updateTable(processedData);
-                updateStats(processedData);
-                showStatus('⚓ Ready to Set Sail!', 'info');
-                return;
-            }
-            
-            try {
-                processedData = processData(inputText);
-                updateTable(processedData);
-                updateStats(processedData);
+            debounceTimer = setTimeout(() => {
+                const inputText = e.target.value;
                 
-                if (processedData.length > 0) {
-                    const totalAmount = processedData.reduce((sum, item) => sum + item.nominal, 0);
-                    showStatus(
-                        `🎉 Treasure Found! ${processedData.length} Records | Total: ${formatCurrency(totalAmount)}`, 
-                        'success'
-                    );
-                } else {
-                    showStatus('🗺️ Keep Searching for Treasure!', 'info');
+                console.log('Input changed, length:', inputText.length);
+                
+                if (inputText.trim() === '') {
+                    processedData = [];
+                    updateTable(processedData);
+                    updateStats(processedData);
+                    showStatus('⚓ Ready to Set Sail!', 'info');
+                    return;
                 }
-            } catch (error) {
-                showStatus('⚠️ Navigation Error: ' + error.message, 'error');
-            }
+                
+                try {
+                    processedData = processData(inputText);
+                    updateTable(processedData);
+                    updateStats(processedData);
+                    
+                    if (processedData.length > 0) {
+                        const totalAmount = processedData.reduce((sum, item) => sum + item.nominal, 0);
+                        showStatus(
+                            `🎉 Treasure Found! ${processedData.length} Records | Total: ${formatCurrency(totalAmount)}`, 
+                            'success'
+                        );
+                    } else {
+                        showStatus('🗺️ Keep Searching for Treasure!', 'info');
+                    }
+                } catch (error) {
+                    console.error('Processing error:', error);
+                    showStatus('⚠️ Navigation Error: ' + error.message, 'error');
+                }
+            }, 300);
         });
 
+        // Initial status
         showStatus('⚓ Ready to Set Sail on the Grand Line!', 'info');
     </script>
 </body>

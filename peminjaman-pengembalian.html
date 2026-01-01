@@ -1011,6 +1011,9 @@ Dan berbagai format lainnya!"></textarea>
         }
 
         function extractBankName(bankStr) {
+            // Clean the string: remove asterisks, extra spaces
+            let cleanStr = bankStr.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+            
             const bankNames = {
                 'MANDIRI': 'MANDIRI',
                 'BNI': 'BNI',
@@ -1046,6 +1049,8 @@ Dan berbagai format lainnya!"></textarea>
                 'BPD': 'BPD',
                 'MUAMALAT': 'MUAMALAT',
                 'SYARIAH': 'BSI',
+                'MBNI': 'MBNI',
+                'IBBIZ': 'IBBIZ',
                 'GOPAY': 'GOPAY',
                 'OVO': 'OVO',
                 'DANA': 'DANA',
@@ -1053,7 +1058,7 @@ Dan berbagai format lainnya!"></textarea>
                 'SHOPEEPAY': 'SHOPEEPAY'
             };
             
-            const upperBank = bankStr.toUpperCase();
+            const upperBank = cleanStr.toUpperCase();
             
             // Try exact match first
             for (const [key, value] of Object.entries(bankNames)) {
@@ -1063,7 +1068,7 @@ Dan berbagai format lainnya!"></textarea>
             }
             
             // If not found, try to extract first capitalized word sequence
-            const match = bankStr.match(/[A-Z]{2,}[A-Z\s]*/);
+            const match = cleanStr.match(/[A-Z]{2,}[A-Z\s]*/);
             if (match) {
                 return match[0].trim();
             }
@@ -1083,137 +1088,192 @@ Dan berbagai format lainnya!"></textarea>
             const entries = [];
             let currentEntry = {};
             
-            // Helper function to detect if line contains bank name
+            // Bank names list
+            const BANK_NAMES = ['MANDIRI', 'BNI', 'BRI', 'BCA', 'DANAMON', 'CIMB', 'PERMATA', 
+                               'OCBC', 'PANIN', 'BSI', 'SINARMAS', 'BTN', 'MEGA', 'NIAGA', 
+                               'BUKOPIN', 'SEABANK', 'JAGO', 'NEO', 'JENIUS', 'BII', 'MAYBANK',
+                               'UOB', 'HSBC', 'CITIBANK', 'STANDARD CHARTERED', 'COMMONWEALTH',
+                               'ANZ', 'JATIM', 'JATENG', 'DKI', 'BJB', 'BPD', 'MUAMALAT',
+                               'SYARIAH', 'MBNI', 'IBBIZ', 'GOPAY', 'OVO', 'DANA', 'LINKAJA', 'SHOPEEPAY'];
+            
+            // Helper: Check if line contains bank name
             function containsBankName(line) {
-                const bankNames = ['MANDIRI', 'BNI', 'BRI', 'BCA', 'DANAMON', 'CIMB', 'PERMATA', 
-                                   'OCBC', 'PANIN', 'BSI', 'SINARMAS', 'BTN', 'MEGA', 'NIAGA', 
-                                   'BUKOPIN', 'SEABANK', 'JAGO', 'NEO', 'JENIUS', 'BII', 'MAYBANK',
-                                   'UOB', 'HSBC', 'CITIBANK', 'STANDARD CHARTERED', 'COMMONWEALTH',
-                                   'ANZ', 'JATIM', 'JATENG', 'DKI', 'BJB', 'BPD', 'MUAMALAT',
-                                   'SYARIAH', 'GOPAY', 'OVO', 'DANA', 'LINKAJA', 'SHOPEEPAY'];
                 const upperLine = line.toUpperCase();
-                return bankNames.some(bank => upperLine.includes(bank));
+                return BANK_NAMES.some(bank => upperLine.includes(bank));
             }
             
-            // Helper function to check if line is a field separator (new bank entry)
-            function isNewBankEntry(line) {
-                const upperLine = line.toUpperCase();
-                // Check for explicit bank indicators - ALL FORMATS
-                if (upperLine.match(/^(KAS\s+)?BANK\s*:/i) || 
-                    upperLine.match(/^(KAS\s+)?BANK\s+/i) ||
-                    upperLine.match(/^NAMA\s*BANK\s*:/i)) {
-                    return true;
+            // SUPER FLEXIBLE: Detect field type dari ANY format
+            function detectFieldType(line) {
+                // Clean: remove asterisks, normalize spaces
+                const cleanLine = line.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
+                const upperLine = cleanLine.toUpperCase();
+                
+                // Skip @ lines
+                if (line.match(/^@/)) return { type: 'skip' };
+                
+                // INFO keywords - very loose matching
+                if (upperLine.match(/^INFO/i)) {
+                    return { type: 'info', value: cleanLine.replace(/^INFO\s*:?\s*/i, '').trim() };
                 }
-                // Check if line contains bank name and some indicator words
-                if (containsBankName(line)) {
-                    if (upperLine.match(/\(BERSIH\)/i) || 
-                        upperLine.match(/\(KOTOR\)/i) ||
-                        upperLine.match(/\(\s*KAS\s+(BERSIH|KOTOR)\s*\)/i) ||
-                        upperLine.match(/^(KAS\s+)?[A-Z]{3,}/i)) {
-                        return true;
+                
+                // PERIHAL keywords - berbagai variasi
+                if (upperLine.match(/^(PERIHAL|KETERANGAN|PRIHAL|SUBJECT)/i)) {
+                    return { type: 'perihal', value: cleanLine.replace(/^(PERIHAL|KETERANGAN|PRIHAL|SUBJECT)\s*:?\s*/i, '').trim() };
+                }
+                
+                // DARI SITUS keywords
+                if (upperLine.match(/^(DARI|SITUS|FROM|SITE)/i) && upperLine.match(/(SITUS|SITE)/i)) {
+                    return { type: 'dari_situs', value: cleanLine.replace(/^(DARI\s*)?(SITUS|SITE)\s*:?\s*/i, '').replace(/@/g, '').trim() };
+                }
+                
+                // BANK detection - SUPER FLEXIBLE
+                // Pattern 1: Kata "BANK" atau "Nama Bank" di awal
+                if (upperLine.match(/^(JENIS\s*)?BANK/i) || upperLine.match(/^NAMA\s*BANK/i)) {
+                    return { type: 'bank', value: extractBankName(cleanLine) };
+                }
+                
+                // Pattern 2: KAS BERSIH/KOTOR pattern
+                if (upperLine.match(/^KAS\s+(BESAR\s+)?(BERSIH|KOTOR)/i)) {
+                    return { type: 'bank', value: extractBankName(cleanLine) };
+                }
+                
+                // Pattern 3: Bank name + (BERSIH/KOTOR/KAS)
+                if (containsBankName(cleanLine)) {
+                    if (upperLine.match(/\(\s*(KAS\s+)?(BE\s*RSIH|BERSIH|KO\s*TOR|KOTOR)\s*\)/i) ||
+                        upperLine.match(/(KAS\s+)?(BERSIH|KOTOR|BESAR)/i)) {
+                        return { type: 'bank', value: extractBankName(cleanLine) };
                     }
                 }
-                return false;
+                
+                // Pattern 4: Direct bank name at start (BCA, MANDIRI, etc)
+                const directBankMatch = upperLine.match(/^(BCA|MANDIRI|BNI|BRI|DANAMON|CIMB|PERMATA|OCBC|PANIN|BSI|SINARMAS|BTN|MEGA|NIAGA|BUKOPIN|SEABANK|JAGO|NEO|JENIUS|MBNI|IBBIZ)/i);
+                if (directBankMatch && (upperLine.match(/[\(\n]/) || upperLine.length < 20)) {
+                    return { type: 'bank', value: extractBankName(cleanLine) };
+                }
+                
+                // NAMA REKENING detection - SUPER FLEXIBLE
+                if (upperLine.match(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?(\s*:|$)/i) && 
+                    !upperLine.match(/NAMA\s*BANK/i)) {
+                    const value = cleanLine.split(/:\s*/);
+                    if (value.length > 1) {
+                        return { type: 'nama', value: value.slice(1).join(':').trim() };
+                    } else {
+                        return { type: 'nama', value: cleanLine.replace(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?\s*:?\s*/i, '').trim() };
+                    }
+                }
+                
+                // NOMOR REKENING detection - SUPER FLEXIBLE  
+                if (upperLine.match(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM)(\s+(REKENING|REK|ACCOUNT))?(\s*:|$)/i) && 
+                    !upperLine.match(/NAMA/i)) {
+                    const value = cleanLine.split(/:\s*/);
+                    if (value.length > 1) {
+                        return { type: 'nomor', value: value.slice(1).join(':').trim() };
+                    } else {
+                        return { type: 'nomor', value: cleanLine.replace(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM)(\s+(REKENING|REK|ACCOUNT))?\s*:?\s*/i, '').trim() };
+                    }
+                }
+                
+                // NOMINAL detection - SUPER FLEXIBLE
+                if (upperLine.match(/^(NOMINAL|RP\.?|JUMLAH|AMOUNT|TOTAL|NILAI)(\s*:|$)/i)) {
+                    const value = cleanLine.split(/:\s*/);
+                    let nominalStr = '';
+                    if (value.length > 1) {
+                        nominalStr = value.slice(1).join(':').trim();
+                    } else {
+                        nominalStr = cleanLine.replace(/^(NOMINAL|RP\.?|JUMLAH|AMOUNT|TOTAL|NILAI)\s*:?\s*/i, '').trim();
+                    }
+                    return { type: 'nominal', value: parseNominal(nominalStr) };
+                }
+                
+                // Standalone NUMBER (10+ digits) - likely account number
+                if (line.match(/^\d{10,}$/)) {
+                    return { type: 'standalone_number', value: line };
+                }
+                
+                // Standalone NAME (capitalized text, no bank names)
+                if (line.match(/^[A-Z][A-Za-z\s\.]{2,}$/) && 
+                    !containsBankName(line) && 
+                    !upperLine.match(/BERSIH|KOTOR|KAS/)) {
+                    return { type: 'standalone_name', value: line };
+                }
+                
+                return { type: 'unknown' };
             }
             
+            // MAIN PARSING LOOP - Using intelligent field detection
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
-                const upperLine = line.toUpperCase();
-                console.log(`Line ${i}: "${line}"`);
+                const detected = detectFieldType(line);
                 
-                // Skip lines starting with @
-                if (line.match(/^@/i)) {
-                    console.log('  → Skipping @ line');
-                    continue;
-                }
+                console.log(`Line ${i}: "${line}" → ${detected.type}`);
                 
-                // Parse Info - ALL FORMATS
-                if (upperLine.match(/^INFO\s*:/i)) {
-                    infoSection.info = line.replace(/Info\s*:\s*/i, '').trim();
-                    console.log('  → Info:', infoSection.info);
-                } 
-                // Parse Perihal - ALL FORMATS
-                else if (upperLine.match(/^PERIHAL\s*:/i) || upperLine.match(/^KETERANGAN\s*:/i)) {
-                    infoSection.perihal = line.replace(/(Perihal|Keterangan)\s*:\s*/i, '').trim();
-                    console.log('  → Perihal:', infoSection.perihal);
-                } 
-                // Parse Dari Situs - ALL FORMATS
-                else if (upperLine.match(/^DARI\s*(SITUS)?\s*:/i) || upperLine.match(/^SITUS\s*:/i)) {
-                    infoSection.dariSitus = line.replace(/^(Dari\s*)?(Situs\s*)?\s*:\s*/i, '').replace(/@/g, '').trim();
-                    console.log('  → Dari Situs:', infoSection.dariSitus);
-                } 
-                // Parse Bank - ALL FORMATS (BANK :, Bank, Bank BCA, etc)
-                else if (isNewBankEntry(line)) {
-                    // Save previous entry if exists
-                    if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                        console.log('  → Saving previous entry:', currentEntry);
-                        entries.push({...currentEntry});
-                    }
-                    currentEntry = {};
-                    
-                    // Extract bank name from anywhere in the line
-                    currentEntry.bank = extractBankName(line);
-                    console.log('  → New Bank detected:', currentEntry.bank);
-                } 
-                // Parse Nama Rekening - ALL FORMATS (Nama Rekening, NAMA REK, Nama, etc)
-                else if (upperLine.match(/^NAMA\s*(REKENING|REK|PENERIMA|PEMILIK)?(\s*:|\s+)/i) && 
-                         !upperLine.match(/NAMA\s*BANK/i)) {
-                    const namaPart = line.split(/:\s*/);
-                    if (namaPart.length > 1) {
-                        currentEntry.namaRekening = namaPart.slice(1).join(':').trim();
-                    } else {
-                        // Handle format without colon - remove the label
-                        currentEntry.namaRekening = line.replace(/^NAMA\s*(REKENING|REK|PENERIMA|PEMILIK)?\s*/i, '').trim();
-                    }
-                    console.log('  → Nama Rekening:', currentEntry.namaRekening);
-                } 
-                // Parse Nomor Rekening - ALL FORMATS (Nomor Rekening, NOMOR REK, No Rekening, NO REKENING, etc)
-                else if (upperLine.match(/^(NOMOR|NO\.?)\s*(REKENING|REK)?(\s*:|\s+)/i) && 
-                         !upperLine.match(/NAMA/i)) {
-                    const nomorPart = line.split(/:\s*/);
-                    if (nomorPart.length > 1) {
-                        currentEntry.nomorRekening = nomorPart.slice(1).join(':').trim();
-                    } else {
-                        // Handle format without colon - remove the label
-                        currentEntry.nomorRekening = line.replace(/^(NOMOR|NO\.?)\s*(REKENING|REK)?\s*/i, '').trim();
-                    }
-                    console.log('  → Nomor Rekening:', currentEntry.nomorRekening);
-                } 
-                // Parse Nominal - ALL FORMATS (Nominal, RP, Jumlah, Amount, etc)
-                else if (upperLine.match(/^(NOMINAL|JUMLAH|AMOUNT|RP)(\s*:|\s+)/i)) {
-                    const nominalPart = line.split(/:\s*/);
-                    let nominalStr = '';
-                    if (nominalPart.length > 1) {
-                        nominalStr = nominalPart.slice(1).join(':').trim();
-                    } else {
-                        // Handle format without colon - remove the label
-                        nominalStr = line.replace(/^(NOMINAL|JUMLAH|AMOUNT|RP)\s*/i, '').trim();
-                    }
-                    const nominal = parseNominal(nominalStr);
-                    currentEntry.nominal = nominal;
-                    console.log('  → Nominal:', nominal);
-                    
-                    // Save entry after nominal
-                    if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                        console.log('  → Saving entry with nominal:', currentEntry);
-                        entries.push({...currentEntry});
-                        currentEntry = {};
-                    }
-                }
-                // Try to detect standalone values (numbers that might be rekening/nominal)
-                else if (line.match(/^\d{10,}$/)) {
-                    // Long number, might be account number
-                    if (!currentEntry.nomorRekening) {
-                        currentEntry.nomorRekening = line;
-                        console.log('  → Detected Nomor Rekening (standalone):', currentEntry.nomorRekening);
-                    }
-                }
-                // Try to detect name (all caps text or capitalized text)
-                else if (line.match(/^[A-Z][A-Za-z\s\.]{2,}$/) && !containsBankName(line) && !upperLine.match(/BERSIH|KOTOR/)) {
-                    if (!currentEntry.namaRekening && currentEntry.bank) {
-                        currentEntry.namaRekening = line;
-                        console.log('  → Detected Nama Rekening (standalone):', currentEntry.namaRekening);
-                    }
+                switch (detected.type) {
+                    case 'skip':
+                        console.log('  → Skipping');
+                        break;
+                        
+                    case 'info':
+                        infoSection.info = detected.value;
+                        console.log('  → Info:', detected.value);
+                        break;
+                        
+                    case 'perihal':
+                        infoSection.perihal = detected.value;
+                        console.log('  → Perihal:', detected.value);
+                        break;
+                        
+                    case 'dari_situs':
+                        infoSection.dariSitus = detected.value;
+                        console.log('  → Dari Situs:', detected.value);
+                        break;
+                        
+                    case 'bank':
+                        // Save previous entry if exists
+                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                            console.log('  → Saving previous entry:', currentEntry);
+                            entries.push({...currentEntry});
+                        }
+                        currentEntry = { bank: detected.value };
+                        console.log('  → New Bank:', detected.value);
+                        break;
+                        
+                    case 'nama':
+                        currentEntry.namaRekening = detected.value;
+                        console.log('  → Nama:', detected.value);
+                        break;
+                        
+                    case 'nomor':
+                        currentEntry.nomorRekening = detected.value;
+                        console.log('  → Nomor:', detected.value);
+                        break;
+                        
+                    case 'nominal':
+                        currentEntry.nominal = detected.value;
+                        console.log('  → Nominal:', detected.value);
+                        
+                        // Auto-save after nominal detected
+                        if (currentEntry.bank) {
+                            console.log('  → Auto-saving entry with nominal');
+                            entries.push({...currentEntry});
+                            currentEntry = {};
+                        }
+                        break;
+                        
+                    case 'standalone_number':
+                        // Smart assignment: if no nomor yet, assign it
+                        if (!currentEntry.nomorRekening && currentEntry.bank) {
+                            currentEntry.nomorRekening = detected.value;
+                            console.log('  → Auto-detected Nomor (standalone):', detected.value);
+                        }
+                        break;
+                        
+                    case 'standalone_name':
+                        // Smart assignment: if bank exists but no name yet
+                        if (!currentEntry.namaRekening && currentEntry.bank) {
+                            currentEntry.namaRekening = detected.value;
+                            console.log('  → Auto-detected Nama (standalone):', detected.value);
+                        }
+                        break;
                 }
             }
             

@@ -1014,6 +1014,15 @@ Dan berbagai format lainnya!"></textarea>
             // Clean the string: remove asterisks, extra spaces
             let cleanStr = bankStr.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
             
+            // Remove common prefixes (including TYPE BANK)
+            cleanStr = cleanStr.replace(/^(TYPE\s+BANK|JENIS\s+BANK|NAMA\s+BANK|BANK|KAS)\s*:?\s*/i, '');
+            
+            // Remove status indicators in parentheses
+            cleanStr = cleanStr.replace(/\(\s*(KAS\s+)?(BE\s*RSIH|BERSIH|KO\s*TOR|KOTOR|BESAR)\s*\)/gi, '');
+            
+            // Remove status keywords without parentheses
+            cleanStr = cleanStr.replace(/\b(KAS|BESAR|BERSIH|KOTOR)\b/gi, '').replace(/\s+/g, ' ').trim();
+            
             const bankNames = {
                 'MANDIRI': 'MANDIRI',
                 'BNI': 'BNI',
@@ -1126,18 +1135,33 @@ Dan berbagai format lainnya!"></textarea>
                     return { type: 'dari_situs', value: cleanLine.replace(/^(DARI\s*)?(SITUS|SITE)\s*:?\s*/i, '').replace(/@/g, '').trim() };
                 }
                 
+                // QRIS / EMAIL FORMAT DETECTION
+                if (upperLine.match(/^(SALDO\s+)?QRIS/i)) {
+                    return { type: 'qris_account', value: cleanLine };
+                }
+                
+                if (upperLine.match(/^(ACCOUNT|EMAIL)\s*:/i)) {
+                    return { type: 'qris_account', value: cleanLine.replace(/^(ACCOUNT|EMAIL)\s*:?\s*/i, '').trim() };
+                }
+                
                 // BANK detection - SUPER FLEXIBLE
-                // Pattern 1: Kata "BANK" atau "Nama Bank" di awal
+                // Pattern 1: TYPE BANK (NEW!)
+                if (upperLine.match(/^TYPE\s+BANK/i) || upperLine.match(/^JENIS\s+BANK/i)) {
+                    return { type: 'bank', value: extractBankName(cleanLine) };
+                }
+                
+                // Pattern 2: Kata "BANK" atau "Nama Bank" di awal
                 if (upperLine.match(/^(JENIS\s*)?BANK/i) || upperLine.match(/^NAMA\s*BANK/i)) {
                     return { type: 'bank', value: extractBankName(cleanLine) };
                 }
                 
-                // Pattern 2: KAS BERSIH/KOTOR pattern
+                // Pattern 3: KAS BERSIH/KOTOR pattern (standalone or with bank)
                 if (upperLine.match(/^KAS\s+(BESAR\s+)?(BERSIH|KOTOR)/i)) {
+                    // Check if next line might be bank name
                     return { type: 'bank', value: extractBankName(cleanLine) };
                 }
                 
-                // Pattern 3: Bank name + (BERSIH/KOTOR/KAS)
+                // Pattern 4: Bank name + (BERSIH/KOTOR/KAS)
                 if (containsBankName(cleanLine)) {
                     if (upperLine.match(/\(\s*(KAS\s+)?(BE\s*RSIH|BERSIH|KO\s*TOR|KOTOR)\s*\)/i) ||
                         upperLine.match(/(KAS\s+)?(BERSIH|KOTOR|BESAR)/i)) {
@@ -1145,13 +1169,14 @@ Dan berbagai format lainnya!"></textarea>
                     }
                 }
                 
-                // Pattern 4: Direct bank name at start (BCA, MANDIRI, etc)
+                // Pattern 5: Direct bank name at start (BCA, MANDIRI, etc)
                 const directBankMatch = upperLine.match(/^(BCA|MANDIRI|BNI|BRI|DANAMON|CIMB|PERMATA|OCBC|PANIN|BSI|SINARMAS|BTN|MEGA|NIAGA|BUKOPIN|SEABANK|JAGO|NEO|JENIUS|MBNI|IBBIZ)/i);
                 if (directBankMatch && (upperLine.match(/[\(\n]/) || upperLine.length < 20)) {
                     return { type: 'bank', value: extractBankName(cleanLine) };
                 }
                 
                 // NAMA REKENING detection - SUPER FLEXIBLE
+                // Support: NAMA REKENING, NAMA REK, Nama Rek, NAMA, dll
                 if (upperLine.match(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?(\s*:|$)/i) && 
                     !upperLine.match(/NAMA\s*BANK/i)) {
                     const value = cleanLine.split(/:\s*/);
@@ -1162,14 +1187,15 @@ Dan berbagai format lainnya!"></textarea>
                     }
                 }
                 
-                // NOMOR REKENING detection - SUPER FLEXIBLE  
-                if (upperLine.match(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM)(\s+(REKENING|REK|ACCOUNT))?(\s*:|$)/i) && 
+                // NOMOR REKENING detection - SUPER FLEXIBLE (including "Rek", "NO REK")
+                // Support: NOMOR REKENING, NO REKENING, NO REK, NOMOR REK, Rek, dll
+                if (upperLine.match(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM|REK)(\s+(REKENING|REK|ACCOUNT))?(\s*:|$)/i) && 
                     !upperLine.match(/NAMA/i)) {
                     const value = cleanLine.split(/:\s*/);
                     if (value.length > 1) {
                         return { type: 'nomor', value: value.slice(1).join(':').trim() };
                     } else {
-                        return { type: 'nomor', value: cleanLine.replace(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM)(\s+(REKENING|REK|ACCOUNT))?\s*:?\s*/i, '').trim() };
+                        return { type: 'nomor', value: cleanLine.replace(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM|REK)(\s+(REKENING|REK|ACCOUNT))?\s*:?\s*/i, '').trim() };
                     }
                 }
                 
@@ -1201,6 +1227,7 @@ Dan berbagai format lainnya!"></textarea>
             }
             
             // MAIN PARSING LOOP - Using intelligent field detection
+            let lastLine = null;
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 const detected = detectFieldType(line);
@@ -1227,14 +1254,32 @@ Dan berbagai format lainnya!"></textarea>
                         console.log('  → Dari Situs:', detected.value);
                         break;
                         
+                    case 'qris_account':
+                        // QRIS format - treat as bank with email/account
+                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
+                            console.log('  → Saving previous entry:', currentEntry);
+                            entries.push({...currentEntry});
+                        }
+                        currentEntry = { bank: 'QRIS', nomorRekening: detected.value };
+                        console.log('  → QRIS Account:', detected.value);
+                        break;
+                        
                     case 'bank':
                         // Save previous entry if exists
                         if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
                             console.log('  → Saving previous entry:', currentEntry);
                             entries.push({...currentEntry});
                         }
-                        currentEntry = { bank: detected.value };
-                        console.log('  → New Bank:', detected.value);
+                        
+                        // Check if previous line was "KAS BERSIH/KOTOR" - multi-line bank format
+                        if (lastLine && lastLine.match(/^KAS\s+(BERSIH|KOTOR)$/i)) {
+                            const status = lastLine.match(/(BERSIH|KOTOR)/i)[0];
+                            currentEntry = { bank: detected.value + ' (' + status + ')' };
+                            console.log('  → Multi-line Bank:', currentEntry.bank);
+                        } else {
+                            currentEntry = { bank: detected.value };
+                            console.log('  → New Bank:', detected.value);
+                        }
                         break;
                         
                     case 'nama':
@@ -1275,6 +1320,9 @@ Dan berbagai format lainnya!"></textarea>
                         }
                         break;
                 }
+                
+                // Remember last line for multi-line format detection
+                lastLine = line;
             }
             
             // Save last entry if exists

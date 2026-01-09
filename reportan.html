@@ -1,64 +1,109 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Aplikasi Memo Tvtoto - Sistem Manajemen Memo dan Report">
   <title>Memo Tvtoto</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- External Resources -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="icon" type="image/x-icon" href="https://cdn.areabermain.club/assets/cdn/az1/2024/08/20/20240820/d4dd5539892657c7150b74d894deedfe/logo-tvtoto.png">
+  
   <style>
+    /* ==================== CSS VARIABLES ==================== */
     :root {
-      --primary-color: #1A202C;
-      --secondary-color: #2D3748;
-      --accent-color: #F6E05E;
-      --light-color: #F7FAFC;
-      --lighter-color: #E2E8F0;
-      --dark-color: #2D3748;
-      --darker-color: #1A202C;
-      --border-color: rgba(160, 174, 192, 0.2);
-      --success-color: #2e8b57;
-      --error-color: #c23b22;
-      --text-primary: #FFFFFF;
-      --text-secondary: #E2E8F0;
-      --sidebar-icon-color: #A0AEC0;
-      --sidebar-active-icon-color: #F6E05E;
-      --panel-transition: all 0.3s ease;
-      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      --sidebar-item-bg: rgba(45, 55, 72, 0.4);
-      --sidebar-item-hover-bg: rgba(45, 55, 72, 0.6);
-      --sidebar-item-active-bg: rgba(45, 55, 72, 0.6);
-      --sidebar-section-bg: rgba(26, 32, 44, 0.6);
-      --section-header-bg: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
-      --title-bg-color: rgba(74, 85, 104, 0.6);
-      --description-bg-color: rgba(45, 55, 72, 0.6);
-      --new-badge-color: #F56565;
-      --edit-bg-color: rgba(45, 55, 72, 0.9);
-
-      /* Warna menu */
-      --memo-utama-color: #4bc0c0;
-      --report-kendala-color: #ff9f40;
-      --report-linetogel-color: #9966ff;
-      --prediksi-togel-color: #F687B3;
-      --jadwal-prediksi-menu-color: #9F7AEA;
+      /* Color Palette */
+      --clr-primary-900: #0f1419;
+      --clr-primary-800: #1a202c;
+      --clr-primary-700: #2d3748;
+      --clr-primary-600: #4a5568;
+      --clr-accent-500: #fbbf24;
+      --clr-accent-400: #fcd34d;
+      --clr-light-100: #f7fafc;
+      --clr-light-200: #e2e8f0;
+      --clr-success: #10b981;
+      --clr-error: #ef4444;
+      --clr-warning: #f59e0b;
+      
+      /* Category Colors */
+      --clr-memo: #06b6d4;
+      --clr-report-site: #a855f7;
+      --clr-report-tvtoto: #f97316;
+      --clr-prediksi: #ec4899;
+      
+      /* Typography */
+      --font-primary: 'DM Sans', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+      
+      /* Spacing */
+      --space-xs: 0.25rem;
+      --space-sm: 0.5rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      
+      /* Effects */
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.2);
+      --transition-fast: 150ms ease;
+      --transition-base: 250ms ease;
+      --transition-slow: 350ms ease;
+      --blur-glass: blur(10px);
+      
+      /* Layout */
+      --sidebar-width: 280px;
+      --panel-width: 280px;
     }
 
-    /* Loading Animation */
+    /* ==================== RESET & BASE ==================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      color: var(--clr-light-100);
+      line-height: 1.6;
+      overflow: hidden;
+      position: relative;
+      background: url('https://statics.hokibagus.club/tvtoto/background/tvtoto_backgroundweb.png') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, 
+        rgba(15, 20, 25, 0.92) 0%, 
+        rgba(26, 32, 44, 0.88) 50%,
+        rgba(45, 55, 72, 0.85) 100%
+      );
+      z-index: -1;
+    }
+
+    /* ==================== LOADING OVERLAY ==================== */
     .loading-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(26, 32, 44, 0.95);
+      inset: 0;
+      background: rgba(15, 20, 25, 0.98);
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       z-index: 9999;
       opacity: 1;
-      transition: opacity 0.5s ease;
+      transition: opacity 500ms ease;
     }
 
     .loading-overlay.hidden {
@@ -66,277 +111,187 @@
       pointer-events: none;
     }
 
-    .loading-content {
-      text-align: center;
-    }
-
     .loading-spinner {
-      width: 50px;
-      height: 50px;
-      border: 4px solid rgba(246, 224, 94, 0.3);
-      border-top: 4px solid var(--accent-color);
+      width: 48px;
+      height: 48px;
+      border: 3px solid rgba(251, 191, 36, 0.2);
+      border-top-color: var(--clr-accent-500);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto 20px;
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      to { transform: rotate(360deg); }
     }
 
     .loading-text {
-      color: var(--accent-color);
-      font-size: 16px;
+      position: absolute;
+      margin-top: 80px;
+      color: var(--clr-accent-500);
+      font-size: 0.875rem;
       font-weight: 600;
+      letter-spacing: 0.05em;
+      font-family: var(--font-mono);
     }
-    
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
+
+    /* ==================== CLOCK ==================== */
+    #clock {
+      position: fixed;
+      top: var(--space-lg);
+      left: calc(var(--sidebar-width) + var(--space-lg));
+      padding: var(--space-sm) var(--space-md);
+      background: var(--clr-primary-800);
+      color: var(--clr-accent-500);
+      border-radius: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      z-index: 100;
+      backdrop-filter: var(--blur-glass);
+    }
+
+    /* ==================== LAYOUT ==================== */
+    .app-container {
       display: flex;
       height: 100vh;
       overflow: hidden;
-      color: var(--text-primary);
-      line-height: 1.6;
-      position: relative;
-      font-weight: 500;
-      background: url('https://statics.hokibagus.club/tvtoto/background/tvtoto_backgroundweb.png') no-repeat center center fixed;
-      background-size: cover;
-    }
-    
-    body::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(26, 32, 44, 0.85);
-      z-index: -1;
     }
 
-    #clock {
-      position: fixed;
-      top: 20px;
-      left: 310px;
-      font-size: 14px;
-      font-weight: bold;
-      background-color: var(--secondary-color);
-      color: var(--accent-color);
-      padding: 6px 12px;
-      border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-      z-index: 9999;
-      font-family: 'Inter', sans-serif;
-      border: 1px solid var(--border-color);
-    }
-    
+    /* ==================== SIDEBAR ==================== */
     .sidebar {
-      width: 260px;
+      width: var(--sidebar-width);
       height: 100vh;
       overflow-y: auto;
-      padding: 20px;
-      background: linear-gradient(160deg, rgba(45, 55, 72, 0.95) 0%, rgba(26, 32, 44, 0.98) 100%);
-      border-right: 1px solid var(--border-color);
-      box-shadow: var(--card-shadow);
-      backdrop-filter: blur(5px);
-      z-index: 1;
+      padding: var(--space-lg);
+      background: linear-gradient(160deg, 
+        rgba(45, 55, 72, 0.95) 0%, 
+        rgba(26, 32, 44, 0.98) 100%
+      );
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: var(--blur-glass);
     }
 
     .sidebar-header {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 25px;
-      color: var(--text-primary);
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border-color);
       display: flex;
       align-items: center;
-      letter-spacing: 0.5px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      gap: var(--space-md);
+      padding-bottom: var(--space-lg);
+      margin-bottom: var(--space-lg);
+      border-bottom: 2px solid rgba(251, 191, 36, 0.2);
     }
 
     .sidebar-header i {
-      margin-right: 12px;
-      color: var(--accent-color);
-      font-size: 22px;
-    }
-    
-    .sidebar-section {
-      margin-bottom: 12px;
-      background: var(--sidebar-section-bg);
-      padding: 0;
-      border-radius: 8px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      transition: var(--panel-transition);
-      overflow: hidden;
+      font-size: 1.25rem;
+      color: var(--clr-accent-500);
     }
 
-    .sidebar-section-header {
-      font-size: 12px;
-      font-weight: 600;
-      margin-bottom: 0;
-      color: var(--text-primary);
-      padding: 12px 15px;
-      border-bottom: none;
+    .sidebar-header h1 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      letter-spacing: 0.025em;
+    }
+
+    /* Section Styling */
+    .sidebar-section {
+      margin-bottom: var(--space-md);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(26, 32, 44, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all var(--transition-base);
+    }
+
+    .sidebar-section:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .section-header {
       display: flex;
       align-items: center;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      background: var(--section-header-bg);
-      border-radius: 0;
-      box-shadow: none;
-      border-left: 3px solid var(--accent-color);
-      transition: var(--panel-transition);
+      gap: var(--space-sm);
+      padding: var(--space-md);
+      background: var(--clr-primary-800);
       cursor: pointer;
       user-select: none;
+      transition: all var(--transition-fast);
+      border-left: 3px solid transparent;
     }
 
-    .sidebar-section-header:hover {
-      transform: translateX(5px);
-      background: rgba(45, 55, 72, 0.8);
+    .section-header:hover {
+      background: rgba(45, 55, 72, 0.9);
+      transform: translateX(4px);
     }
 
-    .sidebar-section:not(.collapsed) .sidebar-section-header {
-      background: rgba(45, 55, 72, 0.8);
+    .section-header i:first-child {
+      font-size: 0.875rem;
+      min-width: 16px;
     }
 
-    .sidebar-section-header i {
-      margin-right: 10px;
-      font-size: 14px;
-      color: var(--accent-color);
+    .section-header span {
+      flex: 1;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
     }
 
-    .sidebar-section-header .toggle-icon {
-      margin-left: auto;
-      transition: transform 0.3s ease;
-      font-size: 12px;
+    .section-header .toggle-icon {
+      font-size: 0.75rem;
+      transition: transform var(--transition-base);
     }
 
-    .sidebar-section-content {
-      max-height: 1000px;
-      transition: max-height 0.3s ease, padding 0.3s ease;
-      padding: 0 15px;
-    }
-
-    .sidebar-section.collapsed .sidebar-section-content {
-      max-height: 0 !important;
-      padding: 0 15px;
-      overflow: hidden;
-    }
-
-    .sidebar-section:not(.collapsed) .sidebar-section-header .toggle-icon {
-      transform: rotate(0deg);
-    }
-
-    .sidebar-section.collapsed .sidebar-section-header .toggle-icon {
+    .sidebar-section.collapsed .toggle-icon {
       transform: rotate(-90deg);
     }
 
-    /* Warna header section */
-    #main-menu-header {
-      background: rgba(75, 192, 192, 0.15);
-      border-left: 3px solid var(--memo-utama-color);
-      color: var(--memo-utama-color);
-    }
-    #main-menu-header:hover {
-      background: rgba(75, 192, 192, 0.25);
-    }
-    #main-menu-header i {
-      color: var(--memo-utama-color);
+    /* Category-specific colors */
+    .section-header.memo { 
+      border-left-color: var(--clr-memo);
+      color: var(--clr-memo);
     }
 
-    #jadwal-prediksi-header {
-      background: rgba(159, 122, 234, 0.15);
-      border-left: 3px solid var(--jadwal-prediksi-menu-color);
-      color: var(--jadwal-prediksi-menu-color);
-    }
-    #jadwal-prediksi-header:hover {
-      background: rgba(159, 122, 234, 0.25);
-    }
-    #jadwal-prediksi-header i {
-      color: var(--jadwal-prediksi-menu-color);
+    .section-header.report-site { 
+      border-left-color: var(--clr-report-site);
+      color: var(--clr-report-site);
     }
 
-    /* Warna sub-section */
-    #memo-utama-header {
-      background: rgba(75, 192, 192, 0.15);
-      border-left: 3px solid var(--memo-utama-color);
-      color: var(--memo-utama-color);
-    }
-    #memo-utama-header:hover {
-      background: rgba(75, 192, 192, 0.25);
-    }
-    #memo-utama-header i {
-      color: var(--memo-utama-color);
+    .section-header.report-tvtoto { 
+      border-left-color: var(--clr-report-tvtoto);
+      color: var(--clr-report-tvtoto);
     }
 
-    #report-situs-header {
-      background: rgba(153, 102, 255, 0.15);
-      border-left: 3px solid var(--report-linetogel-color);
-      color: var(--report-linetogel-color);
-    }
-    #report-situs-header:hover {
-      background: rgba(153, 102, 255, 0.25);
-    }
-    #report-situs-header i {
-      color: var(--report-linetogel-color);
+    .section-header.prediksi { 
+      border-left-color: var(--clr-prediksi);
+      color: var(--clr-prediksi);
     }
 
-    #report-tvtoto-header {
-      background: rgba(255, 159, 64, 0.15);
-      border-left: 3px solid var(--report-kendala-color);
-      color: var(--report-kendala-color);
-    }
-    #report-tvtoto-header:hover {
-      background: rgba(255, 159, 64, 0.25);
-    }
-    #report-tvtoto-header i {
-      color: var(--report-kendala-color);
+    .section-content {
+      max-height: 2000px;
+      overflow: hidden;
+      transition: max-height var(--transition-slow), padding var(--transition-slow);
+      padding: 0 var(--space-md);
     }
 
-    #prediksi-togel-header {
-      background: rgba(246, 135, 179, 0.15);
-      border-left: 3px solid var(--prediksi-togel-color);
-      color: var(--prediksi-togel-color);
+    .sidebar-section.collapsed .section-content {
+      max-height: 0;
+      padding: 0 var(--space-md);
     }
-    #prediksi-togel-header:hover {
-      background: rgba(246, 135, 179, 0.25);
-    }
-    #prediksi-togel-header i {
-      color: var(--prediksi-togel-color);
-    }
-    
+
     .sidebar-item {
-      padding: 10px 12px 10px 45px;
-      margin: 5px 0;
-      background: var(--sidebar-item-bg);
+      position: relative;
+      padding: var(--space-sm) var(--space-md) var(--space-sm) 2.5rem;
+      margin: var(--space-xs) 0;
+      background: rgba(45, 55, 72, 0.4);
       border-radius: 6px;
       cursor: pointer;
-      color: var(--text-secondary);
+      font-size: 0.8125rem;
       font-weight: 500;
+      color: var(--clr-light-200);
       border-left: 3px solid transparent;
-      position: relative;
-      transition: var(--panel-transition);
-      font-size: 13px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-      transform: translateX(0);
-    }
-
-    .sidebar-item:hover {
-      transform: translateX(5px);
-      background: var(--sidebar-item-hover-bg);
-      border-left: 3px solid var(--accent-color);
-      color: var(--text-primary);
-    }
-
-    .sidebar-item.active {
-      color: var(--accent-color);
-      font-weight: 600;
-      border-left: 3px solid var(--accent-color);
+      transition: all var(--transition-fast);
     }
 
     .sidebar-item::before {
@@ -344,124 +299,55 @@
       font-family: 'Font Awesome 6 Free';
       font-weight: 900;
       position: absolute;
-      left: 18px;
+      left: var(--space-md);
       top: 50%;
       transform: translateY(-50%);
-      color: var(--sidebar-icon-color);
-      font-size: 15px;
-      transition: var(--panel-transition);
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.875rem;
+      transition: color var(--transition-fast);
     }
 
-    .sidebar-item:hover::before,
+    .sidebar-item:hover {
+      background: rgba(45, 55, 72, 0.7);
+      border-left-color: var(--clr-accent-500);
+      color: var(--clr-light-100);
+      transform: translateX(4px);
+    }
+
+    .sidebar-item:hover::before {
+      color: var(--clr-accent-500);
+    }
+
+    .sidebar-item.active {
+      background: rgba(45, 55, 72, 0.8);
+      border-left-color: var(--clr-accent-500);
+      color: var(--clr-accent-500);
+      font-weight: 600;
+    }
+
     .sidebar-item.active::before {
-      color: var(--sidebar-active-icon-color);
+      color: var(--clr-accent-500);
     }
 
-    .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS IDN"]::before { content: '\f51e'; }
-    .sidebar-item[data-sheet="MEMO PEMBAGIAN BONUS PNG"]::before { content: '\f51e'; }
-    .sidebar-item[data-sheet="MEMO INFORMASI BANK"]::before { content: '\f19c'; }
-    .sidebar-item[data-sheet="MEMO KENDALA PERMAINAN"]::before { content: '\f11b'; }
-    .sidebar-item[data-sheet="MEMO KENDALA SISTEM"]::before { content: '\f085'; }
-    .sidebar-item[data-sheet="KETERLAMBATAN RESULT"]::before { content: '\f017'; }
-    .sidebar-item[data-sheet="SELESAI RESULT"]::before { content: '\f00c'; }
-    .sidebar-item[data-sheet="GANGGUAN SLOT"]::before { content: '\f11b'; }
-    .sidebar-item[data-sheet="SLOT MAINTENANCE"]::before { content: '\f085'; }
-    .sidebar-item[data-sheet="LIVEGAME GANGGUAN"]::before { content: '\f119'; }
-    .sidebar-item[data-sheet="LIVEGAME MAINTENANCE"]::before { content: '\f1e3'; }
-    .sidebar-item[data-sheet="TEMBAK IKAN MAINTENANCE"]::before { content: '\f6cf'; }
-    .sidebar-item[data-sheet="MAINTENANCE DAN GANGGUAN BOLA"]::before { content: '\f1e3'; }
-    .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS IDN"]::before { content: '\f0ac'; }
-    .sidebar-item[data-sheet="REPORT KENDALA ALL SITUS PNG"]::before { content: '\f0ac'; }
-    .sidebar-item[data-sheet="REPORT KENDALA KE IDN & PNG"]::before { content: '\f188'; }
-    .sidebar-item[data-sheet="REPORT KENDALA TVTOTO"]::before { content: '\f542'; }
-    .sidebar-item[data-sheet="REPORT KENDALA BANK & EWALLET"]::before { content: '\f09d'; }
-    .sidebar-item[data-sheet="PREDIKSI TOGEL IDN"]::before { content: '\f24e'; }
-    .sidebar-item[data-sheet="PREDIKSI TOGEL PNG"]::before { content: '\f24e'; }
-    
-    .right-panel {
-      width: 260px;
-      height: 100vh;
-      overflow-y: auto;
-      padding: 20px;
-      background: linear-gradient(160deg, rgba(45, 55, 72, 0.95) 0%, rgba(26, 32, 44, 0.98) 100%);
-      border-left: 1px solid var(--border-color);
-      box-shadow: var(--card-shadow);
-      backdrop-filter: blur(5px);
-      z-index: 1;
-      display: none;
-    }
+    /* Icon mapping */
+    .sidebar-item[data-sheet*="BONUS IDN"]::before,
+    .sidebar-item[data-sheet*="BONUS PNG"]::before { content: '\f51e'; }
+    .sidebar-item[data-sheet*="BANK"]::before { content: '\f19c'; }
+    .sidebar-item[data-sheet*="PERMAINAN"]::before { content: '\f11b'; }
+    .sidebar-item[data-sheet*="SISTEM"]::before { content: '\f085'; }
+    .sidebar-item[data-sheet*="KETERLAMBATAN"]::before { content: '\f017'; }
+    .sidebar-item[data-sheet*="SELESAI"]::before { content: '\f00c'; }
+    .sidebar-item[data-sheet*="SLOT"]::before { content: '\f11b'; }
+    .sidebar-item[data-sheet*="LIVEGAME"]::before { content: '\f119'; }
+    .sidebar-item[data-sheet*="TEMBAK"]::before { content: '\f6cf'; }
+    .sidebar-item[data-sheet*="BOLA"]::before { content: '\f1e3'; }
+    .sidebar-item[data-sheet*="ALL SITUS"]::before { content: '\f0ac'; }
+    .sidebar-item[data-sheet*="IDN & PNG"]::before { content: '\f188'; }
+    .sidebar-item[data-sheet*="TVTOTO"]::before { content: '\f542'; }
+    .sidebar-item[data-sheet*="EWALLET"]::before { content: '\f09d'; }
+    .sidebar-item[data-sheet*="PREDIKSI"]::before { content: '\f24e'; }
 
-    .right-panel-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      background: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      text-align: center;
-      border-radius: 8px;
-      margin-bottom: 20px;
-    }
-
-    .dual-logo {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 30px;
-      margin-bottom: 15px;
-    }
-
-    .logo-tvtoto, .logo-ziatogel {
-      height: 40px;
-      max-width: 150px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-      transition: transform 0.3s ease;
-    }
-
-    .logo-tvtoto:hover, .logo-ziatogel:hover {
-      transform: scale(1.05);
-    }
-
-    .panel-title {
-      color: white;
-      font-size: 1.4rem;
-      margin: 0;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-      font-weight: 600;
-      position: relative;
-      padding-bottom: 10px;
-    }
-    
-    .title-item {
-      padding: 12px 15px;
-      margin-bottom: 12px;
-      background: var(--sidebar-item-bg);
-      border-radius: 6px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-weight: 500;
-      transition: var(--panel-transition);
-      font-size: 14px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      border-left: 3px solid transparent;
-      position: relative;
-      transform: translateY(0);
-    }
-
-    .title-item:hover {
-      transform: translateY(-5px);
-      background: var(--sidebar-item-hover-bg);
-      color: var(--text-primary);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .title-item.active {
-      color: var(--accent-color);
-      font-weight: 600;
-      border-left: 3px solid var(--accent-color);
-    }
-    
+    /* ==================== MAIN CONTENT ==================== */
     .main-content {
       flex: 1;
       display: flex;
@@ -470,139 +356,211 @@
 
     .center-panel {
       flex: 1;
-      max-width: 800px;
-      padding: 25px;
-      overflow-y: auto;
+      max-width: 900px;
       margin: 0 auto;
-      z-index: 1;
-      background: rgba(26, 32, 44, 0.7);
-      backdrop-filter: blur(3px);
+      padding: var(--space-xl);
+      overflow-y: auto;
+      background: rgba(26, 32, 44, 0.5);
+      backdrop-filter: var(--blur-glass);
     }
 
-    .center-search-container {
-      margin-bottom: 25px;
+    /* Search */
+    .search-container {
       position: relative;
-      width: 100%;
       max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .center-search-input {
-      width: 100%;
-      padding: 12px 16px 12px 40px;
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 14px;
-      box-sizing: border-box;
-      background: var(--secondary-color);
-      color: var(--text-primary);
-      transition: var(--panel-transition);
-      font-weight: 500;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-
-    .center-search-input::placeholder {
-      color: var(--sidebar-icon-color);
-      font-weight: 500;
-    }
-
-    .center-search-input:focus {
-      outline: none;
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 3px rgba(246, 224, 94, 0.3);
-      background: var(--dark-color);
+      margin: 0 auto var(--space-xl);
     }
 
     .search-icon {
       position: absolute;
-      left: 15px;
+      left: var(--space-md);
       top: 50%;
       transform: translateY(-50%);
-      color: var(--sidebar-icon-color);
-      font-size: 14px;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .search-input {
+      width: 100%;
+      padding: var(--space-md) var(--space-md) var(--space-md) 2.5rem;
+      background: var(--clr-primary-700);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: var(--clr-light-100);
+      font-size: 0.875rem;
+      font-family: var(--font-primary);
+      transition: all var(--transition-base);
+    }
+
+    .search-input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--clr-accent-500);
+      background: var(--clr-primary-600);
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+    }
+
+    /* Autocomplete */
+    .autocomplete-items {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      right: 0;
+      background: var(--clr-primary-700);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      max-height: 320px;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      z-index: 10;
+    }
+
+    .autocomplete-items div {
+      padding: var(--space-md);
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      transition: background var(--transition-fast);
+    }
+
+    .autocomplete-items div:last-child {
+      border-bottom: none;
+    }
+
+    .autocomplete-items div:hover {
+      background: rgba(45, 55, 72, 0.8);
+    }
+
+    .autocomplete-items .autocomplete-active {
+      background: var(--clr-accent-500) !important;
+      color: var(--clr-primary-900) !important;
+    }
+
+    .autocomplete-items mark {
+      background: var(--clr-accent-500);
+      color: var(--clr-primary-900);
+      padding: 0 2px;
+      border-radius: 2px;
+      font-weight: 600;
+    }
+
+    /* Empty State */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+      text-align: center;
+      padding: var(--space-xl);
+      background: rgba(45, 55, 72, 0.3);
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: rgba(255, 255, 255, 0.2);
+      margin-bottom: var(--space-lg);
+    }
+
+    .empty-state p {
+      color: var(--clr-light-200);
+      max-width: 400px;
+      line-height: 1.6;
+    }
+
+    .empty-state p:first-of-type {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: var(--space-sm);
+    }
+
+    .empty-state p:last-of-type {
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+
+    /* Tables Container */
+    .tables-container {
+      display: none;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin: var(--space-xl) 0 var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 2px solid rgba(251, 191, 36, 0.2);
+      color: var(--clr-accent-500);
+      font-size: 1.125rem;
+      font-weight: 700;
+    }
+
+    .section-title i {
+      font-size: 1.25rem;
     }
 
     .info-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 15px;
-      background: var(--description-bg-color);
+      background: rgba(45, 55, 72, 0.6);
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: var(--card-shadow);
+      box-shadow: var(--shadow-md);
     }
 
-    #title-table {
-      background: var(--title-bg-color);
+    .info-table tr {
+      transition: background var(--transition-fast);
     }
 
-    #content-table {
-      background: var(--description-bg-color);
-    }
-
-    .info-table th {
-      background: var(--title-bg-color);
-      color: var(--accent-color);
-      padding: 12px 15px;
-      text-align: left;
-      font-weight: 600;
-      text-transform: uppercase;
-      font-size: 13px;
-      letter-spacing: 0.5px;
+    .info-table tr:hover {
+      background: rgba(45, 55, 72, 0.8);
     }
 
     .info-table td {
-      padding: 12px 15px;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      font-size: 14px;
-    }
-
-    #title-table td {
-      background: var(--title-bg-color);
-    }
-
-    #content-table td {
-      background: var(--description-bg-color);
+      padding: var(--space-md);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--clr-light-200);
+      font-size: 0.875rem;
+      line-height: 1.7;
     }
 
     .info-table tr:last-child td {
       border-bottom: none;
     }
 
-    #title-table tr:hover td {
-      background: rgba(74, 85, 104, 0.8);
+    .table-content {
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
-    #content-table tr:hover td {
-      background: rgba(45, 55, 72, 0.8);
-    }
-
+    /* Copy Button */
     .copy-btn {
-      background: var(--accent-color);
-      color: var(--darker-color);
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-weight: 600;
-      font-size: 14px;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--clr-accent-500);
+      color: var(--clr-primary-900);
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-primary);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
       min-width: 90px;
-      transition: var(--panel-transition);
-      letter-spacing: 0.5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: relative;
-      overflow: hidden;
+      justify-content: center;
     }
 
     .copy-btn:hover {
-      background: #ECC94B;
+      background: var(--clr-accent-400);
       transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      box-shadow: var(--shadow-md);
     }
 
     .copy-btn:active {
@@ -610,62 +568,196 @@
     }
 
     .copy-btn.copied {
-      background: var(--success-color);
+      background: var(--clr-success);
       color: white;
     }
 
-    .copy-btn.copied i {
-      display: none;
-    }
-
-    .copy-btn.copied::after {
-      content: ' Tersalin!';
-    }
-
     .copy-btn i {
-      margin-right: 6px;
-      font-size: 15px;
-      color: var(--darker-color);
-      transition: var(--panel-transition);
+      font-size: 0.875rem;
     }
 
-    h3 {
-      color: var(--accent-color);
-      margin-top: 30px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border-color);
-      font-weight: 600;
-      font-size: 18px;
-      letter-spacing: 0.5px;
+    /* Edit Button */
+    .edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      background: var(--clr-report-site);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-family: var(--font-primary);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+      min-width: 90px;
+      justify-content: center;
+      margin-left: var(--space-sm);
+    }
+
+    .edit-btn:hover {
+      background: #9333ea;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .edit-btn:active {
+      transform: translateY(0);
+    }
+
+    .edit-btn i {
+      font-size: 0.875rem;
+    }
+
+    /* Save & Cancel Buttons */
+    .save-btn {
+      background: var(--clr-success);
+      color: white;
+    }
+
+    .save-btn:hover {
+      background: #059669;
+    }
+
+    .cancel-btn {
+      background: var(--clr-error);
+      color: white;
+    }
+
+    .cancel-btn:hover {
+      background: #dc2626;
+    }
+
+    /* Button Container */
+    .button-container {
       display: flex;
+      gap: var(--space-sm);
       align-items: center;
     }
 
-    h3 i {
-      margin-right: 10px;
-      color: var(--accent-color);
-      font-size: 20px;
+    /* Editable Content */
+    .editable-content {
+      width: 100%;
+      min-height: 150px;
+      padding: var(--space-md);
+      background: var(--clr-primary-700);
+      border: 2px solid var(--clr-accent-500);
+      border-radius: 6px;
+      color: var(--clr-light-100);
+      font-family: var(--font-primary);
+      font-size: 0.875rem;
+      line-height: 1.7;
+      resize: vertical;
+      transition: all var(--transition-base);
     }
 
+    .editable-content:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+      background: var(--clr-primary-600);
+    }
+
+    /* ==================== RIGHT PANEL ==================== */
+    .right-panel {
+      width: var(--panel-width);
+      height: 100vh;
+      overflow-y: auto;
+      padding: var(--space-lg);
+      background: linear-gradient(160deg, 
+        rgba(45, 55, 72, 0.95) 0%, 
+        rgba(26, 32, 44, 0.98) 100%
+      );
+      border-left: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: var(--blur-glass);
+      display: none; /* Hidden by default */
+    }
+
+    .panel-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      background: var(--clr-primary-800);
+      border-radius: 8px;
+      margin-bottom: var(--space-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xl);
+    }
+
+    .logo {
+      height: 40px;
+      max-width: 150px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+      transition: transform var(--transition-base);
+    }
+
+    .logo:hover {
+      transform: scale(1.05);
+    }
+
+    .panel-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--clr-light-100);
+      text-align: center;
+    }
+
+    .title-item {
+      padding: var(--space-md);
+      margin-bottom: var(--space-sm);
+      background: rgba(45, 55, 72, 0.4);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--clr-light-200);
+      border-left: 3px solid transparent;
+      transition: all var(--transition-fast);
+    }
+
+    .title-item:hover {
+      background: rgba(45, 55, 72, 0.7);
+      color: var(--clr-light-100);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .title-item.active {
+      background: rgba(45, 55, 72, 0.8);
+      border-left-color: var(--clr-accent-500);
+      color: var(--clr-accent-500);
+      font-weight: 600;
+    }
+
+    /* ==================== ALERT ==================== */
     .alert {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 20px;
-      background: var(--secondary-color);
-      color: var(--text-primary);
+      top: var(--space-lg);
+      right: var(--space-lg);
+      padding: var(--space-md) var(--space-lg);
+      background: var(--clr-primary-800);
+      color: var(--clr-light-100);
       border-radius: 8px;
       display: flex;
       align-items: center;
-      z-index: 1000;
+      gap: var(--space-md);
+      max-width: 320px;
       opacity: 0;
-      transition: var(--panel-transition);
-      font-weight: 600;
-      max-width: 300px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      border: 1px solid var(--border-color);
       transform: translateY(-20px);
-      backdrop-filter: blur(5px);
+      transition: all var(--transition-base);
+      z-index: 1000;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: var(--blur-glass);
     }
 
     .alert.show {
@@ -673,33 +765,29 @@
       transform: translateY(0);
     }
 
-    .alert i {
-      margin-right: 10px;
-      font-size: 20px;
-      color: var(--text-primary);
-    }
-
-    .error {
-      color: #ff6b6b;
-      padding: 15px;
-      background: rgba(255, 0, 0, 0.1);
-      border-radius: 6px;
-      text-align: center;
-      margin: 10px 0;
-      border: 1px solid #ff6b6b;
+    .alert.success {
+      background: var(--clr-success);
+      border-color: rgba(16, 185, 129, 0.3);
     }
 
     .alert.error {
-      background: var(--error-color);
-      color: white;
+      background: var(--clr-error);
+      border-color: rgba(239, 68, 68, 0.3);
     }
 
-    .alert.error i {
-      color: white;
+    .alert i {
+      font-size: 1.25rem;
     }
 
+    .alert-message {
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    /* ==================== SCROLLBAR ==================== */
     ::-webkit-scrollbar {
       width: 8px;
+      height: 8px;
     }
 
     ::-webkit-scrollbar-track {
@@ -707,152 +795,94 @@
     }
 
     ::-webkit-scrollbar-thumb {
-      background: var(--accent-color);
+      background: var(--clr-accent-500);
       border-radius: 4px;
     }
 
-    .empty-state {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 60vh;
-      color: var(--text-secondary);
-      text-align: center;
-      padding: 0 25px;
-      backdrop-filter: blur(3px);
-      background: rgba(45, 55, 72, 0.5);
-      border-radius: 10px;
-      border: 1px solid var(--border-color);
-      font-weight: 500;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--clr-accent-400);
     }
 
-    .empty-state i {
-      font-size: 60px;
-      margin-bottom: 20px;
-      color: var(--sidebar-icon-color);
-      opacity: 0.7;
+    /* ==================== RESPONSIVE ==================== */
+    @media (max-width: 1024px) {
+      :root {
+        --sidebar-width: 240px;
+        --panel-width: 240px;
+      }
+      
+      #clock {
+        font-size: 0.75rem;
+        padding: var(--space-xs) var(--space-sm);
+      }
     }
 
-    .empty-state p {
-      font-size: 16px;
-      max-width: 350px;
-      line-height: 1.6;
-      margin: 0;
-      font-weight: 500;
-      color: var(--text-secondary);
+    @media (max-width: 768px) {
+      .sidebar,
+      .right-panel {
+        position: fixed;
+        z-index: 50;
+      }
+      
+      .center-panel {
+        max-width: 100%;
+      }
     }
 
-    .table-content {
-      white-space: pre-wrap;
-      word-break: break-word;
-      line-height: 1.7;
+    /* ==================== UTILITIES ==================== */
+    .hidden {
+      display: none !important;
     }
 
     .divider {
       height: 1px;
-      background: linear-gradient(90deg, transparent 0%, var(--accent-color) 50%, transparent 100%);
-      margin: 20px 0;
-      opacity: 0.3;
-    }
-
-    .autocomplete-items {
-      position: absolute;
-      border: 1px solid var(--border-color);
-      border-bottom: none;
-      border-top: none;
-      z-index: 99;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: var(--secondary-color);
-      border-radius: 0 0 6px 6px;
-      max-height: 200px;
-      overflow-y: auto;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    }
-
-    .autocomplete-items div {
-      padding: 10px 15px;
-      cursor: pointer;
-      border-bottom: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      transition: var(--panel-transition);
-    }
-
-    .autocomplete-items div:hover {
-      background: var(--sidebar-item-hover-bg);
-      color: var(--text-primary);
-    }
-
-    .autocomplete-active {
-      background: var(--accent-color) !important;
-      color: var(--darker-color) !important;
-    }
-
-    .loading {
-      color: var(--accent-color);
-      padding: 15px;
-      text-align: center;
-      font-style: italic;
-    }
-
-    .category-header {
-      background: var(--secondary-color);
-      color: var(--accent-color);
-      padding: 15px 20px;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      font-size: 18px;
-      letter-spacing: 0.5px;
-      text-align: center;
-      box-shadow: var(--card-shadow);
-      border-left: 4px solid var(--accent-color);
-      display: none;
-      font-weight: 600;
-      backdrop-filter: blur(3px);
+      background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(251, 191, 36, 0.3) 50%, 
+        transparent 100%
+      );
+      margin: var(--space-lg) 0;
     }
   </style>
 </head>
+
 <body>
   <!-- Loading Overlay -->
-  <div class="loading-overlay" id="loading-overlay">
-    <div class="loading-content">
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div>
       <div class="loading-spinner"></div>
       <div class="loading-text">Memuat data...</div>
     </div>
   </div>
 
-  <!-- Widget Jam -->
-  <div id="clock">Memuat waktu...</div>
-  
-  <!-- Konten Utama -->
-  <div class="main-content">
-    <!-- Sidebar Kiri -->
-    <div class="sidebar">
+  <!-- Clock Widget -->
+  <div id="clock">Loading...</div>
+
+  <!-- Main Container -->
+  <div class="app-container">
+    <!-- Left Sidebar -->
+    <aside class="sidebar" role="navigation" aria-label="Menu navigasi utama">
       <div class="sidebar-header">
         <i class="fas fa-clipboard-list"></i>
-        Daftar Memo
+        <h1>Daftar Memo</h1>
       </div>
-      
-      <!-- Bagian MEMO DAN REPORT - AWALNYA DITUTUP -->
-      <div class="sidebar-section collapsed">
-        <div class="sidebar-section-header" id="main-menu-header">
+
+      <!-- Memo dan Report Section -->
+      <section class="sidebar-section collapsed">
+        <div class="section-header memo" role="button" aria-expanded="false" tabindex="0">
           <i class="fas fa-bars"></i>
-          MEMO DAN REPORT
+          <span>Memo dan Report</span>
           <i class="fas fa-chevron-down toggle-icon"></i>
         </div>
-        <div class="sidebar-section-content" id="main-menu-content">
-          <!-- Bagian Memo Utama - AWALNYA DITUTUP -->
+        <div class="section-content">
+          <!-- Memo Utama -->
           <div class="sidebar-section collapsed">
-            <div class="sidebar-section-header" id="memo-utama-header">
+            <div class="section-header memo" role="button" aria-expanded="false" tabindex="0">
               <i class="fas fa-sticky-note"></i>
-              Memo Utama
+              <span>Memo Utama</span>
               <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="sidebar-section-content" id="memo-utama-content">
-              <div class="sidebar-item active" data-sheet="MEMO PEMBAGIAN BONUS IDN">Memo Pembagian Bonus IDN</div>
+            <div class="section-content">
+              <div class="sidebar-item" data-sheet="MEMO PEMBAGIAN BONUS IDN">Memo Pembagian Bonus IDN</div>
               <div class="sidebar-item" data-sheet="MEMO PEMBAGIAN BONUS PNG">Memo Pembagian Bonus PNG</div>
               <div class="sidebar-item" data-sheet="MEMO INFORMASI BANK">Memo Informasi Bank</div>
               <div class="sidebar-item" data-sheet="MEMO KENDALA PERMAINAN">Memo Kendala Permainan</div>
@@ -867,550 +897,748 @@
               <div class="sidebar-item" data-sheet="MAINTENANCE DAN GANGGUAN BOLA">Maintenance & Gangguan Bola</div>
             </div>
           </div>
-          
-          <!-- Bagian Report Kendala Situs - AWALNYA DITUTUP -->
+
+          <!-- Report Kendala Situs -->
           <div class="sidebar-section collapsed">
-            <div class="sidebar-section-header" id="report-situs-header">
+            <div class="section-header report-site" role="button" aria-expanded="false" tabindex="0">
               <i class="fas fa-globe"></i>
-              Report Kendala Situs
+              <span>Report Kendala Situs</span>
               <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="sidebar-section-content" id="report-situs-content">
+            <div class="section-content">
               <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS IDN">Report Kendala All Situs IDN</div>
               <div class="sidebar-item" data-sheet="REPORT KENDALA ALL SITUS PNG">Report Kendala All Situs PNG</div>
               <div class="sidebar-item" data-sheet="REPORT KENDALA KE IDN & PNG">Report Kendala ke IDN & PNG</div>
             </div>
           </div>
-          
-          <!-- Bagian Report TVTOTO - AWALNYA DITUTUP -->
+
+          <!-- Report TVTOTO -->
           <div class="sidebar-section collapsed">
-            <div class="sidebar-section-header" id="report-tvtoto-header">
+            <div class="section-header report-tvtoto" role="button" aria-expanded="false" tabindex="0">
               <i class="fas fa-laptop-code"></i>
-              Report TVTOTO
+              <span>Report TVTOTO</span>
               <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="sidebar-section-content" id="report-tvtoto-content">
+            <div class="section-content">
               <div class="sidebar-item" data-sheet="REPORT KENDALA TVTOTO">Report Kendala TVTOTO</div>
               <div class="sidebar-item" data-sheet="REPORT KENDALA BANK & EWALLET">Report Kendala Bank & E-Wallet</div>
             </div>
           </div>
         </div>
-      </div>
-      
-      <!-- Bagian PREDIKSI TOGEL - AWALNYA DITUTUP -->
-      <div class="sidebar-section collapsed">
-        <div class="sidebar-section-header" id="jadwal-prediksi-header">
+      </section>
+
+      <!-- Prediksi Togel Section -->
+      <section class="sidebar-section collapsed">
+        <div class="section-header prediksi" role="button" aria-expanded="false" tabindex="0">
           <i class="fas fa-chart-line"></i>
-          PREDIKSI TOGEL
+          <span>Prediksi Togel</span>
           <i class="fas fa-chevron-down toggle-icon"></i>
         </div>
-        <div class="sidebar-section-content" id="jadwal-prediksi-content">
-          <!-- Bagian Prediksi Togel - AWALNYA DITUTUP -->
+        <div class="section-content">
           <div class="sidebar-section collapsed">
-            <div class="sidebar-section-header" id="prediksi-togel-header">
+            <div class="section-header prediksi" role="button" aria-expanded="false" tabindex="0">
               <i class="fas fa-chart-line"></i>
-              Prediksi Togel
+              <span>Prediksi Togel</span>
               <i class="fas fa-chevron-down toggle-icon"></i>
             </div>
-            <div class="sidebar-section-content" id="prediksi-togel-content">
+            <div class="section-content">
               <div class="sidebar-item" data-sheet="PREDIKSI TOGEL IDN">Prediksi Togel IDN</div>
               <div class="sidebar-item" data-sheet="PREDIKSI TOGEL PNG">Prediksi Togel PNG</div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    
-    <!-- Panel Tengah -->
-    <div class="center-panel">
-      <!-- Header Kategori -->
-      <div class="category-header" id="category-header"></div>
-      
-      <!-- Bar Pencarian -->
-      <div class="center-search-container">
-        <span class="search-icon">🔎</span>
-        <input type="text" class="center-search-input" id="center-search-input" placeholder="Cari judul...">
-        <div id="autocomplete-list" class="autocomplete-items"></div>
-      </div>
-      
-      <!-- State Kosong -->
-      <div class="empty-state" id="empty-state">
-        <i class="fas fa-clipboard-list"></i>
-        <p>Pilih judul dari list sebelah kiri untuk melihat detail memo</p>
-        <p style="margin-top: 10px; font-size: 14px;">Gunakan fitur pencarian untuk menemukan memo lebih cepat</p>
-      </div>
-      
-      <!-- Container Tabel -->
-      <div id="tables-container" style="display: none;"></div>
-    </div>
+      </section>
+    </aside>
 
-    <!-- Panel Kanan -->
-    <div class="right-panel" id="right-panel">
-      <div class="right-panel-header">
-        <div class="dual-logo">
-          <img src="https://cdn.areabermain.club/assets/cdn/az1/2024/08/20/20240820/d4dd5539892657c7150b74d894deedfe/logo-tvtoto.png" 
-               class="logo-tvtoto" 
-               alt="Logo Tvtoto">
-          <img src="https://statics.hokibagus.club/logo_situs/logo_ziatogel.png" 
-               class="logo-ziatogel" 
-               alt="Logo Ziatogel">
+    <!-- Main Content Area -->
+    <main class="main-content">
+      <div class="center-panel">
+        <!-- Search -->
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Cari di semua memo..."
+            autocomplete="off"
+            aria-label="Pencarian memo"
+          >
+          <div id="autocompleteList" class="autocomplete-items"></div>
         </div>
-        <h2 class="panel-title" id="right-panel-title">Judul</h2>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-clipboard-list"></i>
+          <p>Pilih menu dari sidebar untuk melihat daftar memo</p>
+          <p>Atau gunakan pencarian untuk mencari di semua memo</p>
+        </div>
+
+        <!-- Tables Container -->
+        <div class="tables-container" id="tablesContainer"></div>
       </div>
-      <div id="title-list"></div>
-    </div>
+    </main>
+
+    <!-- Right Panel -->
+    <aside class="right-panel" id="rightPanel" role="complementary" aria-label="Panel daftar judul">
+      <div class="panel-header">
+        <div class="logo-container">
+          <img 
+            src="https://cdn.areabermain.club/assets/cdn/az1/2024/08/20/20240820/d4dd5539892657c7150b74d894deedfe/logo-tvtoto.png" 
+            alt="Logo Tvtoto" 
+            class="logo"
+          >
+          <img 
+            src="https://statics.hokibagus.club/logo_situs/logo_ziatogel.png" 
+            alt="Logo Ziatogel" 
+            class="logo"
+          >
+        </div>
+        <h2 class="panel-title" id="panelTitle">Daftar Judul</h2>
+      </div>
+      <div id="titleList"></div>
+    </aside>
   </div>
 
-  <!-- Notifikasi Alert -->
-  <div class="alert" id="alert">
-    <i class="material-icons">check_circle</i>
-    <span id="alert-message">Teks berhasil disalin!</span>
+  <!-- Alert Notification -->
+  <div class="alert" id="alert" role="alert" aria-live="polite">
+    <i class="fas fa-check-circle"></i>
+    <span class="alert-message" id="alertMessage">Teks berhasil disalin!</span>
   </div>
-  
+
+  <!-- JavaScript -->
   <script>
-    // Konfigurasi Google Sheets - GANTI DENGAN ID SPREADSHEET ANDA
-    const SHEET_ID = '1zGtyBoAB2Leh39EVGKrYO0MfF5pOeAMHsl-PY3FoE1M';
-    
-    // OPTIONAL: Jika ingin menggunakan Google Sheets API v4, isi API Key
-    // Dapatkan di: https://console.cloud.google.com/apis/credentials
-    const API_KEY = ''; // Kosongkan jika tidak menggunakan API Key
-    
-    // Daftar nama sheet (sesuaikan dengan nama sheet di Google Sheets Anda)
-    // TIDAK TERMASUK: Rekening Bank, Rekening Ewallet, Jadwal Togel
-    const SHEET_NAMES = [
-      'MEMO PEMBAGIAN BONUS IDN',
-      'MEMO PEMBAGIAN BONUS PNG',
-      'MEMO INFORMASI BANK',
-      'MEMO KENDALA PERMAINAN',
-      'MEMO KENDALA SISTEM',
-      'KETERLAMBATAN RESULT',
-      'SELESAI RESULT',
-      'GANGGUAN SLOT',
-      'SLOT MAINTENANCE',
-      'LIVEGAME GANGGUAN',
-      'LIVEGAME MAINTENANCE',
-      'TEMBAK IKAN MAINTENANCE',
-      'MAINTENANCE DAN GANGGUAN BOLA',
-      'REPORT KENDALA ALL SITUS IDN',
-      'REPORT KENDALA ALL SITUS PNG',
-      'REPORT KENDALA KE IDN & PNG',
-      'REPORT KENDALA TVTOTO',
-      'REPORT KENDALA BANK & EWALLET',
-      'PREDIKSI TOGEL IDN',
-      'PREDIKSI TOGEL PNG'
-    ];
-    
-    // State global
-    let allData = {};
-    let currentSheet = 'MEMO PEMBAGIAN BONUS IDN';
-    let currentData = [];
-    let selectedTitleIndex = -1;
-
-    // Cache elemen DOM
-    const dom = {
-      loadingOverlay: document.getElementById('loading-overlay'),
-      clock: document.getElementById('clock'),
-      sidebarItems: document.querySelectorAll('.sidebar-item'),
-      centerSearchInput: document.getElementById('center-search-input'),
-      titleList: document.getElementById('title-list'),
-      alertBox: document.getElementById('alert'),
-      alertMessage: document.getElementById('alert-message'),
-      emptyState: document.getElementById('empty-state'),
-      tablesContainer: document.getElementById('tables-container'),
-      categoryHeader: document.getElementById('category-header'),
-      autocompleteList: document.getElementById('autocomplete-list'),
-      rightPanel: document.getElementById('right-panel'),
-      mainMenuHeader: document.getElementById('main-menu-header'),
-      jadwalPrediksiHeader: document.getElementById('jadwal-prediksi-header')
+    // ==================== CONFIGURATION ====================
+    const CONFIG = {
+      SHEET_ID: '1zGtyBoAB2Leh39EVGKrYO0MfF5pOeAMHsl-PY3FoE1M',
+      API_KEY: '', // Optional: Google Sheets API v4 key
+      SHEET_NAMES: [
+        'MEMO PEMBAGIAN BONUS IDN',
+        'MEMO PEMBAGIAN BONUS PNG',
+        'MEMO INFORMASI BANK',
+        'MEMO KENDALA PERMAINAN',
+        'MEMO KENDALA SISTEM',
+        'KETERLAMBATAN RESULT',
+        'SELESAI RESULT',
+        'GANGGUAN SLOT',
+        'SLOT MAINTENANCE',
+        'LIVEGAME GANGGUAN',
+        'LIVEGAME MAINTENANCE',
+        'TEMBAK IKAN MAINTENANCE',
+        'MAINTENANCE DAN GANGGUAN BOLA',
+        'REPORT KENDALA ALL SITUS IDN',
+        'REPORT KENDALA ALL SITUS PNG',
+        'REPORT KENDALA KE IDN & PNG',
+        'REPORT KENDALA TVTOTO',
+        'REPORT KENDALA BANK & EWALLET',
+        'PREDIKSI TOGEL IDN',
+        'PREDIKSI TOGEL PNG'
+      ],
+      AUTOCOMPLETE_LIMIT: 5
     };
 
-    // Inisialisasi saat DOM siap
-    document.addEventListener('DOMContentLoaded', function() {
+    // ==================== STATE MANAGEMENT ====================
+    const state = {
+      allData: {},
+      currentSheet: 'MEMO PEMBAGIAN BONUS IDN',
+      currentData: [],
+      selectedIndex: -1
+    };
+
+    // ==================== DOM ELEMENTS ====================
+    const DOM = {
+      loadingOverlay: document.getElementById('loadingOverlay'),
+      clock: document.getElementById('clock'),
+      searchInput: document.getElementById('searchInput'),
+      autocompleteList: document.getElementById('autocompleteList'),
+      emptyState: document.getElementById('emptyState'),
+      tablesContainer: document.getElementById('tablesContainer'),
+      rightPanel: document.getElementById('rightPanel'),
+      panelTitle: document.getElementById('panelTitle'),
+      titleList: document.getElementById('titleList'),
+      alert: document.getElementById('alert'),
+      alertMessage: document.getElementById('alertMessage')
+    };
+
+    // ==================== UTILITY FUNCTIONS ====================
+    const utils = {
+      escapeHtml(unsafe) {
+        if (!unsafe) return '';
+        return unsafe.toString()
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#039;');
+      },
+
+      unescapeHtml(safe) {
+        if (!safe) return '';
+        const textarea = document.createElement('textarea');
+        textarea.innerHTML = safe;
+        return textarea.value;
+      },
+
+      highlightMatch(text, query) {
+        if (!text || !query) return this.escapeHtml(text);
+        
+        const index = text.toLowerCase().indexOf(query.toLowerCase());
+        if (index === -1) return this.escapeHtml(text);
+        
+        return this.escapeHtml(text.substring(0, index)) +
+          '<mark style="background: var(--clr-accent-500); color: var(--clr-primary-900); padding: 0 2px; border-radius: 2px;">' +
+          this.escapeHtml(text.substring(index, index + query.length)) +
+          '</mark>' +
+          this.escapeHtml(text.substring(index + query.length));
+      },
+
+      formatDateTime() {
+        const now = new Date();
+        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+        
+        return `${days[now.getDay()]}, ${String(now.getDate()).padStart(2, '0')}-${months[now.getMonth()]}-${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+      }
+    };
+
+    // ==================== CLOCK ====================
+    function initClock() {
+      function updateClock() {
+        DOM.clock.textContent = utils.formatDateTime();
+      }
+      
       updateClock();
       setInterval(updateClock, 1000);
-      setupCollapsibleSections();
-      setupEventListeners();
-      loadData();
-    });
-
-    // Fungsi untuk update jam
-    function updateClock() {
-      const now = new Date();
-      const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-
-      const dayName = days[now.getDay()];
-      const date = now.getDate().toString().padStart(2, '0');
-      const month = months[now.getMonth()];
-      const year = now.getFullYear();
-      const hours = now.getHours().toString().padStart(2, '0');
-      const minutes = now.getMinutes().toString().padStart(2, '0');
-      const seconds = now.getSeconds().toString().padStart(2, '0');
-
-      const formattedTime = `${dayName}, ${date}-${month}-${year} ${hours}:${minutes}:${seconds}`;
-      dom.clock.textContent = formattedTime;
     }
 
-    // Setup collapsible sections
-    function setupCollapsibleSections() {
-      // Tutup semua section kecuali yang aktif (semua ditutup di awal)
-      document.querySelectorAll('.sidebar-section-header').forEach(header => {
+    // ==================== COLLAPSIBLE SECTIONS ====================
+    function initCollapsibleSections() {
+      document.querySelectorAll('.section-header').forEach(header => {
         header.addEventListener('click', function() {
           const section = this.closest('.sidebar-section');
-          section.classList.toggle('collapsed');
+          const parentSection = section.parentElement.closest('.sidebar-section');
           
-          // Update aria-expanded attribute
-          const isExpanded = !section.classList.contains('collapsed');
-          this.setAttribute('aria-expanded', isExpanded);
-        });
-      });
-    }
-
-    // Setup event listeners
-    function setupEventListeners() {
-      dom.sidebarItems.forEach(item => {
-        item.addEventListener('click', handleSidebarClick);
-      });
-
-      dom.centerSearchInput.addEventListener('input', handleSearchInput);
-      
-      document.addEventListener('click', function(e) {
-        if (e.target.id !== 'center-search-input') {
-          dom.autocompleteList.innerHTML = '';
-        }
-      });
-    }
-
-    // Handle klik sidebar
-    function handleSidebarClick() {
-      dom.sidebarItems.forEach(i => i.classList.remove('active'));
-      this.classList.add('active');
-      
-      currentSheet = this.getAttribute('data-sheet');
-      
-      loadSheetData(currentSheet);
-      updateCategoryHeader(currentSheet);
-      
-      // Selalu tampilkan panel kanan untuk semua memo kecuali untuk beberapa tipe khusus
-      dom.rightPanel.style.display = 'block';
-      dom.tablesContainer.style.display = 'none';
-      dom.emptyState.style.display = 'flex';
-      
-      selectedTitleIndex = -1;
-      dom.centerSearchInput.value = '';
-    }
-
-    // Fungsi untuk fetch data dari satu sheet
-    async function fetchSheetData(sheetName) {
-      try {
-        // Jika API Key tersedia, gunakan Google Sheets API v4
-        if (API_KEY && API_KEY.length > 0) {
-          console.log(`Mencoba dengan API Key untuk: ${sheetName}`);
-          const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${encodeURIComponent(sheetName)}?key=${API_KEY}`;
+          // Get all sibling sections at the same level
+          const siblings = parentSection 
+            ? Array.from(parentSection.querySelectorAll(':scope > .section-content > .sidebar-section'))
+            : Array.from(document.querySelectorAll('.sidebar > .sidebar-section'));
           
-          const response = await fetch(url);
-          
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          
-          const data = await response.json();
-          
-          // Konversi data dari format Google Sheets ke format yang diharapkan
-          if (!data.values || data.values.length === 0) {
-            return [];
-          }
-          
-          const result = [];
-          // Skip header row (index 0)
-          for (let i = 1; i < data.values.length; i++) {
-            const row = data.values[i];
-            // Asumsi kolom: A = Title, B = Content
-            if (row[0] && row[0].trim() !== '') {
-              result.push({
-                title: row[0],
-                content: row[1] || ''
-              });
-            }
-          }
-          
-          console.log(`Berhasil load ${result.length} items dari ${sheetName} via API`);
-          return result;
-        }
-      } catch (error) {
-        console.log(`API gagal untuk ${sheetName}, mencoba fallback method...`);
-      }
-      
-      // Fallback: menggunakan publikasi web
-      try {
-        return await fetchSheetDataPublic(sheetName);
-      } catch (fallbackError) {
-        console.error(`Fallback juga gagal untuk ${sheetName}:`, fallbackError);
-        return [];
-      }
-    }
-
-    // Fallback method menggunakan publikasi web (gviz)
-    async function fetchSheetDataPublic(sheetName) {
-      console.log(`Mencoba fallback method untuk: ${sheetName}`);
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
-      
-      const response = await fetch(url);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const text = await response.text();
-      
-      // Remove the prefix: google.visualization.Query.setResponse(
-      const jsonString = text.substring(47, text.length - 2);
-      const data = JSON.parse(jsonString);
-      
-      if (!data.table || !data.table.rows) {
-        return [];
-      }
-      
-      const result = [];
-      // Skip header row
-      for (let i = 0; i < data.table.rows.length; i++) {
-        const row = data.table.rows[i];
-        // Kolom pertama: title, kolom kedua: content
-        const title = row.c[0] && row.c[0].v ? row.c[0].v : '';
-        const content = row.c[1] && row.c[1].v ? row.c[1].v : '';
-        
-        if (title && title.trim() !== '') {
-          result.push({ title, content });
-        }
-      }
-      
-      console.log(`Berhasil load ${result.length} items dari ${sheetName} via fallback`);
-      return result;
-    }
-
-    // Load data dari Google Sheets
-    async function loadData() {
-      try {
-        dom.loadingOverlay.classList.remove('hidden');
-        console.log('Memulai load data dari Google Sheets...');
-        console.log('SHEET_ID:', SHEET_ID);
-        console.log('API_KEY tersedia:', API_KEY ? 'Ya' : 'Tidak (akan gunakan fallback)');
-        
-        // Load semua sheet secara paralel
-        const promises = SHEET_NAMES.map(sheetName => fetchSheetData(sheetName));
-        const results = await Promise.all(promises);
-
-        // Simpan hasil ke allData
-        SHEET_NAMES.forEach((sheetName, index) => {
-          allData[sheetName] = results[index];
-        });
-
-        console.log('Semua data berhasil dimuat:', allData);
-        loadSheetData(currentSheet);
-        dom.loadingOverlay.classList.add('hidden');
-      } catch (error) {
-        console.error('Error loading data:', error);
-        showAlert('Gagal memuat data dari Google Sheets. Pastikan sheet sudah dipublikasikan!', 'error');
-        dom.loadingOverlay.classList.add('hidden');
-      }
-    }
-
-    // Load sheet data
-    function loadSheetData(sheetName) {
-      console.log('Loading sheet data for:', sheetName);
-      
-      if (allData[sheetName]) {
-        currentData = allData[sheetName];
-        console.log('Current data:', currentData);
-        renderTitleList();
-      } else {
-        console.log('No data found for sheet:', sheetName);
-        currentData = [];
-        renderTitleList();
-      }
-    }
-
-    // Render title list
-    function renderTitleList() {
-      dom.titleList.innerHTML = '';
-      
-      console.log('Rendering title list with', currentData.length, 'items');
-      
-      if (!currentData || currentData.length === 0) {
-        dom.titleList.innerHTML = '<div class="error">Data tidak tersedia</div>';
-        return;
-      }
-
-      currentData.forEach((item, index) => {
-        const div = document.createElement('div');
-        div.className = 'title-item';
-        if (index === selectedTitleIndex) {
-          div.classList.add('active');
-        }
-        
-        div.textContent = item.title || 'Tidak Ada Judul';
-        
-        div.addEventListener('click', () => {
-          document.querySelectorAll('.title-item').forEach(el => {
-            el.classList.remove('active');
-          });
-          div.classList.add('active');
-          selectedTitleIndex = index;
-          showItemDetails(index);
-        });
-        
-        dom.titleList.appendChild(div);
-      });
-    }
-
-    // Show item details
-    function showItemDetails(index) {
-      dom.tablesContainer.style.display = 'block';
-      dom.emptyState.style.display = 'none';
-      
-      const item = currentData[index];
-      if (!item) return;
-
-      dom.tablesContainer.innerHTML = `
-        <h3><i class="fas fa-heading"></i> Judul</h3>
-        <div class="divider"></div>
-        <table class="info-table" id="title-table">
-          <tbody>
-            <tr>
-              <td class="table-content">${escapeHtml(item.title)}</td>
-              <td>
-                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.title)}', 'Judul')">
-                  <i class="fas fa-copy"></i> Copy
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        
-        <h3 style="margin-top:30px;"><i class="fas fa-align-left"></i> Deskripsi</h3>
-        <div class="divider"></div>
-        <table class="info-table" id="content-table">
-          <tbody>
-            <tr>
-              <td class="table-content">${escapeHtml(item.content)}</td>
-              <td>
-                <button class="copy-btn" onclick="copyToClipboard('${escapeHtml(item.content)}', 'Deskripsi')">
-                  <i class="fas fa-copy"></i> Copy
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      `;
-    }
-
-    // Handle search input
-    function handleSearchInput() {
-      const query = this.value.toLowerCase().trim();
-      dom.autocompleteList.innerHTML = '';
-      
-      if (query.length === 0) {
-        return;
-      }
-      
-      if (query.length > 0) {
-        const matches = currentData.filter(item => 
-          item.title && item.title.toLowerCase().includes(query)
-        ).slice(0, 5);
-        
-        matches.forEach(item => {
-          const div = document.createElement('div');
-          div.innerHTML = `<strong>${highlightMatch(item.title, query)}</strong>`;
-          div.addEventListener('click', () => {
-            dom.centerSearchInput.value = item.title;
-            dom.autocompleteList.innerHTML = '';
-            const index = currentData.findIndex(i => i.title === item.title);
-            if (index !== -1) {
-              showItemDetails(index);
-              const titleItems = document.querySelectorAll('.title-item');
-              titleItems.forEach(el => el.classList.remove('active'));
-              if (titleItems[index]) {
-                titleItems[index].classList.add('active');
-                titleItems[index].scrollIntoView({ behavior: 'smooth', block: 'center' });
+          // Close all sibling sections
+          siblings.forEach(sibling => {
+            if (sibling !== section) {
+              sibling.classList.add('collapsed');
+              const siblingHeader = sibling.querySelector('.section-header');
+              if (siblingHeader) {
+                siblingHeader.setAttribute('aria-expanded', 'false');
               }
             }
-            selectedTitleIndex = index;
           });
-          dom.autocompleteList.appendChild(div);
+          
+          // Toggle current section
+          const isCollapsed = section.classList.toggle('collapsed');
+          this.setAttribute('aria-expanded', !isCollapsed);
         });
-      }
-    }
 
-    // Update category header
-    function updateCategoryHeader(sheetName) {
-      dom.categoryHeader.textContent = sheetName;
-      dom.categoryHeader.style.display = 'block';
-    }
-
-    // Copy to clipboard
-    function copyToClipboard(text, type) {
-      const decodedText = decodeHtmlEntities(text);
-      navigator.clipboard.writeText(decodedText).then(() => {
-        showAlert(`${type} berhasil disalin!`, 'success');
-      }).catch(err => {
-        const textarea = document.createElement('textarea');
-        textarea.value = decodedText;
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-          document.execCommand('copy');
-          showAlert(`${type} berhasil disalin!`, 'success');
-        } catch (err) {
-          showAlert('Gagal menyalin!', 'error');
-        }
-        document.body.removeChild(textarea);
+        // Keyboard support
+        header.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+          }
+        });
       });
     }
 
-    // Show alert
-    function showAlert(message, type = 'success') {
-      dom.alertMessage.textContent = message;
-      dom.alertBox.className = 'alert show';
-      if (type === 'error') {
-        dom.alertBox.classList.add('error');
+    // ==================== DATA FETCHING ====================
+    const dataService = {
+      async fetchSheetData(sheetName) {
+        // Try API method first if key is provided
+        if (CONFIG.API_KEY) {
+          try {
+            return await this.fetchViaAPI(sheetName);
+          } catch (error) {
+            console.warn(`API fetch failed for ${sheetName}, trying fallback...`);
+          }
+        }
+        
+        // Fallback to public method
+        return await this.fetchViaPublic(sheetName);
+      },
+
+      async fetchViaAPI(sheetName) {
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${CONFIG.SHEET_ID}/values/${encodeURIComponent(sheetName)}?key=${CONFIG.API_KEY}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const data = await response.json();
+        return this.parseAPIResponse(data);
+      },
+
+      async fetchViaPublic(sheetName) {
+        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+        
+        const text = await response.text();
+        const jsonString = text.substring(47, text.length - 2);
+        const data = JSON.parse(jsonString);
+        
+        return this.parsePublicResponse(data);
+      },
+
+      parseAPIResponse(data) {
+        if (!data.values || data.values.length === 0) return [];
+        
+        const result = [];
+        // Skip header row
+        for (let i = 1; i < data.values.length; i++) {
+          const row = data.values[i];
+          if (row[0] && row[0].trim()) {
+            result.push({
+              title: row[0],
+              content: row[1] || ''
+            });
+          }
+        }
+        
+        return result;
+      },
+
+      parsePublicResponse(data) {
+        if (!data.table || !data.table.rows) return [];
+        
+        const result = [];
+        for (const row of data.table.rows) {
+          const title = row.c[0]?.v || '';
+          const content = row.c[1]?.v || '';
+          
+          if (title.trim()) {
+            result.push({ title, content });
+          }
+        }
+        
+        return result;
+      },
+
+      async loadAllData() {
+        try {
+          DOM.loadingOverlay.classList.remove('hidden');
+          
+          const promises = CONFIG.SHEET_NAMES.map(name => this.fetchSheetData(name));
+          const results = await Promise.all(promises);
+          
+          CONFIG.SHEET_NAMES.forEach((name, index) => {
+            state.allData[name] = results[index];
+          });
+          
+          console.log('✓ All data loaded successfully');
+          return true;
+        } catch (error) {
+          console.error('✗ Error loading data:', error);
+          ui.showAlert('Gagal memuat data. Pastikan sheet sudah dipublikasikan!', 'error');
+          return false;
+        } finally {
+          DOM.loadingOverlay.classList.add('hidden');
+        }
       }
-      setTimeout(() => {
-        dom.alertBox.classList.remove('show');
-      }, 2000);
+    };
+
+    // ==================== UI MANAGEMENT ====================
+    const ui = {
+      showAlert(message, type = 'success') {
+        DOM.alertMessage.textContent = message;
+        DOM.alert.className = `alert show ${type}`;
+        
+        setTimeout(() => {
+          DOM.alert.classList.remove('show');
+        }, 3000);
+      },
+
+      renderTitleList() {
+        DOM.titleList.innerHTML = '';
+        
+        if (!state.currentData.length) {
+          DOM.titleList.innerHTML = '<div style="padding: 1rem; text-align: center; color: var(--clr-light-200);">Data tidak tersedia</div>';
+          return;
+        }
+
+        state.currentData.forEach((item, index) => {
+          const div = document.createElement('div');
+          div.className = 'title-item';
+          if (index === state.selectedIndex) {
+            div.classList.add('active');
+          }
+          
+          div.textContent = item.title || 'Tidak Ada Judul';
+          div.addEventListener('click', () => this.selectTitle(index));
+          
+          DOM.titleList.appendChild(div);
+        });
+      },
+
+      selectTitle(index) {
+        state.selectedIndex = index;
+        
+        // Update active state
+        document.querySelectorAll('.title-item').forEach((el, i) => {
+          el.classList.toggle('active', i === index);
+        });
+        
+        this.showItemDetails(index);
+      },
+
+      showItemDetails(index) {
+        DOM.emptyState.style.display = 'none';
+        DOM.tablesContainer.style.display = 'block';
+        
+        const item = state.currentData[index];
+        if (!item) return;
+
+        DOM.tablesContainer.innerHTML = `
+          <h3 class="section-title">
+            <i class="fas fa-heading"></i>
+            Judul
+          </h3>
+          <table class="info-table">
+            <tbody>
+              <tr>
+                <td class="table-content">${utils.escapeHtml(item.title)}</td>
+                <td style="width: 100px;">
+                  <button class="copy-btn" onclick="copyToClipboard(\`${utils.escapeHtml(item.title)}\`, 'Judul')">
+                    <i class="fas fa-copy"></i>
+                    Copy
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 class="section-title">
+            <i class="fas fa-align-left"></i>
+            Deskripsi
+          </h3>
+          <table class="info-table">
+            <tbody>
+              <tr id="content-row-${index}">
+                <td class="table-content" id="content-cell-${index}">${utils.escapeHtml(item.content)}</td>
+                <td style="width: 200px;">
+                  <div class="button-container" id="button-container-${index}">
+                    <button class="copy-btn" onclick="copyToClipboard(\`${utils.escapeHtml(item.content)}\`, 'Deskripsi')">
+                      <i class="fas fa-copy"></i>
+                      Copy
+                    </button>
+                    <button class="edit-btn" onclick="editContent(${index})">
+                      <i class="fas fa-edit"></i>
+                      Edit
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      },
+
+      updateAutocomplete(query) {
+        DOM.autocompleteList.innerHTML = '';
+        
+        if (!query.trim()) return;
+        
+        // Search across ALL data, not just current sheet
+        const allMatches = [];
+        
+        for (const [sheetName, items] of Object.entries(state.allData)) {
+          items.forEach((item, index) => {
+            if (item.title?.toLowerCase().includes(query.toLowerCase())) {
+              allMatches.push({
+                ...item,
+                sheetName,
+                originalIndex: index
+              });
+            }
+          });
+        }
+        
+        // Limit results
+        const matches = allMatches.slice(0, CONFIG.AUTOCOMPLETE_LIMIT);
+        
+        matches.forEach(match => {
+          const div = document.createElement('div');
+          div.innerHTML = `
+            <div style="font-weight: 600;">${utils.highlightMatch(match.title, query)}</div>
+            <div style="font-size: 0.75rem; color: var(--clr-accent-500); margin-top: 2px;">
+              <i class="fas fa-folder" style="margin-right: 4px;"></i>${match.sheetName}
+            </div>
+          `;
+          div.style.cursor = 'pointer';
+          
+          div.addEventListener('click', () => {
+            DOM.searchInput.value = match.title;
+            DOM.autocompleteList.innerHTML = '';
+            
+            // Switch to the correct sheet
+            this.switchToSheet(match.sheetName, match.originalIndex);
+          });
+          
+          DOM.autocompleteList.appendChild(div);
+        });
+      },
+
+      switchToSheet(sheetName, itemIndex) {
+        // Update current sheet
+        state.currentSheet = sheetName;
+        state.currentData = state.allData[sheetName] || [];
+        state.selectedIndex = itemIndex;
+        
+        // Find and activate the correct sidebar item
+        const targetSidebarItem = document.querySelector(`.sidebar-item[data-sheet="${sheetName}"]`);
+        
+        if (targetSidebarItem) {
+          // Update all sidebar items active state
+          document.querySelectorAll('.sidebar-item').forEach(el => {
+            el.classList.remove('active');
+          });
+          targetSidebarItem.classList.add('active');
+          
+          // Expand all parent sections to make the item visible
+          let parentSection = targetSidebarItem.closest('.sidebar-section');
+          while (parentSection) {
+            parentSection.classList.remove('collapsed');
+            const header = parentSection.querySelector(':scope > .section-header');
+            if (header) {
+              header.setAttribute('aria-expanded', 'true');
+            }
+            parentSection = parentSection.parentElement.closest('.sidebar-section');
+          }
+          
+          // Scroll sidebar item into view
+          targetSidebarItem.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'nearest' 
+          });
+        }
+        
+        // Show right panel and update title list
+        DOM.rightPanel.style.display = 'block';
+        this.renderTitleList();
+        
+        // Show item details
+        this.showItemDetails(itemIndex);
+        
+        // Update active state in title list and scroll to item
+        setTimeout(() => {
+          const titleItems = document.querySelectorAll('.title-item');
+          titleItems.forEach((el, i) => {
+            el.classList.toggle('active', i === itemIndex);
+          });
+          
+          if (titleItems[itemIndex]) {
+            titleItems[itemIndex].scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'center' 
+            });
+          }
+        }, 100);
+      }
+    };
+
+    // ==================== EVENT HANDLERS ====================
+    function initEventListeners() {
+      // Sidebar items
+      document.querySelectorAll('.sidebar-item').forEach(item => {
+        item.addEventListener('click', function() {
+          // Update active state
+          document.querySelectorAll('.sidebar-item').forEach(el => {
+            el.classList.remove('active');
+          });
+          this.classList.add('active');
+          
+          // Load sheet data
+          state.currentSheet = this.getAttribute('data-sheet');
+          state.currentData = state.allData[state.currentSheet] || [];
+          state.selectedIndex = -1;
+          
+          // Update UI
+          DOM.rightPanel.style.display = 'block';
+          DOM.tablesContainer.style.display = 'none';
+          DOM.emptyState.style.display = 'flex';
+          DOM.searchInput.value = '';
+          
+          ui.renderTitleList();
+        });
+      });
+
+      // Search input
+      DOM.searchInput.addEventListener('input', (e) => {
+        ui.updateAutocomplete(e.target.value);
+      });
+
+      // Close autocomplete when clicking outside
+      document.addEventListener('click', (e) => {
+        if (e.target !== DOM.searchInput) {
+          DOM.autocompleteList.innerHTML = '';
+        }
+      });
     }
 
-    // Escape HTML
-    function escapeHtml(unsafe) {
-      if (!unsafe) return '';
-      return unsafe.toString()
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    // Decode HTML entities
-    function decodeHtmlEntities(text) {
-      if (!text) return '';
-      const textArea = document.createElement('textarea');
-      textArea.innerHTML = text;
-      return textArea.value;
-    }
-
-    // Highlight match
-    function highlightMatch(text, query) {
-      if (!text || !query) return escapeHtml(text);
+    // ==================== COPY TO CLIPBOARD ====================
+    async function copyToClipboard(text, type) {
+      const decoded = utils.unescapeHtml(text);
       
-      const index = text.toLowerCase().indexOf(query.toLowerCase());
-      if (index >= 0) {
-        return escapeHtml(text.substring(0, index)) + 
-               '<span style="color: var(--accent-color); font-weight: bold;">' + 
-               escapeHtml(text.substring(index, index + query.length)) + 
-               '</span>' + 
-               escapeHtml(text.substring(index + query.length));
+      try {
+        await navigator.clipboard.writeText(decoded);
+        ui.showAlert(`${type} berhasil disalin!`, 'success');
+      } catch (err) {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = decoded;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        
+        try {
+          document.execCommand('copy');
+          ui.showAlert(`${type} berhasil disalin!`, 'success');
+        } catch (err) {
+          ui.showAlert('Gagal menyalin teks!', 'error');
+        }
+        
+        document.body.removeChild(textarea);
       }
-      return escapeHtml(text);
+    }
+
+    // Make it globally available for onclick handlers
+    window.copyToClipboard = copyToClipboard;
+
+    // ==================== EDIT CONTENT ====================
+    function editContent(index) {
+      const item = state.currentData[index];
+      if (!item) return;
+      
+      const contentCell = document.getElementById(`content-cell-${index}`);
+      const buttonContainer = document.getElementById(`button-container-${index}`);
+      
+      if (!contentCell || !buttonContainer) return;
+      
+      // Store original content
+      const originalContent = item.content;
+      
+      // Replace content cell with textarea
+      contentCell.innerHTML = `
+        <textarea class="editable-content" id="edit-textarea-${index}">${utils.escapeHtml(item.content)}</textarea>
+      `;
+      
+      // Replace buttons with Save and Cancel
+      buttonContainer.innerHTML = `
+        <button class="copy-btn save-btn" onclick="saveContent(${index}, '${utils.escapeHtml(originalContent).replace(/'/g, "\\'")}')">
+          <i class="fas fa-save"></i>
+          Save
+        </button>
+        <button class="copy-btn cancel-btn" onclick="cancelEdit(${index}, '${utils.escapeHtml(originalContent).replace(/'/g, "\\'")}')">
+          <i class="fas fa-times"></i>
+          Cancel
+        </button>
+      `;
+      
+      // Focus on textarea
+      const textarea = document.getElementById(`edit-textarea-${index}`);
+      if (textarea) {
+        textarea.focus();
+        // Move cursor to end
+        textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+      }
+    }
+
+    function saveContent(index, originalContent) {
+      const textarea = document.getElementById(`edit-textarea-${index}`);
+      if (!textarea) return;
+      
+      const newContent = textarea.value;
+      
+      // Update state
+      state.currentData[index].content = newContent;
+      
+      // Update display
+      const contentCell = document.getElementById(`content-cell-${index}`);
+      const buttonContainer = document.getElementById(`button-container-${index}`);
+      
+      if (contentCell) {
+        contentCell.innerHTML = utils.escapeHtml(newContent);
+      }
+      
+      if (buttonContainer) {
+        buttonContainer.innerHTML = `
+          <button class="copy-btn" onclick="copyToClipboard(\`${utils.escapeHtml(newContent)}\`, 'Deskripsi')">
+            <i class="fas fa-copy"></i>
+            Copy
+          </button>
+          <button class="edit-btn" onclick="editContent(${index})">
+            <i class="fas fa-edit"></i>
+            Edit
+          </button>
+        `;
+      }
+      
+      ui.showAlert('Deskripsi berhasil diubah!', 'success');
+    }
+
+    function cancelEdit(index, originalContent) {
+      const contentCell = document.getElementById(`content-cell-${index}`);
+      const buttonContainer = document.getElementById(`button-container-${index}`);
+      
+      // Restore original content
+      if (contentCell) {
+        contentCell.innerHTML = utils.unescapeHtml(originalContent);
+      }
+      
+      if (buttonContainer) {
+        buttonContainer.innerHTML = `
+          <button class="copy-btn" onclick="copyToClipboard(\`${originalContent}\`, 'Deskripsi')">
+            <i class="fas fa-copy"></i>
+            Copy
+          </button>
+          <button class="edit-btn" onclick="editContent(${index})">
+            <i class="fas fa-edit"></i>
+            Edit
+          </button>
+        `;
+      }
+    }
+
+    // Make functions globally available
+    window.editContent = editContent;
+    window.saveContent = saveContent;
+    window.cancelEdit = cancelEdit;
+
+    // ==================== INITIALIZATION ====================
+    async function init() {
+      console.log('🚀 Initializing Memo Tvtoto Application...');
+      
+      initClock();
+      initCollapsibleSections();
+      initEventListeners();
+      
+      const success = await dataService.loadAllData();
+      
+      if (success) {
+        // Don't show right panel or load data initially
+        // Wait for user to select a menu item
+        console.log('✓ Application ready');
+      }
+    }
+
+    // Start application when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
     }
   </script>
 </body>

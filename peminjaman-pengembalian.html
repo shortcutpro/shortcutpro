@@ -286,20 +286,153 @@
             pointer-events: none;
         }
 
-        /* Corner decorations */
+        /* Corner decorations - UPDATED WITH IMAGES */
         .corner-ornament {
             position: absolute;
-            width: 30px;
-            height: 30px;
-            background: var(--treasure-gold);
-            transform: rotate(45deg);
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            width: 60px;
+            height: 60px;
+            z-index: 10;
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
         }
 
-        .corner-ornament.tl { top: -5px; left: -5px; }
-        .corner-ornament.tr { top: -5px; right: -5px; }
-        .corner-ornament.bl { bottom: -5px; left: -5px; }
-        .corner-ornament.br { bottom: -5px; right: -5px; }
+        .corner-ornament img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Position each corner */
+        .corner-ornament.tl { 
+            top: -10px; 
+            left: -10px;
+            animation: corner-bounce-tl 2s ease-in-out infinite;
+        }
+        
+        .corner-ornament.tr { 
+            top: -10px; 
+            right: -10px;
+            animation: corner-bounce-tr 2.2s ease-in-out infinite 0.3s;
+        }
+        
+        .corner-ornament.bl { 
+            bottom: -10px; 
+            left: -10px;
+            animation: corner-bounce-bl 2.5s ease-in-out infinite 0.6s;
+        }
+        
+        .corner-ornament.br { 
+            bottom: -10px; 
+            right: -10px;
+            animation: corner-bounce-br 2.3s ease-in-out infinite 0.9s;
+        }
+
+        /* Corner animations - Different for each corner - CONTINUOUS WIGGLE */
+        @keyframes corner-bounce-tl {
+            0% { 
+                transform: rotate(-5deg) scale(1);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+            25% { 
+                transform: rotate(-15deg) scale(1.08);
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+            }
+            50% { 
+                transform: rotate(-8deg) scale(1.05);
+                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+            }
+            75% { 
+                transform: rotate(-12deg) scale(1.1);
+                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
+            }
+            100% { 
+                transform: rotate(-5deg) scale(1);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+        }
+
+        @keyframes corner-bounce-tr {
+            0% { 
+                transform: rotate(5deg) scale(1);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+            25% { 
+                transform: rotate(15deg) scale(1.08);
+                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
+            }
+            50% { 
+                transform: rotate(8deg) scale(1.05);
+                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
+            }
+            75% { 
+                transform: rotate(12deg) scale(1.1);
+                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
+            }
+            100% { 
+                transform: rotate(5deg) scale(1);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+        }
+
+        @keyframes corner-bounce-bl {
+            0% { 
+                transform: rotate(-3deg) scale(1) translateY(0);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+            20% { 
+                transform: rotate(-8deg) scale(1.06) translateY(-3px);
+                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
+            }
+            40% { 
+                transform: rotate(2deg) scale(1.1) translateY(-5px);
+                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1));
+            }
+            60% { 
+                transform: rotate(-5deg) scale(1.08) translateY(-4px);
+                filter: drop-shadow(0 0 22px rgba(255, 215, 0, 0.9));
+            }
+            80% { 
+                transform: rotate(-10deg) scale(1.12) translateY(-6px);
+                filter: drop-shadow(0 0 28px rgba(255, 215, 0, 1));
+            }
+            100% { 
+                transform: rotate(-3deg) scale(1) translateY(0);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+        }
+
+        @keyframes corner-bounce-br {
+            0% { 
+                transform: rotate(3deg) scale(1) translateY(0);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+            20% { 
+                transform: rotate(8deg) scale(1.06) translateY(-3px);
+                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
+            }
+            40% { 
+                transform: rotate(-2deg) scale(1.1) translateY(-5px);
+                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1));
+            }
+            60% { 
+                transform: rotate(5deg) scale(1.08) translateY(-4px);
+                filter: drop-shadow(0 0 22px rgba(255, 215, 0, 0.9));
+            }
+            80% { 
+                transform: rotate(10deg) scale(1.12) translateY(-6px);
+                filter: drop-shadow(0 0 28px rgba(255, 215, 0, 1));
+            }
+            100% { 
+                transform: rotate(3deg) scale(1) translateY(0);
+                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+            }
+        }
+
+        /* Hover effect for corners - keeps wiggling but adds extra glow */
+        .corner-ornament:hover {
+            filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) brightness(1.2) !important;
+            transition: filter 0.3s ease;
+        }
 
         .panel-header {
             display: flex;
@@ -744,6 +877,11 @@
                 padding: 10px 8px;
                 font-size: 0.75rem;
             }
+
+            .corner-ornament {
+                width: 45px;
+                height: 45px;
+            }
         }
 
         /* Floating treasure */
@@ -827,10 +965,19 @@
         <div class="content">
             <!-- Input Panel - Treasure Map -->
             <div class="panel">
-                <div class="corner-ornament tl"></div>
-                <div class="corner-ornament tr"></div>
-                <div class="corner-ornament bl"></div>
-                <div class="corner-ornament br"></div>
+                <!-- UPDATED: Corner Ornaments with Images -->
+                <div class="corner-ornament tl">
+                    <img src="https://i.postimg.cc/G4n6YStW/download-(8).png" alt="Corner TL">
+                </div>
+                <div class="corner-ornament tr">
+                    <img src="https://i.postimg.cc/k2PL8hGk/download-(10).png" alt="Corner TR">
+                </div>
+                <div class="corner-ornament bl">
+                    <img src="https://i.postimg.cc/crRFq14s/download-(11).png" alt="Corner BL">
+                </div>
+                <div class="corner-ornament br">
+                    <img src="https://i.postimg.cc/vcr0R8H8/download-(12).png" alt="Corner BR">
+                </div>
 
                 <div class="panel-header">
                     <div class="panel-title">
@@ -886,10 +1033,19 @@ Dan berbagai format lainnya!"></textarea>
 
             <!-- Output Panel - Treasure Chest -->
             <div class="panel">
-                <div class="corner-ornament tl"></div>
-                <div class="corner-ornament tr"></div>
-                <div class="corner-ornament bl"></div>
-                <div class="corner-ornament br"></div>
+                <!-- UPDATED: Corner Ornaments with Different Images for Treasure Log -->
+                <div class="corner-ornament tl">
+                    <img src="https://i.postimg.cc/9zQryJsX/download-(13).png" alt="Corner TL">
+                </div>
+                <div class="corner-ornament tr">
+                    <img src="https://i.postimg.cc/6TpyCYFW/download-(14).png" alt="Corner TR">
+                </div>
+                <div class="corner-ornament bl">
+                    <img src="https://i.postimg.cc/Wt1h0Xxb/download-(15).png" alt="Corner BL">
+                </div>
+                <div class="corner-ornament br">
+                    <img src="https://i.postimg.cc/JtzGjPSz/download-(16).png" alt="Corner BR">
+                </div>
 
                 <div class="panel-header">
                     <div class="panel-title">

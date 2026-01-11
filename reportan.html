@@ -134,24 +134,6 @@
       font-family: var(--font-mono);
     }
 
-    /* ==================== CLOCK ==================== */
-    #clock {
-      position: fixed;
-      top: var(--space-lg);
-      left: calc(var(--sidebar-width) + var(--space-lg));
-      padding: var(--space-sm) var(--space-md);
-      background: var(--clr-primary-800);
-      color: var(--clr-accent-500);
-      border-radius: 8px;
-      font-family: var(--font-mono);
-      font-size: 0.875rem;
-      font-weight: 700;
-      box-shadow: var(--shadow-md);
-      border: 1px solid rgba(251, 191, 36, 0.2);
-      z-index: 100;
-      backdrop-filter: var(--blur-glass);
-    }
-
     /* ==================== LAYOUT ==================== */
     .app-container {
       display: flex;
@@ -362,6 +344,35 @@
       overflow-y: auto;
       background: rgba(26, 32, 44, 0.5);
       backdrop-filter: var(--blur-glass);
+    }
+
+    /* Category Header */
+    .category-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-md);
+      padding: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      background: linear-gradient(135deg, 
+        rgba(45, 55, 72, 0.9) 0%, 
+        rgba(26, 32, 44, 0.95) 100%
+      );
+      border-radius: 8px;
+      border-left: 4px solid var(--clr-accent-500);
+      box-shadow: var(--shadow-md);
+    }
+
+    .category-header i {
+      font-size: 1.25rem;
+      color: var(--clr-accent-500);
+    }
+
+    .category-header span {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--clr-light-100);
+      letter-spacing: 0.025em;
     }
 
     /* Search */
@@ -686,24 +697,6 @@
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-      gap: var(--space-xl);
-    }
-
-    .logo {
-      height: 40px;
-      max-width: 150px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-      transition: transform var(--transition-base);
-    }
-
-    .logo:hover {
-      transform: scale(1.05);
-    }
-
     .panel-title {
       font-size: 1.125rem;
       font-weight: 700;
@@ -854,9 +847,6 @@
     </div>
   </div>
 
-  <!-- Clock Widget -->
-  <div id="clock">Loading...</div>
-
   <!-- Main Container -->
   <div class="app-container">
     <!-- Left Sidebar -->
@@ -953,6 +943,12 @@
     <!-- Main Content Area -->
     <main class="main-content">
       <div class="center-panel">
+        <!-- Category Header - Hidden by default -->
+        <div class="category-header" id="categoryHeader" style="display: none;">
+          <i class="fas fa-folder-open"></i>
+          <span id="categoryName"></span>
+        </div>
+
         <!-- Search -->
         <div class="search-container">
           <i class="fas fa-search search-icon"></i>
@@ -970,7 +966,7 @@
         <!-- Empty State -->
         <div class="empty-state" id="emptyState">
           <i class="fas fa-clipboard-list"></i>
-          <p>Pilih menu dari sidebar untuk melihat daftar memo</p>
+          <p>Pilih kategori dari sidebar untuk melihat daftar memo</p>
           <p>Atau gunakan pencarian untuk mencari di semua memo</p>
         </div>
 
@@ -982,18 +978,6 @@
     <!-- Right Panel -->
     <aside class="right-panel" id="rightPanel" role="complementary" aria-label="Panel daftar judul">
       <div class="panel-header">
-        <div class="logo-container">
-          <img 
-            src="https://cdn.areabermain.club/assets/cdn/az1/2024/08/20/20240820/d4dd5539892657c7150b74d894deedfe/logo-tvtoto.png" 
-            alt="Logo Tvtoto" 
-            class="logo"
-          >
-          <img 
-            src="https://statics.hokibagus.club/logo_situs/logo_ziatogel.png" 
-            alt="Logo Ziatogel" 
-            class="logo"
-          >
-        </div>
         <h2 class="panel-title" id="panelTitle">Daftar Judul</h2>
       </div>
       <div id="titleList"></div>
@@ -1048,7 +1032,6 @@
     // ==================== DOM ELEMENTS ====================
     const DOM = {
       loadingOverlay: document.getElementById('loadingOverlay'),
-      clock: document.getElementById('clock'),
       searchInput: document.getElementById('searchInput'),
       autocompleteList: document.getElementById('autocompleteList'),
       emptyState: document.getElementById('emptyState'),
@@ -1057,7 +1040,9 @@
       panelTitle: document.getElementById('panelTitle'),
       titleList: document.getElementById('titleList'),
       alert: document.getElementById('alert'),
-      alertMessage: document.getElementById('alertMessage')
+      alertMessage: document.getElementById('alertMessage'),
+      categoryHeader: document.getElementById('categoryHeader'),
+      categoryName: document.getElementById('categoryName')
     };
 
     // ==================== UTILITY FUNCTIONS ====================
@@ -1090,26 +1075,8 @@
           this.escapeHtml(text.substring(index, index + query.length)) +
           '</mark>' +
           this.escapeHtml(text.substring(index + query.length));
-      },
-
-      formatDateTime() {
-        const now = new Date();
-        const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
-        
-        return `${days[now.getDay()]}, ${String(now.getDate()).padStart(2, '0')}-${months[now.getMonth()]}-${now.getFullYear()} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
       }
     };
-
-    // ==================== CLOCK ====================
-    function initClock() {
-      function updateClock() {
-        DOM.clock.textContent = utils.formatDateTime();
-      }
-      
-      updateClock();
-      setInterval(updateClock, 1000);
-    }
 
     // ==================== COLLAPSIBLE SECTIONS ====================
     function initCollapsibleSections() {
@@ -1310,7 +1277,7 @@
               <tr>
                 <td class="table-content">${utils.escapeHtml(item.title)}</td>
                 <td style="width: 100px;">
-                  <button class="copy-btn" onclick="copyToClipboard(\`${utils.escapeHtml(item.title)}\`, 'Judul')">
+                  <button class="copy-btn" data-copy-type="title" data-copy-index="${index}">
                     <i class="fas fa-copy"></i>
                     Copy
                   </button>
@@ -1329,11 +1296,11 @@
                 <td class="table-content" id="content-cell-${index}">${utils.escapeHtml(item.content)}</td>
                 <td style="width: 200px;">
                   <div class="button-container" id="button-container-${index}">
-                    <button class="copy-btn" onclick="copyToClipboard(\`${utils.escapeHtml(item.content)}\`, 'Deskripsi')">
+                    <button class="copy-btn" data-copy-type="content" data-copy-index="${index}">
                       <i class="fas fa-copy"></i>
                       Copy
                     </button>
-                    <button class="edit-btn" onclick="editContent(${index})">
+                    <button class="edit-btn" data-edit-index="${index}">
                       <i class="fas fa-edit"></i>
                       Edit
                     </button>
@@ -1343,6 +1310,32 @@
             </tbody>
           </table>
         `;
+
+        // Add event listeners for buttons
+        this.attachButtonListeners(index);
+      },
+
+      attachButtonListeners(index) {
+        // Copy buttons
+        document.querySelectorAll(`[data-copy-index="${index}"]`).forEach(btn => {
+          btn.addEventListener('click', function() {
+            const type = this.getAttribute('data-copy-type');
+            const item = state.currentData[index];
+            if (type === 'title') {
+              copyToClipboard(item.title, 'Judul');
+            } else {
+              copyToClipboard(item.content, 'Deskripsi');
+            }
+          });
+        });
+
+        // Edit button
+        const editBtn = document.querySelector(`[data-edit-index="${index}"]`);
+        if (editBtn) {
+          editBtn.addEventListener('click', function() {
+            editContent(index);
+          });
+        }
       },
 
       updateAutocomplete(query) {
@@ -1424,6 +1417,10 @@
           });
         }
         
+        // Show and update category header
+        DOM.categoryHeader.style.display = 'flex';
+        DOM.categoryName.textContent = sheetName;
+        
         // Show right panel and update title list
         DOM.rightPanel.style.display = 'block';
         this.renderTitleList();
@@ -1469,6 +1466,10 @@
           DOM.tablesContainer.style.display = 'none';
           DOM.emptyState.style.display = 'flex';
           DOM.searchInput.value = '';
+          
+          // Show and update category header
+          DOM.categoryHeader.style.display = 'flex';
+          DOM.categoryName.textContent = state.currentSheet;
           
           ui.renderTitleList();
         });
@@ -1537,15 +1538,31 @@
       
       // Replace buttons with Save and Cancel
       buttonContainer.innerHTML = `
-        <button class="copy-btn save-btn" onclick="saveContent(${index}, '${utils.escapeHtml(originalContent).replace(/'/g, "\\'")}')">
+        <button class="copy-btn save-btn" data-save-index="${index}">
           <i class="fas fa-save"></i>
           Save
         </button>
-        <button class="copy-btn cancel-btn" onclick="cancelEdit(${index}, '${utils.escapeHtml(originalContent).replace(/'/g, "\\'")}')">
+        <button class="copy-btn cancel-btn" data-cancel-index="${index}">
           <i class="fas fa-times"></i>
           Cancel
         </button>
       `;
+      
+      // Add event listeners for Save and Cancel
+      const saveBtn = buttonContainer.querySelector(`[data-save-index="${index}"]`);
+      const cancelBtn = buttonContainer.querySelector(`[data-cancel-index="${index}"]`);
+      
+      if (saveBtn) {
+        saveBtn.addEventListener('click', function() {
+          saveContent(index);
+        });
+      }
+      
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', function() {
+          cancelEdit(index, originalContent);
+        });
+      }
       
       // Focus on textarea
       const textarea = document.getElementById(`edit-textarea-${index}`);
@@ -1556,7 +1573,7 @@
       }
     }
 
-    function saveContent(index, originalContent) {
+    function saveContent(index) {
       const textarea = document.getElementById(`edit-textarea-${index}`);
       if (!textarea) return;
       
@@ -1575,15 +1592,31 @@
       
       if (buttonContainer) {
         buttonContainer.innerHTML = `
-          <button class="copy-btn" onclick="copyToClipboard(\`${utils.escapeHtml(newContent)}\`, 'Deskripsi')">
+          <button class="copy-btn" data-copy-type="content" data-copy-index="${index}">
             <i class="fas fa-copy"></i>
             Copy
           </button>
-          <button class="edit-btn" onclick="editContent(${index})">
+          <button class="edit-btn" data-edit-index="${index}">
             <i class="fas fa-edit"></i>
             Edit
           </button>
         `;
+        
+        // Re-attach event listeners
+        const copyBtn = buttonContainer.querySelector(`[data-copy-index="${index}"]`);
+        const editBtn = buttonContainer.querySelector(`[data-edit-index="${index}"]`);
+        
+        if (copyBtn) {
+          copyBtn.addEventListener('click', function() {
+            copyToClipboard(state.currentData[index].content, 'Deskripsi');
+          });
+        }
+        
+        if (editBtn) {
+          editBtn.addEventListener('click', function() {
+            editContent(index);
+          });
+        }
       }
       
       ui.showAlert('Deskripsi berhasil diubah!', 'success');
@@ -1595,24 +1628,40 @@
       
       // Restore original content
       if (contentCell) {
-        contentCell.innerHTML = utils.unescapeHtml(originalContent);
+        contentCell.innerHTML = utils.escapeHtml(originalContent);
       }
       
       if (buttonContainer) {
         buttonContainer.innerHTML = `
-          <button class="copy-btn" onclick="copyToClipboard(\`${originalContent}\`, 'Deskripsi')">
+          <button class="copy-btn" data-copy-type="content" data-copy-index="${index}">
             <i class="fas fa-copy"></i>
             Copy
           </button>
-          <button class="edit-btn" onclick="editContent(${index})">
+          <button class="edit-btn" data-edit-index="${index}">
             <i class="fas fa-edit"></i>
             Edit
           </button>
         `;
+        
+        // Re-attach event listeners
+        const copyBtn = buttonContainer.querySelector(`[data-copy-index="${index}"]`);
+        const editBtn = buttonContainer.querySelector(`[data-edit-index="${index}"]`);
+        
+        if (copyBtn) {
+          copyBtn.addEventListener('click', function() {
+            copyToClipboard(state.currentData[index].content, 'Deskripsi');
+          });
+        }
+        
+        if (editBtn) {
+          editBtn.addEventListener('click', function() {
+            editContent(index);
+          });
+        }
       }
     }
 
-    // Make functions globally available
+    // Make functions globally available (no longer needed but kept for compatibility)
     window.editContent = editContent;
     window.saveContent = saveContent;
     window.cancelEdit = cancelEdit;
@@ -1621,7 +1670,6 @@
     async function init() {
       console.log('🚀 Initializing Memo Tvtoto Application...');
       
-      initClock();
       initCollapsibleSections();
       initEventListeners();
       

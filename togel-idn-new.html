@@ -29,12 +29,19 @@
         }
 
         body {
-            background: url('https://cdn.areabermain.club/assets/cdn/az8/2025/11/19/20251119/9e6dcba5f4e223f30432ee6f22abe6dd/new-background-ziatogel.jpg') center/cover no-repeat fixed;
+            position: relative;
+            background-color: #0a1d46; /* Fallback color */
+            background-image: url('https://cdn.areabermain.club/assets/cdn/az8/2025/11/19/20251119/9e6dcba5f4e223f30432ee6f22abe6dd/new-background-ziatogel.jpg');
+            background-size: 1920px 1080px;
+            background-position: center top;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             margin: 0;
             padding: 20px;
             font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
             color: var(--text-primary);
+            overflow-x: hidden; /* Mencegah scroll horizontal */
         }
 
         /* Main Container */

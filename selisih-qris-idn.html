@@ -21,8 +21,9 @@
             padding: 20px;
             min-height: 100vh;
             background: #0A192F;
+            overflow-x: hidden;
         }
-        
+
         /* Background layer terpisah untuk performa lebih baik */
         body::before {
             content: '';
@@ -33,12 +34,13 @@
             height: 100%;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0), rgba(15, 35, 70, 0), rgba(255, 255, 255, 0)),
                         url('https://cdn.areabermain.club/assets/cdn/az8/2025/11/19/20251119/9e6dcba5f4e223f30432ee6f22abe6dd/new-background-ziatogel.jpg');
-            background-size: cover;
-            background-position: center center;
+            background-size: 1920px 1080px;
+            background-position: center top; /* Ambil dari atas gambar */
             background-repeat: no-repeat;
             z-index: -1;
             will-change: transform;
         }
+
         
         .container {
             max-width: 1200px;

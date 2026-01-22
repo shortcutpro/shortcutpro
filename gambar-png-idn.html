@@ -4,6 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gambar Cs Tvtoto</title>
+    
+    <!-- Preconnect untuk loading gambar lebih cepat -->
+    <link rel="preconnect" href="https://i.imgur.com" crossorigin>
+    <link rel="preconnect" href="https://imgur.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.areabermain.club" crossorigin>
+    <link rel="preconnect" href="https://statics.hokibagus.club" crossorigin>
+    <link rel="dns-prefetch" href="https://i.imgur.com">
+    <link rel="dns-prefetch" href="https://imgur.com">
+    <link rel="dns-prefetch" href="https://tvtoto89100.com">
+    <link rel="dns-prefetch" href="https://statics.hokibagus.club">
+    
+    <!-- Preload logo dan background -->
+    <link rel="preload" as="image" href="https://tvtoto89100.com/resources/images/logo.png" fetchpriority="high">
+    <link rel="preload" as="image" href="https://statics.hokibagus.club/logo_situs/logo_ziatogel.png" fetchpriority="high">
+    <link rel="preload" as="image" href="https://cdn.areabermain.club/assets/cdn/az9/2023/12/16/20231216/f82bd18f48850e4f1b12b30900ad2efe/TVTOTO_BG_RTP_0.jpg">
+    
     <style>
         /* ================ */
         /* VARIABLES         */
@@ -75,13 +91,23 @@
         }
 
         /* ================ */
+        /* LOGO CONTAINER   */
+        /* ================ */
+        .logo-wrapper {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 30px;
+          flex-wrap: wrap;
+          margin-bottom: 10px;
+        }
+
+        /* ================ */
         /* LOGO EFFECTS (BLINK) */
         /* ================ */
         .logo {
           max-width: 180px;
           height: auto;
-          margin: 0 auto;
-          display: block;
           cursor: pointer;
           filter: drop-shadow(0 2px 8px rgba(255, 0, 0, 0.3));
           animation: blink 2s infinite;
@@ -351,7 +377,6 @@
           width: 100%;
           height: 100%;
           background-color: rgba(0, 0, 0, 0.8);
-          display: flex;
           align-items: center;
           justify-content: center;
           flex-direction: column;
@@ -408,6 +433,22 @@
           color: #0f0;
           font-weight: bold;
           text-align: center;
+        }
+
+        /* ================ */
+        /* LOADING INDICATOR */
+        /* ================ */
+        #loadingIndicator {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background: var(--primary-color);
+          color: white;
+          padding: 10px 20px;
+          border-radius: 5px;
+          font-weight: bold;
+          display: none;
+          z-index: 9999;
         }
 
         /* ================ */
@@ -474,8 +515,12 @@
             font-size: 1.6rem;
           }
           
+          .logo-wrapper {
+            gap: 20px;
+          }
+          
           .logo {
-            max-width: 150px;
+            max-width: 140px;
           }
         }
 
@@ -499,8 +544,12 @@
             font-size: 1.4rem;
           }
           
+          .logo-wrapper {
+            gap: 15px;
+          }
+          
           .logo {
-            max-width: 130px;
+            max-width: 120px;
           }
         }
     </style>
@@ -514,10 +563,14 @@
     <meta name="theme-color" content="#8e44ad">
 </head>
 <body>
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator">Memuat gambar...</div>
+
     <div class="container">
         <header>
-            <div class="logo-container" onclick="showMainMenu()">
-                <img src="https://tvtoto89100.com/resources/images/logo.png" alt="Togel Logo" class="logo">
+            <div class="logo-wrapper" onclick="showMainMenu()">
+                <img src="https://tvtoto89100.com/resources/images/logo.png" alt="Tvtoto Logo" class="logo">
+                <img src="https://statics.hokibagus.club/logo_situs/logo_ziatogel.png" alt="ZiaTogel Logo" class="logo">
             </div>
             <h1 class="animated-title">Gambar Cs Tvtoto</h1>
         </header>
@@ -536,8 +589,14 @@
         <div id="main-menu">
             <div class="menu-row">
                 <div class="menu-card" onclick="showPage('betting-page')">
-                    <h2>Gambar Cara Betting Togel</h2>
-                    <p>Panduan lengkap cara melakukan betting togel.</p>
+                    <h2>Gambar Cara Betting Togel PNG</h2>
+                    <p>Panduan lengkap cara melakukan betting togel format PNG.</p>
+                    <button class="btn">Buka</button>
+                </div>
+                
+                <div class="menu-card" onclick="showPage('idn-betting-page')">
+                    <h2>Gambar Cara Betting Togel IDN</h2>
+                    <p>Panduan lengkap cara melakukan betting togel IDN.</p>
                     <button class="btn">Buka</button>
                 </div>
                 
@@ -563,9 +622,9 @@
             </div>
         </div>
         
-        <!-- Halaman Betting - 5 card per baris -->
+        <!-- Halaman Betting PNG - 5 card per baris -->
         <div id="betting-page" class="content-page">
-            <h2>Gambar Cara Betting Togel</h2>
+            <h2>Gambar Cara Betting Togel PNG</h2>
             <p>Pilih jenis betting ditanyakan member :</p>
             
             <div class="submenu-grid grid-5">
@@ -713,6 +772,170 @@
                     <h3>3.1 Seputaran Pengertian Dan Cara Bermain Kombinasi</h3>
                     <div class="image-container">
                         <img src="https://i.imgur.com/p6wPJon.jpg" alt="Cara Bermain Kombinasi">
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn back-btn" onclick="showMainMenu()">Kembali ke Menu</button>
+        </div>
+
+        <!-- Halaman Betting IDN - 5 card per baris -->
+        <div id="idn-betting-page" class="content-page">
+            <h2>Gambar Cara Betting Togel IDN</h2>
+            <p>Pilih jenis betting IDN ditanyakan member :</p>
+            
+            <div class="submenu-grid grid-5">
+                <div class="submenu-card">
+                    <h3>2.1 Cara Betting 4D 2D 3D</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/vd6poFp.jpg" alt="Cara Betting 4D 2D 3D">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.2 Cara Betting 2D Depan</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/Q8VujIR.jpg" alt="Cara Betting 2D Depan">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.3 Cara Betting 2D Tengah</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/cdRMcBd.jpg" alt="Cara Betting 2D Tengah">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.4 Cara Betting Colok Bebas</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/tdmxOrQ.jpg" alt="Cara Betting Colok Bebas">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.5 Cara Betting Colok Bebas 2D</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/MEp2daa.jpg" alt="Cara Betting Colok Bebas 2D">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.6 Cara Betting Colok Naga</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/pPx32G2.jpg" alt="Cara Betting Colok Naga">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.7 Cara Betting Colok Jitu</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/vsq9r46.jpg" alt="Cara Betting Colok Jitu">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.8 Cara Betting Tengah Tepi</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/1W0vOzA.jpg" alt="Cara Betting Tengah Tepi">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>2.9 Cara Betting Dasar</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/5k8pksZ.jpg" alt="Cara Betting Dasar">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>3.0 Cara Betting 50 50</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/IgplnDJ.jpg" alt="Cara Betting 50 50">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>3.1 Cara Betting Shio</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/fPkdaSy.jpg" alt="Cara Betting Shio">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>3.2 Cara Betting Silang Homo</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/hO5K167.jpg" alt="Cara Betting Silang Homo">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>3.3 Cara Betting Kembang Kempis</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/YwT6N1z.jpg" alt="Cara Betting Kembang Kempis">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>3.4 Cara Betting Kombinasi</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/5wyoSGo.jpg" alt="Cara Betting Kombinasi">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.1 Cara Betting Fast 4D</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/xHu2Nqq.jpg" alt="Cara Betting Fast 4D">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.2 Cara Betting Angka Tarung</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/0Rk8zko.jpg" alt="Cara Betting Angka Tarung">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.3 Cara Betting BBFS</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/iUjO2E0.jpg" alt="Cara Betting BBFS">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.4 Cara Betting Quick 2D</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/VF25dG0.jpg" alt="Cara Betting Quick 2D">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.5 Cara Betting Pola Colok</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/dB4BcY8.jpg" alt="Cara Betting Pola Colok">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.7 Cara Betting Mistik</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/pIIG2BC.jpg" alt="Cara Betting Mistik">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.8 Cara Betting Index</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/3ZvbQxn.jpg" alt="Cara Betting Index">
+                    </div>
+                </div>
+                
+                <div class="submenu-card">
+                    <h3>4.9 Cara Betting Taysen</h3>
+                    <div class="image-container">
+                        <img src="https://imgur.com/EqUQdd8.jpg" alt="Cara Betting Taysen">
                     </div>
                 </div>
             </div>
@@ -1074,6 +1297,157 @@
     </div>
 
     <script>
+        // ====================== DAFTAR SEMUA URL GAMBAR ======================
+        const ALL_IMAGE_URLS = [
+            // Logo & Background (prioritas tinggi)
+            'https://tvtoto89100.com/resources/images/logo.png',
+            'https://statics.hokibagus.club/logo_situs/logo_ziatogel.png',
+            'https://cdn.areabermain.club/assets/cdn/az9/2023/12/16/20231216/f82bd18f48850e4f1b12b30900ad2efe/TVTOTO_BG_RTP_0.jpg',
+            
+            // Betting PNG Page
+            'https://i.imgur.com/sAT9he1.jpg',
+            'https://i.imgur.com/4uosxH1.jpg',
+            'https://i.imgur.com/fzw0OQl.jpg',
+            'https://i.imgur.com/uctIKzf.jpg',
+            'https://i.imgur.com/Q50jW4e.jpg',
+            'https://i.imgur.com/XHfBtfL.jpg',
+            'https://i.imgur.com/uJFQarG.jpg',
+            'https://i.imgur.com/7gyU5lO.jpg',
+            'https://i.imgur.com/Wh9LLZH.jpg',
+            'https://i.imgur.com/3HjkZCu.jpg',
+            'https://i.imgur.com/a4NHaIk.jpg',
+            'https://i.imgur.com/qtxc3tv.jpg',
+            'https://i.imgur.com/JNCWCqu.jpg',
+            'https://i.imgur.com/n39qLYT.jpg',
+            'https://i.imgur.com/E54ZOyy.jpg',
+            'https://i.imgur.com/gBLLJlh.jpg',
+            'https://i.imgur.com/fT8OwHk.jpg',
+            'https://i.imgur.com/XUmmNBE.jpg',
+            'https://i.imgur.com/jW3gHDi.jpg',
+            'https://i.imgur.com/1ZG3LGW.jpg',
+            'https://i.imgur.com/p6wPJon.jpg',
+            
+            // Betting IDN Page
+            'https://imgur.com/vd6poFp.jpg',
+            'https://imgur.com/Q8VujIR.jpg',
+            'https://imgur.com/cdRMcBd.jpg',
+            'https://imgur.com/tdmxOrQ.jpg',
+            'https://imgur.com/MEp2daa.jpg',
+            'https://imgur.com/pPx32G2.jpg',
+            'https://imgur.com/vsq9r46.jpg',
+            'https://imgur.com/1W0vOzA.jpg',
+            'https://imgur.com/5k8pksZ.jpg',
+            'https://imgur.com/IgplnDJ.jpg',
+            'https://imgur.com/fPkdaSy.jpg',
+            'https://imgur.com/hO5K167.jpg',
+            'https://imgur.com/YwT6N1z.jpg',
+            'https://imgur.com/5wyoSGo.jpg',
+            'https://imgur.com/xHu2Nqq.jpg',
+            'https://imgur.com/0Rk8zko.jpg',
+            'https://imgur.com/iUjO2E0.jpg',
+            'https://imgur.com/VF25dG0.jpg',
+            'https://imgur.com/dB4BcY8.jpg',
+            'https://imgur.com/pIIG2BC.jpg',
+            'https://imgur.com/3ZvbQxn.jpg',
+            'https://imgur.com/EqUQdd8.jpg',
+            
+            // Event Page
+            'https://imgur.com/lhwhdNN.jpg',
+            'https://i.imgur.com/SvIOKZp.jpg',
+            'https://i.imgur.com/gRxw4y3.jpg',
+            'https://i.imgur.com/Nnx34w7.jpg',
+            'https://i.imgur.com/G1jNPpI.jpg',
+            'https://i.imgur.com/1jvJz0f.jpg',
+            
+            // Bank Page
+            'https://i.imgur.com/50UQyns.jpg',
+            'https://i.imgur.com/7wsbtSg.jpg',
+            'https://i.imgur.com/asXZlXB.jpg',
+            'https://i.imgur.com/rwBDD3B.jpg',
+            'https://i.imgur.com/wFPI7JC.jpg',
+            'https://i.imgur.com/pDjfgzf.jpg',
+            'https://i.imgur.com/u8w9RnH.jpg',
+            'https://i.imgur.com/rG6ltcp.jpg',
+            'https://i.imgur.com/xfdBFLm.jpg',
+            'https://i.imgur.com/F4hrnFp.jpg',
+            'https://i.imgur.com/JkU6gSP.jpg',
+            
+            // E-wallet
+            'https://i.imgur.com/moYdLjS.jpg',
+            'https://i.imgur.com/pqdf1Dn.jpg',
+            'https://i.imgur.com/M9B9xfh.jpg',
+            'https://i.imgur.com/fz5jzry.jpg',
+            
+            // QRIS Page
+            'https://i.imgur.com/RSDKX5k.jpg',
+            'https://i.imgur.com/ulijoG1.jpg',
+            'https://imgur.com/e2kwpzY.jpg',
+            'https://i.imgur.com/Lh74wFD.jpg',
+            'https://i.imgur.com/dxvJtsR.jpg',
+            'https://i.imgur.com/tXEVQvf.jpg',
+            'https://i.imgur.com/WCCpLmK.jpg',
+            'https://i.imgur.com/C1QN8fx.jpg',
+            'https://i.imgur.com/IbS4gJt.jpg',
+            'https://i.imgur.com/yw6ESvm.jpg',
+            'https://i.imgur.com/TQaVDei.jpg',
+            'https://i.imgur.com/RO51TZy.jpg',
+            'https://i.imgur.com/Kv8pzJA.jpg',
+            'https://i.imgur.com/6lYN1Hn.jpg',
+            'https://i.imgur.com/eZU0kvI.jpg',
+            'https://i.imgur.com/uXKrmn0.jpg',
+            'https://i.imgur.com/qUYslmO.jpg',
+            'https://i.imgur.com/rcfaMj9.jpg',
+            'https://i.imgur.com/C3khnds.jpg',
+            'https://i.imgur.com/q5KlqPT.jpg',
+            'https://i.imgur.com/xclIAma.jpg',
+            'https://i.imgur.com/4t0smej.jpg',
+            'https://i.imgur.com/azJ4wCy.jpg',
+            'https://imgur.com/lTLrVkK.jpg',
+            'https://imgur.com/kB2YUab.jpg'
+        ];
+
+        // ====================== PRELOAD SEMUA GAMBAR ======================
+        let loadedImages = 0;
+        let totalImages = ALL_IMAGE_URLS.length;
+        const imageCache = new Map();
+
+        function preloadAllImages() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            loadingIndicator.style.display = 'block';
+            
+            ALL_IMAGE_URLS.forEach((url, index) => {
+                const img = new Image();
+                
+                img.onload = () => {
+                    loadedImages++;
+                    imageCache.set(url, img);
+                    updateLoadingProgress();
+                };
+                
+                img.onerror = () => {
+                    loadedImages++;
+                    console.warn('Gagal memuat gambar:', url);
+                    updateLoadingProgress();
+                };
+                
+                // Mulai download
+                img.src = url;
+            });
+        }
+
+        function updateLoadingProgress() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const progress = Math.round((loadedImages / totalImages) * 100);
+            loadingIndicator.textContent = `Memuat gambar... ${progress}%`;
+            
+            // Sembunyikan loading indicator setelah semua gambar selesai
+            if (loadedImages >= totalImages) {
+                setTimeout(() => {
+                    loadingIndicator.style.display = 'none';
+                }, 500);
+            }
+        }
+
         // ====================== NAVIGASI HALAMAN ======================
         function showPage(pageId) {
             // Sembunyikan semua halaman
@@ -1189,6 +1563,9 @@
 
             // Tambahkan event copy pada overlay
             modalElements.overlay.addEventListener('click', copyImageToClipboard);
+            
+            // MULAI PRELOAD SEMUA GAMBAR SEJAK AWAL
+            preloadAllImages();
         });
     </script>
 </body>

@@ -81,6 +81,152 @@
             border-radius: 3px;
         }
 
+        .datetime-display {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .date-box, .time-box {
+            background: var(--bg-card);
+            border: 2px solid rgba(153, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px 30px;
+            box-shadow: var(--shadow-red);
+            transition: all 0.3s ease;
+        }
+
+        .date-box:hover, .time-box:hover {
+            border-color: var(--red-primary);
+            box-shadow: 0 8px 25px rgba(153, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .date-box {
+            min-width: 280px;
+        }
+
+        .time-box {
+            min-width: 220px;
+        }
+
+        .date-label, .time-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .date-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--red-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .time-value {
+            font-size: 2rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            background: var(--red-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(153, 0, 0, 0.3);
+        }
+
+        .timezone {
+            font-size: 0.85rem;
+            color: var(--red-light);
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .datetime-display {
+                gap: 15px;
+            }
+            
+            .date-box, .time-box {
+                padding: 12px 20px;
+                min-width: auto;
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .date-value {
+                font-size: 1.1rem;
+            }
+
+            .time-value {
+                font-size: 1.6rem;
+            }
+        }
+
+        .auto-open-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(153, 0, 0, 0.3);
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .auto-open-toggle:hover {
+            background: rgba(153, 0, 0, 0.1);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+            background: #666;
+            border-radius: 13px;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--green-primary);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(24px);
+        }
+
+        .toggle-label {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .toggle-switch.active ~ .toggle-label {
+            color: var(--green-light);
+            font-weight: 600;
+        }
+
         .filter-container {
             max-width: 800px;
             margin: 0 auto 30px;
@@ -209,14 +355,73 @@
             text-align: center;
             transition: all 0.3s ease;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .ttg-card.done .ttg-card__title {
             color: var(--green-light);
             background: rgba(45, 122, 45, 0.15);
+        }
+
+        .countdown-timer {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--red-accent);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+            padding: 8px 15px;
+            background: rgba(153, 0, 0, 0.15);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .countdown-timer.phase-countdown {
+            color: var(--red-accent);
+            border-color: rgba(255, 68, 68, 0.3);
+            background: rgba(153, 0, 0, 0.15);
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.5);
+        }
+
+        .countdown-timer.phase-betclose {
+            color: #888;
+            border-color: rgba(136, 136, 136, 0.3);
+            background: rgba(136, 136, 136, 0.15);
+            text-shadow: none;
+            font-size: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .countdown-timer.warning {
+            color: #ffa500;
+            text-shadow: 0 0 10px rgba(255, 165, 0, 0.5);
+            animation: pulse 1s ease-in-out infinite;
+            border-color: rgba(255, 165, 0, 0.3);
+            background: rgba(255, 165, 0, 0.15);
+        }
+
+        .countdown-timer.holiday {
+            color: #888;
+            text-shadow: none;
+            animation: none;
+            background: rgba(136, 136, 136, 0.15);
+            border-color: rgba(136, 136, 136, 0.3);
+            font-size: 0.95rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.02);
+            }
         }
 
         .status-badge {
@@ -512,6 +717,10 @@
             background: linear-gradient(135deg, #cc0000, #ff4444);
         }
 
+        .toast-notification.info {
+            background: linear-gradient(135deg, #0066cc, #4488ff);
+        }
+
         @keyframes slideIn {
             from {
                 transform: translateX(400px);
@@ -555,13 +764,37 @@
                 width: 100%;
                 justify-content: center;
             }
+            .countdown-timer {
+                font-size: 0.95rem;
+                letter-spacing: 1px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>JADWAL TOGEL</h1>
-        <p style="color: var(--text-secondary);">Jadwal lengkap togel online</p>
+        
+        <div class="datetime-display">
+            <div class="date-box">
+                <div class="date-label">📅 Tanggal Hari Ini</div>
+                <div class="date-value" id="currentDate">Loading...</div>
+            </div>
+            <div class="time-box">
+                <div class="time-label">🕐 Jam Sekarang</div>
+                <div class="time-value" id="currentTime">00:00:00</div>
+                <div class="timezone">WIB (GMT+7)</div>
+            </div>
+        </div>
+        
+        <p style="color: #ffa500; font-size: 0.9rem; margin-bottom: 15px; font-weight: 600;">⚠️ PENTING: Izinkan pop-up di browser agar tab otomatis terbuka saat BET CLOSE!</p>
+        
+        <div class="auto-open-toggle" onclick="toggleAutoOpen()">
+            <div class="toggle-switch" id="autoOpenSwitch">
+                <div class="toggle-slider"></div>
+            </div>
+            <span class="toggle-label">Auto Open Tab Saat BET CLOSE</span>
+        </div>
     </div>
 
     <div class="filter-container">
@@ -645,17 +878,17 @@
             {name: "HUAHIN 1630", days: "Senin s/d Minggu", tutup: "16:15 WIB", buka: "16:30 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
             {name: "HOKI DRAW 17", days: "Senin s/d Minggu", tutup: "16:59 WIB", buka: "17:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "KING KONG4D SORE", days: "Senin s/d Minggu", tutup: "17:00 WIB", buka: "17:15 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"},
-            {name: "SINGAPORE", days: "HARI SELASA & JUM'AT ( LIBUR )", tutup: "17:30 WIB", buka: "17:45 WIB", website: "https://www.singaporepools.com.sg/landing/en/Pages/index.html", live: null, prizeType: "price123"},
+            {name: "SINGAPORE", days: "HARI SELASA & JUM'AT ( LIBUR )", tutup: "17:30 WIB", buka: "17:45 WIB", website: "https://www.singaporepools.com.sg/landing/en/Pages/index.html", live: null, prizeType: "price123", activeDays: [1, 3, 4, 6, 0]},
             {name: "HOKI DRAW 18", days: "Senin s/d Minggu", tutup: "17:59 WIB", buka: "18:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "MAGNUM4D", days: "HARI RABU, SABTU & MINGGU", tutup: "18:10 WIB", buka: "18:40 WIB", website: "https://www.magnum4d.my/en", live: null, prizeType: "price123"},
+            {name: "MAGNUM4D", days: "HARI RABU, SABTU & MINGGU", tutup: "18:10 WIB", buka: "18:40 WIB", website: "https://www.magnum4d.my/en", live: null, prizeType: "price123", activeDays: [3, 6, 0]},
             {name: "HOKI DRAW 19", days: "Senin s/d Minggu", tutup: "18:59 WIB", buka: "19:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "TOTO MACAU MALAM I", days: "Senin s/d Minggu", tutup: "19:00 WIB", buka: "19:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "CHELSEA 19", days: "Senin s/d Minggu", tutup: "19:00 WIB", buka: "19:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
             {name: "POIPET 19", days: "Senin s/d Minggu", tutup: "19:30 WIB", buka: "19:45 WIB", website: "https://poipetlottery.com/", live: "https://www.youtube.com/@poipetlottery70/featured", prizeType: "price123"},
-            {name: "PCSO", days: "Minggu Libur", tutup: "19:50 WIB", buka: "20:10 WIB", website: "https://www.pcso.gov.ph/", live: "https://www.youtube.com/@PCSOGOVPHOfficial/streams", prizeType: "price1"},
+            {name: "PCSO", days: "Minggu Libur", tutup: "19:50 WIB", buka: "20:10 WIB", website: "https://www.pcso.gov.ph/", live: "https://www.youtube.com/@PCSOGOVPHOfficial/streams", prizeType: "price1", activeDays: [1, 2, 3, 4, 5, 6]},
             {name: "HOKI DRAW 20", days: "Senin s/d Minggu", tutup: "19:59 WIB", buka: "20:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MALI 2030", days: "Selasa s/d Minggu", tutup: "20:15 WIB", buka: "20:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "HUAHIN 2100", days: "Selasa s/d Minggu", tutup: "20:45 WIB", buka: "21:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
+            {name: "TOTO MALI 2030", days: "Senin s/d Minggu", tutup: "20:15 WIB", buka: "20:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
+            {name: "HUAHIN 2100", days: "Senin s/d Minggu", tutup: "20:45 WIB", buka: "21:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
             {name: "HOKI DRAW 21", days: "Senin s/d Minggu", tutup: "20:59 WIB", buka: "21:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "CHELSEA 21", days: "Senin s/d Minggu", tutup: "21:00 WIB", buka: "21:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
             {name: "NEVADA", days: "Senin s/d Minggu", tutup: "21:15 WIB", buka: "21:30 WIB", website: "https://www.nevadalottery.us/", live: null, prizeType: "price123"},
@@ -667,11 +900,216 @@
             {name: "HONGKONG", days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:15 WIB", website: "https://hongkongfunlotto.net/", live: "https://kick.com/hongkong-lotto-official", prizeType: "price123"},
             {name: "TOTO MACAU MALAM III", days: "Senin s/d Minggu", tutup: "23:00 WIB", buka: "23:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "TOTO MALI 2330", days: "Senin s/d Minggu", tutup: "23:15 WIB", buka: "23:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "KING KONG4D MALAM", days: "Senin s/d Sabtu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
+            {name: "KING KONG4D MALAM", days: "Senin s/d Minggu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
         ];
 
         // Store card states in memory
         const cardStates = {};
+        
+        // Auto-open tracking
+        let autoOpenEnabled = localStorage.getItem('autoOpenEnabled') === 'true';
+        const openedTabs = {};
+        const previousStates = {}; // Track previous countdown state for each pasaran
+
+        function parseTimeToMinutes(timeStr) {
+            const [time, period] = timeStr.split(' ');
+            const [hours, minutes] = time.split(':').map(Number);
+            return hours * 60 + minutes;
+        }
+
+        function isActiveDay(data) {
+            if (!data.activeDays) return true;
+            const now = new Date();
+            const currentDay = now.getDay();
+            return data.activeDays.includes(currentDay);
+        }
+
+        function getNextActiveDay(data) {
+            if (!data.activeDays) return null;
+            const now = new Date();
+            const currentDay = now.getDay();
+            const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            for (let i = 1; i <= 7; i++) {
+                const nextDay = (currentDay + i) % 7;
+                if (data.activeDays.includes(nextDay)) {
+                    return dayNames[nextDay];
+                }
+            }
+            return null;
+        }
+
+        function getNextActiveDayDate(data) {
+            if (!data.activeDays) return null;
+            const now = new Date();
+            const currentDay = now.getDay();
+            for (let i = 1; i <= 7; i++) {
+                const nextDay = (currentDay + i) % 7;
+                if (data.activeDays.includes(nextDay)) {
+                    return {
+                        daysToAdd: i,
+                        dayOfWeek: nextDay
+                    };
+                }
+            }
+            return null;
+        }
+
+        function calculateCountdown(tutupTime, bukaTime, data) {
+            const now = new Date();
+            const currentDay = now.getDay();
+            
+            if (!isActiveDay(data)) {
+                return {
+                    isHoliday: true,
+                    nextActiveDay: getNextActiveDay(data)
+                };
+            }
+            
+            const currentMinutes = now.getHours() * 60 + now.getMinutes();
+            const tutupMinutes = parseTimeToMinutes(tutupTime);
+            const bukaMinutes = parseTimeToMinutes(bukaTime);
+            
+            let diff;
+            let phase;
+            
+            if (currentMinutes < tutupMinutes) {
+                diff = tutupMinutes - currentMinutes;
+                phase = 'countdown';
+            }
+            else if (currentMinutes >= tutupMinutes && currentMinutes < bukaMinutes) {
+                return {
+                    isBetClose: true,
+                    isHoliday: false
+                };
+            }
+            else {
+                const tomorrow = (currentDay + 1) % 7;
+                const isTomorrowActive = !data.activeDays || data.activeDays.includes(tomorrow);
+                
+                if (isTomorrowActive) {
+                    diff = (24 * 60) - currentMinutes + tutupMinutes;
+                } else {
+                    const nextActive = getNextActiveDayDate(data);
+                    if (nextActive) {
+                        diff = (nextActive.daysToAdd * 24 * 60) - currentMinutes + tutupMinutes;
+                    } else {
+                        diff = (24 * 60) - currentMinutes + tutupMinutes;
+                    }
+                }
+                phase = 'countdown';
+            }
+            
+            const hours = Math.floor(diff / 60);
+            const minutes = diff % 60;
+            const seconds = 60 - now.getSeconds();
+            
+            return {
+                hours,
+                minutes,
+                seconds: seconds === 60 ? 0 : seconds,
+                totalMinutes: diff,
+                isHoliday: false,
+                isBetClose: false,
+                phase: phase
+            };
+        }
+
+        function formatCountdown(countdown) {
+            if (countdown.isHoliday) {
+                return `LIBUR - Next: ${countdown.nextActiveDay}`;
+            }
+            
+            if (countdown.isBetClose) {
+                return 'BET CLOSE';
+            }
+            
+            const h = String(countdown.hours).padStart(2, '0');
+            const m = String(countdown.minutes).padStart(2, '0');
+            const s = String(countdown.seconds).padStart(2, '0');
+            return `${h}:${m}:${s}`;
+        }
+
+        function openTabForPasaran(index, data) {
+            // Create unique key for today's session
+            const today = new Date().toDateString();
+            const tabKey = `${today}-${index}`;
+            
+            // Check if already opened today
+            if (openedTabs[tabKey]) {
+                return;
+            }
+            
+            // Determine URL to open (live if available, otherwise website)
+            const urlToOpen = data.live || data.website;
+            
+            // Try to open new tab (silent fail if blocked)
+            try {
+                const newTab = window.open(urlToOpen, '_blank', 'noopener,noreferrer');
+                
+                if (newTab) {
+                    openedTabs[tabKey] = true;
+                    // Silent success - no notification needed
+                }
+                // If blocked, silently fail - no error message
+            } catch (error) {
+                // Silent fail
+            }
+        }
+
+        function updateCountdowns() {
+            document.querySelectorAll('.countdown-timer').forEach((timer, index) => {
+                const data = pasaranData[index];
+                const countdown = calculateCountdown(data.tutup, data.buka, data);
+                
+                // Get previous state
+                const previousState = previousStates[index];
+                const currentState = countdown.isBetClose ? 'betclose' : 
+                                   countdown.isHoliday ? 'holiday' : 'countdown';
+                
+                // Update timer text
+                timer.textContent = formatCountdown(countdown);
+                
+                // Remove all classes first
+                timer.classList.remove('warning', 'expired', 'holiday', 'phase-countdown', 'phase-betclose');
+                timer.style.color = '';
+                timer.style.borderColor = '';
+                timer.style.background = '';
+                timer.style.textShadow = '';
+                
+                if (countdown.isHoliday) {
+                    timer.classList.add('holiday');
+                } else if (countdown.isBetClose) {
+                    timer.classList.add('phase-betclose');
+                    
+                    // Auto-open logic: check if just transitioned to BET CLOSE
+                    if (autoOpenEnabled && previousState === 'countdown' && currentState === 'betclose') {
+                        openTabForPasaran(index, data);
+                    }
+                } else {
+                    timer.classList.add('phase-countdown');
+                    if (countdown.totalMinutes <= 30 && countdown.totalMinutes > 0) {
+                        timer.classList.add('warning');
+                    }
+                }
+                
+                // Store current state for next iteration
+                previousStates[index] = currentState;
+            });
+        }
+
+        function toggleAutoOpen() {
+            autoOpenEnabled = !autoOpenEnabled;
+            localStorage.setItem('autoOpenEnabled', autoOpenEnabled);
+            
+            const toggleSwitch = document.getElementById('autoOpenSwitch');
+            if (autoOpenEnabled) {
+                toggleSwitch.classList.add('active');
+                showToast('✓ Auto Open AKTIF - Jangan lupa izinkan pop-up di browser!', false, 'info');
+            } else {
+                toggleSwitch.classList.remove('active');
+                showToast('✗ Auto Open NONAKTIF', false, 'info');
+            }
+        }
 
         function getShio(number) {
             const shioTable = {
@@ -707,9 +1145,37 @@
             return `${days[now.getDay()]} , ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
         }
 
+        function updateDateTime() {
+            const now = new Date();
+            
+            // Update date
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const dayName = days[now.getDay()];
+            const date = String(now.getDate()).padStart(2, '0');
+            const monthName = months[now.getMonth()];
+            const year = now.getFullYear();
+            
+            const dateString = `${dayName}, ${date} ${monthName} ${year}`;
+            document.getElementById('currentDate').textContent = dateString;
+            
+            // Update time
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            
+            const timeString = `${hours}:${minutes}:${seconds}`;
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
         function generateResultText(pasaran, prize1, prize2, prize3) {
             const shio = getShio(prize1);
-            const date = getCurrentDate();
+            const now = new Date();
+            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            const date = `${days[now.getDay()]} , ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
             
             let text = `Hasil Pengeluaran : ${pasaran}\nHARI ${date.toUpperCase()}\nResult Prize 1 : ${prize1}`;
             
@@ -797,7 +1263,8 @@
             
             card.innerHTML = `
                 <div class="ttg-card__title">
-                    ${data.name}
+                    <span>${data.name}</span>
+                    <div class="countdown-timer">00:00:00</div>
                 </div>
                 <div class="ttg-card__row">
                     <span class="ttg-card__label">
@@ -836,15 +1303,20 @@
             return card;
         }
 
-        function showToast(message, isError = false) {
+        function showToast(message, isError = false, type = '') {
             const toast = document.createElement('div');
-            toast.className = 'toast-notification' + (isError ? ' error' : '');
+            let className = 'toast-notification';
+            if (isError) className += ' error';
+            if (type === 'info') className += ' info';
+            toast.className = className;
+            
+            const icon = isError ? 
+                '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>' :
+                '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+            
             toast.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    ${isError ? 
-                        '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>' :
-                        '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>'
-                    }
+                    ${icon}
                 </svg>
                 <span>${message}</span>
             `;
@@ -878,7 +1350,6 @@
                 }
             }
             
-            // Generate text and copy directly
             const text = generateResultText(pasaran, prize1, prize2, prize3);
             
             navigator.clipboard.writeText(text).then(() => {
@@ -908,11 +1379,9 @@
                 }
             }
             
-            // Mark as done
             card.classList.add('done');
             card.setAttribute('data-status', 'done');
             
-            // Update title with badge
             const titleElement = card.querySelector('.ttg-card__title');
             if (!titleElement.querySelector('.status-badge')) {
                 const badge = document.createElement('span');
@@ -921,16 +1390,13 @@
                 titleElement.appendChild(badge);
             }
             
-            // Disable inputs
             card.querySelectorAll('input').forEach(input => {
                 input.disabled = true;
             });
             
-            // Toggle buttons
             card.querySelector('.btn-done').style.display = 'none';
             card.querySelector('.btn-reset').style.display = 'block';
             
-            // Store state
             cardStates[index] = {
                 isDone: true,
                 prize1: card.querySelector('.prize1').value,
@@ -944,26 +1410,21 @@
         function handleReset(button, index) {
             const card = button.closest('.ttg-card');
             
-            // Remove done class
             card.classList.remove('done');
             card.setAttribute('data-status', 'pending');
             
-            // Remove badge
             const badge = card.querySelector('.status-badge');
             if (badge) {
                 badge.remove();
             }
             
-            // Enable inputs
             card.querySelectorAll('input').forEach(input => {
                 input.disabled = false;
             });
             
-            // Toggle buttons
             card.querySelector('.btn-done').style.display = 'block';
             card.querySelector('.btn-reset').style.display = 'none';
             
-            // Clear state
             delete cardStates[index];
             
             showToast(`↻ ${pasaranData[index].name} direset!`);
@@ -977,7 +1438,6 @@
                 const card = createCard(data, index);
                 container.appendChild(card);
                 
-                // Restore state if exists
                 if (cardStates[index]?.isDone) {
                     const cardElement = container.querySelector(`[data-index="${index}"]`);
                     if (cardElement) {
@@ -992,6 +1452,8 @@
                     }
                 }
             });
+            
+            updateCountdowns();
         }
 
         function applyFilters() {
@@ -1015,12 +1477,23 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize auto-open toggle state
+            const toggleSwitch = document.getElementById('autoOpenSwitch');
+            if (autoOpenEnabled) {
+                toggleSwitch.classList.add('active');
+            }
+            
+            // Initialize date and time display
+            updateDateTime();
+            setInterval(updateDateTime, 1000); // Update every second
+            
             renderCards();
+            
+            setInterval(updateCountdowns, 1000);
             
             const searchInput = document.getElementById('searchInput');
             searchInput.addEventListener('input', applyFilters);
             
-            // Filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));

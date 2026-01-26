@@ -172,13 +172,6 @@
             border: 2px solid #FFD700;
         }
 
-        .result-info {
-            color: #FFD700;
-            font-weight: 700;
-            font-size: 18px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
         .result-count {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: #8B0000;
@@ -217,14 +210,26 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
+        th:last-child {
+            text-align: center;
+            position: relative;
+        }
+
         .header-with-copy {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            gap: 15px;
+            position: relative;
+        }
+
+        .header-with-copy span {
+            flex: 1;
+            text-align: center;
         }
 
         .btn-copy-all {
+            position: absolute;
+            right: 0;
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
             color: #8B0000;
             border: 2px solid #FFF;
@@ -236,6 +241,94 @@
             transition: all 0.3s ease;
             white-space: nowrap;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .shift-selection {
+            margin-bottom: 20px;
+        }
+
+        .shift-title {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .shift-options {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .shift-option {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .shift-option input[type="radio"] {
+            display: none;
+        }
+
+        .shift-option label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 3px solid #FFD700;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            font-size: 15px;
+            color: #8B0000;
+            text-shadow: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .shift-option label:hover {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B0000;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
+        }
+
+        .shift-option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            color: #FFD700;
+            border-color: #FFD700;
+            box-shadow: 0 6px 20px rgba(220, 20, 60, 0.6);
+        }
+
+        .shift-icon {
+            font-size: 20px;
+            margin-right: 8px;
+        }
+
+        .result-shift-info {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B0000;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .result-shift-icon {
+            font-size: 22px;
+        }
+
+        .result-date {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 13px;
+            margin-left: 10px;
         }
 
         .btn-copy-all:hover {
@@ -368,6 +461,15 @@
                 font-size: 24px;
             }
 
+            .shift-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .shift-option {
+                min-width: 100%;
+            }
+
             .input-row {
                 grid-template-columns: 1fr;
                 gap: 15px;
@@ -398,8 +500,16 @@
                 padding: 6px 15px;
             }
 
-            .result-info {
-                font-size: 16px;
+            .result-shift-info {
+                font-size: 13px;
+                padding: 10px 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .result-date {
+                margin-left: 0;
+                margin-top: 5px;
             }
         }
     </style>
@@ -415,6 +525,33 @@
         <div class="header">
             <h1>🎯 Staff Jobdesk Generator</h1>
             <p class="subtitle">Masukkan nama staff dan jobdesk, lalu generate untuk distribusi otomatis</p>
+
+            <div class="shift-selection">
+                <div class="shift-title">📅 Pilih Shift:</div>
+                <div class="shift-options">
+                    <div class="shift-option">
+                        <input type="radio" id="shift-pagi" name="shift" value="PAGI" checked>
+                        <label for="shift-pagi">
+                            <span class="shift-icon">🌅</span>
+                            <span>PAGI</span>
+                        </label>
+                    </div>
+                    <div class="shift-option">
+                        <input type="radio" id="shift-sore" name="shift" value="SORE">
+                        <label for="shift-sore">
+                            <span class="shift-icon">🌤️</span>
+                            <span>SORE</span>
+                        </label>
+                    </div>
+                    <div class="shift-option">
+                        <input type="radio" id="shift-malam" name="shift" value="MALAM">
+                        <label for="shift-malam">
+                            <span class="shift-icon">🌙</span>
+                            <span>MALAM</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
             <div class="input-row">
                 <div class="input-section">
@@ -441,7 +578,13 @@
 
         <div id="resultSection" class="result-section">
             <div class="result-header">
-                <div class="result-info">📋 Hasil Jobdesk</div>
+                <div class="result-shift-info">
+                    <span class="result-shift-icon" id="shiftIcon">🌅</span>
+                    <span>
+                        <strong>Jobdesk <span id="shiftName">PAGI</span></strong>
+                        <span class="result-date" id="resultDate"></span>
+                    </span>
+                </div>
                 <div class="result-count" id="resultCount">0 Staff</div>
             </div>
 
@@ -465,6 +608,10 @@
         function generateJobdesk() {
             const staffInput = document.getElementById('staffInput').value.trim();
             const jobdeskInput = document.getElementById('jobdeskInput').value.trim();
+            
+            // Get selected shift
+            const selectedShift = document.querySelector('input[name="shift"]:checked');
+            const shiftValue = selectedShift ? selectedShift.value : 'PAGI';
             
             if (!staffInput) {
                 alert('⚠️ Silakan masukkan nama staff terlebih dahulu!');
@@ -490,9 +637,12 @@
                 return;
             }
 
-            // Shuffle jobdesk list untuk random distribution
-            // Jobdesk tetap sesuai input: double ya double, single ya single
-            const shuffledJobdesk = shuffleArray(jobdeskList);
+            // Pisahkan jobdesk pertama (untuk staff pertama) dan sisa jobdesk
+            const firstJobdesk = jobdeskList[0];
+            const remainingJobdesk = jobdeskList.slice(1); // Sisa jobdesk selain yang pertama
+            
+            // Shuffle sisa jobdesk untuk staff ke-2 dst
+            const shuffledRemaining = shuffleArray(remainingJobdesk);
 
             let tableHTML = `
                 <div class="result-table">
@@ -515,8 +665,15 @@
             `;
 
             staffNames.forEach((name, index) => {
-                // Ambil jobdesk dari shuffled list (cycle jika staff lebih banyak)
-                const jobdesk = shuffledJobdesk[index % shuffledJobdesk.length];
+                let jobdesk;
+                
+                if (index === 0) {
+                    // Staff pertama SELALU dapat jobdesk pertama (FIXED)
+                    jobdesk = firstJobdesk;
+                } else {
+                    // Staff lainnya dapat dari sisa jobdesk yang sudah di-shuffle
+                    jobdesk = shuffledRemaining[(index - 1) % shuffledRemaining.length];
+                }
                 
                 tableHTML += `
                     <tr>
@@ -537,16 +694,35 @@
                 </div>
             `;
 
+            // Get current date
+            const today = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const formattedDate = today.toLocaleDateString('id-ID', options);
+
+            // Set shift icon
+            const shiftIcons = {
+                'PAGI': '🌅',
+                'SORE': '🌤️',
+                'MALAM': '🌙'
+            };
+
             const resultSection = document.getElementById('resultSection');
             const resultContent = document.getElementById('resultContent');
             const resultCount = document.getElementById('resultCount');
+            const shiftIcon = document.getElementById('shiftIcon');
+            const shiftName = document.getElementById('shiftName');
+            const resultDate = document.getElementById('resultDate');
+
+            // Update shift and date display
+            shiftIcon.textContent = shiftIcons[shiftValue];
+            shiftName.textContent = shiftValue;
+            resultDate.textContent = formattedDate;
 
             resultContent.innerHTML = tableHTML;
             resultCount.textContent = `${staffNames.length} Staff`;
             resultSection.classList.add('show');
 
-            // Scroll ke hasil
-            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            // AUTO-SCROLL DIHAPUS - tidak ada scrollIntoView
         }
 
         function copyAllJobdesks() {

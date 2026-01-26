@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Jobdesk Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://cdn.areabermain.club/assets/cdn/az2/2026/01/17/20260117/d50e4d927a48f8e4903cd526118e4fb5/new-background-tvtoto.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(220, 20, 60, 0.3);
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 3px solid #FFD700;
+        }
+
+        h1 {
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 10px;
+            font-size: 32px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.5);
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #FFD700;
+            margin-bottom: 20px;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .input-section {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+            color: #FFD700;
+            font-weight: 600;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .label-icon {
+            font-size: 18px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            resize: vertical;
+            min-height: 150px;
+            background-color: rgba(255, 255, 255, 0.95);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #FFA500;
+            background-color: white;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 50%, #8B0000 100%);
+            color: #FFD700;
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 5px 20px rgba(220, 20, 60, 0.5);
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
+            background: linear-gradient(135deg, #DC143C 0%, #FF1744 50%, #DC143C 100%);
+        }
+
+        .btn-generate:active {
+            transform: translateY(0);
+        }
+
+        .result-section {
+            display: none;
+        }
+
+        .result-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-header {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid #FFD700;
+        }
+
+        .result-info {
+            color: #FFD700;
+            font-weight: 700;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .result-count {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B0000;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .result-table {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 3px solid #FFD700;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 15px;
+            position: relative;
+            color: #FFD700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        .header-with-copy {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn-copy-all {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #8B0000;
+            border: 2px solid #FFF;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn-copy-all:hover {
+            background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-copy-all:active {
+            transform: scale(0.95);
+        }
+
+        .btn-copy-all.copied {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            border-color: #FFF;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #FFD700;
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.1) 100%);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        td {
+            padding: 15px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .staff-name {
+            font-weight: 700;
+            color: #8B0000;
+        }
+
+        .jobdesk-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .jobdesk-badge {
+            background: linear-gradient(135deg, #8B0000 0%, #DC143C 100%);
+            color: #FFD700;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(139, 0, 0, 0.4);
+            border: 2px solid #FFD700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Notification Toast */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-100px);
+            transition: all 0.4s ease;
+            pointer-events: none;
+            border: 2px solid #FFD700;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification-icon {
+            font-size: 24px;
+        }
+
+        .no-result {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid #FFD700;
+        }
+
+        .no-result-icon {
+            font-size: 60px;
+            margin-bottom: 15px;
+        }
+
+        .no-result-text {
+            color: #8B0000;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .info-text {
+            text-align: center;
+            color: #FFD700;
+            font-size: 13px;
+            margin-top: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .input-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+
+            th, td {
+                padding: 10px 8px;
+            }
+
+            .jobdesk-badge {
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                font-size: 14px;
+            }
+
+            .btn-copy-all {
+                font-size: 11px;
+                padding: 6px 15px;
+            }
+
+            .result-info {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Notification Toast -->
+    <div id="notification" class="notification">
+        <span class="notification-icon">✅</span>
+        <span id="notificationText">Jobdesk berhasil disalin!</span>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎯 Staff Jobdesk Generator</h1>
+            <p class="subtitle">Masukkan nama staff dan jobdesk, lalu generate untuk distribusi otomatis</p>
+
+            <div class="input-row">
+                <div class="input-section">
+                    <label for="staffInput">
+                        <span class="label-icon">👥</span>
+                        Masukkan Nama Staff (Satu nama per baris):
+                    </label>
+                    <textarea id="staffInput" placeholder="Contoh:&#10;SYUKUR KURNIAWAN LAOLI&#10;JIMMY&#10;MUHAMMAD HABIB&#10;RADO DINATA&#10;..."></textarea>
+                </div>
+
+                <div class="input-section">
+                    <label for="jobdeskInput">
+                        <span class="label-icon">💼</span>
+                        Masukkan Jobdesk (Satu jobdesk per baris):
+                    </label>
+                    <textarea id="jobdeskInput" placeholder="Contoh:&#10;SCATTER&#10;WD DANA&#10;WD MANDIRI, BNI&#10;DEPO BCA&#10;..."></textarea>
+                </div>
+            </div>
+
+            <button class="btn-generate" onclick="generateJobdesk()">
+                🚀 Generate Distribusi Jobdesk
+            </button>
+        </div>
+
+        <div id="resultSection" class="result-section">
+            <div class="result-header">
+                <div class="result-info">📋 Hasil Jobdesk</div>
+                <div class="result-count" id="resultCount">0 Staff</div>
+            </div>
+
+            <div id="resultContent"></div>
+        </div>
+
+        <p class="info-text">© 2024 Jobdesk Management System</p>
+    </div>
+
+    <script>
+        // Fungsi untuk mendapatkan jobdesk random dari list
+        function getRandomJobdesk(jobdeskList) {
+            return jobdeskList[Math.floor(Math.random() * jobdeskList.length)];
+        }
+
+        function generateJobdesk() {
+            const staffInput = document.getElementById('staffInput').value.trim();
+            const jobdeskInput = document.getElementById('jobdeskInput').value.trim();
+            
+            if (!staffInput) {
+                alert('⚠️ Silakan masukkan nama staff terlebih dahulu!');
+                return;
+            }
+
+            if (!jobdeskInput) {
+                alert('⚠️ Silakan masukkan jobdesk terlebih dahulu!');
+                return;
+            }
+
+            // Split nama berdasarkan baris baru
+            const staffNames = staffInput.split('\n').map(name => name.trim()).filter(name => name !== '');
+            const jobdeskList = jobdeskInput.split('\n').map(job => job.trim()).filter(job => job !== '');
+            
+            if (staffNames.length === 0) {
+                alert('⚠️ Tidak ada nama staff yang valid!');
+                return;
+            }
+
+            if (jobdeskList.length === 0) {
+                alert('⚠️ Tidak ada jobdesk yang valid!');
+                return;
+            }
+
+            let tableHTML = `
+                <div class="result-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">No</th>
+                                <th style="width: 250px;">Nama Staff</th>
+                                <th>
+                                    <div class="header-with-copy">
+                                        <span>Jobdesk</span>
+                                        <button class="btn-copy-all" onclick="copyAllJobdesks()" id="btnCopyAll">
+                                            📋 Copy All
+                                        </button>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            staffNames.forEach((name, index) => {
+                // Generate random jobdesk dari list
+                const jobdesk = getRandomJobdesk(jobdeskList);
+                
+                tableHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="staff-name">${name}</td>
+                        <td>
+                            <div class="jobdesk-cell">
+                                <div class="jobdesk-badge">${jobdesk}</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            const resultSection = document.getElementById('resultSection');
+            const resultContent = document.getElementById('resultContent');
+            const resultCount = document.getElementById('resultCount');
+
+            resultContent.innerHTML = tableHTML;
+            resultCount.textContent = `${staffNames.length} Staff`;
+            resultSection.classList.add('show');
+
+            // Scroll ke hasil
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function copyAllJobdesks() {
+            // Ambil semua jobdesk badge
+            const jobdeskBadges = document.querySelectorAll('.jobdesk-badge');
+            
+            if (jobdeskBadges.length === 0) {
+                alert('⚠️ Tidak ada jobdesk untuk di-copy!');
+                return;
+            }
+
+            // Gabungkan semua jobdesk dengan newline
+            const allJobdesks = Array.from(jobdeskBadges)
+                .map(badge => badge.textContent)
+                .join('\n');
+
+            const btnCopyAll = document.getElementById('btnCopyAll');
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+
+            // Copy ke clipboard
+            navigator.clipboard.writeText(allJobdesks).then(() => {
+                // Ubah tampilan tombol
+                btnCopyAll.classList.add('copied');
+                btnCopyAll.innerHTML = '✓ Copied!';
+                
+                // Ubah text notifikasi
+                notificationText.textContent = `Semua jobdesk berhasil disalin! (${jobdeskBadges.length} items)`;
+                
+                // Tampilkan notifikasi
+                notification.classList.add('show');
+                
+                // Sembunyikan notifikasi setelah 3 detik
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    notificationText.textContent = 'Jobdesk berhasil disalin!';
+                }, 3000);
+                
+                // Kembalikan tombol ke normal setelah 2 detik
+                setTimeout(() => {
+                    btnCopyAll.classList.remove('copied');
+                    btnCopyAll.innerHTML = '📋 Copy All';
+                }, 2000);
+            }).catch(err => {
+                // Jika gagal, coba fallback method
+                fallbackCopyTextToClipboard(allJobdesks, btnCopyAll);
+            });
+        }
+
+        // Fallback copy method untuk browser yang tidak support clipboard API
+        function fallbackCopyTextToClipboard(text, button) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notificationText');
+                
+                if (successful) {
+                    button.classList.add('copied');
+                    button.innerHTML = '✓ Copied!';
+                    
+                    const count = text.split('\n').length;
+                    notificationText.textContent = `Semua jobdesk berhasil disalin! (${count} items)`;
+                    
+                    notification.classList.add('show');
+                    
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        notificationText.textContent = 'Jobdesk berhasil disalin!';
+                    }, 3000);
+                    
+                    setTimeout(() => {
+                        button.classList.remove('copied');
+                        button.innerHTML = '📋 Copy All';
+                    }, 2000);
+                } else {
+                    alert('❌ Gagal menyalin jobdesk');
+                }
+            } catch (err) {
+                alert('❌ Browser tidak support copy: ' + err);
+            }
+
+            document.body.removeChild(textArea);
+        }
+    </script>
+</body>
+</html>

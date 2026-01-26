@@ -452,9 +452,14 @@
     </div>
 
     <script>
-        // Fungsi untuk mendapatkan jobdesk random dari list
-        function getRandomJobdesk(jobdeskList) {
-            return jobdeskList[Math.floor(Math.random() * jobdeskList.length)];
+        // Fungsi untuk shuffle array (random)
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
         }
 
         function generateJobdesk() {
@@ -485,6 +490,10 @@
                 return;
             }
 
+            // Shuffle jobdesk list untuk random distribution
+            // Jobdesk tetap sesuai input: double ya double, single ya single
+            const shuffledJobdesk = shuffleArray(jobdeskList);
+
             let tableHTML = `
                 <div class="result-table">
                     <table>
@@ -506,8 +515,8 @@
             `;
 
             staffNames.forEach((name, index) => {
-                // Generate random jobdesk dari list
-                const jobdesk = getRandomJobdesk(jobdeskList);
+                // Ambil jobdesk dari shuffled list (cycle jika staff lebih banyak)
+                const jobdesk = shuffledJobdesk[index % shuffledJobdesk.length];
                 
                 tableHTML += `
                     <tr>

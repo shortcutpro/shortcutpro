@@ -172,23 +172,6 @@
             }
         }
 
-        .auto-open-toggle {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            background: var(--bg-card);
-            padding: 12px 20px;
-            border-radius: 8px;
-            border: 1px solid rgba(153, 0, 0, 0.3);
-            margin-top: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .auto-open-toggle:hover {
-            background: rgba(153, 0, 0, 0.1);
-        }
-
         .clear-data-btn {
             display: inline-block;
             margin-left: 15px;
@@ -211,6 +194,85 @@
 
         .clear-data-btn:active {
             transform: translateY(0);
+        }
+
+        .alarm-controls-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .alarm-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--bg-card);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(153, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .alarm-toggle:hover {
+            background: rgba(153, 0, 0, 0.1);
+        }
+
+        .alarm-icon {
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .alarm-toggle.active .alarm-icon {
+            animation: ring 1s ease-in-out infinite;
+        }
+
+        @keyframes ring {
+            0%, 100% { transform: rotate(0deg); }
+            10%, 30% { transform: rotate(-10deg); }
+            20%, 40% { transform: rotate(10deg); }
+            50% { transform: rotate(0deg); }
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .volume-slider {
+            width: 80px;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: rgba(153, 0, 0, 0.3);
+            outline: none;
+            border-radius: 2px;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--red-primary);
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            background: var(--red-primary);
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
         }
 
         .toggle-switch {
@@ -249,6 +311,17 @@
         .toggle-switch.active ~ .toggle-label {
             color: var(--green-light);
             font-weight: 600;
+        }
+
+        .alarm-status {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .alarm-toggle.active .alarm-status {
+            color: var(--green-light);
         }
 
         .filter-container {
@@ -792,6 +865,9 @@
                 font-size: 0.95rem;
                 letter-spacing: 1px;
             }
+            .alarm-controls-container {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -811,16 +887,24 @@
             </div>
         </div>
         
-        <p style="color: #ffa500; font-size: 0.9rem; margin-bottom: 15px; font-weight: 600;">⚠️ PENTING: Izinkan pop-up di browser agar tab otomatis terbuka saat BET CLOSE!</p>
-        
-        <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div class="auto-open-toggle" onclick="toggleAutoOpen()">
-                <div class="toggle-switch" id="autoOpenSwitch">
+        <div class="alarm-controls-container">
+            <div class="alarm-toggle" onclick="toggleAlarm()">
+                <div class="toggle-switch" id="alarmSwitch">
                     <div class="toggle-slider"></div>
                 </div>
-                <span class="toggle-label">Auto Open Tab Saat Countdown Habis</span>
+                <span class="alarm-icon">🔔</span>
+                <div style="display: flex; flex-direction: column; gap: 2px;">
+                    <span class="toggle-label">Alarm Suara</span>
+                    <div class="alarm-status" id="alarmStatus">Klik untuk mengaktifkan</div>
+                    <div class="volume-control">
+                        <span style="font-size: 0.8rem;">🔊</span>
+                        <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" onchange="updateVolume(this.value)">
+                        <span id="volumeLabel" style="font-size: 0.8rem; min-width: 30px;">80%</span>
+                    </div>
+                </div>
             </div>
-            <button class="clear-data-btn" onclick="clearAllData()">🗑️ Hapus Semua Data Tersimpan</button>
+            
+            <button class="clear-data-btn" onclick="clearAllData()">🗑️ Hapus Semua Data</button>
         </div>
     </div>
 
@@ -930,15 +1014,15 @@
             {name: "KING KONG4D MALAM", days: "Senin s/d Minggu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
         ];
 
-        // Store card states in memory
         const cardStates = {};
         
-        // Auto-open tracking
-        let autoOpenEnabled = localStorage.getItem('autoOpenEnabled') === 'true';
-        const openedTabs = {};
-        const previousStates = {}; // Track previous countdown state for each pasaran
+        let alarmEnabled = localStorage.getItem('alarmEnabled') === 'true';
+        let alarmVolume = parseInt(localStorage.getItem('alarmVolume') || '80') / 100;
+        let selectedVoice = null;
+        let voicesLoaded = false;
+        const alarmPlayed = {}; 
+        const previousStates = {};
 
-        // LocalStorage management
         const STORAGE_KEY = 'jadwalTogelCardStates';
 
         function saveToLocalStorage() {
@@ -964,10 +1048,9 @@
         }
 
         function clearOldData() {
-            // Clear data older than 2 days (48 hours)
             const savedTimestamp = localStorage.getItem('jadwalTogelTimestamp');
             const now = Date.now();
-            const twoDays = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+            const twoDays = 2 * 24 * 60 * 60 * 1000;
             
             if (savedTimestamp && (now - parseInt(savedTimestamp)) > twoDays) {
                 localStorage.removeItem(STORAGE_KEY);
@@ -975,6 +1058,29 @@
                 console.log('♻️ Data lama (>2 hari) otomatis dihapus');
             } else if (!savedTimestamp) {
                 localStorage.setItem('jadwalTogelTimestamp', now.toString());
+            }
+        }
+
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            
+            if (voices.length === 0) {
+                return;
+            }
+
+            // Otomatis pilih Google Bahasa Indonesia
+            const indonesianVoice = voices.find(v => v.name.includes('Google Bahasa Indonesia'));
+            
+            if (indonesianVoice) {
+                selectedVoice = indonesianVoice;
+                voicesLoaded = true;
+                console.log('✅ Voice Loaded: Google Bahasa Indonesia (id-ID)');
+            } else {
+                // Fallback ke voice Indonesia lainnya
+                const fallbackVoice = voices.find(v => v.lang.startsWith('id'));
+                selectedVoice = fallbackVoice || voices[0];
+                voicesLoaded = true;
+                console.log('⚠️ Fallback Voice:', selectedVoice?.name);
             }
         }
 
@@ -1096,47 +1202,214 @@
             return `${h}:${m}:${s}`;
         }
 
-        function openTabForPasaran(index, data) {
-            // Create unique key for today's session
-            const today = new Date().toDateString();
-            const tabKey = `${today}-${index}`;
+        function convertPasaranNameForSpeech(name) {
+            let converted = name;
             
-            // Check if already opened today
-            if (openedTabs[tabKey]) {
+            const placeReplacements = {
+                'MACAU': 'Makau',
+                'SINGAPORE': 'Singapura',
+                'HONGKONG': 'Hong Kong',
+                'SYDNEY': 'Sidney',
+                'BANGKOK': 'Bangkok',
+                'FLORIDA': 'Florida',
+                'CAROLINA': 'Carolina',
+                'KENTUCKY': 'Kentucky',
+                'CALIFORNIA': 'California',
+                'OREGON': 'Oregon',
+                'NEVADA': 'Nevada',
+                'HUAHIN': 'Hua Hin',
+                'POIPET': 'Poi Pet',
+                'BRUNEI': 'Brunei',
+                'CHELSEA': 'Chelsea',
+                'MAGNUM': 'Magnum',
+                'MALI': 'Mali',
+                'NEW YORK': 'New York',
+                'YORK': 'York',
+                'NEW': 'New',
+                'HOKI': 'Hoki',
+                'TOTO': 'Toto',
+                'KING KONG': 'King Kong',
+                'KING': 'King',
+                'KONG': 'Kong',
+                'BULLSEYE': 'Bulls Eye',
+                'PCSO': 'Pe Ce Es O'
+            };
+            
+            for (const [key, value] of Object.entries(placeReplacements)) {
+                const regex = new RegExp('\\b' + key + '\\b', 'gi');
+                converted = converted.replace(regex, value);
+            }
+            
+            converted = converted.replace(/\bDRAW\b/gi, 'Draw');
+            converted = converted.replace(/\b4D\b/gi, 'Empat D');
+            
+            // Angka 2-4 digit dibaca satu per satu TANPA JEDA
+            converted = converted.replace(/(\d{2,4})/g, function(match) {
+                return match.split('').join(' ');
+            });
+            
+            return converted;
+        }
+
+        function playAlarm(pasaranNames, repeatCount = 1) {
+            // DEBUGGING LOGS
+            console.log('🔔 playAlarm() called');
+            console.log('   alarmEnabled:', alarmEnabled);
+            console.log('   voicesLoaded:', voicesLoaded);
+            console.log('   selectedVoice:', selectedVoice?.name);
+            console.log('   pasaranNames:', pasaranNames);
+            
+            if (!alarmEnabled) {
+                console.log('❌ Alarm tidak aktif, keluar dari fungsi');
                 return;
             }
             
-            // Determine URL to open (live if available, otherwise website)
-            const urlToOpen = data.live || data.website;
-            
-            // Try to open new tab (silent fail if blocked)
-            try {
-                const newTab = window.open(urlToOpen, '_blank', 'noopener,noreferrer');
-                
-                if (newTab) {
-                    openedTabs[tabKey] = true;
-                    // Silent success - no notification needed
+            if (!voicesLoaded || !selectedVoice) {
+                console.log('⚠️ Voice belum loaded, mencoba load ulang...');
+                loadVoices();
+                if (!voicesLoaded || !selectedVoice) {
+                    console.error('❌ Voice masih belum loaded setelah retry');
+                    return;
                 }
-                // If blocked, silently fail - no error message
-            } catch (error) {
-                // Silent fail
+            }
+            
+            if (typeof pasaranNames === 'string') {
+                pasaranNames = [pasaranNames];
+            }
+            
+            const today = new Date().toDateString();
+            const alarmKey = `${today}-${pasaranNames.join('-')}`;
+            
+            if (alarmPlayed[alarmKey]) {
+                console.log('⚠️ Alarm sudah dimainkan untuk:', alarmKey);
+                return;
+            }
+            
+            alarmPlayed[alarmKey] = true;
+            console.log('✅ Marking alarm as played:', alarmKey);
+            
+            if (!('speechSynthesis' in window)) {
+                console.error('❌ Browser tidak support text-to-speech');
+                return;
+            }
+            
+            speakAnnouncement();
+            
+            function speakAnnouncement() {
+                const convertedNames = pasaranNames.map(name => convertPasaranNameForSpeech(name));
+                const namesText = convertedNames.join(', ');
+                
+                console.log('🔊 SPEAKING ANNOUNCEMENT');
+                console.log('   Original:', pasaranNames.join(', '));
+                console.log('   Converted:', namesText);
+                
+                // PART 1: Nama Pasaran
+                const utteranceNames = new SpeechSynthesisUtterance(namesText);
+                utteranceNames.voice = selectedVoice;
+                utteranceNames.lang = selectedVoice.lang;
+                utteranceNames.rate = 1.0;
+                utteranceNames.pitch = 1.0;
+                utteranceNames.volume = alarmVolume;
+                
+                console.log('   Voice for Names:', utteranceNames.voice?.name);
+                console.log('   Lang for Names:', utteranceNames.lang);
+                console.log('   Volume:', utteranceNames.volume);
+                
+                // PART 2: BET CLOSE
+                const utteranceBetClose = new SpeechSynthesisUtterance('BET CLOSE');
+                utteranceBetClose.voice = selectedVoice;
+                utteranceBetClose.lang = selectedVoice.lang;
+                utteranceBetClose.rate = 1.0;
+                utteranceBetClose.pitch = 1.0;
+                utteranceBetClose.volume = alarmVolume;
+                
+                console.log('   Voice for BET CLOSE:', utteranceBetClose.voice?.name);
+                console.log('   Lang for BET CLOSE:', utteranceBetClose.lang);
+                
+                // Chaining
+                utteranceNames.onstart = function() {
+                    console.log('▶️ Started speaking NAMES');
+                };
+                
+                utteranceNames.onend = function() {
+                    console.log('✅ Finished speaking NAMES, now speaking BET CLOSE');
+                    window.speechSynthesis.speak(utteranceBetClose);
+                };
+                
+                utteranceNames.onerror = function(event) {
+                    console.error('❌ Speech error (Names):', event);
+                };
+                
+                utteranceBetClose.onstart = function() {
+                    console.log('▶️ Started speaking BET CLOSE');
+                };
+                
+                utteranceBetClose.onend = function() {
+                    console.log('✅ Finished speaking BET CLOSE');
+                };
+                
+                utteranceBetClose.onerror = function(event) {
+                    console.error('❌ Speech error (BET CLOSE):', event);
+                };
+                
+                // Start speaking
+                console.log('🎙️ Calling speechSynthesis.speak()...');
+                window.speechSynthesis.speak(utteranceNames);
             }
         }
 
+        function toggleAlarm() {
+            alarmEnabled = !alarmEnabled;
+            localStorage.setItem('alarmEnabled', alarmEnabled);
+            
+            const alarmSwitch = document.getElementById('alarmSwitch');
+            const alarmToggle = alarmSwitch.closest('.alarm-toggle');
+            const alarmStatus = document.getElementById('alarmStatus');
+            
+            if (alarmEnabled) {
+                alarmSwitch.classList.add('active');
+                alarmToggle.classList.add('active');
+                alarmStatus.textContent = 'Alarm AKTIF - Suara akan berbunyi saat BET CLOSE';
+                showToast('🔔 Alarm AKTIF - Siap memutar suara BET CLOSE', false, 'info');
+                
+                // Pastikan voice sudah loaded
+                if (!voicesLoaded) {
+                    loadVoices();
+                }
+                
+                console.log('✅ Alarm diaktifkan');
+                console.log('   Voice:', selectedVoice?.name);
+            } else {
+                alarmSwitch.classList.remove('active');
+                alarmToggle.classList.remove('active');
+                alarmStatus.textContent = 'Klik untuk mengaktifkan';
+                showToast('🔕 Alarm NONAKTIF', false, 'info');
+                
+                console.log('❌ Alarm dinonaktifkan');
+            }
+        }
+
+        function updateVolume(value) {
+            alarmVolume = parseInt(value) / 100;
+            localStorage.setItem('alarmVolume', value);
+            document.getElementById('volumeLabel').textContent = value + '%';
+            
+            console.log('🔊 Volume updated:', value + '%');
+        }
+
         function updateCountdowns() {
+            const betCloseGroups = {};
+            
             document.querySelectorAll('.countdown-timer').forEach((timer, index) => {
                 const data = pasaranData[index];
                 const countdown = calculateCountdown(data.tutup, data.buka, data);
                 
-                // Get previous state
                 const previousState = previousStates[index];
                 const currentState = countdown.isBetClose ? 'betclose' : 
                                    countdown.isHoliday ? 'holiday' : 'countdown';
                 
-                // Update timer text
                 timer.textContent = formatCountdown(countdown);
                 
-                // Remove all classes first
                 timer.classList.remove('warning', 'expired', 'holiday', 'phase-countdown', 'phase-betclose');
                 timer.style.color = '';
                 timer.style.borderColor = '';
@@ -1148,9 +1421,15 @@
                 } else if (countdown.isBetClose) {
                     timer.classList.add('phase-betclose');
                     
-                    // Auto-open logic: check if just transitioned to BET CLOSE
-                    if (autoOpenEnabled && previousState === 'countdown' && currentState === 'betclose') {
-                        openTabForPasaran(index, data);
+                    // TRIGGER ALARM saat pertama kali masuk BET CLOSE
+                    if (previousState === 'countdown' && currentState === 'betclose') {
+                        const closeTime = data.tutup;
+                        if (!betCloseGroups[closeTime]) {
+                            betCloseGroups[closeTime] = [];
+                        }
+                        betCloseGroups[closeTime].push(data.name);
+                        
+                        console.log(`🔄 State changed to BET CLOSE for ${data.name}`);
                     }
                 } else {
                     timer.classList.add('phase-countdown');
@@ -1159,35 +1438,28 @@
                     }
                 }
                 
-                // Store current state for next iteration
                 previousStates[index] = currentState;
             });
-        }
-
-        function toggleAutoOpen() {
-            autoOpenEnabled = !autoOpenEnabled;
-            localStorage.setItem('autoOpenEnabled', autoOpenEnabled);
             
-            const toggleSwitch = document.getElementById('autoOpenSwitch');
-            if (autoOpenEnabled) {
-                toggleSwitch.classList.add('active');
-                showToast('✓ Auto Open AKTIF - Jangan lupa izinkan pop-up di browser!', false, 'info');
-            } else {
-                toggleSwitch.classList.remove('active');
-                showToast('✗ Auto Open NONAKTIF', false, 'info');
+            // Play alarm untuk semua pasaran yang BET CLOSE
+            if (alarmEnabled && Object.keys(betCloseGroups).length > 0) {
+                console.log('🎯 BET CLOSE detected for groups:', betCloseGroups);
+                
+                for (const closeTime in betCloseGroups) {
+                    const pasaranNames = betCloseGroups[closeTime];
+                    console.log(`📣 Calling playAlarm for ${closeTime}:`, pasaranNames);
+                    playAlarm(pasaranNames, 1);
+                }
             }
         }
 
         function clearAllData() {
             if (confirm('Yakin ingin menghapus SEMUA data tersimpan? Tindakan ini tidak dapat dibatalkan!')) {
-                // Clear all card states
                 Object.keys(cardStates).forEach(key => delete cardStates[key]);
                 
-                // Clear localStorage
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem('jadwalTogelTimestamp');
                 
-                // Re-render cards (will clear all inputs and reset status)
                 renderCards();
                 
                 showToast('🗑️ Semua data tersimpan berhasil dihapus!', false, 'info');
@@ -1231,7 +1503,6 @@
         function updateDateTime() {
             const now = new Date();
             
-            // Update date
             const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
             const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             
@@ -1243,7 +1514,6 @@
             const dateString = `${dayName}, ${date} ${monthName} ${year}`;
             document.getElementById('currentDate').textContent = dateString;
             
-            // Update time
             const hours = String(now.getHours()).padStart(2, '0');
             const minutes = String(now.getMinutes()).padStart(2, '0');
             const seconds = String(now.getSeconds()).padStart(2, '0');
@@ -1480,7 +1750,6 @@
             card.querySelector('.btn-done').style.display = 'none';
             card.querySelector('.btn-reset').style.display = 'block';
             
-            // Store state in memory
             cardStates[index] = {
                 isDone: true,
                 prize1: card.querySelector('.prize1').value,
@@ -1488,7 +1757,6 @@
                 prize3: card.querySelector('.prize3')?.value || null
             };
             
-            // Save to localStorage
             saveToLocalStorage();
             
             showToast(`✓ ${pasaranData[index].name} ditandai selesai!`);
@@ -1507,23 +1775,20 @@
             
             card.querySelectorAll('input').forEach(input => {
                 input.disabled = false;
-                input.value = ''; // Clear input values
+                input.value = '';
             });
             
             card.querySelector('.btn-done').style.display = 'block';
             card.querySelector('.btn-reset').style.display = 'none';
             
-            // Clear state from memory
             delete cardStates[index];
             
-            // Save to localStorage
             saveToLocalStorage();
             
             showToast(`↻ ${pasaranData[index].name} direset!`);
         }
 
         function autoSaveInput(index) {
-            // Auto-save input values as user types (only if not done yet)
             const card = document.querySelector(`[data-index="${index}"]`);
             if (!card || card.classList.contains('done')) return;
             
@@ -1531,7 +1796,6 @@
             const prize2Input = card.querySelector('.prize2');
             const prize3Input = card.querySelector('.prize3');
             
-            // Only save if there's at least some input
             if (prize1 || (prize2Input && prize2Input.value) || (prize3Input && prize3Input.value)) {
                 if (!cardStates[index]) {
                     cardStates[index] = { isDone: false };
@@ -1541,11 +1805,10 @@
                 if (prize2Input) cardStates[index].prize2 = prize2Input.value;
                 if (prize3Input) cardStates[index].prize3 = prize3Input.value;
                 
-                // Debounced save to avoid too many writes
                 clearTimeout(window.autoSaveTimeout);
                 window.autoSaveTimeout = setTimeout(() => {
                     saveToLocalStorage();
-                }, 500); // Save 500ms after user stops typing
+                }, 500);
             }
         }
 
@@ -1557,11 +1820,9 @@
                 const card = createCard(data, index);
                 container.appendChild(card);
                 
-                // Restore saved state if exists
                 if (cardStates[index]) {
                     const cardElement = container.querySelector(`[data-index="${index}"]`);
                     if (cardElement) {
-                        // Restore input values
                         if (cardStates[index].prize1) {
                             cardElement.querySelector('.prize1').value = cardStates[index].prize1;
                         }
@@ -1574,7 +1835,6 @@
                             if (prize3Input) prize3Input.value = cardStates[index].prize3;
                         }
                         
-                        // If marked as done, restore done state
                         if (cardStates[index].isDone) {
                             cardElement.classList.add('done');
                             cardElement.setAttribute('data-status', 'done');
@@ -1622,25 +1882,40 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            // Clear old data (optional, older than 7 days)
+            console.log('🚀 App initialized');
+            
             clearOldData();
             
-            // Load saved states from localStorage
             const hasLoadedData = loadFromLocalStorage();
             
-            // Initialize auto-open toggle state
-            const toggleSwitch = document.getElementById('autoOpenSwitch');
-            if (autoOpenEnabled) {
-                toggleSwitch.classList.add('active');
+            const alarmSwitch = document.getElementById('alarmSwitch');
+            const alarmToggle = alarmSwitch.closest('.alarm-toggle');
+            const alarmStatus = document.getElementById('alarmStatus');
+            
+            if (alarmEnabled) {
+                alarmSwitch.classList.add('active');
+                alarmToggle.classList.add('active');
+                alarmStatus.textContent = 'Alarm AKTIF - Suara akan berbunyi saat BET CLOSE';
+            } else {
+                alarmStatus.textContent = 'Klik untuk mengaktifkan';
             }
             
-            // Initialize date and time display
+            const savedVolume = localStorage.getItem('alarmVolume') || '80';
+            document.getElementById('volumeSlider').value = savedVolume;
+            document.getElementById('volumeLabel').textContent = savedVolume + '%';
+            
+            // Load voices
+            loadVoices();
+            
+            if (window.speechSynthesis.onvoiceschanged !== undefined) {
+                window.speechSynthesis.onvoiceschanged = loadVoices;
+            }
+            
             updateDateTime();
-            setInterval(updateDateTime, 1000); // Update every second
+            setInterval(updateDateTime, 1000);
             
             renderCards();
             
-            // Show notification if data was restored
             if (hasLoadedData && Object.keys(cardStates).length > 0) {
                 showToast(`✓ Data tersimpan dimuat (${Object.keys(cardStates).length} pasaran)`, false, 'info');
             }
@@ -1659,6 +1934,10 @@
             });
             
             searchInput.focus();
+            
+            console.log('✅ App ready');
+            console.log('   Alarm enabled:', alarmEnabled);
+            console.log('   Selected voice:', selectedVoice?.name);
         });
 
         window.onclick = function(event) {

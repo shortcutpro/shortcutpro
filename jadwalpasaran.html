@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="permissions-policy" content="clipboard-write=(self)">
     <title>Jadwal Togel</title>
     <style>
         :root {
@@ -463,6 +464,77 @@
             background: rgba(45, 122, 45, 0.15);
         }
 
+        /* NEW: Result Display Styles */
+        .result-display {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 10px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(153, 0, 0, 0.3);
+            min-height: 45px;
+        }
+
+        .ttg-card.done .result-display {
+            border-color: rgba(81, 207, 102, 0.3);
+            background: rgba(45, 122, 45, 0.1);
+        }
+
+        .result-display.has-content {
+            display: flex;
+        }
+
+        .result-numbers {
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            color: var(--red-accent);
+            letter-spacing: 1px;
+        }
+
+        .ttg-card.done .result-numbers {
+            color: var(--green-light);
+        }
+
+        .copy-icon-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+
+        .copy-icon-btn:hover {
+            background: rgba(153, 0, 0, 0.2);
+            transform: scale(1.1);
+        }
+
+        .ttg-card.done .copy-icon-btn:hover {
+            background: rgba(45, 122, 45, 0.3);
+        }
+
+        .copy-icon-btn svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--red-light);
+            transition: stroke 0.3s ease;
+        }
+
+        .ttg-card.done .copy-icon-btn svg {
+            stroke: var(--green-light);
+        }
+
+        .copy-icon-btn.copied svg {
+            stroke: var(--green-light);
+        }
+
         .countdown-timer {
             font-size: 1.1rem;
             font-weight: 700;
@@ -868,6 +940,9 @@
             .alarm-controls-container {
                 flex-direction: column;
             }
+            .result-numbers {
+                font-size: 0.95rem;
+            }
         }
     </style>
 </head>
@@ -1068,7 +1143,6 @@
                 return;
             }
 
-            // Otomatis pilih Google Bahasa Indonesia
             const indonesianVoice = voices.find(v => v.name.includes('Google Bahasa Indonesia'));
             
             if (indonesianVoice) {
@@ -1076,7 +1150,6 @@
                 voicesLoaded = true;
                 console.log('✅ Voice Loaded: Google Bahasa Indonesia (id-ID)');
             } else {
-                // Fallback ke voice Indonesia lainnya
                 const fallbackVoice = voices.find(v => v.lang.startsWith('id'));
                 selectedVoice = fallbackVoice || voices[0];
                 voicesLoaded = true;
@@ -1243,7 +1316,6 @@
             converted = converted.replace(/\bDRAW\b/gi, 'Draw');
             converted = converted.replace(/\b4D\b/gi, 'Empat D');
             
-            // Angka 2-4 digit dibaca satu per satu TANPA JEDA
             converted = converted.replace(/(\d{2,4})/g, function(match) {
                 return match.split('').join(' ');
             });
@@ -1252,7 +1324,6 @@
         }
 
         function playAlarm(pasaranNames, repeatCount = 1) {
-            // DEBUGGING LOGS
             console.log('🔔 playAlarm() called');
             console.log('   alarmEnabled:', alarmEnabled);
             console.log('   voicesLoaded:', voicesLoaded);
@@ -1303,7 +1374,6 @@
                 console.log('   Original:', pasaranNames.join(', '));
                 console.log('   Converted:', namesText);
                 
-                // PART 1: Nama Pasaran
                 const utteranceNames = new SpeechSynthesisUtterance(namesText);
                 utteranceNames.voice = selectedVoice;
                 utteranceNames.lang = selectedVoice.lang;
@@ -1315,7 +1385,6 @@
                 console.log('   Lang for Names:', utteranceNames.lang);
                 console.log('   Volume:', utteranceNames.volume);
                 
-                // PART 2: BET CLOSE
                 const utteranceBetClose = new SpeechSynthesisUtterance('BET CLOSE');
                 utteranceBetClose.voice = selectedVoice;
                 utteranceBetClose.lang = selectedVoice.lang;
@@ -1326,7 +1395,6 @@
                 console.log('   Voice for BET CLOSE:', utteranceBetClose.voice?.name);
                 console.log('   Lang for BET CLOSE:', utteranceBetClose.lang);
                 
-                // Chaining
                 utteranceNames.onstart = function() {
                     console.log('▶️ Started speaking NAMES');
                 };
@@ -1352,7 +1420,6 @@
                     console.error('❌ Speech error (BET CLOSE):', event);
                 };
                 
-                // Start speaking
                 console.log('🎙️ Calling speechSynthesis.speak()...');
                 window.speechSynthesis.speak(utteranceNames);
             }
@@ -1372,7 +1439,6 @@
                 alarmStatus.textContent = 'Alarm AKTIF - Suara akan berbunyi saat BET CLOSE';
                 showToast('🔔 Alarm AKTIF - Siap memutar suara BET CLOSE', false, 'info');
                 
-                // Pastikan voice sudah loaded
                 if (!voicesLoaded) {
                     loadVoices();
                 }
@@ -1421,7 +1487,6 @@
                 } else if (countdown.isBetClose) {
                     timer.classList.add('phase-betclose');
                     
-                    // TRIGGER ALARM saat pertama kali masuk BET CLOSE
                     if (previousState === 'countdown' && currentState === 'betclose') {
                         const closeTime = data.tutup;
                         if (!betCloseGroups[closeTime]) {
@@ -1441,7 +1506,6 @@
                 previousStates[index] = currentState;
             });
             
-            // Play alarm untuk semua pasaran yang BET CLOSE
             if (alarmEnabled && Object.keys(betCloseGroups).length > 0) {
                 console.log('🎯 BET CLOSE detected for groups:', betCloseGroups);
                 
@@ -1573,6 +1637,194 @@
             });
         }
 
+        // NEW: Function to update result display
+        function updateResultDisplay(index) {
+            const card = document.querySelector(`[data-index="${index}"]`);
+            if (!card) return;
+            
+            const data = pasaranData[index];
+            const resultDisplay = card.querySelector('.result-display');
+            const resultNumbers = card.querySelector('.result-numbers');
+            
+            const prize1 = card.querySelector('.prize1').value.trim();
+            const prize2Input = card.querySelector('.prize2');
+            const prize3Input = card.querySelector('.prize3');
+            
+            if (!prize1) {
+                resultDisplay.classList.remove('has-content');
+                return;
+            }
+            
+            let displayText = '';
+            
+            if (data.prizeType === 'price123' && prize2Input && prize3Input) {
+                const prize2 = prize2Input.value.trim();
+                const prize3 = prize3Input.value.trim();
+                
+                if (prize2 && prize3) {
+                    displayText = `${prize1},${prize2},${prize3}`;
+                } else if (prize1) {
+                    displayText = prize1;
+                }
+            } else {
+                displayText = prize1;
+            }
+            
+            if (displayText) {
+                resultNumbers.textContent = displayText;
+                resultDisplay.classList.add('has-content');
+            } else {
+                resultDisplay.classList.remove('has-content');
+            }
+        }
+
+        // NEW: Function to copy only numbers
+        function copyNumbersOnly(button, index) {
+            const card = button.closest('.ttg-card');
+            const resultNumbersElement = card.querySelector('.result-numbers');
+            
+            if (!resultNumbersElement) {
+                console.error('Result numbers element not found');
+                showToast('Tidak ada angka untuk dicopy!', true);
+                return;
+            }
+            
+            const resultNumbers = resultNumbersElement.textContent.trim();
+            
+            console.log('Copying numbers:', resultNumbers);
+            
+            if (!resultNumbers) {
+                showToast('Tidak ada angka untuk dicopy!', true);
+                return;
+            }
+            
+            // Method 1: Try execCommand (best for local files)
+            const textArea = document.createElement('textarea');
+            textArea.value = resultNumbers;
+            textArea.style.position = 'fixed';
+            textArea.style.top = '0';
+            textArea.style.left = '0';
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = '0';
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            let success = false;
+            
+            try {
+                success = document.execCommand('copy');
+                console.log('execCommand copy result:', success);
+            } catch (err) {
+                console.error('execCommand failed:', err);
+            }
+            
+            document.body.removeChild(textArea);
+            
+            if (success) {
+                button.classList.add('copied');
+                showToast('✓ Angka berhasil dicopy: ' + resultNumbers);
+                
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                }, 2000);
+                return;
+            }
+            
+            // Method 2: Try modern clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(resultNumbers).then(() => {
+                    button.classList.add('copied');
+                    showToast('✓ Angka berhasil dicopy: ' + resultNumbers);
+                    
+                    setTimeout(() => {
+                        button.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Clipboard API also failed:', err);
+                    // Method 3: Show prompt as last resort
+                    showCopyPrompt(resultNumbers);
+                });
+            } else {
+                // Method 3: Show prompt as last resort
+                showCopyPrompt(resultNumbers);
+            }
+        }
+        
+        // Show prompt dialog for manual copy
+        function showCopyPrompt(text) {
+            const message = 'Copy angka ini secara manual:\n\n' + text;
+            
+            // Create custom modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 99999;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: #252525;
+                padding: 30px;
+                border-radius: 12px;
+                border: 2px solid #cc3333;
+                max-width: 400px;
+                text-align: center;
+            `;
+            
+            content.innerHTML = `
+                <h3 style="color: #cc3333; margin-bottom: 20px;">Copy Manual</h3>
+                <p style="color: #cccccc; margin-bottom: 15px;">Silakan copy angka berikut:</p>
+                <input type="text" value="${text}" readonly 
+                    style="width: 100%; padding: 15px; font-size: 1.2rem; font-weight: bold; 
+                    text-align: center; background: #1a1a1a; color: #51cf66; border: 2px solid #51cf66; 
+                    border-radius: 8px; margin-bottom: 20px; font-family: 'Courier New', monospace;"
+                    onclick="this.select()" id="copyInput">
+                <button onclick="this.closest('.copy-manual-modal').remove()" 
+                    style="padding: 12px 30px; background: #cc3333; color: white; border: none; 
+                    border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">
+                    Tutup
+                </button>
+                <p style="color: #888; font-size: 0.85rem; margin-top: 15px;">
+                    Klik angka di atas, lalu tekan Ctrl+C (atau Cmd+C di Mac)
+                </p>
+            `;
+            
+            modal.appendChild(content);
+            modal.className = 'copy-manual-modal';
+            document.body.appendChild(modal);
+            
+            // Auto select text
+            setTimeout(() => {
+                const input = document.getElementById('copyInput');
+                if (input) {
+                    input.focus();
+                    input.select();
+                }
+            }, 100);
+            
+            // Close on outside click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+
         function createCard(data, index) {
             const card = document.createElement('div');
             card.className = 'ttg-card';
@@ -1618,6 +1870,15 @@
                 <div class="ttg-card__title">
                     <span>${data.name}</span>
                     <div class="countdown-timer">00:00:00</div>
+                    <div class="result-display">
+                        <span class="result-numbers"></span>
+                        <button class="copy-icon-btn" onclick="copyNumbersOnly(this, ${index})" title="Copy angka">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
                 <div class="ttg-card__row">
                     <span class="ttg-card__label">
@@ -1781,6 +2042,10 @@
             card.querySelector('.btn-done').style.display = 'block';
             card.querySelector('.btn-reset').style.display = 'none';
             
+            // Clear result display
+            const resultDisplay = card.querySelector('.result-display');
+            resultDisplay.classList.remove('has-content');
+            
             delete cardStates[index];
             
             saveToLocalStorage();
@@ -1795,6 +2060,9 @@
             const prize1 = card.querySelector('.prize1').value;
             const prize2Input = card.querySelector('.prize2');
             const prize3Input = card.querySelector('.prize3');
+            
+            // Update result display
+            updateResultDisplay(index);
             
             if (prize1 || (prize2Input && prize2Input.value) || (prize3Input && prize3Input.value)) {
                 if (!cardStates[index]) {
@@ -1834,6 +2102,9 @@
                             const prize3Input = cardElement.querySelector('.prize3');
                             if (prize3Input) prize3Input.value = cardStates[index].prize3;
                         }
+                        
+                        // Update result display
+                        updateResultDisplay(index);
                         
                         if (cardStates[index].isDone) {
                             cardElement.classList.add('done');
@@ -1904,7 +2175,6 @@
             document.getElementById('volumeSlider').value = savedVolume;
             document.getElementById('volumeLabel').textContent = savedVolume + '%';
             
-            // Load voices
             loadVoices();
             
             if (window.speechSynthesis.onvoiceschanged !== undefined) {

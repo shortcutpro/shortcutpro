@@ -882,6 +882,10 @@
             pointer-events: none;
         }
 
+        .toast-notification.success {
+            background: var(--green-gradient);
+        }
+
         .toast-notification.error {
             background: linear-gradient(135deg, #cc0000, #ff4444);
         }
@@ -944,9 +948,366 @@
                 font-size: 0.95rem;
             }
         }
+
+        /* Comparison Table Styles */
+        .comparison-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 220px;
+            max-width: calc(100vw - 40px);
+            z-index: 1000;
+            font-size: 0.75rem;
+        }
+
+        .comparison-header {
+            background: var(--bg-card);
+            border: 2px solid rgba(153, 0, 0, 0.3);
+            border-radius: 8px 8px 0 0;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .comparison-header:hover {
+            background: rgba(37, 37, 37, 0.95);
+        }
+
+        .comparison-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--red-light);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .comparison-toggle {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .comparison-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .comparison-content {
+            background: var(--bg-card);
+            border: 2px solid rgba(153, 0, 0, 0.3);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .comparison-content.collapsed {
+            max-height: 0;
+            border: none;
+        }
+
+        .comparison-textarea {
+            width: 100%;
+            min-height: 80px;
+            max-height: 120px;
+            padding: 8px;
+            background: var(--bg-dark);
+            border: 1px solid rgba(153, 0, 0, 0.3);
+            border-radius: 0;
+            color: var(--text-light);
+            font-size: 0.7rem;
+            font-family: 'Courier New', monospace;
+            resize: vertical;
+            outline: none;
+            line-height: 1.3;
+        }
+
+        .comparison-textarea:focus {
+            border-color: var(--red-primary);
+        }
+
+        .comparison-textarea::placeholder {
+            color: #666;
+            font-size: 0.7rem;
+        }
+
+        .comparison-actions {
+            padding: 6px 8px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-compare {
+            flex: 1;
+            padding: 6px 8px;
+            background: var(--red-gradient);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-compare:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-clear-compare {
+            flex: 1;
+            padding: 6px 8px;
+            background: #666;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .btn-clear-compare:hover {
+            background: #888;
+            transform: translateY(-1px);
+        }
+
+        .comparison-table-wrapper {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .comparison-table-wrapper::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .comparison-table-wrapper::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .comparison-table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--red-primary);
+            border-radius: 2px;
+        }
+
+        .comparison-table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: var(--red-light);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.65rem;
+        }
+
+        .comparison-table thead {
+            position: sticky;
+            top: 0;
+            background: var(--bg-dark);
+            z-index: 10;
+        }
+
+        .comparison-table th {
+            padding: 6px 4px;
+            text-align: left;
+            font-size: 0.6rem;
+            color: var(--text-secondary);
+            border-bottom: 2px solid rgba(153, 0, 0, 0.3);
+            font-weight: 600;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .comparison-table th:nth-child(1) {
+            width: 35%;
+        }
+
+        .comparison-table th:nth-child(2) {
+            width: 25%;
+        }
+
+        .comparison-table th:nth-child(3) {
+            width: 25%;
+        }
+
+        .comparison-table th:nth-child(4) {
+            width: 15%;
+            text-align: center;
+        }
+
+        .comparison-table td {
+            padding: 4px;
+            font-size: 0.65rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .comparison-table td:nth-child(4) {
+            text-align: center;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .comparison-name {
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 0.6rem;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .comparison-numbers {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 0.65rem;
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .comparison-status {
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        /* Color coding for comparison */
+        .match-same {
+            color: var(--green-light);
+        }
+
+        .match-different {
+            color: #ff6b6b;
+        }
+
+        .match-empty {
+            color: #888;
+        }
+
+        .comparison-empty-state {
+            padding: 20px 12px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            line-height: 1.4;
+        }
+
+        .comparison-stats {
+            padding: 6px 8px;
+            background: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-around;
+            font-size: 0.65rem;
+            border-top: 1px solid rgba(153, 0, 0, 0.3);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.6rem;
+        }
+
+        .stat-value {
+            font-weight: 700;
+            font-size: 0.7rem;
+        }
+
+        .stat-value.green {
+            color: var(--green-light);
+        }
+
+        .stat-value.red {
+            color: #ff6b6b;
+        }
+
+        .stat-value.gray {
+            color: #888;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container {
+                position: relative;
+                width: 100%;
+                margin-bottom: 20px;
+                left: 0;
+                top: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Comparison Table -->
+    <div class="comparison-container">
+        <div class="comparison-header" onclick="toggleComparison()">
+            <div class="comparison-title">
+                <span>Perbandingan</span>
+            </div>
+            <div class="comparison-toggle" id="comparisonToggle">▼</div>
+        </div>
+        <div class="comparison-content" id="comparisonContent">
+            <textarea 
+                class="comparison-textarea" 
+                id="comparisonInput" 
+                placeholder="Paste data hasil dari line"
+                oninput="autoCompare()"
+            ></textarea>
+            <div class="comparison-actions">
+                <button class="btn-compare" onclick="compareData()">Cek</button>
+                <button class="btn-clear-compare" onclick="clearComparison()">Clear</button>
+            </div>
+            <div class="comparison-table-wrapper" id="comparisonTableWrapper" style="display: none;">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Pasaran</th>
+                            <th>Man</th>
+                            <th>Form</th>
+                            <th>✓</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comparisonTableBody">
+                    </tbody>
+                </table>
+                <div class="comparison-stats" id="comparisonStats" style="display: none;">
+                    <div class="stat-item">
+                        <span class="stat-label">Sama:</span>
+                        <span class="stat-value green" id="statSame">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Beda:</span>
+                        <span class="stat-value red" id="statDiff">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Kosong:</span>
+                        <span class="stat-value gray" id="statEmpty">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="comparison-empty-state" id="comparisonEmpty">
+                Paste data, lalu klik Bandingkan
+            </div>
+        </div>
+    </div>
+
     <div class="header">
         <h1>JADWAL TOGEL</h1>
         
@@ -979,7 +1340,7 @@
                 </div>
             </div>
             
-            <button class="clear-data-btn" onclick="clearAllData()">🗑️ Hapus Semua Data</button>
+            <button class="clear-data-btn" onclick="clearAllData()">Hapus Semua Data</button>
         </div>
     </div>
 
@@ -1436,8 +1797,8 @@
             if (alarmEnabled) {
                 alarmSwitch.classList.add('active');
                 alarmToggle.classList.add('active');
-                alarmStatus.textContent = 'Alarm AKTIF - Suara akan berbunyi saat BET CLOSE';
-                showToast('🔔 Alarm AKTIF - Siap memutar suara BET CLOSE', false, 'info');
+                alarmStatus.textContent = 'Alarm AKTIF';
+                showToast('Alarm Aktif', false, 'success');
                 
                 if (!voicesLoaded) {
                     loadVoices();
@@ -1449,7 +1810,7 @@
                 alarmSwitch.classList.remove('active');
                 alarmToggle.classList.remove('active');
                 alarmStatus.textContent = 'Klik untuk mengaktifkan';
-                showToast('🔕 Alarm NONAKTIF', false, 'info');
+                showToast('Alarm NonAktif', true, 'error');
                 
                 console.log('❌ Alarm dinonaktifkan');
             }
@@ -1920,11 +2281,21 @@
         function showToast(message, isError = false, type = '') {
             const toast = document.createElement('div');
             let className = 'toast-notification';
-            if (isError) className += ' error';
-            if (type === 'info') className += ' info';
+            
+            // Handle type parameter
+            if (type === 'success') {
+                className += ' success';
+            } else if (type === 'error' || isError) {
+                className += ' error';
+            } else if (type === 'info') {
+                className += ' info';
+            } else if (isError) {
+                className += ' error';
+            }
+            
             toast.className = className;
             
-            const icon = isError ? 
+            const icon = (type === 'error' || isError) ? 
                 '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>' :
                 '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
             
@@ -2019,6 +2390,7 @@
             };
             
             saveToLocalStorage();
+            triggerComparisonUpdate();
             
             showToast(`✓ ${pasaranData[index].name} ditandai selesai!`);
         }
@@ -2049,6 +2421,7 @@
             delete cardStates[index];
             
             saveToLocalStorage();
+            triggerComparisonUpdate();
             
             showToast(`↻ ${pasaranData[index].name} direset!`);
         }
@@ -2076,6 +2449,7 @@
                 clearTimeout(window.autoSaveTimeout);
                 window.autoSaveTimeout = setTimeout(() => {
                     saveToLocalStorage();
+                    triggerComparisonUpdate();
                 }, 500);
             }
         }
@@ -2166,7 +2540,7 @@
             if (alarmEnabled) {
                 alarmSwitch.classList.add('active');
                 alarmToggle.classList.add('active');
-                alarmStatus.textContent = 'Alarm AKTIF - Suara akan berbunyi saat BET CLOSE';
+                alarmStatus.textContent = 'Alarm AKTIF';
             } else {
                 alarmStatus.textContent = 'Klik untuk mengaktifkan';
             }
@@ -2216,6 +2590,407 @@
                 closeModal();
             }
         };
+
+        // Comparison Table Functions
+        let comparisonData = [];
+        let isComparisonCollapsed = false;
+
+        function toggleComparison() {
+            isComparisonCollapsed = !isComparisonCollapsed;
+            const content = document.getElementById('comparisonContent');
+            const toggle = document.getElementById('comparisonToggle');
+            
+            if (isComparisonCollapsed) {
+                content.classList.add('collapsed');
+                toggle.classList.add('collapsed');
+            } else {
+                content.classList.remove('collapsed');
+                toggle.classList.remove('collapsed');
+            }
+        }
+
+        function normalizePassaranName(name) {
+            // Remove all spaces, special chars, and normalize to uppercase for better matching
+            return name.toUpperCase()
+                .replace(/\s+/g, '')  // Remove all spaces
+                .replace(/[^A-Z0-9]/g, '')  // Remove special chars
+                .trim();
+        }
+
+        function parseManualData(text) {
+            const lines = text.split('\n').filter(line => line.trim());
+            const results = [];
+            let currentPasaran = null;
+            let currentPrizes = {};
+
+            for (let line of lines) {
+                line = line.trim();
+                if (!line) continue;
+
+                // Check if line is a prize entry
+                if (line.match(/PRIZE\s*[123]\s*:/i)) {
+                    const match = line.match(/PRIZE\s*([123])\s*:\s*(\d+)/i);
+                    if (match && currentPasaran) {
+                        const prizeNum = match[1];
+                        const prizeValue = match[2];
+                        currentPrizes[`prize${prizeNum}`] = prizeValue;
+                    }
+                } else {
+                    // Save previous pasaran if exists
+                    if (currentPasaran) {
+                        results.push({
+                            name: currentPasaran,
+                            ...currentPrizes
+                        });
+                    }
+
+                    // Check if line has pasaran name and number
+                    const parts = line.split(/\s+/);
+                    
+                    // NEW: Check if this looks like a pasaran with time suffix (like HOKI DRAW 01)
+                    // Pattern: NAME + NUMBER where number is 2 digits (00-23 or similar)
+                    if (parts.length >= 2) {
+                        const lastPart = parts[parts.length - 1];
+                        const secondLastPart = parts.length >= 3 ? parts[parts.length - 2] : '';
+                        
+                        // Check if last part is a 4+ digit number (likely a prize)
+                        if (/^\d{4,}$/.test(lastPart)) {
+                            // Last part is prize number
+                            currentPasaran = parts.slice(0, -1).join(' ');
+                            currentPrizes = { prize1: lastPart };
+                        }
+                        // Check if last part is 2-digit number (likely time suffix like 00, 01, etc)
+                        else if (/^\d{2}$/.test(lastPart) && !/^\d+$/.test(secondLastPart)) {
+                            // This is a time suffix, keep it as part of name
+                            currentPasaran = line;
+                            currentPrizes = {};
+                        }
+                        // Check if last part is other short number pattern (3 digits or less)
+                        else if (/^\d{1,3}$/.test(lastPart)) {
+                            // Could be prize or part of name, keep as name for now
+                            currentPasaran = line;
+                            currentPrizes = {};
+                        }
+                        else {
+                            // No number, just pasaran name
+                            currentPasaran = line;
+                            currentPrizes = {};
+                        }
+                    } else {
+                        currentPasaran = line;
+                        currentPrizes = {};
+                    }
+                }
+            }
+
+            // Don't forget the last pasaran
+            if (currentPasaran) {
+                results.push({
+                    name: currentPasaran,
+                    ...currentPrizes
+                });
+            }
+
+            return results;
+        }
+
+        function findMatchingPasaran(manualName) {
+            const normalizedManual = normalizePassaranName(manualName);
+            
+            console.log('Searching for:', manualName, '→ normalized:', normalizedManual);
+            
+            // First try: exact match without spaces
+            for (let i = 0; i < pasaranData.length; i++) {
+                const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
+                
+                if (normalizedManual === normalizedPasaran) {
+                    console.log('✓ Exact match found:', manualName, '→', pasaranData[i].name);
+                    return i;
+                }
+            }
+            
+            // Second try: for names without time suffix, try to match base name only
+            // But ONLY if the manual name doesn't have a time-like suffix
+            const hasTimeSuffix = /\d{2,4}$/.test(manualName.replace(/\s+/g, ''));
+            
+            if (!hasTimeSuffix) {
+                // Manual name has no time suffix (like "HOKI DRAW")
+                // Collect all matching pasarans
+                const matchingPasarans = [];
+                for (let i = 0; i < pasaranData.length; i++) {
+                    const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
+                    
+                    // Check if pasaran name starts with manual name
+                    if (normalizedPasaran.startsWith(normalizedManual)) {
+                        matchingPasarans.push({ index: i, name: pasaranData[i].name });
+                    }
+                }
+                
+                // If only one match, use it
+                if (matchingPasarans.length === 1) {
+                    console.log('✓ Single base match found:', manualName, '→', matchingPasarans[0].name);
+                    return matchingPasarans[0].index;
+                }
+                
+                // If multiple matches, cannot auto-match
+                // User should specify the full name with time suffix
+                if (matchingPasarans.length > 1) {
+                    console.log('⚠️ Multiple matches found for base name:', manualName);
+                    console.log('   Possible matches:', matchingPasarans.map(m => m.name).join(', '));
+                    console.log('   Please use full name with time suffix (e.g., "HOKI DRAW 01")');
+                    return -1;
+                }
+            } else {
+                // Manual name has time suffix, do contains match
+                for (let i = 0; i < pasaranData.length; i++) {
+                    const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
+                    
+                    // Check if one contains the other
+                    if (normalizedManual.includes(normalizedPasaran) || 
+                        normalizedPasaran.includes(normalizedManual)) {
+                        console.log('✓ Contains match found:', manualName, '→', pasaranData[i].name);
+                        return i;
+                    }
+                }
+            }
+            
+            console.log('✗ No match found for:', manualName);
+            return -1;
+        }
+        
+        // NEW: Smart matching based on prize values
+        function findMatchingPasaranByPrize(manualName, prize1, prize2, prize3) {
+            if (!prize1) return -1;
+            
+            const normalizedManual = normalizePassaranName(manualName);
+            console.log('🔍 Smart matching by prize for:', manualName, 'with prize:', prize1);
+            
+            // Find all pasarans that start with the manual name
+            const candidates = [];
+            for (let i = 0; i < pasaranData.length; i++) {
+                const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
+                
+                if (normalizedPasaran.startsWith(normalizedManual)) {
+                    // Check if this pasaran has data in cardStates
+                    if (cardStates[i] && cardStates[i].prize1) {
+                        candidates.push({
+                            index: i,
+                            name: pasaranData[i].name,
+                            prize1: cardStates[i].prize1,
+                            prize2: cardStates[i].prize2,
+                            prize3: cardStates[i].prize3
+                        });
+                    }
+                }
+            }
+            
+            // Try to match by prize values
+            for (const candidate of candidates) {
+                // Check prize1 match
+                if (candidate.prize1 === prize1) {
+                    // If prize2 and prize3 also provided, check them too
+                    if (prize2 && prize3) {
+                        if (candidate.prize2 === prize2 && candidate.prize3 === prize3) {
+                            console.log('✓ Smart match found by all prizes:', manualName, '→', candidate.name);
+                            return candidate.index;
+                        }
+                    } else {
+                        // Only prize1 provided, match by that
+                        console.log('✓ Smart match found by prize1:', manualName, '→', candidate.name);
+                        return candidate.index;
+                    }
+                }
+            }
+            
+            console.log('✗ No smart match found by prize');
+            return -1;
+        }
+
+        function compareData() {
+            const input = document.getElementById('comparisonInput').value;
+            if (!input.trim()) {
+                showToast('Harap masukkan data untuk dibandingkan!', true);
+                return;
+            }
+
+            comparisonData = parseManualData(input);
+            
+            if (comparisonData.length === 0) {
+                showToast('Tidak ada data valid untuk dibandingkan!', true);
+                return;
+            }
+
+            renderComparisonTable();
+            // Notification will be shown by renderComparisonTable based on results
+        }
+
+        function autoCompare() {
+            const input = document.getElementById('comparisonInput').value;
+            if (input.trim()) {
+                // Debounce auto compare
+                clearTimeout(window.autoCompareTimeout);
+                window.autoCompareTimeout = setTimeout(() => {
+                    compareData();
+                }, 1000);
+            }
+        }
+
+        function renderComparisonTable(showNotification = true) {
+            const tbody = document.getElementById('comparisonTableBody');
+            const wrapper = document.getElementById('comparisonTableWrapper');
+            const empty = document.getElementById('comparisonEmpty');
+            const stats = document.getElementById('comparisonStats');
+
+            tbody.innerHTML = '';
+            
+            let countSame = 0;
+            let countDiff = 0;
+            let countEmpty = 0;
+
+            comparisonData.forEach(manual => {
+                let index = findMatchingPasaran(manual.name);
+                
+                // If normal matching fails, try smart matching by prize
+                if (index === -1 && manual.prize1) {
+                    index = findMatchingPasaranByPrize(manual.name, manual.prize1, manual.prize2, manual.prize3);
+                }
+                
+                const row = document.createElement('tr');
+
+                // Pasaran name
+                const nameCell = document.createElement('td');
+                nameCell.className = 'comparison-name';
+                nameCell.textContent = manual.name;
+                nameCell.title = manual.name; // Tooltip for full name
+
+                // Manual data
+                const manualCell = document.createElement('td');
+                manualCell.className = 'comparison-numbers';
+                let manualText = '';
+                if (manual.prize1 && manual.prize2 && manual.prize3) {
+                    manualText = `${manual.prize1},${manual.prize2},${manual.prize3}`;
+                } else if (manual.prize1) {
+                    manualText = manual.prize1;
+                }
+                manualCell.textContent = manualText;
+                manualCell.title = manualText; // Tooltip
+
+                // Form data
+                const formCell = document.createElement('td');
+                formCell.className = 'comparison-numbers';
+                let formText = '';
+                let isMatch = false;
+                let matchedPasaranName = '';
+                let hasManualData = manualText.length > 0;
+                
+                if (index !== -1 && cardStates[index]) {
+                    matchedPasaranName = pasaranData[index].name;
+                    
+                    if (cardStates[index].prize1 && cardStates[index].prize2 && cardStates[index].prize3) {
+                        formText = `${cardStates[index].prize1},${cardStates[index].prize2},${cardStates[index].prize3}`;
+                    } else if (cardStates[index].prize1) {
+                        formText = cardStates[index].prize1;
+                    }
+                    
+                    // Compare
+                    if (formText && manualText) {
+                        isMatch = formText === manualText;
+                    }
+                }
+
+                formCell.textContent = formText || '-';
+                formCell.title = matchedPasaranName ? `${matchedPasaranName}: ${formText}` : 'Tidak ada data'; // Tooltip
+
+                // Status
+                const statusCell = document.createElement('td');
+                statusCell.className = 'comparison-status';
+                
+                // NEW LOGIC: If manual has data but no match found OR no form data, count as different
+                if (hasManualData && (!formText || index === -1)) {
+                    // Manual has data but form doesn't, or couldn't find match
+                    statusCell.innerHTML = '<span class="match-empty">○</span>';
+                    statusCell.title = index === -1 ? 'Tidak ditemukan atau belum diinput' : 'Belum diinput';
+                    manualCell.classList.add('match-empty');
+                    formCell.classList.add('match-empty');
+                    
+                    // NEW: Count as different if manual has data but no match
+                    if (index === -1 && hasManualData) {
+                        countDiff++; // Changed from countEmpty to countDiff
+                    } else {
+                        countEmpty++;
+                    }
+                } else if (!hasManualData) {
+                    // Manual has no data
+                    statusCell.innerHTML = '<span class="match-empty">○</span>';
+                    statusCell.title = 'Tidak ada data manual';
+                    manualCell.classList.add('match-empty');
+                    formCell.classList.add('match-empty');
+                    countEmpty++;
+                } else if (isMatch) {
+                    // Data matches
+                    statusCell.innerHTML = '<span class="match-same">✓</span>';
+                    statusCell.title = `Sama dengan ${matchedPasaranName}`;
+                    manualCell.classList.add('match-same');
+                    formCell.classList.add('match-same');
+                    countSame++;
+                } else {
+                    // Data exists but different
+                    statusCell.innerHTML = '<span class="match-different">✗</span>';
+                    statusCell.title = `Berbeda dengan ${matchedPasaranName}`;
+                    manualCell.classList.add('match-different');
+                    formCell.classList.add('match-different');
+                    countDiff++;
+                }
+
+                row.appendChild(nameCell);
+                row.appendChild(manualCell);
+                row.appendChild(formCell);
+                row.appendChild(statusCell);
+                tbody.appendChild(row);
+            });
+
+            // Update stats
+            document.getElementById('statSame').textContent = countSame;
+            document.getElementById('statDiff').textContent = countDiff;
+            document.getElementById('statEmpty').textContent = countEmpty;
+
+            // Show/hide elements
+            wrapper.style.display = 'block';
+            empty.style.display = 'none';
+            stats.style.display = 'flex';
+            
+            // Show notification based on comparison results
+            if (showNotification) {
+                const totalChecked = countSame + countDiff; // Exclude empty ones
+                
+                if (totalChecked > 0) {
+                    if (countDiff === 0 && countSame > 0) {
+                        // All matched data are the same - GREEN
+                        showToast('Perbandingan Sama', false, 'success');
+                    } else if (countDiff > 0) {
+                        // Some data are different - RED
+                        showToast('Tidak Sama', true, 'error');
+                    }
+                }
+            }
+        }
+
+        function clearComparison() {
+            document.getElementById('comparisonInput').value = '';
+            document.getElementById('comparisonTableBody').innerHTML = '';
+            document.getElementById('comparisonTableWrapper').style.display = 'none';
+            document.getElementById('comparisonEmpty').style.display = 'block';
+            document.getElementById('comparisonStats').style.display = 'none';
+            comparisonData = [];
+            showToast('Tabel perbandingan dihapus', false, 'info');
+        }
+
+        // Trigger comparison update when form data changes
+        function triggerComparisonUpdate() {
+            if (comparisonData.length > 0) {
+                renderComparisonTable();
+            }
+        }
 
         document.addEventListener('keydown', function(event) {
             if (event.key === 'Escape') {

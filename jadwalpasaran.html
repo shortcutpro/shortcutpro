@@ -2843,6 +2843,10 @@
 
             tbody.innerHTML = '';
             
+            // Reset pasaran name tracking
+            window.matchedPasarans = [];
+            window.differentPasarans = [];
+            
             let countSame = 0;
             let countDiff = 0;
             let countEmpty = 0;
@@ -2916,6 +2920,9 @@
                     // NEW: Count as different if manual has data but no match
                     if (index === -1 && hasManualData) {
                         countDiff++; // Changed from countEmpty to countDiff
+                        // Store the manual name since we couldn't find a match
+                        if (!window.differentPasarans) window.differentPasarans = [];
+                        window.differentPasarans.push(manual.name);
                     } else {
                         countEmpty++;
                     }
@@ -2927,19 +2934,27 @@
                     formCell.classList.add('match-empty');
                     countEmpty++;
                 } else if (isMatch) {
-                    // Data matches
+                    // Data matches - store for notification
                     statusCell.innerHTML = '<span class="match-same">✓</span>';
                     statusCell.title = `Sama dengan ${matchedPasaranName}`;
                     manualCell.classList.add('match-same');
                     formCell.classList.add('match-same');
                     countSame++;
+                    
+                    // Store matched pasaran name FROM TABLE
+                    if (!window.matchedPasarans) window.matchedPasarans = [];
+                    window.matchedPasarans.push(matchedPasaranName);
                 } else {
-                    // Data exists but different
+                    // Data exists but different - store for notification
                     statusCell.innerHTML = '<span class="match-different">✗</span>';
                     statusCell.title = `Berbeda dengan ${matchedPasaranName}`;
                     manualCell.classList.add('match-different');
                     formCell.classList.add('match-different');
                     countDiff++;
+                    
+                    // Store different pasaran name FROM TABLE
+                    if (!window.differentPasarans) window.differentPasarans = [];
+                    window.differentPasarans.push(matchedPasaranName);
                 }
 
                 row.appendChild(nameCell);
@@ -2963,14 +2978,49 @@
             if (showNotification) {
                 const totalChecked = countSame + countDiff; // Exclude empty ones
                 
+                console.log('📊 Comparison Results:');
+                console.log('   Same:', countSame, window.matchedPasarans);
+                console.log('   Different:', countDiff, window.differentPasarans);
+                console.log('   Empty:', countEmpty);
+                
                 if (totalChecked > 0) {
                     if (countDiff === 0 && countSame > 0) {
                         // All matched data are the same - GREEN
-                        showToast('Perbandingan Sama', false, 'success');
+                        // Show all matched pasaran names
+                        const matchedNames = window.matchedPasarans || [];
+                        if (matchedNames.length > 0) {
+                            console.log('🟢 Showing SAMA notifications for:', matchedNames);
+                            // Show each matched pasaran with delay
+                            matchedNames.forEach((name, index) => {
+                                setTimeout(() => {
+                                    showToast(`Perbandingan ${name} sama`, false, 'success');
+                                }, index * 500); // 500ms delay between each
+                            });
+                        } else {
+                            showToast('Perbandingan Sama', false, 'success');
+                        }
                     } else if (countDiff > 0) {
                         // Some data are different - RED
-                        showToast('Tidak Sama', true, 'error');
+                        // Show all different pasaran names
+                        const differentNames = window.differentPasarans || [];
+                        if (differentNames.length > 0) {
+                            console.log('🔴 Showing TIDAK SAMA notifications for:', differentNames);
+                            // Show each different pasaran with delay
+                            differentNames.forEach((name, index) => {
+                                setTimeout(() => {
+                                    // Format the message
+                                    const message = name ? `${name} tidak sama` : 'Data tidak sama';
+                                    showToast(message, true, 'error');
+                                }, index * 500); // 500ms delay between each
+                            });
+                        } else {
+                            showToast('Tidak Sama', true, 'error');
+                        }
                     }
+                    
+                    // Clear stored pasaran names for next comparison
+                    window.matchedPasarans = [];
+                    window.differentPasarans = [];
                 }
             }
         }

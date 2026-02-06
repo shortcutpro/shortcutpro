@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TVTOTO Full Script Generator</title>
+    <title>HOKBENTOTO Full Script Generator</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
     <style>
         * {
@@ -14,8 +14,8 @@
 
         body {
             padding: 20px;
-            background: linear-gradient(135deg, rgba(26, 0, 0, 0.85) 0%, rgba(64, 0, 0, 0.85) 100%), 
-                        url('https://cdn.areabermain.club/assets/cdn/az2/2026/01/17/20260117/d50e4d927a48f8e4903cd526118e4fb5/new-background-tvtoto.jpg');
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85) 0%, rgba(20, 20, 0, 0.85) 100%), 
+                        url('https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -28,24 +28,25 @@
         .converter-container {
             max-width: 1000px;
             margin: 0 auto;
-            background: rgba(50, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.75);
             padding: 30px;
             border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 8px 24px rgba(255, 215, 0, 0.4);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         h1 {
             text-align: center;
-            color: #ff4d4d;
-            text-shadow: 0 0 10px rgba(255, 80, 80, 0.8);
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6);
             margin-bottom: 10px;
             font-size: 28px;
         }
 
         .subtitle {
             text-align: center;
-            color: #ff9999;
+            color: #FDB931;
             margin-bottom: 30px;
             font-size: 14px;
         }
@@ -57,7 +58,7 @@
         label {
             display: block;
             margin-bottom: 10px;
-            color: #ff9999;
+            color: #FDB931;
             font-weight: 600;
             font-size: 16px;
         }
@@ -66,7 +67,7 @@
             width: 100%;
             padding: 15px;
             background: rgba(0, 0, 0, 0.4);
-            border: 2px solid #a80000;
+            border: 2px solid #B8860B;
             border-radius: 8px;
             color: #fff;
             font-family: monospace;
@@ -85,8 +86,8 @@
 
         textarea:focus {
             outline: none;
-            border-color: #ff4d4d;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            border-color: #FFD700;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
         .button-group {
@@ -98,21 +99,21 @@
         button {
             flex: 1;
             padding: 15px;
-            background: linear-gradient(90deg, #a80000, #400000);
+            background: linear-gradient(90deg, #B8860B, #DAA520);
             border: none;
             border-radius: 8px;
-            color: #fff;
+            color: #000;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
         }
 
         button:hover:not(:disabled) {
             transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(255, 0, 0, 0.6);
-            background: linear-gradient(90deg, #ff4d4d, #400000);
+            box-shadow: 0 6px 16px rgba(255, 215, 0, 0.6);
+            background: linear-gradient(90deg, #FFD700, #FDB931);
         }
 
         button:active:not(:disabled) {
@@ -138,8 +139,8 @@
         }
 
         .info-box {
-            background: rgba(255, 255, 0, 0.08);
-            border: 1px solid #ffaa00;
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid #FFD700;
             padding: 20px;
             border-radius: 8px;
             margin-bottom: 25px;
@@ -163,7 +164,7 @@
             margin-top: 10px;
             font-family: monospace;
             font-size: 12px;
-            color: #ffaa00;
+            color: #FFD700;
         }
 
         .status {
@@ -187,15 +188,15 @@
         }
 
         .status.info {
-            background: rgba(0, 150, 255, 0.1);
-            border: 1px solid #0096ff;
-            color: #66ccff;
+            background: rgba(255, 215, 0, 0.1);
+            border: 1px solid #FFD700;
+            color: #FFD700;
         }
     </style>
 </head>
 <body>
     <div class="converter-container">
-        <h1>🎯 TVTOTO Full Script Generator</h1>
+        <h1>🎯 HOKBENTOTO Full Script Generator</h1>
         <div class="subtitle">Generate Script Komplit - Tinggal Copy & Paste!</div>
         
         <div id="statusMessage" class="status"></div>
@@ -203,7 +204,7 @@
         <div class="info-box">
             <strong>📝 Cara Penggunaan:</strong>
             <ul>
-                <li>✅ Masukkan 5 link gambar (satu link per baris)</li>
+                <li>✅ Masukkan 1 atau lebih link gambar (satu link per baris)</li>
                 <li>✅ Klik tombol <strong>"Generate Full Script"</strong></li>
                 <li>✅ Script lengkap akan muncul di bawah</li>
                 <li>✅ Klik <strong>"Copy Full Script"</strong> untuk copy semua</li>
@@ -211,18 +212,17 @@
                 <li>🔄 Bisa ganti link dan generate ulang kapan saja!</li>
             </ul>
             <div class="example">
-                <strong>Contoh format link:</strong><br>
+                <strong>Contoh format link (bisa 1, 2, 3, 4, 5 atau lebih):</strong><br>
                 https://cdn.areabermain.club/assets/.../image1.jpg<br>
                 https://cdn.areabermain.club/assets/.../image2.jpg<br>
                 https://cdn.areabermain.club/assets/.../image3.jpg<br>
-                https://cdn.areabermain.club/assets/.../image4.jpg<br>
-                https://cdn.areabermain.club/assets/.../image5.jpg
+                (dan seterusnya...)
             </div>
         </div>
 
         <div class="input-section">
-            <label for="imageLinks">🖼️ Masukkan 5 Link Gambar (satu per baris):</label>
-            <textarea id="imageLinks" placeholder="Paste 5 link gambar di sini...&#10;Link 1&#10;Link 2&#10;Link 3&#10;Link 4&#10;Link 5"></textarea>
+            <label for="imageLinks">🖼️ Masukkan Link Gambar (satu per baris, minimal 1 link):</label>
+            <textarea id="imageLinks" placeholder="Paste link gambar di sini...&#10;Link 1&#10;Link 2&#10;Link 3&#10;(dan seterusnya)"></textarea>
         </div>
 
         <div class="button-group">
@@ -256,14 +256,14 @@
             const generateBtn = document.getElementById('generateBtn');
 
             if (!input) {
-                showStatus('⚠️ Masukkan 5 link gambar terlebih dahulu!', 'error');
+                showStatus('⚠️ Masukkan minimal 1 link gambar terlebih dahulu!', 'error');
                 return;
             }
 
             const links = input.split('\n').filter(link => link.trim() !== '');
 
-            if (links.length !== 5) {
-                showStatus('⚠️ Harus input tepat 5 link gambar! Sekarang ada ' + links.length + ' link.', 'error');
+            if (links.length < 1) {
+                showStatus('⚠️ Harus input minimal 1 link gambar!', 'error');
                 return;
             }
 
@@ -276,18 +276,33 @@
                 }
             }
 
+            // Generate dynamic image entries
+            let imageEntries = '';
+            for (let i = 0; i < links.length; i++) {
+                if (i === 0) {
+                    imageEntries += `<div class="entry"><img src="${links[i].trim()}" alt="Syair ${i + 1}" /></div>\n`;
+                } else {
+                    imageEntries += `<div class="content">\n<div class="entry"><img src="${links[i].trim()}" alt="Syair ${i + 1}" /></div>\n`;
+                }
+            }
+
+            // Close all nested content divs except the first one
+            for (let i = 1; i < links.length; i++) {
+                imageEntries += `</div>\n`;
+            }
+
             // Generate full HTML script
             const fullScript = `<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TVTOTO Syair</title>
+<title>HOKBENTOTO Syair</title>
 <style>
   /* === General Body Styles === */
   body {
     margin: 0;
-    background: #1a0000;
+    background: #000000;
     color: #fff;
     font-family: "Poppins", Arial, sans-serif;
     line-height: 1.6;
@@ -297,10 +312,10 @@
   .running-bar {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(90deg, #400000, #a80000, #400000);
+    background: linear-gradient(90deg, #1a1a00, #B8860B, #1a1a00);
     padding: 10px;
     white-space: nowrap;
-    box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4);
+    box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(255, 215, 0, 0.4);
     border-radius: 12px;
     margin: 15px auto;
     max-width: 1200px;
@@ -313,7 +328,7 @@
     top: 0;
     width: 200%;
     height: 100%;
-    background: linear-gradient(120deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 200, 200, 0.25) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 0, 0, 0));
+    background: linear-gradient(120deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 215, 0, 0.25) 30%, rgba(255, 255, 255, 0.05) 60%, rgba(255, 215, 0, 0));
     transform: skewX(-20deg);
     animation: shine 5s linear infinite;
   }
@@ -328,22 +343,22 @@
     animation: scroll 14s linear infinite;
     font-weight: 800;
     font-size: 18px;
-    color: #fff;
+    color: #000;
     text-transform: uppercase;
     letter-spacing: 1.5px;
-    text-shadow: 0 0 6px rgba(255, 80, 80, 0.8);
-    background: linear-gradient(90deg, #a80000, #400000);
+    text-shadow: 0 0 6px rgba(255, 215, 0, 0.8);
+    background: linear-gradient(90deg, #FFD700, #FDB931);
     padding: 8px 20px;
     border-radius: 20px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 200, 200, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 2px 4px rgba(255, 255, 200, 0.2);
     margin: 0 10px;
-    border: 1px solid rgba(255, 100, 100, 0.3);
+    border: 1px solid rgba(255, 215, 0, 0.3);
   }
 
   .marquee:hover {
     animation-play-state: paused;
-    background: linear-gradient(90deg, #ff4d4d, #400000);
-    color: #fff;
+    background: linear-gradient(90deg, #FDB931, #DAA520);
+    color: #000;
     transition: background 0.3s ease;
   }
 
@@ -357,9 +372,9 @@
     max-width: 700px;
     margin: 30px auto;
     padding: 20px;
-    background: rgba(50, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.6);
     border-radius: 12px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
   }
 
   .content .content {
@@ -376,22 +391,22 @@
     align-items: center;
     margin-bottom: 20px;
     padding: 20px;
-    border: 1px solid #a80000;
+    border: 1px solid #B8860B;
     border-radius: 8px;
-    background: rgba(255, 0, 0, 0.05);
+    background: rgba(255, 215, 0, 0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
   .content .entry:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(255, 0, 0, 0.5);
+    box-shadow: 0 6px 15px rgba(255, 215, 0, 0.5);
   }
 
   .content img {
     max-width: 655px;
     height: auto;
     border-radius: 8px;
-    border: 2px solid #a80000;
+    border: 2px solid #B8860B;
     margin-right: 20px;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -405,27 +420,27 @@
     flex: 1;
     min-width: 200px;
     font-size: 16px;
-    color: #f5dada;
+    color: #f5f5dc;
   }
 
   .content em b {
-    color: #ff4d4d;
+    color: #FFD700;
     font-size: 18px;
   }
 
   /* === Footer === */
   .footer {
     padding: 20px;
-    color: #f5dada;
+    color: #f5f5dc;
   }
 
   .footer h2 {
-    color: #ff4d4d;
+    color: #FFD700;
     margin-bottom: 15px;
   }
 
   .footer h3, .footer h4, .footer h5 {
-    color: #ff9999;
+    color: #FDB931;
     margin: 15px 0 10px 0;
   }
 
@@ -450,30 +465,21 @@
 </head>
 <body>
 <div class="running-bar">
-<div class="marquee"><strong><em><span style="font-size: 18pt;">SELAMAT DATANG DI TVTOTO SYAIR AKURAT DAN TERPERCAYA INDONESIA!!!</span></em></strong></div>
+<div class="marquee"><strong><em><span style="font-size: 18pt;">SELAMAT DATANG DI HOKBENTOTO SYAIR AKURAT DAN TERPERCAYA INDONESIA!!!</span></em></strong></div>
 </div>
 <div class="content">
-<div class="entry"><img src="${links[0].trim()}" alt="Syair 1" /></div>
-<div class="content">
-<div class="entry"><img src="${links[1].trim()}" alt="Syair 2" /></div>
-<div class="content">
-<div class="entry"><img src="${links[2].trim()}" alt="Syair 3" /></div>
-<div class="content">
-<div class="entry"><img src="${links[3].trim()}" alt="Syair 4" /></div>
-<div class="content">
-<div class="entry"><img src="${links[4].trim()}" alt="Syair 5" /></div>
+${imageEntries}
 <div class="footer">
-<h2>Syair TVTOTO bukan sekadar rangkaian kata, tapi petunjuk hoki yang bisa membuka jalan rezeki kamu!</h2>
-<p>Bagi para pecinta angka dan penikmat insting tajam, syair dari TVTOTO hadir sebagai panduan yang nggak bisa dianggap remeh. Bukan cuma berisi ramalan kosong, tapi penuh makna, simbol, dan isyarat yang bisa kamu tafsirkan jadi angka jitu. Setiap baris syairnya dirangkai dengan penuh intuisi dan kepekaan terhadap pergerakan angka langit. Dari mimpi yang kamu alami semalam, sampai firasat kecil yang tak bisa dijelaskan&mdash;semuanya bisa menemukan jawabannya lewat</p>
-<h3>Syair TVTOTO</h3>
-<h4>💡 Apa manfaatnya?</h4>
-<p>Bisa jadi petunjuk arah untuk pilih angka main hari ini. Membantu kamu menyingkirkan keraguan dan bermain lebih percaya diri. Menambah feeling dan feeling itu penting banget dalam dunia angka! Banyak member TVTOTO sudah membuktikan sendiri&mdash;dari yang awalnya coba-coba, sekarang malah jadi rutin pantau syair sebelum pasang angka. Karena mereka tahu, kadang kemenangan besar datang dari bisikan kecil yang ditulis dalam syair.</p>
-<h5>🌟 Jadi jangan ketinggalan!</h5>
-<p>Syair TVTOTO sudah update tiap hari, siap bantu kamu menjemput hoki. Baca, pahami, rasakan, dan pasang angka terbaikmu sekarang juga. Kadang keberuntungan nggak datang dua kali&mdash;tapi syair ini bisa jadi jalanmu ke arah sana!</p>
-</div>
-</div>
-</div>
-</div>
+<h2>Syair HOKBENTOTO bukan sekadar deretan kata biasa—ini adalah kunci rahasia yang bisa membuka pintu keberuntungan menuju limpahan rezeki!</h2>
+<p>Bagi kamu yang punya naluri tajam dan jiwa pemburu angka sejati, Syair HOKBENTOTO hadir sebagai kompas sakti yang wajib kamu andalkan. Ini bukan cuma ramalan kosong yang dibuat asal-asalan, melainkan masterpiece penuh makna, sarat simbol, dan dipenuhi isyarat tersembunyi yang siap kamu ubah jadi angka emas.</p>
+<p>Setiap baris syairnya diramu dengan intuisi mendalam dan kepekaan luar biasa terhadap getaran angka surgawi. Dari mimpi aneh yang menghantui tidurmu, hingga firasat misterius yang tiba-tiba muncul di kepala—semua ada jawabannya di Syair HOKBENTOTO!</p>
+<h3>💡 Kenapa Syair Ini Beda?</h3>
+<p>✨ Jadi kompas ajaib untuk menentukan angka pilihan hari ini<br>
+✨ Hapus semua keraguan dan bikin kamu main dengan keyakinan 100%<br>
+✨ Asah feeling dan insting—karena di dunia angka, feeling adalah segalanya!</p>
+<p>Ribuan member HOKBENTOTO sudah merasakan sendiri keajaibannya—dari yang awalnya skeptis dan coba-coba, kini jadi gak bisa lepas dari syair sebelum memasang angka. Mereka paham satu hal: jackpot besar sering datang dari bisikan halus yang tersembunyi dalam baris-baris syair.</p>
+<h4>🌟 Jangan Sampai Menyesal!</h4>
+<p>Syair HOKBENTOTO diupdate fresh setiap hari, selalu siap menemanimu mengejar keberuntungan. Baca, renungkan, rasakan energinya, lalu pasang angka terbaikmu dengan penuh percaya diri!</p>
 </div>
 </div>
 </body>
@@ -487,7 +493,7 @@
                 generateBtn.textContent = '🚀 Generate Full Script';
             }, 2000);
             
-            showStatus('✅ Full script berhasil di-generate! Klik "Copy Full Script" untuk menyalin.', 'success');
+            showStatus('✅ Full script dengan ' + links.length + ' gambar berhasil di-generate! Klik "Copy Full Script" untuk menyalin.', 'success');
         }
 
         function copyOutput() {

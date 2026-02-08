@@ -573,6 +573,15 @@
             background: rgba(255, 165, 0, 0.15);
         }
 
+        .countdown-timer.critical {
+            color: #ff0000;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+            animation: pulse-fast 0.8s ease-in-out infinite;
+            border-color: rgba(255, 0, 0, 0.5);
+            background: rgba(255, 0, 0, 0.2);
+            font-weight: 900;
+        }
+
         .countdown-timer.holiday {
             color: #888;
             text-shadow: none;
@@ -590,6 +599,17 @@
             50% {
                 opacity: 0.8;
                 transform: scale(1.02);
+            }
+        }
+
+        @keyframes pulse-fast {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.85;
+                transform: scale(1.05);
             }
         }
 
@@ -1837,7 +1857,7 @@
                 
                 timer.textContent = formatCountdown(countdown);
                 
-                timer.classList.remove('warning', 'expired', 'holiday', 'phase-countdown', 'phase-betclose');
+                timer.classList.remove('warning', 'critical', 'expired', 'holiday', 'phase-countdown', 'phase-betclose');
                 timer.style.color = '';
                 timer.style.borderColor = '';
                 timer.style.background = '';
@@ -1859,8 +1879,9 @@
                     }
                 } else {
                     timer.classList.add('phase-countdown');
+                    // Red critical alert when <= 30 minutes until bet close
                     if (countdown.totalMinutes <= 30 && countdown.totalMinutes > 0) {
-                        timer.classList.add('warning');
+                        timer.classList.add('critical');
                     }
                 }
                 

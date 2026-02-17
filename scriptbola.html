@@ -809,10 +809,25 @@ ITALY SERIE A
             showNotification('✓ Warna berhasil direset ke default!', 'success');
         }
         
-        // Generate auto date
+        // =============================================
+        // TANGGAL OTOMATIS: Format "17 Februari - 18 Februari 2026"
+        // Tanggal hari ini - besok, tanpa nama hari
+        // =============================================
         function generateAutoDate() {
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            const dateString = new Date().toLocaleDateString('id-ID', options);
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(today.getDate() + 1);
+            
+            // Format hari ini: "17 Februari"
+            const optionsDay = { day: 'numeric', month: 'long' };
+            // Format besok: "18 Februari 2026"
+            const optionsFull = { day: 'numeric', month: 'long', year: 'numeric' };
+            
+            const todayStr = today.toLocaleDateString('id-ID', optionsDay);
+            const tomorrowStr = tomorrow.toLocaleDateString('id-ID', optionsFull);
+            
+            // Hasil: "17 Februari - 18 Februari 2026"
+            const dateString = todayStr + ' - ' + tomorrowStr;
             
             document.getElementById('autoDate').textContent = dateString;
             document.getElementById('previewDate').textContent = dateString;
@@ -953,9 +968,7 @@ ITALY SERIE A
             let html = '<div style="border: 3px solid ' + backgroundColor + '; border-radius: 15px; padding: 5px; margin: 20px auto; width: 90%; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px ' + backgroundColor + '80;">\n';
             html += '<table style="width: 100%; border-collapse: collapse; border-radius: 10px; overflow: hidden;">\n';
             html += '<tbody>\n';
-            // League header dengan gradient menggunakan custom colors
             const lighterBg = adjustColor(backgroundColor, 30);
-            const darkerBg = adjustColor(backgroundColor, -30);
             html += '<tr>\n<th colspan="3" style="background: linear-gradient(135deg, ' + headerBgColor + ', ' + backgroundColor + ', ' + lighterBg + '); color: #ffffff; font-size: 18px; font-weight: 900; padding: 15px; text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); border-bottom: 2px solid ' + backgroundColor + ';">🏆 ' + leagueName + '</th>\n</tr>\n';
             html += '<tr>\n';
             html += '<th style="width: 20%; background: ' + backgroundColor + '; color: ' + headerBgColor + '; padding: 12px; text-align: center; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; font-size: 14px; white-space: nowrap;">Tanggal & Waktu</th>\n';

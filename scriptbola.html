@@ -15,24 +15,60 @@
             --black-bg: #0a0a0f;
             --black-surface: #151520;
         }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Rajdhani', sans-serif;
-            background: linear-gradient(135deg, rgba(10,10,15,0.9), rgba(21,21,32,0.9)), url('https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg');
-            background-size: cover; background-position: center; background-attachment: fixed;
-            color: #ffffff; min-height: 100vh;
+            background:
+                linear-gradient(135deg, rgba(10,10,15,0.9), rgba(21,21,32,0.9)),
+                url('https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #ffffff;
+            min-height: 100vh;
         }
+
         .container { max-width: 1800px; margin: 0 auto; padding: 20px; }
-        .header { text-align: center; padding: 30px 20px; margin-bottom: 30px; background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9)); border-radius: 20px; border: 3px solid var(--gold-primary); box-shadow: 0 0 40px rgba(255,215,0,0.4); }
+
+        /* HEADER */
+        .header {
+            text-align: center; padding: 30px 20px; margin-bottom: 30px;
+            background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
+            border-radius: 20px; border: 3px solid var(--gold-primary);
+            box-shadow: 0 0 40px rgba(255,215,0,0.4);
+        }
         .header img.logo { max-width: 300px; filter: drop-shadow(0 0 25px rgba(255,215,0,0.8)); }
-        .header h1 { font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 900; color: var(--gold-primary); margin: 15px 0 10px; text-shadow: 0 0 20px rgba(255,215,0,0.8); letter-spacing: 3px; }
+        .header h1 {
+            font-family: 'Orbitron', sans-serif; font-size: 42px; font-weight: 900;
+            color: var(--gold-primary); margin: 15px 0 10px;
+            text-shadow: 0 0 20px rgba(255,215,0,0.8); letter-spacing: 3px;
+        }
         .header p { font-size: 16px; color: #ffffff; letter-spacing: 1px; }
-        .auto-date { background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9)); border: 3px solid var(--gold-primary); border-radius: 15px; padding: 20px; margin-bottom: 25px; text-align: center; box-shadow: 0 0 30px rgba(255,215,0,0.4); }
+
+        /* AUTO DATE */
+        .auto-date {
+            background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
+            border: 3px solid var(--gold-primary); border-radius: 15px;
+            padding: 20px; margin-bottom: 25px; text-align: center;
+            box-shadow: 0 0 30px rgba(255,215,0,0.4);
+        }
         .auto-date strong { display: block; color: var(--gold-primary); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
         .auto-date .date-display { font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-size: 28px; font-weight: 900; text-shadow: 0 0 20px rgba(255,215,0,0.8); }
-        .color-panel { background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9)); border: 2px solid rgba(255,215,0,0.5); border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 0 25px rgba(255,215,0,0.2); }
-        .color-panel h3 { font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
-        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 20px; }
+
+        /* COLOR PANEL */
+        .color-panel {
+            background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
+            border: 2px solid rgba(255,215,0,0.5); border-radius: 15px;
+            padding: 25px; margin-bottom: 25px; box-shadow: 0 0 25px rgba(255,215,0,0.2);
+        }
+        .color-panel h3 {
+            font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-size: 18px;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+            text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+        }
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; margin-bottom: 20px; }
         .color-item { display: flex; flex-direction: column; gap: 10px; }
         .color-item label { font-size: 12px; color: var(--gold-primary); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
         .color-input-group { display: flex; gap: 12px; align-items: center; }
@@ -40,114 +76,249 @@
         .color-input-group input[type="color"]:hover { border-color: var(--gold-primary); box-shadow: 0 0 20px rgba(255,215,0,0.6); transform: scale(1.05); }
         .color-input-group input[type="text"] { flex: 1; padding: 12px 16px; background: rgba(10,10,15,0.9); border: 2px solid rgba(255,215,0,0.3); border-radius: 10px; color: var(--gold-primary); font-family: 'Courier New', monospace; font-size: 13px; font-weight: 700; letter-spacing: 1px; transition: all 0.3s ease; }
         .color-input-group input[type="text"]:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 15px rgba(255,215,0,0.4); }
-        .btn-reset-colors { width: 100%; padding: 15px 30px; background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(212,175,55,0.2)); border: 2px solid var(--gold-primary); border-radius: 12px; color: var(--gold-primary); font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; }
+        .btn-reset-colors {
+            width: 100%; padding: 15px 30px;
+            background: linear-gradient(135deg, rgba(255,215,0,0.2), rgba(212,175,55,0.2));
+            border: 2px solid var(--gold-primary); border-radius: 12px;
+            color: var(--gold-primary); font-family: 'Orbitron', sans-serif;
+            font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
         .btn-reset-colors:hover { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #000; box-shadow: 0 0 30px rgba(255,215,0,0.6); transform: translateY(-2px); }
+
+        /* MAIN LAYOUT */
         .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start; }
-        .section { background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9)); border: 2px solid rgba(255,215,0,0.5); border-radius: 15px; padding: 25px; margin-bottom: 25px; box-shadow: 0 0 25px rgba(255,215,0,0.2); }
+
+        /* SECTION */
+        .section {
+            background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
+            border: 2px solid rgba(255,215,0,0.5); border-radius: 15px;
+            padding: 25px; margin-bottom: 25px; box-shadow: 0 0 25px rgba(255,215,0,0.2);
+        }
         .section h2 { font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-size: 20px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
+
+        /* STATS */
         .stats-bar { display: flex; gap: 20px; margin-bottom: 20px; padding: 15px; background: rgba(255,215,0,0.1); border-radius: 10px; border: 1px solid rgba(255,215,0,0.3); }
         .stat-item { flex: 1; text-align: center; }
         .stat-label { font-size: 12px; color: #ffffff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
         .stat-value { font-family: 'Orbitron', sans-serif; font-size: 24px; font-weight: 700; color: var(--gold-primary); text-shadow: 0 0 10px rgba(255,215,0,0.6); }
-        textarea { width: 100%; min-height: 350px; padding: 20px; background: rgba(10,10,15,0.9); border: 2px solid rgba(255,215,0,0.4); border-radius: 12px; color: #ffffff; font-family: 'Courier New', monospace; font-size: 14px; resize: vertical; transition: all 0.3s ease; }
+
+        /* FETCHING INDICATOR */
+        .fetch-indicator {
+            display: none; align-items: center; gap: 8px; font-size: 12px;
+            color: var(--gold-primary); font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 10px;
+        }
+        .fetch-indicator.active { display: flex; }
+        .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,215,0,0.3); border-top-color: var(--gold-primary); border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* TEXTAREA */
+        textarea {
+            width: 100%; min-height: 350px; padding: 20px;
+            background: rgba(10,10,15,0.9); border: 2px solid rgba(255,215,0,0.4);
+            border-radius: 12px; color: #ffffff; font-family: 'Courier New', monospace;
+            font-size: 14px; resize: vertical; transition: all 0.3s ease;
+        }
         textarea:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 20px rgba(255,215,0,0.5); }
         textarea::placeholder { color: rgba(255,255,255,0.4); }
-        .output-code { background: rgba(10,10,15,0.9); border: 2px solid rgba(255,215,0,0.4); border-radius: 12px; padding: 20px; min-height: 350px; max-height: 500px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 11px; white-space: pre-wrap; word-wrap: break-word; color: #00ff88; }
+
+        /* OUTPUT — FIXED: tidak boleh melebar horizontal */
+        .output-code {
+            background: rgba(10,10,15,0.9);
+            border: 2px solid rgba(255,215,0,0.4);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 350px;
+            max-height: 500px;
+            overflow-x: hidden;   /* ← tidak scroll ke samping */
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            white-space: pre-wrap;
+            word-break: break-all; /* ← paksa wrap di mana saja */
+            word-wrap: break-word;
+            color: #00ff88;
+            /* pastikan lebar tidak melebihi container */
+            width: 100%;
+            box-sizing: border-box;
+        }
         .output-code::-webkit-scrollbar { width: 10px; }
         .output-code::-webkit-scrollbar-track { background: rgba(255,215,0,0.05); border-radius: 5px; }
         .output-code::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 5px; }
+
+        /* BUTTONS */
         .button-group { display: flex; gap: 15px; margin-top: 20px; }
         button { flex: 1; padding: 15px 25px; border: none; border-radius: 12px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 2px; }
         .btn-copy { background: linear-gradient(135deg, var(--gold-primary), var(--gold-dark)); color: #000; border: 2px solid var(--gold-primary); }
         .btn-copy:hover { box-shadow: 0 0 30px rgba(255,215,0,0.6); transform: translateY(-2px); }
         .btn-clear { background: rgba(255,255,255,0.1); color: #ffffff; border: 2px solid rgba(255,255,255,0.3); }
         .btn-clear:hover { background: rgba(255,255,255,0.2); border-color: #ffffff; transform: translateY(-2px); }
+
+        /* PREVIEW */
         .preview-sticky { position: sticky; top: 20px; }
         .preview-container { background: var(--black-bg); border-radius: 15px; border: 3px solid var(--gold-primary); overflow: visible; box-shadow: 0 0 40px rgba(255,215,0,0.4); }
-        .preview-header { text-align: center; padding: 20px; background: linear-gradient(180deg, #1a1a1a, #000); border-bottom: 3px solid var(--gold-primary); }
+        .preview-header { text-align: center; padding: 20px; background: linear-gradient(180deg,#1a1a1a,#000); border-bottom: 3px solid var(--gold-primary); }
         .preview-header img { max-width: 200px; filter: drop-shadow(0 0 20px rgba(255,215,0,0.8)); margin-bottom: 10px; }
         .preview-header h3 { font-family: 'Orbitron', sans-serif; font-size: 20px; color: var(--gold-primary); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
         .preview-date { font-size: 16px; color: var(--gold-primary); font-weight: 700; text-shadow: 0 0 10px rgba(255,215,0,0.6); }
-        .preview-marquee { background: linear-gradient(135deg, #1a1a1a, #000, #1a1a1a); color: var(--gold-primary); padding: 15px 0; font-weight: 900; text-align: center; font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px; overflow: hidden; white-space: nowrap; border-top: 3px solid var(--gold-primary); border-bottom: 3px solid var(--gold-primary); text-shadow: 0 0 15px var(--gold-primary); }
+        .preview-marquee {
+            background: linear-gradient(135deg,#1a1a1a,#000,#1a1a1a);
+            color: var(--gold-primary); padding: 15px 0; font-weight: 900; text-align: center;
+            font-size: 14px; text-transform: uppercase; letter-spacing: 1.5px;
+            overflow: hidden; white-space: nowrap;
+            border-top: 3px solid var(--gold-primary); border-bottom: 3px solid var(--gold-primary);
+            text-shadow: 0 0 15px var(--gold-primary);
+        }
         .preview-marquee span { display: inline-block; padding-left: 100%; animation: marquee 40s linear infinite; }
-        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+        @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
         .preview-content { padding: 20px; background: var(--black-bg); }
-        .preview-table-wrapper { border: 3px solid var(--gold-primary); border-radius: 15px; padding: 5px; margin: 20px 0; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px rgba(255,215,0,0.5); overflow-x: auto; -webkit-overflow-scrolling: touch; }
-        .preview-table { width: 100%; min-width: 300px; border-collapse: collapse; background: var(--black-bg); font-size: 13px; border-radius: 10px; overflow: hidden; }
-        .preview-table .league { background: linear-gradient(135deg, #FDB931, var(--gold-primary), #FFA500); color: #1a1a1a; font-weight: 900; text-align: center; padding: 13px 8px; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .preview-table th { background: var(--gold-primary); color: #1a1a1a; padding: 10px 8px; text-align: center; font-weight: 900; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-        .preview-table td { padding: 10px 8px; text-align: center; font-size: 12px; color: #ffffff; font-weight: 700; word-break: break-word; }
-        .preview-table tr:nth-child(even) { background: linear-gradient(180deg, #3a3a3a, #2d2d2d); }
-        .preview-table tr:nth-child(odd) { background: linear-gradient(180deg, #2d2d2d, #3a3a3a); }
-        .preview-table tbody tr:hover td { background: linear-gradient(135deg, var(--gold-primary), var(--gold-light)); color: #1a1a1a; font-weight: 900; }
+
+        /* ===== LEAGUE FILTER — DROPDOWN (SELECT) ===== */
+        .league-filter-wrap { display: none; margin-bottom: 16px; }
+        .league-filter-label { font-size: 11px; color: rgba(255,215,0,0.7); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
+
+        .league-select-wrap { position: relative; }
+        .league-select-wrap::after {
+            content: '▼';
+            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            color: var(--gold-primary); font-size: 11px; pointer-events: none;
+        }
+        .league-select {
+            width: 100%;
+            padding: 10px 38px 10px 14px;
+            background: rgba(10,10,15,0.95);
+            border: 2px solid rgba(255,215,0,0.4);
+            border-radius: 10px;
+            color: var(--gold-primary);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            transition: all 0.25s ease;
+            outline: none;
+        }
+        .league-select:focus,
+        .league-select:hover { border-color: var(--gold-primary); box-shadow: 0 0 14px rgba(255,215,0,0.35); }
+        .league-select option { background: #0a0a0f; color: #fff; font-weight: 700; }
+
+        /* PREVIEW TABLE */
+        .preview-table-wrapper {
+            border: 3px solid var(--gold-primary); border-radius: 15px; padding: 5px;
+            margin: 15px 0; background: rgba(0,0,0,0.5);
+            box-shadow: 0 0 20px rgba(255,215,0,0.5); overflow: hidden;
+        }
+        .preview-table { width: 100%; min-width: 300px; border-collapse: collapse; background: var(--black-bg); font-size: 13px; border-radius: 10px; overflow: hidden; table-layout: fixed; }
+        .preview-table .league { background: linear-gradient(135deg,#FDB931,var(--gold-primary),#FFA500); color: #1a1a1a; font-weight: 900; text-align: center; padding: 13px 8px; font-size: 15px; letter-spacing: 1.5px; text-transform: uppercase; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .preview-table th { background: var(--gold-primary); color: #1a1a1a; padding: 10px 8px; text-align: center; font-weight: 900; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
+        .preview-table th:first-child { width: 18%; }
+        .preview-table th:nth-child(2) { width: 64%; }
+        .preview-table th:last-child { width: 18%; }
+        .preview-table td { padding: 10px 6px; text-align: center; font-size: 12px; color: #ffffff; font-weight: 700; word-break: break-word; vertical-align: middle; }
+        .preview-table tr:nth-child(even) { background: linear-gradient(180deg,#3a3a3a,#2d2d2d); }
+        .preview-table tr:nth-child(odd) { background: linear-gradient(180deg,#2d2d2d,#3a3a3a); }
+        .preview-table tbody tr:hover td { background: linear-gradient(135deg,var(--gold-primary),var(--gold-light)); color: #1a1a1a; font-weight: 900; }
         .preview-table .date-time { line-height: 1.4; white-space: nowrap; }
+
+        .team-logo-prev { width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 0 4px rgba(255,215,0,0.5)); display: block; margin: 0 auto; }
+        .match-vs-cell { width: 100%; }
+        .mv-logos { display: flex; align-items: center; justify-content: center; gap: 0; width: 100%; }
+        .mv-team { flex: 1; display: flex; justify-content: center; align-items: center; padding: 3px; }
+        .mv-vs { flex: 0 0 30px; text-align: center; font-weight: 900; font-size: 11px; color: var(--gold-primary); text-shadow: 0 0 6px rgba(255,215,0,0.6); }
+        .mv-names { display: flex; align-items: flex-start; width: 100%; }
+        .mv-name { flex: 1; text-align: center; font-size: 10px; font-weight: 700; color: #fff; line-height: 1.3; padding: 2px 3px; word-break: break-word; }
+        .mv-spacer { flex: 0 0 30px; }
         .preview-empty { color: #ffffff; text-align: center; padding: 60px 20px; font-style: italic; font-size: 16px; }
-        .notification { position: fixed; top: 30px; right: 30px; background: linear-gradient(135deg, #00ff88, #00cc77); color: #000; padding: 18px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,255,136,0.4); display: none; z-index: 10000; animation: slideIn 0.5s ease; font-weight: 700; font-size: 15px; }
-        @keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @media (max-width: 1200px) { .main-layout { grid-template-columns: 1fr; } .preview-sticky { position: relative; top: 0; } .color-grid { grid-template-columns: 1fr; } }
-        @media (max-width: 768px) { .header img.logo { max-width: 180px; } .header h1 { font-size: 32px; } .stats-bar { flex-direction: column; gap: 10px; } button { font-size: 12px; padding: 12px 20px; } .color-grid { grid-template-columns: 1fr; } }
+
+        /* NOTIFICATION */
+        .notification { position: fixed; top: 30px; right: 30px; background: linear-gradient(135deg,#00ff88,#00cc77); color: #000; padding: 18px 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,255,136,0.4); display: none; z-index: 10000; animation: slideIn 0.5s ease; font-weight: 700; font-size: 15px; }
+        @keyframes slideIn { from{transform:translateX(400px);opacity:0} to{transform:translateX(0);opacity:1} }
+
+        /* RESPONSIVE */
+        @media(max-width:1200px){.main-layout{grid-template-columns:1fr;}.preview-sticky{position:relative;top:0;}.color-grid{grid-template-columns:1fr;}}
+        @media(max-width:768px){.header img.logo{max-width:180px;}.header h1{font-size:32px;}.stats-bar{flex-direction:column;gap:10px;}button{font-size:12px;padding:12px 20px;}.color-grid{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <img class="logo" src="https://hokben38422.com/resources/images/logo.png" alt="HOKBENTOTO Logo">
-            <h1>HOKBENTOTO GENERATOR</h1>
-            <p>Elegant Gold Edition - Football Prediction Generator</p>
-        </div>
-        <div class="auto-date">
-            <strong>📅 TANGGAL OTOMATIS</strong>
-            <div class="date-display" id="autoDate">Loading...</div>
-        </div>
-        <div class="color-panel">
-            <h3>🎨 EDIT WARNA HTML OUTPUT</h3>
-            <div class="color-grid">
-                <div class="color-item">
-                    <label>Background Color</label>
-                    <div class="color-input-group">
-                        <input type="color" id="colorBackground" value="#d4af37">
-                        <input type="text" id="colorBackgroundText" value="#d4af37">
-                    </div>
-                </div>
-                <div class="color-item">
-                    <label>Text Color</label>
-                    <div class="color-input-group">
-                        <input type="color" id="colorText" value="#fff1c4">
-                        <input type="text" id="colorTextText" value="#fff1c4">
-                    </div>
-                </div>
-                <div class="color-item">
-                    <label>Header BG Color</label>
-                    <div class="color-input-group">
-                        <input type="color" id="colorHeaderBg" value="#000000">
-                        <input type="text" id="colorHeaderBgText" value="#000000">
-                    </div>
-                </div>
-                <div class="color-item">
-                    <label>Marquee BG Color</label>
-                    <div class="color-input-group">
-                        <input type="color" id="colorMarqueeBg" value="#d4af37">
-                        <input type="text" id="colorMarqueeBgText" value="#d4af37">
-                    </div>
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="header">
+        <img class="logo" src="https://hokben38422.com/resources/images/logo.png" alt="HOKBENTOTO Logo">
+        <h1>HOKBENTOTO GENERATOR</h1>
+        <p>Gold Black Edition — Auto Team Logo dari TheSportsDB</p>
+    </div>
+
+    <!-- AUTO DATE -->
+    <div class="auto-date">
+        <strong>📅 TANGGAL OTOMATIS</strong>
+        <div class="date-display" id="autoDate">Loading...</div>
+    </div>
+
+    <!-- COLOR PANEL -->
+    <div class="color-panel">
+        <h3>🎨 EDIT WARNA HTML OUTPUT</h3>
+        <div class="color-grid">
+            <div class="color-item">
+                <label>Background Color</label>
+                <div class="color-input-group">
+                    <input type="color" id="colorBackground" value="#d4af37">
+                    <input type="text" id="colorBackgroundText" value="#d4af37">
                 </div>
             </div>
-            <button class="btn-reset-colors" onclick="resetColors()">RESET KE DEFAULT</button>
+            <div class="color-item">
+                <label>Text Color</label>
+                <div class="color-input-group">
+                    <input type="color" id="colorText" value="#fff1c4">
+                    <input type="text" id="colorTextText" value="#fff1c4">
+                </div>
+            </div>
+            <div class="color-item">
+                <label>Header BG Color</label>
+                <div class="color-input-group">
+                    <input type="color" id="colorHeaderBg" value="#000000">
+                    <input type="text" id="colorHeaderBgText" value="#000000">
+                </div>
+            </div>
+            <div class="color-item">
+                <label>Marquee BG Color</label>
+                <div class="color-input-group">
+                    <input type="color" id="colorMarqueeBg" value="#d4af37">
+                    <input type="text" id="colorMarqueeBgText" value="#d4af37">
+                </div>
+            </div>
         </div>
-        <div class="main-layout">
-            <div class="left-column">
-                <div class="section">
-                    <h2>📝 INPUT PREDIKSI</h2>
-                    <div class="stats-bar">
-                        <div class="stat-item">
-                            <div class="stat-label">Total Liga</div>
-                            <div class="stat-value" id="totalLeagues">0</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-label">Total Pertandingan</div>
-                            <div class="stat-value" id="totalMatches">0</div>
-                        </div>
+        <button class="btn-reset-colors" onclick="resetColors()">RESET KE DEFAULT</button>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div class="main-layout">
+        <!-- KIRI -->
+        <div class="left-column">
+            <div class="section">
+                <h2>📝 INPUT PREDIKSI</h2>
+                <div class="stats-bar">
+                    <div class="stat-item">
+                        <div class="stat-label">Total Liga</div>
+                        <div class="stat-value" id="totalLeagues">0</div>
                     </div>
-                    <textarea id="inputText" placeholder="Masukkan prediksi di sini...
+                    <div class="stat-item">
+                        <div class="stat-label">Total Pertandingan</div>
+                        <div class="stat-value" id="totalMatches">0</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">Logo Tim ✓</div>
+                        <div class="stat-value" id="totalLogos">0</div>
+                    </div>
+                </div>
+                <div class="fetch-indicator" id="fetchIndicator">
+                    <div class="spinner"></div>
+                    <span id="fetchStatus">Mengambil logo tim...</span>
+                </div>
+                <textarea id="inputText" placeholder="Masukkan prediksi di sini...
 
 Contoh format:
 
@@ -158,488 +329,716 @@ ENGLISH PREMIER LEAGUE
 ITALY SERIE A
 08/02 18:30 WIB Bologna VS Parma 2 : 0
 08/02 21:00 WIB Lecce VS Udinese 1 : 1"></textarea>
-                    <div class="button-group">
-                        <button class="btn-clear" onclick="clearInput()">🗑️ Clear Semua</button>
-                    </div>
-                </div>
-                <div class="section">
-                    <h2>📤 OUTPUT HTML LENGKAP</h2>
-                    <div class="output-code" id="outputCode">Script HTML lengkap akan muncul di sini secara otomatis...</div>
-                    <div class="button-group">
-                        <button class="btn-copy" onclick="copyToClipboard()">📋 Copy Script HTML</button>
-                    </div>
+                <div class="button-group">
+                    <button class="btn-clear" onclick="clearInput()">🗑️ Clear Semua</button>
                 </div>
             </div>
-            <div class="right-column">
-                <div class="preview-sticky">
-                    <div class="section">
-                        <h2>👁️ PREVIEW HASIL</h2>
-                        <div class="preview-container" id="previewMainContainer">
-                            <div class="preview-header">
-                                <img src="https://hokben38422.com/resources/images/logo.png" alt="HOKBENTOTO">
-                                <h3>HOKBENTOTO</h3>
-                                <div class="preview-date" id="previewDate">-</div>
+
+            <div class="section">
+                <h2>📤 OUTPUT HTML LENGKAP</h2>
+                <div class="output-code" id="outputCode">Script HTML lengkap akan muncul di sini secara otomatis...</div>
+                <div class="button-group">
+                    <button class="btn-copy" onclick="copyToClipboard()">📋 Copy Script HTML</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- KANAN: PREVIEW -->
+        <div class="right-column">
+            <div class="preview-sticky">
+                <div class="section">
+                    <h2>👁️ PREVIEW HASIL</h2>
+                    <div class="preview-container" id="previewMainContainer">
+                        <div class="preview-header">
+                            <img src="https://hokben38422.com/resources/images/logo.png" alt="HOKBENTOTO">
+                            <h3>HOKBENTOTO</h3>
+                            <div class="preview-date" id="previewDate">-</div>
+                        </div>
+                        <div class="preview-marquee" id="previewMarquee">
+                            <span>🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥</span>
+                        </div>
+                        <div class="preview-content" id="previewContent">
+                            <!-- League filter dropdown -->
+                            <div class="league-filter-wrap" id="leagueFilterWrap">
+                                <div class="league-filter-label">🏆 Filter Liga</div>
+                                <div class="league-select-wrap">
+                                    <select class="league-select" id="leagueSelect" onchange="filterLeague(this.value)">
+                                        <option value="all">Semua Liga</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="preview-marquee" id="previewMarquee">
-                                <span>🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥</span>
-                            </div>
-                            <div class="preview-content" id="previewContent">
-                                <div class="preview-empty">Preview akan muncul di sini secara otomatis...</div>
-                            </div>
+                            <!-- Tables -->
+                            <div id="previewTables"></div>
+                            <div class="preview-empty" id="previewEmpty">Preview akan muncul di sini secara otomatis...</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="notification" id="notification">✓ Notification</div>
+</div>
 
-    <script>
-        function initColorPickers() {
-            ['Background', 'Text', 'HeaderBg', 'MarqueeBg'].forEach(function(colorName) {
-                var colorPicker = document.getElementById('color' + colorName);
-                var colorText = document.getElementById('color' + colorName + 'Text');
-                colorPicker.addEventListener('input', function() {
-                    colorText.value = this.value;
-                    updatePreviewColors();
-                    generateHTML();
-                });
-                colorText.addEventListener('input', function() {
-                    if (/^#[0-9A-F]{6}$/i.test(this.value)) {
-                        colorPicker.value = this.value;
-                        updatePreviewColors();
-                        generateHTML();
-                    }
-                });
-            });
+<div class="notification" id="notification">✓ Notification</div>
+
+<script>
+// =============================================
+// TEAM LOGO CACHE
+// =============================================
+var teamLogoCache = {};
+
+var SHORT_NAMES = {
+    'manchester city': 'Man City',
+    'manchester united': 'Man United',
+    'manchester utd': 'Man United',
+    'atletico madrid': 'Atletico Madrid',
+    'inter milan': 'Inter',
+    'internazionale': 'Inter',
+    'ac milan': 'Milan',
+    'as roma': 'Roma',
+    'ss lazio': 'Lazio',
+    'rb leipzig': 'RB Leipzig',
+    'bayer leverkusen': 'Leverkusen',
+    'borussia dortmund': 'Dortmund',
+    'paris saint-germain': 'PSG',
+    'paris saint germain': 'PSG',
+    'olympique marseille': 'Marseille',
+    'olympique lyonnais': 'Lyon',
+    'tottenham hotspur': 'Tottenham',
+    'west ham united': 'West Ham',
+    'newcastle united': 'Newcastle',
+    'wolverhampton wanderers': 'Wolverhampton',
+    'nottingham forest': 'Nottingham Forest',
+    'brighton & hove albion': 'Brighton',
+    'athletic club': 'Athletic Bilbao',
+    'athletic bilbao': 'Athletic Bilbao',
+    'girona fc': 'Girona',
+    'getafe cf': 'Getafe',
+    'rcd mallorca': 'Mallorca',
+    'rcd espanyol': 'Espanyol',
+    'hellas verona': 'Verona',
+    'atalanta bc': 'Atalanta',
+    'udinese calcio': 'Udinese',
+    'cagliari calcio': 'Cagliari',
+    'us lecce': 'Lecce',
+    'bologna fc': 'Bologna',
+    'como 1907': 'Como',
+};
+
+function getShortName(name) {
+    return SHORT_NAMES[name.toLowerCase()] || null;
+}
+
+function generateSVGLogo(teamName) {
+    var cleaned = teamName.replace(/&/g, ' ').replace(/[^a-zA-Z\s]/g, ' ').trim();
+    var words = cleaned.split(/\s+/).filter(function(w){ return w.length > 0; });
+    var initials = words.map(function(w){ return w[0].toUpperCase(); }).join('').substring(0, 3);
+    if (!initials) initials = 'TM';
+    var colors = ['#FFD700','#FDB931','#FF8C00','#00BFFF','#FF4C4C','#00CC88','#8A2BE2','#DC143C','#20B2AA'];
+    var hash = 0;
+    for (var i = 0; i < teamName.length; i++) hash = teamName.charCodeAt(i) + ((hash << 5) - hash);
+    var color = colors[Math.abs(hash) % colors.length];
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">' +
+        '<circle cx="60" cy="60" r="55" fill="' + color + '" stroke="#000" stroke-width="5"/>' +
+        '<text x="50%" y="55%" text-anchor="middle" fill="#000" font-size="38" font-weight="bold" font-family="Arial" dy=".3em">' + initials + '</text>' +
+        '</svg>';
+    try { return 'data:image/svg+xml;base64,' + btoa(svg); }
+    catch(e) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
+}
+
+async function fetchTeamLogo(teamName) {
+    var key = teamName.toLowerCase().trim();
+    if (key in teamLogoCache) return teamLogoCache[key];
+    teamLogoCache[key] = { url: null };
+    try {
+        var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(teamName));
+        var data = await res.json();
+        if (data && data.teams && data.teams.length > 0) {
+            var t = data.teams[0];
+            var logoUrl = t.strTeamBadge || t.strBadge || t.strTeamLogo || null;
+            teamLogoCache[key] = { url: logoUrl, fullName: t.strTeam };
+            return teamLogoCache[key];
         }
+    } catch(e) {}
+    var shortName = getShortName(teamName);
+    if (shortName) {
+        try {
+            var res2 = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(shortName));
+            var data2 = await res2.json();
+            if (data2 && data2.teams && data2.teams.length > 0) {
+                var t2 = data2.teams[0];
+                teamLogoCache[key] = { url: t2.strTeamBadge || t2.strBadge || null, fullName: t2.strTeam };
+                return teamLogoCache[key];
+            }
+        } catch(e2) {}
+    }
+    teamLogoCache[key] = { url: null };
+    return teamLogoCache[key];
+}
 
-        function updatePreviewColors() {
-            var backgroundColor = document.getElementById('colorBackground').value;
-            var textColor = document.getElementById('colorText').value;
-            var headerBgColor = document.getElementById('colorHeaderBg').value;
-            var marqueeBgColor = document.getElementById('colorMarqueeBg').value;
-            var lighterBg = adjustColor(backgroundColor, 30);
-            var style = document.createElement('style');
-            style.id = 'preview-dynamic-style';
-            var existingStyle = document.getElementById('preview-dynamic-style');
-            if (existingStyle) existingStyle.remove();
-            style.textContent =
-                '#previewMainContainer .preview-container { border-color: ' + backgroundColor + '; box-shadow: 0 0 40px ' + backgroundColor + '66; }' +
-                '#previewMainContainer .preview-header { border-bottom-color: ' + backgroundColor + '; }' +
-                '#previewMainContainer .preview-header h3 { color: ' + backgroundColor + '; text-shadow: 0 0 20px ' + backgroundColor + 'b3; }' +
-                '#previewMainContainer .preview-date { color: ' + backgroundColor + '; text-shadow: 0 0 10px ' + backgroundColor + '99; }' +
-                '#previewMainContainer .preview-marquee { background: linear-gradient(135deg,#1a1a1a,' + headerBgColor + ',#1a1a1a); color: ' + marqueeBgColor + '; border-top-color: ' + backgroundColor + '; border-bottom-color: ' + backgroundColor + '; text-shadow: 0 0 15px ' + marqueeBgColor + '; }' +
-                '#previewMainContainer .preview-table-wrapper { border-color: ' + backgroundColor + '; box-shadow: 0 0 20px ' + backgroundColor + '80; }' +
-                '#previewMainContainer .preview-table .league { background: linear-gradient(135deg,#FDB931,' + backgroundColor + ',' + lighterBg + ') !important; }' +
-                '#previewMainContainer .preview-table th { background: ' + backgroundColor + '; color: ' + headerBgColor + '; }' +
-                '#previewMainContainer .preview-table td { color: ' + textColor + '; }' +
-                '#previewMainContainer .preview-table tr:hover td { background: linear-gradient(135deg,' + backgroundColor + ',' + textColor + '); color: ' + headerBgColor + '; }';
-            document.head.appendChild(style);
+function getTeamLogoUrl(name) {
+    var cached = teamLogoCache[name.toLowerCase().trim()];
+    if (cached && cached.url) return cached.url;
+    return generateSVGLogo(name);
+}
+
+// =============================================
+// PARSE INPUT
+// =============================================
+function parseMatchLine(line) {
+    var hasVS = /\s+(vs|VS|Vs|vS)\s+/i.test(line);
+    var hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}:\d{2}/.test(line);
+    var hasScore = /\d+\s*[:]\s*\d+/.test(line);
+    if (!hasVS) return null;
+    if (!hasDateOrTime && !hasScore) return null;
+    var tmp = line, date = '', time = '', team1 = '', team2 = '', score1 = '', score2 = '';
+    var dtm = tmp.match(/(\d{1,2}[\/\-]\d{1,2})\s+(\d{1,2}:\d{2}(?:\s+WIB)?)/i);
+    if (dtm) { date = dtm[1]; time = dtm[2].trim(); tmp = tmp.replace(dtm[0], '').trim(); }
+    var sm = tmp.match(/(\d+)\s*[:]\s*(\d+)\s*$/);
+    if (sm) { score1 = sm[1]; score2 = sm[2]; tmp = tmp.replace(sm[0], '').trim(); }
+    var tm = tmp.match(/(.+?)\s+(vs|VS|Vs|vS)\s+(.+?)$/i);
+    if (tm) { team1 = tm[1].trim(); team2 = tm[3].trim(); }
+    if (team1 && team2 && score1 !== '' && score2 !== '')
+        return { date: date || '-', time: time || '-', team1: team1, team2: team2, score1: score1, score2: score2 };
+    return null;
+}
+
+function parseAll(input) {
+    var lines = input.split('\n').filter(function(l) { return l.trim() !== ''; });
+    var result = [], curLeague = null, matches = [];
+    for (var i = 0; i < lines.length; i++) {
+        var line = lines[i].trim();
+        var m = parseMatchLine(line);
+        if (!m) {
+            if (curLeague && matches.length > 0) result.push({ name: curLeague, matches: matches.slice() });
+            curLeague = line; matches = [];
+        } else {
+            if (curLeague) matches.push(m);
         }
+    }
+    if (curLeague && matches.length > 0) result.push({ name: curLeague, matches: matches.slice() });
+    return result;
+}
 
-        function resetColors() {
-            document.getElementById('colorBackground').value = '#d4af37';
-            document.getElementById('colorBackgroundText').value = '#d4af37';
-            document.getElementById('colorText').value = '#fff1c4';
-            document.getElementById('colorTextText').value = '#fff1c4';
-            document.getElementById('colorHeaderBg').value = '#000000';
-            document.getElementById('colorHeaderBgText').value = '#000000';
-            document.getElementById('colorMarqueeBg').value = '#d4af37';
-            document.getElementById('colorMarqueeBgText').value = '#d4af37';
-            updatePreviewColors();
-            generateHTML();
-            showNotification('✓ Warna berhasil direset ke default!', 'success');
+function getAllTeams(leagues) {
+    var set = {};
+    leagues.forEach(function(l) { l.matches.forEach(function(m) { set[m.team1] = true; set[m.team2] = true; }); });
+    return Object.keys(set);
+}
+
+// =============================================
+// COLOR HELPERS
+// =============================================
+function adjustColor(color, amount) {
+    var num = parseInt(color.replace('#',''), 16);
+    var r = Math.min(255, Math.max(0, (num >> 16) + amount));
+    var g = Math.min(255, Math.max(0, ((num >> 8) & 0xFF) + amount));
+    var b = Math.min(255, Math.max(0, (num & 0xFF) + amount));
+    return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6,'0');
+}
+
+function getColors() {
+    return {
+        bg: document.getElementById('colorBackground').value,
+        txt: document.getElementById('colorText').value,
+        hd: document.getElementById('colorHeaderBg').value,
+        mq: document.getElementById('colorMarqueeBg').value,
+    };
+}
+
+// =============================================
+// LEAGUE FILTER — DROPDOWN
+// =============================================
+function buildLeagueDropdown(leagues) {
+    var wrap = document.getElementById('leagueFilterWrap');
+    var sel = document.getElementById('leagueSelect');
+    if (!leagues.length) { wrap.style.display = 'none'; return; }
+    wrap.style.display = 'block';
+
+    // Rebuild options
+    sel.innerHTML = '<option value="all">Semua Liga</option>';
+    leagues.forEach(function(l) {
+        var opt = document.createElement('option');
+        opt.value = l.name;
+        opt.textContent = '🏆 ' + l.name;
+        sel.appendChild(opt);
+    });
+    sel.value = 'all';
+}
+
+function filterLeague(leagueName) {
+    var wrappers = document.querySelectorAll('#previewTables .preview-table-wrapper');
+    wrappers.forEach(function(w) {
+        if (leagueName === 'all' || w.getAttribute('data-league') === leagueName) {
+            w.style.display = '';
+        } else {
+            w.style.display = 'none';
         }
+    });
+}
 
-        function generateAutoDate() {
-            var today = new Date();
-            var tomorrow = new Date(today);
-            tomorrow.setDate(today.getDate() + 1);
-            var optionsDay = { day: 'numeric', month: 'long' };
-            var optionsFull = { day: 'numeric', month: 'long', year: 'numeric' };
-            var todayStr = today.toLocaleDateString('id-ID', optionsDay);
-            var tomorrowStr = tomorrow.toLocaleDateString('id-ID', optionsFull);
-            var dateString = todayStr + ' - ' + tomorrowStr;
-            document.getElementById('autoDate').textContent = dateString;
-            document.getElementById('previewDate').textContent = dateString;
-            return dateString;
-        }
+// =============================================
+// RENDER PREVIEW
+// =============================================
+function renderPreview(leagues) {
+    var tablesDiv = document.getElementById('previewTables');
+    var emptyDiv = document.getElementById('previewEmpty');
 
-        window.addEventListener('DOMContentLoaded', function() {
-            generateAutoDate();
-            initColorPickers();
-            updatePreviewColors();
-        });
+    if (!leagues.length) {
+        tablesDiv.innerHTML = '';
+        emptyDiv.style.display = 'block';
+        document.getElementById('leagueFilterWrap').style.display = 'none';
+        return;
+    }
+    emptyDiv.style.display = 'none';
 
-        var debounceTimer;
-        document.getElementById('inputText').addEventListener('input', function() {
-            clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(function() { generateHTML(); }, 500);
-        });
+    var c = getColors();
+    var lighterBg = adjustColor(c.bg, 30);
+    var html = '';
 
-        function generateHTML() {
-            var input = document.getElementById('inputText').value.trim();
-            if (!input) {
-                document.getElementById('outputCode').textContent = 'Script HTML lengkap akan muncul di sini secara otomatis...';
-                document.getElementById('previewContent').innerHTML = '<div class="preview-empty">Preview akan muncul di sini secara otomatis...</div>';
-                document.getElementById('totalLeagues').textContent = '0';
-                document.getElementById('totalMatches').textContent = '0';
-                return;
-            }
-            var lines = input.split('\n').filter(function(line) { return line.trim() !== ''; });
-            var tableRows = '';
-            var previewRows = '';
-            var currentLeague = '';
-            var matches = [];
-            var totalLeagues = 0;
-            var totalMatches = 0;
-
-            for (var i = 0; i < lines.length; i++) {
-                var line = lines[i].trim();
-                var matchData = parseMatchLine(line);
-                if (!matchData) {
-                    if (currentLeague && matches.length > 0) {
-                        tableRows += generateTableRows(currentLeague, matches);
-                        previewRows += generatePreviewRows(currentLeague, matches);
-                        totalLeagues++;
-                        totalMatches += matches.length;
-                    }
-                    currentLeague = line;
-                    matches = [];
-                } else {
-                    matches.push(matchData);
-                }
-            }
-            if (currentLeague && matches.length > 0) {
-                tableRows += generateTableRows(currentLeague, matches);
-                previewRows += generatePreviewRows(currentLeague, matches);
-                totalLeagues++;
-                totalMatches += matches.length;
-            }
-
-            document.getElementById('totalLeagues').textContent = totalLeagues;
-            document.getElementById('totalMatches').textContent = totalMatches;
-            var completeHTML = generateCompleteHTML(tableRows);
-            document.getElementById('outputCode').textContent = completeHTML;
-            if (previewRows) {
-                document.getElementById('previewContent').innerHTML = previewRows;
-            } else {
-                document.getElementById('previewContent').innerHTML = '<div class="preview-empty">Preview akan muncul di sini secara otomatis...</div>';
-            }
-        }
-
-        function parseMatchLine(line) {
-            var hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}:\d{2}/.test(line);
-            var hasSeparator = /\s+(vs|VS|Vs|vS)\s+/i.test(line);
-            var hasScore = /\d+\s*[:]\s*\d+/.test(line);
-            if (!hasDateOrTime && !hasSeparator && !hasScore) return null;
-
-            var date = '', time = '', team1 = '', team2 = '', score1 = '', score2 = '';
-            var dateTimeMatch = line.match(/(\d{1,2}[\/\-]\d{1,2})\s+(\d{1,2}:\d{2}(?:\s+WIB)?)/);
-            if (dateTimeMatch) {
-                date = dateTimeMatch[1];
-                time = dateTimeMatch[2];
-                line = line.replace(dateTimeMatch[0], '').trim();
-            }
-            var scoreMatch = line.match(/(\d+)\s*[:]\s*(\d+)\s*$/);
-            if (scoreMatch) {
-                score1 = scoreMatch[1];
-                score2 = scoreMatch[2];
-                line = line.replace(scoreMatch[0], '').trim();
-            }
-            var teamMatch = line.match(/(.+?)\s+(vs|VS|Vs|vS)\s+(.+?)$/i);
-            if (teamMatch) {
-                team1 = teamMatch[1].trim();
-                team2 = teamMatch[3].trim();
-            }
-            if (team1 && team2 && score1 !== '' && score2 !== '') {
-                return { date: date || '-', time: time || '-', team1: team1, team2: team2, score1: score1, score2: score2 };
-            }
-            return null;
-        }
-
-        function adjustColor(color, amount) {
-            var num = parseInt(color.replace('#',''), 16);
-            var r = Math.min(255, Math.max(0, (num >> 16) + amount));
-            var g = Math.min(255, Math.max(0, ((num >> 8) & 0x00FF) + amount));
-            var b = Math.min(255, Math.max(0, (num & 0x0000FF) + amount));
-            return '#' + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
-        }
-
-        function generateTableRows(leagueName, matches) {
-            var backgroundColor = document.getElementById('colorBackground').value;
-            var textColor = document.getElementById('colorText').value;
-            var headerBgColor = document.getElementById('colorHeaderBg').value;
-            var lighterBg = adjustColor(backgroundColor, 30);
-
-            var html = '<div class="tbl-wrap">\n';
-            html += '<table>\n<tbody>\n';
-            html += '<tr><th colspan="3" class="league-hdr" style="background:linear-gradient(135deg,' + headerBgColor + ',' + backgroundColor + ',' + lighterBg + ');color:#fff;border-bottom:2px solid ' + backgroundColor + ';">🏆 ' + leagueName + '</th></tr>\n';
+    leagues.forEach(function(league) {
+        html += '<div class="preview-table-wrapper" data-league="' + league.name.replace(/"/g,'&quot;') + '">';
+        html += '<table class="preview-table"><tbody>';
+        html += '<tr><td colspan="3" class="league" style="background:linear-gradient(135deg,#FDB931,' + c.bg + ',' + lighterBg + ') !important;">🏆 ' + league.name + '</td></tr>';
+        html += '<tr><th>Tanggal<br>dan Waktu</th><th>Pertandingan</th><th>Skor</th></tr>';
+        league.matches.forEach(function(m) {
+            var logo1 = getTeamLogoUrl(m.team1);
+            var logo2 = getTeamLogoUrl(m.team2);
+            var img1 = '<img class="team-logo-prev" data-team="' + m.team1.replace(/"/g,'&quot;') + '" src="' + logo1 + '" alt="' + m.team1 + '">';
+            var img2 = '<img class="team-logo-prev" data-team="' + m.team2.replace(/"/g,'&quot;') + '" src="' + logo2 + '" alt="' + m.team2 + '">';
+            var matchCell =
+                '<div class="match-vs-cell">' +
+                  '<div class="mv-logos">' +
+                    '<div class="mv-team">' + img1 + '</div>' +
+                    '<div class="mv-vs">VS</div>' +
+                    '<div class="mv-team">' + img2 + '</div>' +
+                  '</div>' +
+                  '<div class="mv-names">' +
+                    '<div class="mv-name">' + m.team1 + '</div>' +
+                    '<div class="mv-spacer"></div>' +
+                    '<div class="mv-name">' + m.team2 + '</div>' +
+                  '</div>' +
+                '</div>';
             html += '<tr>';
-            // th tidak pakai white-space:nowrap agar tidak overflow di mobile
-            html += '<th class="th-cell" style="background:' + backgroundColor + ';color:' + headerBgColor + ';">Tanggal &amp; Waktu</th>';
-            html += '<th class="th-cell th-wide" style="background:' + backgroundColor + ';color:' + headerBgColor + ';">Pertandingan</th>';
-            html += '<th class="th-cell" style="background:' + backgroundColor + ';color:' + headerBgColor + ';">Skor</th>';
-            html += '</tr>\n';
+            html += '<td class="date-time">' + m.date + '<br>' + m.time + '</td>';
+            html += '<td>' + matchCell + '</td>';
+            html += '<td><strong>' + m.score1 + ' : ' + m.score2 + '</strong></td>';
+            html += '</tr>';
+        });
+        html += '</tbody></table></div>';
+    });
 
-            for (var i = 0; i < matches.length; i++) {
-                var match = matches[i];
-                // Pakai CSS class row-odd/row-even + CSS :hover — tidak pakai inline onmouseover JS
-                var rowClass = i % 2 === 0 ? 'row-even' : 'row-odd';
-                html += '<tr class="match-row ' + rowClass + '">\n';
-                html += '<td class="td-date" style="color:' + textColor + ';">' + match.date + '<br>' + match.time + '</td>\n';
-                html += '<td class="td-match" style="color:' + textColor + ';">' + match.team1 + ' VS ' + match.team2 + '</td>\n';
-                html += '<td class="td-score" style="color:' + textColor + ';">' + match.score1 + ' : ' + match.score2 + '</td>\n';
-                html += '</tr>\n';
-            }
-            html += '</tbody>\n</table>\n</div>\n';
-            return html;
-        }
+    tablesDiv.innerHTML = html;
+    buildLeagueDropdown(leagues);
+    filterLeague('all');
+}
 
-        function generatePreviewRows(leagueName, matches) {
-            var backgroundColor = document.getElementById('colorBackground').value;
-            var lighterBg = adjustColor(backgroundColor, 30);
-            var html = '<div class="preview-table-wrapper">';
-            html += '<table class="preview-table"><tbody>';
-            html += '<tr><td colspan="3" class="league" style="background:linear-gradient(135deg,#FDB931,' + backgroundColor + ',' + lighterBg + ') !important;">🏆 ' + leagueName + '</td></tr>';
-            html += '<tr><th>Tanggal &amp; Waktu</th><th>Pertandingan</th><th>Skor</th></tr>';
-            for (var i = 0; i < matches.length; i++) {
-                var match = matches[i];
-                html += '<tr>';
-                html += '<td class="date-time">' + match.date + '<br>' + match.time + '</td>';
-                html += '<td>' + match.team1 + ' VS ' + match.team2 + '</td>';
-                html += '<td>' + match.score1 + ' : ' + match.score2 + '</td>';
-                html += '</tr>';
-            }
-            html += '</tbody></table></div>';
-            return html;
-        }
+// =============================================
+// BUILD OUTPUT HTML
+// =============================================
+function buildOutputHTML(leagues) {
+    var autoDate = document.getElementById('autoDate').textContent;
+    var c = getColors();
+    var lighterBg = adjustColor(c.bg, 30);
 
-        function generateCompleteHTML(tableRows) {
-            var autoDate = document.getElementById('autoDate').textContent;
-            var backgroundColor = document.getElementById('colorBackground').value;
-            var textColor = document.getElementById('colorText').value;
-            var headerBgColor = document.getElementById('colorHeaderBg').value;
-            var marqueeBgColor = document.getElementById('colorMarqueeBg').value;
+    var leagueNames = leagues.map(function(l){ return l.name; });
 
-            return '<!-- KODE GENERATED BY HOKBENTOTO - Beautiful Gold Edition -->\n' +
+    var tables = '';
+    leagues.forEach(function(league) {
+        tables += '<div class="tbl-wrap" data-league="' + league.name.replace(/"/g,'&quot;') + '">\n<table>\n<tbody>\n';
+        tables += '<tr><th colspan="3" class="league-hdr" style="background:linear-gradient(135deg,' + c.hd + ',' + c.bg + ',' + lighterBg + ');color:#fff;border-bottom:2px solid ' + c.bg + ';">🏆 ' + league.name + '</th></tr>\n';
+        tables += '<tr>';
+        tables += '<th class="th-cell" style="background:' + c.bg + ';color:' + c.hd + ';">Tanggal<br>dan Waktu</th>';
+        tables += '<th class="th-cell" style="background:' + c.bg + ';color:' + c.hd + ';">Pertandingan</th>';
+        tables += '<th class="th-cell" style="background:' + c.bg + ';color:' + c.hd + ';">Skor</th>';
+        tables += '</tr>\n';
+
+        league.matches.forEach(function(m, i) {
+            var logo1 = getTeamLogoUrl(m.team1);
+            var logo2 = getTeamLogoUrl(m.team2);
+            var imgStyle = 'width:36px;height:36px;object-fit:contain;display:block;margin:0 auto;filter:drop-shadow(0 0 3px rgba(0,0,0,0.6));';
+            var img1 = '<img src="' + logo1 + '" style="' + imgStyle + '" alt="' + m.team1 + '">';
+            var img2 = '<img src="' + logo2 + '" style="' + imgStyle + '" alt="' + m.team2 + '">';
+            var matchCell =
+                '<table style="width:100%;border-collapse:collapse;border-spacing:0;">' +
+                  '<tr>' +
+                    '<td style="width:42%;text-align:center;padding:4px 2px;vertical-align:middle;">' + img1 + '</td>' +
+                    '<td style="width:16%;text-align:center;padding:4px 2px;vertical-align:middle;color:' + c.bg + ';font-weight:900;font-size:clamp(10px,2.5vw,14px);text-shadow:0 0 8px ' + c.bg + '80;">VS</td>' +
+                    '<td style="width:42%;text-align:center;padding:4px 2px;vertical-align:middle;">' + img2 + '</td>' +
+                  '</tr>' +
+                  '<tr>' +
+                    '<td style="text-align:center;padding:2px 4px;color:' + c.txt + ';font-size:clamp(9px,2.2vw,12px);font-weight:700;line-height:1.3;word-break:break-word;">' + m.team1 + '</td>' +
+                    '<td style="text-align:center;padding:2px;"></td>' +
+                    '<td style="text-align:center;padding:2px 4px;color:' + c.txt + ';font-size:clamp(9px,2.2vw,12px);font-weight:700;line-height:1.3;word-break:break-word;">' + m.team2 + '</td>' +
+                  '</tr>' +
+                '</table>';
+            tables += '<tr class="match-row ' + (i % 2 === 0 ? 'row-even' : 'row-odd') + '">\n';
+            tables += '<td class="td-date" style="color:' + c.txt + ';">' + m.date + '<br>' + m.time + '</td>\n';
+            tables += '<td class="td-match" style="padding:6px 4px;">' + matchCell + '</td>\n';
+            tables += '<td class="td-score" style="color:' + c.txt + ';">' + m.score1 + ' : ' + m.score2 + '</td>\n';
+            tables += '</tr>\n';
+        });
+        tables += '</tbody>\n</table>\n</div>\n';
+    });
+
+    // Dropdown untuk output HTML
+    var selectHTML = '<div class="filter-section">\n' +
+'<div class="filter-label">🏆 Pilih Liga</div>\n' +
+'<div class="filter-select-wrap">\n' +
+'  <select class="fselect" id="leagueFilterOut" onchange="filterOut(this.value)">\n' +
+'    <option value="all">Semua Liga</option>\n';
+    leagues.forEach(function(l){
+        selectHTML += '    <option value="' + l.name.replace(/"/g,'&quot;') + '">🏆 ' + l.name + '</option>\n';
+    });
+    selectHTML += '  </select>\n</div>\n</div>\n\n';
+
+    return '<!-- KODE GENERATED BY HOKBENTOTO - Team Logo Edition -->\n' +
 '<style>\n' +
-'/* FIX 6: box-sizing ke semua elemen agar padding tidak bikin overflow */\n' +
-'* { box-sizing: border-box; }\n\n' +
-'body {\n' +
-'  background: #000;\n' +
-'  font-family: \'Poppins\', sans-serif;\n' +
-'  padding: 0;\n' +
-'  margin: 0;\n' +
-'  color: ' + textColor + ';\n' +
-'  overflow-x: hidden;\n' +
-'}\n\n' +
-'.logo {\n' +
-'  text-align: center;\n' +
-'  margin-bottom: 15px;\n' +
-'  padding: 0 10px;\n' +
-'}\n\n' +
-'/* FIX 8: logo width 70% + max-width agar tidak meluber di layar sempit */\n' +
-'.logo img {\n' +
-'  width: 70%;\n' +
-'  max-width: 260px;\n' +
-'  filter: drop-shadow(0 0 25px ' + backgroundColor + ');\n' +
-'}\n\n' +
-'.date-display {\n' +
-'  text-align: center;\n' +
-'  /* FIX 3: clamp() — otomatis menyesuaikan font antara mobile & desktop */\n' +
-'  font-size: clamp(13px, 3.5vw, 20px);\n' +
-'  font-weight: 700;\n' +
-'  color: ' + backgroundColor + ';\n' +
-'  background: linear-gradient(180deg, #1a1a1a, ' + headerBgColor + ');\n' +
-'  padding: 15px 12px;\n' +
-'  border-radius: 12px;\n' +
-'  margin: 20px auto;\n' +
-'  width: 90%;\n' +
-'  border: 3px solid ' + backgroundColor + ';\n' +
-'  text-shadow: 0 0 15px ' + backgroundColor + ';\n' +
-'  letter-spacing: 1px;\n' +
-'  box-shadow: 0 0 20px ' + backgroundColor + '80;\n' +
-'  word-break: break-word;\n' +
-'}\n\n' +
-'.marquee-container {\n' +
-'  overflow: hidden;\n' +
-'  white-space: nowrap;\n' +
-'  background: linear-gradient(135deg, #1a1a1a, ' + headerBgColor + ', #1a1a1a);\n' +
-'  color: ' + marqueeBgColor + ';\n' +
-'  padding: 15px 0;\n' +
-'  /* FIX 3: clamp() untuk marquee font */\n' +
-'  font-size: clamp(12px, 3vw, 16px);\n' +
-'  font-weight: 900;\n' +
-'  border: 3px solid ' + marqueeBgColor + ';\n' +
-'  border-radius: 12px;\n' +
-'  margin: 20px auto;\n' +
-'  width: 90%;\n' +
-'  text-shadow: 0 0 15px ' + marqueeBgColor + ';\n' +
-'  letter-spacing: 1.5px;\n' +
-'  box-shadow: 0 0 20px ' + marqueeBgColor + '80;\n' +
-'}\n\n' +
-'.marquee-content {\n' +
-'  display: inline-block;\n' +
-'  animation: marquee 40s linear infinite;\n' +
-'  padding-left: 100%;\n' +
-'}\n\n' +
-'@keyframes marquee {\n' +
-'  0% { transform: translateX(0); }\n' +
-'  100% { transform: translateX(-100%); }\n' +
-'}\n\n' +
-'/* ===== TABLE WRAPPER — KUNCI MOBILE RESPONSIVE ===== */\n' +
-'.tbl-wrap {\n' +
-'  overflow-x: auto;\n' +
-'  -webkit-overflow-scrolling: touch;\n' +
-'  margin: 20px auto;\n' +
-'  width: 90%;\n' +
-'  border: 3px solid ' + backgroundColor + ';\n' +
-'  border-radius: 15px;\n' +
-'  /* padding: 5px — memberi jarak antara border dan tabel, persis seperti script original */\n' +
-'  padding: 5px;\n' +
-'  background: rgba(0,0,0,0.5);\n' +
-'  box-shadow: 0 0 20px ' + backgroundColor + '80;\n' +
-'}\n\n' +
-'table {\n' +
-'  width: 100%;\n' +
-'  /* FIX 2: table-layout fixed agar kolom tidak melar tak terkontrol */\n' +
-'  table-layout: fixed;\n' +
-'  border-collapse: collapse;\n' +
-'  overflow: hidden;\n' +
-'}\n\n' +
-'.league-hdr {\n' +
-'  /* FIX 3: clamp() untuk header liga */\n' +
-'  font-size: clamp(12px, 3vw, 16px);\n' +
-'  font-weight: 900;\n' +
-'  padding: 14px 10px;\n' +
-'  text-align: center;\n' +
-'  text-transform: uppercase;\n' +
-'  letter-spacing: 1.5px;\n' +
-'  text-shadow: 0 2px 4px rgba(0,0,0,0.3);\n' +
-'}\n\n' +
-'.th-cell {\n' +
-'  text-align: center;\n' +
-'  padding: 10px 8px;\n' +
-'  font-weight: 900;\n' +
-'  text-transform: uppercase;\n' +
-'  /* FIX 3: clamp() untuk th */\n' +
-'  font-size: clamp(10px, 2.5vw, 13px);\n' +
-'  /* FIX 1: white-space:nowrap DIHAPUS — ini penyebab utama overflow di mobile */\n' +
-'}\n\n' +
-'/* FIX 7: Lebar kolom via table-layout:fixed + width % */\n' +
-'.th-cell:first-child, .match-row td:first-child { width: 22%; }\n' +
-'.th-wide, .match-row td:nth-child(2) { width: 56%; }\n' +
-'.th-cell:last-child, .match-row td:last-child { width: 22%; }\n\n' +
-'.match-row td {\n' +
-'  text-align: center;\n' +
-'  /* FIX 3: clamp() untuk isi cell */\n' +
-'  font-size: clamp(10px, 2.5vw, 13px);\n' +
-'  font-weight: 700;\n' +
-'  line-height: 1.4;\n' +
-'  /* FIX 4: word-break di semua cell */\n' +
-'  word-break: break-word;\n' +
-'}\n\n' +
-'/* FIX 5: padding berbeda tiap kolom — tanggal & skor lebih kecil */\n' +
-'.td-date {\n' +
-'  padding: 10px 4px;\n' +
-'  white-space: nowrap;\n' +
-'}\n\n' +
-'.td-match {\n' +
-'  padding: 10px 6px;\n' +
-'}\n\n' +
-'.td-score {\n' +
-'  padding: 10px 4px;\n' +
-'  font-size: clamp(11px, 2.8vw, 15px);\n' +
-'  font-weight: 900;\n' +
-'  white-space: nowrap;\n' +
-'}\n\n' +
-'/* FIX 7: hover pakai CSS class, bukan inline JS */\n' +
+'* { box-sizing: border-box; }\n' +
+'body { background: #000; font-family: \'Poppins\', sans-serif; padding: 0; margin: 0; color: ' + c.txt + '; overflow-x: hidden; }\n' +
+'.logo { text-align: center; margin-bottom: 15px; padding: 0 10px; }\n' +
+'.logo img { width: 70%; max-width: 260px; filter: drop-shadow(0 0 25px ' + c.bg + '); }\n' +
+'.date-display { text-align: center; font-size: clamp(13px,3.5vw,20px); font-weight: 700; color: ' + c.bg + '; background: linear-gradient(180deg,#1a1a1a,' + c.hd + '); padding: 15px 12px; border-radius: 15px; margin: 20px auto; width: 90%; border: 3px solid ' + c.bg + '; text-shadow: 0 0 15px ' + c.bg + '; letter-spacing: 1px; box-shadow: 0 0 20px ' + c.bg + '80; word-break: break-word; }\n' +
+'.marquee-container { overflow: hidden; white-space: nowrap; background: linear-gradient(135deg,#1a1a1a,' + c.hd + ',#1a1a1a); color: ' + c.mq + '; padding: 15px 0; font-size: clamp(12px,3vw,16px); font-weight: 900; border: 3px solid ' + c.mq + '; border-radius: 15px; margin: 20px auto; width: 90%; text-shadow: 0 0 15px ' + c.mq + '; letter-spacing: 1.5px; box-shadow: 0 0 20px ' + c.mq + '80; }\n' +
+'.marquee-content { display: inline-block; animation: marquee 40s linear infinite; padding-left: 100%; }\n' +
+'@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }\n' +
+'/* ===== FILTER SELECT ===== */\n' +
+'.filter-section { width: 90%; margin: 0 auto 12px auto; }\n' +
+'.filter-label { font-size: 11px; color: ' + c.bg + 'bb; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }\n' +
+'.filter-select-wrap { position: relative; }\n' +
+'.filter-select-wrap::after { content: "▼"; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: ' + c.bg + '; font-size: 11px; pointer-events: none; }\n' +
+'.fselect { width: 100%; padding: 10px 38px 10px 14px; background: rgba(0,0,0,0.8); border: 2px solid ' + c.bg + '66; border-radius: 10px; color: ' + c.bg + '; font-size: 13px; font-weight: 700; letter-spacing: 0.8px; cursor: pointer; appearance: none; -webkit-appearance: none; outline: none; transition: all 0.25s; }\n' +
+'.fselect:focus, .fselect:hover { border-color: ' + c.bg + '; box-shadow: 0 0 14px ' + c.bg + '55; }\n' +
+'.fselect option { background: #0a0a0f; color: #fff; font-weight: 700; }\n' +
+'/* ===== TABLE ===== */\n' +
+'.tbl-wrap { overflow: hidden; margin: 20px auto; width: 90%; border: 3px solid ' + c.bg + '; border-radius: 15px; padding: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px ' + c.bg + '80; }\n' +
+'table { width: 100%; table-layout: fixed; border-collapse: collapse; border-spacing: 0; border-radius: 10px; overflow: hidden; }\n' +
+'.league-hdr { font-size: clamp(12px,3vw,16px); font-weight: 900; padding: 13px 10px; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }\n' +
+'.th-cell { text-align: center; padding: 10px 6px; font-weight: 900; text-transform: uppercase; font-size: clamp(9px,2.2vw,12px); line-height: 1.4; }\n' +
+'.match-row td { text-align: center; font-size: clamp(10px,2.5vw,13px); font-weight: 700; line-height: 1.4; vertical-align: middle; }\n' +
+'.th-cell:first-child, .match-row td:first-child { width: 18%; }\n' +
+'.th-cell:nth-child(2), .match-row td:nth-child(2) { width: 64%; }\n' +
+'.th-cell:last-child, .match-row td:last-child { width: 18%; }\n' +
+'.td-date { padding: 10px 4px; white-space: nowrap; }\n' +
+'.td-match { padding: 6px 4px; }\n' +
+'.td-score { padding: 10px 4px; font-size: clamp(11px,2.8vw,15px); font-weight: 900; white-space: nowrap; }\n' +
 '.row-even { background: linear-gradient(180deg,#3a3a3a,#2d2d2d); }\n' +
 '.row-odd  { background: linear-gradient(180deg,#2d2d2d,#3a3a3a); }\n' +
-'.match-row:hover td {\n' +
-'  background: linear-gradient(135deg,' + backgroundColor + ',' + textColor + ') !important;\n' +
-'  color: ' + headerBgColor + ' !important;\n' +
-'  font-weight: 900;\n' +
-'}\n\n' +
-'/* Snowflake */\n' +
-'.snowflake {\n' +
-'  position: fixed;\n' +
-'  top: -50px;\n' +
-'  z-index: 9999;\n' +
-'  user-select: none;\n' +
-'  cursor: default;\n' +
-'  animation-name: snowfall;\n' +
-'  animation-timing-function: linear;\n' +
-'  animation-iteration-count: 1;\n' +
-'  pointer-events: none;\n' +
-'}\n\n' +
-'@keyframes snowfall {\n' +
-'  0%   { top: -50px; transform: translateX(0) rotate(0deg); }\n' +
-'  100% { top: 100vh; transform: translateX(100px) rotate(360deg); }\n' +
-'}\n' +
+'.match-row:hover td { background: linear-gradient(135deg,' + c.bg + ',' + c.txt + ') !important; color: ' + c.hd + ' !important; font-weight: 900; }\n' +
+'.snowflake { position:fixed; top:-50px; z-index:9999; user-select:none; cursor:default; animation-name:snowfall; animation-timing-function:linear; animation-iteration-count:1; pointer-events:none; }\n' +
+'@keyframes snowfall { 0%{top:-50px;transform:translateX(0) rotate(0deg)} 100%{top:100vh;transform:translateX(100px) rotate(360deg)} }\n' +
 '</style>\n\n' +
-'<div class="logo"><img src="https://hokben38422.com/resources/images/logo.png" /></div>\n' +
+'<div class="logo"><img src="https://hokben38422.com/resources/images/logo.png"/></div>\n' +
 '<div class="date-display">' + autoDate + '</div>\n' +
-'<div class="marquee-container">\n' +
-'  <div class="marquee-content">🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥</div>\n' +
-'</div>\n\n' +
-tableRows + '\n' +
+'<div class="marquee-container"><div class="marquee-content">🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥</div></div>\n\n' +
+selectHTML +
+tables + '\n' +
 '<script>\n' +
-'/* Snowflake effect */\n' +
-'function createSnowflake() {\n' +
-'  var s = document.createElement("div");\n' +
-'  s.classList.add("snowflake");\n' +
-'  s.textContent = "⚽︎";\n' +
-'  s.style.left = Math.random() * window.innerWidth + "px";\n' +
-'  s.style.fontSize = (Math.random() * 15 + 10) + "px";\n' +
-'  s.style.animationDuration = (Math.random() * 5 + 5) + "s";\n' +
-'  s.style.opacity = Math.random();\n' +
-'  document.body.appendChild(s);\n' +
-'  setTimeout(function(){ s.remove(); }, 10000);\n' +
+'function filterOut(name) {\n' +
+'  document.querySelectorAll(".tbl-wrap").forEach(function(w){\n' +
+'    w.style.display = (name === "all" || w.getAttribute("data-league") === name) ? "" : "none";\n' +
+'  });\n' +
 '}\n' +
-'setInterval(createSnowflake, 500);\n' +
+'function createSnowflake(){\n' +
+'  var s=document.createElement("div"); s.classList.add("snowflake"); s.textContent="⚽︎";\n' +
+'  s.style.left=Math.random()*window.innerWidth+"px";\n' +
+'  s.style.fontSize=(Math.random()*15+10)+"px";\n' +
+'  s.style.animationDuration=(Math.random()*5+5)+"s";\n' +
+'  s.style.opacity=Math.random();\n' +
+'  document.body.appendChild(s);\n' +
+'  setTimeout(function(){s.remove();},10000);\n' +
+'}\n' +
+'setInterval(createSnowflake,500);\n' +
 '<\/script>\n';
-        }
+}
 
-        function copyToClipboard() {
-            var output = document.getElementById('outputCode').textContent;
-            if (output === 'Script HTML lengkap akan muncul di sini secara otomatis...') {
-                showNotification('⚠️ Belum ada script yang di-generate!', 'warning');
-                return;
-            }
-            navigator.clipboard.writeText(output).then(function() {
-                showNotification('✓ Script berhasil dicopy!', 'success');
-            }).catch(function() {
-                var textarea = document.createElement('textarea');
-                textarea.value = output;
-                document.body.appendChild(textarea);
-                textarea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textarea);
-                showNotification('✓ Script berhasil dicopy!', 'success');
+// =============================================
+// AUTO GENERATE
+// =============================================
+var debounceTimer = null;
+
+document.getElementById('inputText').addEventListener('input', function() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function() { handleInput(); }, 600);
+});
+
+async function handleInput() {
+    var input = document.getElementById('inputText').value.trim();
+
+    if (!input) {
+        document.getElementById('outputCode').textContent = 'Script HTML lengkap akan muncul di sini secara otomatis...';
+        document.getElementById('previewTables').innerHTML = '';
+        document.getElementById('previewEmpty').style.display = 'block';
+        document.getElementById('leagueFilterWrap').style.display = 'none';
+        document.getElementById('totalLeagues').textContent = '0';
+        document.getElementById('totalMatches').textContent = '0';
+        document.getElementById('totalLogos').textContent = '0';
+        document.getElementById('fetchIndicator').classList.remove('active');
+        return;
+    }
+
+    var leagues = parseAll(input);
+    if (!leagues.length) return;
+
+    var allTeams = getAllTeams(leagues);
+    var totalM = leagues.reduce(function(a, l) { return a + l.matches.length; }, 0);
+    document.getElementById('totalLeagues').textContent = leagues.length;
+    document.getElementById('totalMatches').textContent = totalM;
+
+    // ── RENDER LANGSUNG dengan logo SVG fallback ──
+    renderPreview(leagues);
+    document.getElementById('outputCode').textContent = buildOutputHTML(leagues);
+
+    var newTeams = allTeams.filter(function(t) { return !(t.toLowerCase().trim() in teamLogoCache); });
+
+    if (newTeams.length === 0) {
+        // Semua logo sudah di cache, update counter
+        var found0 = allTeams.filter(function(n) {
+            var cached = teamLogoCache[n.toLowerCase().trim()];
+            return cached && cached.url;
+        }).length;
+        document.getElementById('totalLogos').textContent = found0;
+        return;
+    }
+
+    // ── FETCH LOGO DI BACKGROUND, update img satu per satu ──
+    document.getElementById('fetchIndicator').classList.add('active');
+    document.getElementById('fetchStatus').textContent = 'Memperbarui logo ' + newTeams.length + ' tim...';
+
+    var fetched = 0;
+    var fetchPromises = newTeams.map(async function(name) {
+        var result = await fetchTeamLogo(name);
+        fetched++;
+
+        // Update gambar di preview secara langsung (tanpa re-render penuh)
+        if (result && result.url) {
+            var key = name.toLowerCase().trim();
+            document.querySelectorAll('#previewTables img[data-team]').forEach(function(img) {
+                if (img.getAttribute('data-team').toLowerCase().trim() === key) {
+                    img.src = result.url;
+                }
             });
         }
 
-        function showNotification(message, type) {
-            var notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.style.background = type === 'warning'
-                ? 'linear-gradient(135deg, #ffaa00, #ff8800)'
-                : 'linear-gradient(135deg, #00ff88, #00cc77)';
-            notification.style.display = 'block';
-            setTimeout(function() { notification.style.display = 'none'; }, 3000);
-        }
+        // Update counter logo
+        var foundSoFar = allTeams.filter(function(n) {
+            var cached = teamLogoCache[n.toLowerCase().trim()];
+            return cached && cached.url;
+        }).length;
+        document.getElementById('totalLogos').textContent = foundSoFar;
 
-        function clearInput() {
-            document.getElementById('inputText').value = '';
-            document.getElementById('outputCode').textContent = 'Script HTML lengkap akan muncul di sini secara otomatis...';
-            document.getElementById('previewContent').innerHTML = '<div class="preview-empty">Preview akan muncul di sini secara otomatis...</div>';
-            document.getElementById('totalLeagues').textContent = '0';
-            document.getElementById('totalMatches').textContent = '0';
-            showNotification('✓ Input berhasil dibersihkan!', 'success');
+        // Update status indicator
+        var remaining = newTeams.length - fetched;
+        if (remaining > 0) {
+            document.getElementById('fetchStatus').textContent = 'Memperbarui logo... sisa ' + remaining + ' tim';
         }
-    </script>
+    });
+
+    await Promise.all(fetchPromises);
+
+    document.getElementById('fetchIndicator').classList.remove('active');
+
+    // Setelah semua logo selesai, regenerate output HTML dengan logo asli
+    document.getElementById('outputCode').textContent = buildOutputHTML(leagues);
+}
+
+// =============================================
+// COLOR PICKERS
+// =============================================
+function initColorPickers() {
+    ['Background', 'Text', 'HeaderBg', 'MarqueeBg'].forEach(function(name) {
+        var picker = document.getElementById('color' + name);
+        var text = document.getElementById('color' + name + 'Text');
+        picker.addEventListener('input', function() {
+            text.value = picker.value;
+            updatePreviewColors();
+            reRenderIfHasData();
+        });
+        text.addEventListener('input', function() {
+            if (/^#[0-9A-F]{6}$/i.test(text.value)) {
+                picker.value = text.value;
+                updatePreviewColors();
+                reRenderIfHasData();
+            }
+        });
+    });
+}
+
+function reRenderIfHasData() {
+    var input = document.getElementById('inputText').value.trim();
+    if (!input) return;
+    var leagues = parseAll(input);
+    if (!leagues.length) return;
+    renderPreview(leagues);
+    document.getElementById('outputCode').textContent = buildOutputHTML(leagues);
+}
+
+function updatePreviewColors() {
+    var c = getColors();
+    var lighterBg = adjustColor(c.bg, 30);
+    var old = document.getElementById('preview-dynamic-style');
+    if (old) old.remove();
+    var style = document.createElement('style');
+    style.id = 'preview-dynamic-style';
+    style.textContent =
+        '#previewMainContainer .preview-container{border-color:' + c.bg + ';box-shadow:0 0 40px ' + c.bg + '66;}' +
+        '#previewMainContainer .preview-header{border-bottom-color:' + c.bg + ';}' +
+        '#previewMainContainer .preview-header h3{color:' + c.bg + ';text-shadow:0 0 20px ' + c.bg + 'b3;}' +
+        '#previewMainContainer .preview-date{color:' + c.bg + ';text-shadow:0 0 10px ' + c.bg + '99;}' +
+        '#previewMainContainer .preview-marquee{background:linear-gradient(135deg,#1a1a1a,' + c.hd + ',#1a1a1a);color:' + c.mq + ';border-top-color:' + c.bg + ';border-bottom-color:' + c.bg + ';text-shadow:0 0 15px ' + c.mq + ';}' +
+        '#previewMainContainer .preview-table-wrapper{border-color:' + c.bg + ';box-shadow:0 0 20px ' + c.bg + '80;}' +
+        '#previewMainContainer .preview-table .league{background:linear-gradient(135deg,#FDB931,' + c.bg + ',' + lighterBg + ') !important;}' +
+        '#previewMainContainer .preview-table th{background:' + c.bg + ';color:' + c.hd + ';}' +
+        '#previewMainContainer .preview-table td{color:#ffffff;}' +
+        '#previewMainContainer .preview-table tbody tr:hover td{background:linear-gradient(135deg,' + c.bg + ',' + c.txt + ');color:' + c.hd + ';}' +
+        '#leagueSelect{border-color:' + c.bg + '66;color:' + c.bg + ';}' +
+        '#leagueSelect:focus,#leagueSelect:hover{border-color:' + c.bg + ';box-shadow:0 0 14px ' + c.bg + '55;}' +
+        '.league-select-wrap::after{color:' + c.bg + ';}' +
+        '#previewMainContainer .mv-vs{color:' + c.bg + ';text-shadow:0 0 6px ' + c.bg + '80;}';
+    document.head.appendChild(style);
+}
+
+function resetColors() {
+    document.getElementById('colorBackground').value = '#d4af37';
+    document.getElementById('colorBackgroundText').value = '#d4af37';
+    document.getElementById('colorText').value = '#fff1c4';
+    document.getElementById('colorTextText').value = '#fff1c4';
+    document.getElementById('colorHeaderBg').value = '#000000';
+    document.getElementById('colorHeaderBgText').value = '#000000';
+    document.getElementById('colorMarqueeBg').value = '#d4af37';
+    document.getElementById('colorMarqueeBgText').value = '#d4af37';
+    updatePreviewColors();
+    reRenderIfHasData();
+    showNotification('✓ Warna berhasil direset ke default!', 'success');
+}
+
+// =============================================
+// DATE
+// =============================================
+function generateAutoDate() {
+    var today = new Date();
+    var tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    var d1 = today.toLocaleDateString('id-ID', { day:'numeric', month:'long' });
+    var d2 = tomorrow.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+    var str = d1 + ' - ' + d2;
+    document.getElementById('autoDate').textContent = str;
+    document.getElementById('previewDate').textContent = str;
+    return str;
+}
+
+// =============================================
+// COPY & CLEAR
+// =============================================
+function copyToClipboard() {
+    var output = document.getElementById('outputCode').textContent;
+    if (output.startsWith('Script HTML')) {
+        showNotification('⚠️ Belum ada script yang di-generate!', 'warning');
+        return;
+    }
+    navigator.clipboard.writeText(output).then(function() {
+        showNotification('✓ Script berhasil dicopy!', 'success');
+    }).catch(function() {
+        var ta = document.createElement('textarea');
+        ta.value = output;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+        showNotification('✓ Script berhasil dicopy!', 'success');
+    });
+}
+
+function clearInput() {
+    document.getElementById('inputText').value = '';
+    document.getElementById('outputCode').textContent = 'Script HTML lengkap akan muncul di sini secara otomatis...';
+    document.getElementById('previewTables').innerHTML = '';
+    document.getElementById('previewEmpty').style.display = 'block';
+    document.getElementById('leagueFilterWrap').style.display = 'none';
+    document.getElementById('totalLeagues').textContent = '0';
+    document.getElementById('totalMatches').textContent = '0';
+    document.getElementById('totalLogos').textContent = '0';
+    document.getElementById('fetchIndicator').classList.remove('active');
+    teamLogoCache = {};
+    showNotification('✓ Input berhasil dibersihkan!', 'success');
+}
+
+function showNotification(msg, type) {
+    var n = document.getElementById('notification');
+    n.textContent = msg;
+    n.style.background = type === 'warning'
+        ? 'linear-gradient(135deg,#ffaa00,#ff8800)'
+        : 'linear-gradient(135deg,#00ff88,#00cc77)';
+    n.style.display = 'block';
+    setTimeout(function() { n.style.display = 'none'; }, 3000);
+}
+
+// =============================================
+// INIT
+// =============================================
+window.addEventListener('DOMContentLoaded', function() {
+    generateAutoDate();
+    initColorPickers();
+    updatePreviewColors();
+});
+</script>
+kunci script
+<script>
+// Blokir shortcut keyboard untuk inspect
+document.addEventListener('keydown', function(e) {
+// Ctrl+Shift+I
+if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+e.preventDefault();
+return false;
+}
+
+// Ctrl+Shift+J
+if (e.ctrlKey && e.shiftKey && e.key === 'J') {
+e.preventDefault();
+return false;
+}
+
+// Ctrl+Shift+C
+if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+e.preventDefault();
+return false;
+}
+
+// Ctrl+U
+if (e.ctrlKey && e.key === 'u') {
+e.preventDefault();
+return false;
+}
+
+// Ctrl+Shift+U
+if (e.ctrlKey && e.shiftKey && e.key === 'U') {
+e.preventDefault();
+return false;
+}
+
+// F12
+if (e.key === 'F12') {
+e.preventDefault();
+return false;
+}
+});
+
+// Blokir klik kanan (context menu)
+document.addEventListener('contextmenu', function(e) {
+e.preventDefault();
+return false;
+});
+
+// Cegah drag dan drop
+document.addEventListener('dragstart', function(e) {
+e.preventDefault();
+return false;
+});
+
+// Optional: Blokir selection teks (bisa dihapus jika tidak perlu)
+document.addEventListener('selectstart', function(e) {
+e.preventDefault();
+return false;
+});
+</script>
 </body>
 </html>

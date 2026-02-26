@@ -106,13 +106,8 @@
             transform: translateY(-2px);
         }
 
-        .date-box {
-            min-width: 280px;
-        }
-
-        .time-box {
-            min-width: 220px;
-        }
+        .date-box { min-width: 280px; }
+        .time-box { min-width: 220px; }
 
         .date-label, .time-label {
             font-size: 0.75rem;
@@ -153,24 +148,15 @@
         }
 
         @media (max-width: 768px) {
-            .datetime-display {
-                gap: 15px;
-            }
-            
+            .datetime-display { gap: 15px; }
             .date-box, .time-box {
                 padding: 12px 20px;
                 min-width: auto;
                 width: 100%;
                 max-width: 300px;
             }
-
-            .date-value {
-                font-size: 1.1rem;
-            }
-
-            .time-value {
-                font-size: 1.6rem;
-            }
+            .date-value { font-size: 1.1rem; }
+            .time-value { font-size: 1.6rem; }
         }
 
         .clear-data-btn {
@@ -191,10 +177,6 @@
         .clear-data-btn:hover {
             background: #888;
             transform: translateY(-2px);
-        }
-
-        .clear-data-btn:active {
-            transform: translateY(0);
         }
 
         .alarm-controls-container {
@@ -218,14 +200,9 @@
             transition: all 0.3s ease;
         }
 
-        .alarm-toggle:hover {
-            background: rgba(212, 175, 55, 0.1);
-        }
+        .alarm-toggle:hover { background: rgba(212, 175, 55, 0.1); }
 
-        .alarm-icon {
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-        }
+        .alarm-icon { font-size: 1.2rem; transition: all 0.3s ease; }
 
         .alarm-toggle.active .alarm-icon {
             animation: ring 1s ease-in-out infinite;
@@ -285,9 +262,7 @@
             transition: background 0.3s ease;
         }
 
-        .toggle-switch.active {
-            background: var(--green-primary);
-        }
+        .toggle-switch.active { background: var(--green-primary); }
 
         .toggle-slider {
             position: absolute;
@@ -300,9 +275,7 @@
             transition: transform 0.3s ease;
         }
 
-        .toggle-switch.active .toggle-slider {
-            transform: translateX(24px);
-        }
+        .toggle-switch.active .toggle-slider { transform: translateX(24px); }
 
         .toggle-label {
             font-size: 0.95rem;
@@ -321,9 +294,7 @@
             font-style: italic;
         }
 
-        .alarm-toggle.active .alarm-status {
-            color: var(--green-light);
-        }
+        .alarm-toggle.active .alarm-status { color: var(--green-light); }
 
         .filter-container {
             max-width: 800px;
@@ -333,10 +304,7 @@
             align-items: center;
         }
 
-        .search-container {
-            flex: 1;
-            position: relative;
-        }
+        .search-container { flex: 1; position: relative; }
 
         .search-box {
             width: 100%;
@@ -364,10 +332,7 @@
             color: var(--gold-primary);
         }
 
-        .filter-buttons {
-            display: flex;
-            gap: 10px;
-        }
+        .filter-buttons { display: flex; gap: 10px; }
 
         .filter-btn {
             padding: 12px 20px;
@@ -427,13 +392,9 @@
             box-shadow: var(--shadow-green);
         }
 
-        .ttg-card.done::before {
-            background: var(--green-gradient);
-        }
+        .ttg-card.done::before { background: var(--green-gradient); }
 
-        .ttg-card:hover {
-            transform: translateY(-8px) scale(1.02);
-        }
+        .ttg-card:hover { transform: translateY(-8px) scale(1.02); }
 
         .ttg-card:not(.done):hover {
             box-shadow: 0 12px 30px rgba(212, 175, 55, 0.4), var(--gold-glow);
@@ -444,7 +405,7 @@
         }
 
         .ttg-card__title {
-            font-size: 1.3rem;
+            font-size: 1.15rem;
             font-weight: 600;
             padding: 15px 20px;
             background: rgba(212, 175, 55, 0.1);
@@ -457,6 +418,37 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            /* Background icon */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ttg-card__title::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: var(--card-icon-url);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top center;
+            opacity: 0.25;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .ttg-card__title > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .title-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
 
         .ttg-card.done .ttg-card__title {
@@ -464,7 +456,7 @@
             background: rgba(45, 122, 45, 0.15);
         }
 
-        /* NEW: Result Display Styles */
+        /* Result Display */
         .result-display {
             display: none;
             align-items: center;
@@ -483,9 +475,7 @@
             background: rgba(45, 122, 45, 0.1);
         }
 
-        .result-display.has-content {
-            display: flex;
-        }
+        .result-display.has-content { display: flex; }
 
         .result-numbers {
             font-size: 1.1rem;
@@ -495,9 +485,7 @@
             letter-spacing: 1px;
         }
 
-        .ttg-card.done .result-numbers {
-            color: var(--green-light);
-        }
+        .ttg-card.done .result-numbers { color: var(--green-light); }
 
         .copy-icon-btn {
             background: transparent;
@@ -516,9 +504,7 @@
             transform: scale(1.1);
         }
 
-        .ttg-card.done .copy-icon-btn:hover {
-            background: rgba(45, 122, 45, 0.3);
-        }
+        .ttg-card.done .copy-icon-btn:hover { background: rgba(45, 122, 45, 0.3); }
 
         .copy-icon-btn svg {
             width: 20px;
@@ -527,13 +513,8 @@
             transition: stroke 0.3s ease;
         }
 
-        .ttg-card.done .copy-icon-btn svg {
-            stroke: var(--green-light);
-        }
-
-        .copy-icon-btn.copied svg {
-            stroke: var(--green-light);
-        }
+        .ttg-card.done .copy-icon-btn svg { stroke: var(--green-light); }
+        .copy-icon-btn.copied svg { stroke: var(--green-light); }
 
         .countdown-timer {
             font-size: 1.1rem;
@@ -592,25 +573,13 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.8;
-                transform: scale(1.02);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
         }
 
         @keyframes pulse-fast {
-            0%, 100% {
-                opacity: 1;
-                transform: scale(1);
-            }
-            50% {
-                opacity: 0.85;
-                transform: scale(1.05);
-            }
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(1.05); }
         }
 
         .status-badge {
@@ -634,9 +603,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .ttg-card__row:last-child {
-            border-bottom: none;
-        }
+        .ttg-card__row:last-child { border-bottom: none; }
 
         .ttg-card__label {
             display: flex;
@@ -653,22 +620,11 @@
             transition: color 0.3s ease;
         }
 
-        .ttg-card.done .ttg-card__label svg {
-            color: var(--green-primary);
-        }
+        .ttg-card.done .ttg-card__label svg { color: var(--green-primary); }
 
-        .ttg-card__value {
-            font-weight: 500;
-            color: var(--text-light);
-        }
-
-        .ttg-card__value--tutup {
-            color: #F4D03F;
-        }
-
-        .ttg-card__value--buka {
-            color: #51cf66;
-        }
+        .ttg-card__value { font-weight: 500; color: var(--text-light); }
+        .ttg-card__value--tutup { color: #F4D03F; }
+        .ttg-card__value--buka { color: #51cf66; }
 
         .ttg-card__site {
             padding: 15px 20px;
@@ -691,9 +647,7 @@
             text-align: center;
         }
 
-        .ttg-card.done .ttg-card__site a {
-            background: var(--green-gradient);
-        }
+        .ttg-card.done .ttg-card__site a { background: var(--green-gradient); }
 
         .ttg-card__site a:hover {
             transform: translateY(-2px);
@@ -711,9 +665,7 @@
             border-top-color: rgba(81, 207, 102, 0.2);
         }
 
-        .input-group {
-            margin-bottom: 10px;
-        }
+        .input-group { margin-bottom: 10px; }
 
         .input-group label {
             display: block;
@@ -743,14 +695,8 @@
             border-color: var(--gold-primary);
         }
 
-        .ttg-card.done .input-group input:focus {
-            border-color: var(--green-primary);
-        }
-
-        .input-group input:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+        .ttg-card.done .input-group input:focus { border-color: var(--green-primary); }
+        .input-group input:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .action-buttons {
             display: flex;
@@ -769,44 +715,18 @@
             font-size: 0.9rem;
         }
 
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .btn-copy {
-            background: var(--gold-gradient);
-            color: var(--bg-dark);
-        }
+        .btn-copy { background: var(--gold-gradient); color: var(--bg-dark); }
+        .btn-copy:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 
-        .btn-copy:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
+        .btn-done { background: var(--green-gradient); color: white; }
+        .btn-done:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 
-        .btn-done {
-            background: var(--green-gradient);
-            color: white;
-        }
+        .btn-reset { background: #666; color: white; }
+        .btn-reset:hover:not(:disabled) { background: #888; transform: translateY(-2px); }
 
-        .btn-done:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .btn-reset {
-            background: #666;
-            color: white;
-        }
-
-        .btn-reset:hover:not(:disabled) {
-            background: #888;
-            transform: translateY(-2px);
-        }
-
-        .btn:active:not(:disabled) {
-            transform: translateY(0);
-        }
+        .btn:active:not(:disabled) { transform: translateY(0); }
 
         .modal {
             display: none;
@@ -848,10 +768,7 @@
             line-height: 1.6;
         }
 
-        .modal-footer {
-            display: flex;
-            gap: 10px;
-        }
+        .modal-footer { display: flex; gap: 10px; }
 
         .modal-footer button {
             flex: 1;
@@ -863,26 +780,13 @@
             transition: all 0.3s ease;
         }
 
-        .btn-modal-copy {
-            background: var(--gold-gradient);
-            color: var(--bg-dark);
-        }
-
-        .btn-modal-close {
-            background: #666;
-            color: white;
-        }
+        .btn-modal-copy { background: var(--gold-gradient); color: var(--bg-dark); }
+        .btn-modal-close { background: #666; color: white; }
 
         .btn-modal-copy:hover,
-        .btn-modal-close:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
+        .btn-modal-close:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.3); }
 
-        .btn-modal-copy.copied {
-            background: #51cf66;
-            color: white;
-        }
+        .btn-modal-copy.copied { background: #51cf66; color: white; }
 
         .toast-notification {
             position: fixed;
@@ -902,74 +806,32 @@
             pointer-events: none;
         }
 
-        .toast-notification.success {
-            background: var(--green-gradient);
-        }
-
-        .toast-notification.error {
-            background: linear-gradient(135deg, #D4AF37, #F4D03F);
-        }
-
-        .toast-notification.info {
-            background: linear-gradient(135deg, #0066cc, #4488ff);
-        }
+        .toast-notification.success { background: var(--green-gradient); }
+        .toast-notification.error { background: linear-gradient(135deg, #D4AF37, #F4D03F); }
+        .toast-notification.info { background: linear-gradient(135deg, #0066cc, #4488ff); }
 
         @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
 
         @keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(400px);
-                opacity: 0;
-            }
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(400px); opacity: 0; }
         }
 
         @media (max-width: 768px) {
-            .toast-notification {
-                top: 10px;
-                right: 10px;
-                left: 10px;
-                font-size: 0.9rem;
-            }
-            .header h1 {
-                font-size: 2rem;
-            }
-            .ttg-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
-            }
-            .filter-container {
-                flex-direction: column;
-            }
-            .filter-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-            .countdown-timer {
-                font-size: 0.95rem;
-                letter-spacing: 1px;
-            }
-            .alarm-controls-container {
-                flex-direction: column;
-            }
-            .result-numbers {
-                font-size: 0.95rem;
-            }
+            .toast-notification { top: 10px; right: 10px; left: 10px; font-size: 0.9rem; }
+            .header h1 { font-size: 2rem; }
+            .ttg-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
+            .filter-container { flex-direction: column; }
+            .filter-buttons { width: 100%; justify-content: center; }
+            .countdown-timer { font-size: 0.95rem; letter-spacing: 1px; }
+            .alarm-controls-container { flex-direction: column; }
+            .result-numbers { font-size: 0.95rem; }
         }
 
-        /* Comparison Table Styles */
+        /* Comparison Table */
         .comparison-container {
             position: fixed;
             top: 20px;
@@ -992,9 +854,7 @@
             user-select: none;
         }
 
-        .comparison-header:hover {
-            background: rgba(37, 37, 37, 0.95);
-        }
+        .comparison-header:hover { background: rgba(37, 37, 37, 0.95); }
 
         .comparison-title {
             font-size: 0.85rem;
@@ -1005,14 +865,8 @@
             gap: 6px;
         }
 
-        .comparison-toggle {
-            font-size: 1rem;
-            transition: transform 0.3s ease;
-        }
-
-        .comparison-toggle.collapsed {
-            transform: rotate(-90deg);
-        }
+        .comparison-toggle { font-size: 1rem; transition: transform 0.3s ease; }
+        .comparison-toggle.collapsed { transform: rotate(-90deg); }
 
         .comparison-content {
             background: var(--bg-card);
@@ -1024,10 +878,7 @@
             transition: max-height 0.3s ease;
         }
 
-        .comparison-content.collapsed {
-            max-height: 0;
-            border: none;
-        }
+        .comparison-content.collapsed { max-height: 0; border: none; }
 
         .comparison-textarea {
             width: 100%;
@@ -1045,14 +896,8 @@
             line-height: 1.3;
         }
 
-        .comparison-textarea:focus {
-            border-color: var(--gold-primary);
-        }
-
-        .comparison-textarea::placeholder {
-            color: #666;
-            font-size: 0.7rem;
-        }
+        .comparison-textarea:focus { border-color: var(--gold-primary); }
+        .comparison-textarea::placeholder { color: #666; font-size: 0.7rem; }
 
         .comparison-actions {
             padding: 6px 8px;
@@ -1075,10 +920,7 @@
             white-space: nowrap;
         }
 
-        .btn-compare:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-        }
+        .btn-compare:hover { transform: translateY(-1px); box-shadow: 0 2px 6px rgba(0,0,0,0.3); }
 
         .btn-clear-compare {
             flex: 1;
@@ -1094,10 +936,7 @@
             white-space: nowrap;
         }
 
-        .btn-clear-compare:hover {
-            background: #888;
-            transform: translateY(-1px);
-        }
+        .btn-clear-compare:hover { background: #888; transform: translateY(-1px); }
 
         .comparison-table-wrapper {
             max-height: 300px;
@@ -1105,28 +944,12 @@
             overflow-x: hidden;
         }
 
-        .comparison-table-wrapper::-webkit-scrollbar {
-            width: 4px;
-        }
+        .comparison-table-wrapper::-webkit-scrollbar { width: 4px; }
+        .comparison-table-wrapper::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+        .comparison-table-wrapper::-webkit-scrollbar-thumb { background: var(--gold-primary); border-radius: 2px; }
+        .comparison-table-wrapper::-webkit-scrollbar-thumb:hover { background: var(--gold-light); }
 
-        .comparison-table-wrapper::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-        }
-
-        .comparison-table-wrapper::-webkit-scrollbar-thumb {
-            background: var(--gold-primary);
-            border-radius: 2px;
-        }
-
-        .comparison-table-wrapper::-webkit-scrollbar-thumb:hover {
-            background: var(--gold-light);
-        }
-
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.65rem;
-        }
+        .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.65rem; }
 
         .comparison-table thead {
             position: sticky;
@@ -1148,22 +971,10 @@
             text-overflow: ellipsis;
         }
 
-        .comparison-table th:nth-child(1) {
-            width: 35%;
-        }
-
-        .comparison-table th:nth-child(2) {
-            width: 25%;
-        }
-
-        .comparison-table th:nth-child(3) {
-            width: 25%;
-        }
-
-        .comparison-table th:nth-child(4) {
-            width: 15%;
-            text-align: center;
-        }
+        .comparison-table th:nth-child(1) { width: 35%; }
+        .comparison-table th:nth-child(2) { width: 25%; }
+        .comparison-table th:nth-child(3) { width: 25%; }
+        .comparison-table th:nth-child(4) { width: 15%; text-align: center; }
 
         .comparison-table td {
             padding: 4px;
@@ -1174,13 +985,8 @@
             white-space: nowrap;
         }
 
-        .comparison-table td:nth-child(4) {
-            text-align: center;
-        }
-
-        .comparison-table tr:hover {
-            background: rgba(255, 255, 255, 0.03);
-        }
+        .comparison-table td:nth-child(4) { text-align: center; }
+        .comparison-table tr:hover { background: rgba(255,255,255,0.03); }
 
         .comparison-name {
             color: var(--text-light);
@@ -1200,23 +1006,11 @@
             text-overflow: ellipsis;
         }
 
-        .comparison-status {
-            text-align: center;
-            font-size: 0.85rem;
-        }
+        .comparison-status { text-align: center; font-size: 0.85rem; }
 
-        /* Color coding for comparison */
-        .match-same {
-            color: var(--green-light);
-        }
-
-        .match-different {
-            color: #F4D03F;
-        }
-
-        .match-empty {
-            color: #888;
-        }
+        .match-same { color: var(--green-light); }
+        .match-different { color: #F4D03F; }
+        .match-empty { color: #888; }
 
         .comparison-empty-state {
             padding: 20px 12px;
@@ -1228,40 +1022,19 @@
 
         .comparison-stats {
             padding: 6px 8px;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-around;
             font-size: 0.65rem;
             border-top: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 0.6rem;
-        }
-
-        .stat-value {
-            font-weight: 700;
-            font-size: 0.7rem;
-        }
-
-        .stat-value.green {
-            color: var(--green-light);
-        }
-
-        .stat-value.red {
-            color: #F4D03F;
-        }
-
-        .stat-value.gray {
-            color: #888;
-        }
+        .stat-item { display: flex; align-items: center; gap: 3px; }
+        .stat-label { color: var(--text-secondary); font-size: 0.6rem; }
+        .stat-value { font-weight: 700; font-size: 0.7rem; }
+        .stat-value.green { color: var(--green-light); }
+        .stat-value.red { color: #F4D03F; }
+        .stat-value.gray { color: #888; }
 
         @media (max-width: 768px) {
             .comparison-container {
@@ -1278,18 +1051,11 @@
     <!-- Comparison Table -->
     <div class="comparison-container">
         <div class="comparison-header" onclick="toggleComparison()">
-            <div class="comparison-title">
-                <span>Perbandingan</span>
-            </div>
+            <div class="comparison-title"><span>Perbandingan</span></div>
             <div class="comparison-toggle" id="comparisonToggle">▼</div>
         </div>
         <div class="comparison-content" id="comparisonContent">
-            <textarea 
-                class="comparison-textarea" 
-                id="comparisonInput" 
-                placeholder="Paste data hasil dari line"
-                oninput="autoCompare()"
-            ></textarea>
+            <textarea class="comparison-textarea" id="comparisonInput" placeholder="Paste data hasil dari line" oninput="autoCompare()"></textarea>
             <div class="comparison-actions">
                 <button class="btn-compare" onclick="compareData()">Cek</button>
                 <button class="btn-clear-compare" onclick="clearComparison()">Clear</button>
@@ -1304,8 +1070,7 @@
                             <th>✓</th>
                         </tr>
                     </thead>
-                    <tbody id="comparisonTableBody">
-                    </tbody>
+                    <tbody id="comparisonTableBody"></tbody>
                 </table>
                 <div class="comparison-stats" id="comparisonStats" style="display: none;">
                     <div class="stat-item">
@@ -1322,15 +1087,12 @@
                     </div>
                 </div>
             </div>
-            <div class="comparison-empty-state" id="comparisonEmpty">
-                Paste data, lalu klik Bandingkan
-            </div>
+            <div class="comparison-empty-state" id="comparisonEmpty">Paste data, lalu klik Bandingkan</div>
         </div>
     </div>
 
     <div class="header">
         <h1>JADWAL TOGEL</h1>
-        
         <div class="datetime-display">
             <div class="date-box">
                 <div class="date-label">📅 Tanggal Hari Ini</div>
@@ -1342,7 +1104,6 @@
                 <div class="timezone">WIB (GMT+7)</div>
             </div>
         </div>
-        
         <div class="alarm-controls-container">
             <div class="alarm-toggle" onclick="toggleAlarm()">
                 <div class="toggle-switch" id="alarmSwitch">
@@ -1359,7 +1120,6 @@
                     </div>
                 </div>
             </div>
-            
             <button class="clear-data-btn" onclick="clearAllData()">Hapus Semua Data</button>
         </div>
     </div>
@@ -1395,111 +1155,101 @@
     </div>
 
     <script>
+        const BASE = 'https://png-res.png999.com/assets/LOTTERY-Web/cardList';
+
         const pasaranData = [
-            {name: "HOKI DRAW 00", days: "Senin s/d Minggu", tutup: "23:59 WIB", buka: "00:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MACAU PAGI", days: "Senin s/d Minggu", tutup: "00:00 WIB", buka: "00:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
-            {name: "HUAHIN 0100", days: "Senin s/d Minggu", tutup: "00:45 WIB", buka: "01:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
-            {name: "HOKI DRAW 01", days: "Senin s/d Minggu", tutup: "00:59 WIB", buka: "01:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "KENTUCKY MIDDAY", days: "Senin s/d Minggu", tutup: "01:05 WIB", buka: "01:20 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
-            {name: "BANGKOK 0130", days: "Senin s/d Minggu", tutup: "01:15 WIB", buka: "01:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
-            {name: "FLORIDA MIDDAY", days: "Senin s/d Minggu", tutup: "01:20 WIB", buka: "01:30 WIB", website: "https://floridalottery.com/", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
-            {name: "HOKI DRAW 02", days: "Senin s/d Minggu", tutup: "01:59 WIB", buka: "02:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "NEW YORK MIDDAY", days: "Senin s/d Minggu", tutup: "02:15 WIB", buka: "02:25 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
-            {name: "BRUNEI 02", days: "Senin s/d Minggu", tutup: "02:30 WIB", buka: "02:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
-            {name: "HOKI DRAW 03", days: "Senin s/d Minggu", tutup: "02:59 WIB", buka: "03:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "CAROLINA DAY", days: "Senin s/d Minggu", tutup: "02:45 WIB", buka: "03:00 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
-            {name: "OREGON 03", days: "Senin s/d Minggu", tutup: "03:50 WIB", buka: "04:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
-            {name: "HOKI DRAW 04", days: "Senin s/d Minggu", tutup: "03:59 WIB", buka: "04:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "HOKI DRAW 05", days: "Senin s/d Minggu", tutup: "04:59 WIB", buka: "05:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "HOKI DRAW 06", days: "Senin s/d Minggu", tutup: "05:59 WIB", buka: "06:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "OREGON 06", days: "Senin s/d Minggu", tutup: "06:50 WIB", buka: "07:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
-            {name: "HOKI DRAW 07", days: "Senin s/d Minggu", tutup: "06:59 WIB", buka: "07:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "HOKI DRAW 08", days: "Senin s/d Minggu", tutup: "07:59 WIB", buka: "08:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "HOKI DRAW 09", days: "Senin s/d Minggu", tutup: "08:59 WIB", buka: "09:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "BANGKOK 0930", days: "Senin s/d Minggu", tutup: "09:15 WIB", buka: "09:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
-            {name: "CALIFORNIA", days: "Senin s/d Minggu", tutup: "09:25 WIB", buka: "09:30 WIB", website: "https://www.calottery.com/draw-games/daily-4", live: null, prizeType: "price1"},
-            {name: "FLORIDA EVENING", days: "Senin s/d Minggu", tutup: "09:35 WIB", buka: "09:45 WIB", website: "https://floridalottery.com/games/draw-games/pick-4", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
-            {name: "OREGON 09", days: "Senin s/d Minggu", tutup: "09:50 WIB", buka: "10:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
-            {name: "HOKI DRAW 10", days: "Senin s/d Minggu", tutup: "09:59 WIB", buka: "10:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "NEW YORK EVENING", days: "Senin s/d Minggu", tutup: "10:25 WIB", buka: "10:35 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
-            {name: "KENTUCKY EVENING", days: "Senin s/d Minggu", tutup: "10:45 WIB", buka: "11:00 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
-            {name: "TOTO CAMBODIA", days: "Senin s/d Minggu", tutup: "10:45 WIB", buka: "11:00 WIB", website: "https://totocambodialive.com/", live: "https://kick.com/totocambodia", prizeType: "price123"},
-            {name: "HOKI DRAW 11", days: "Senin s/d Minggu", tutup: "10:59 WIB", buka: "11:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "CHELSEA 11", days: "Senin s/d Minggu", tutup: "11:00 WIB", buka: "11:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
-            {name: "CAROLINA EVENING", days: "Senin s/d Minggu", tutup: "11:17 WIB", buka: "11:22 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
-            {name: "HOKI DRAW 12", days: "Senin s/d Minggu", tutup: "11:59 WIB", buka: "12:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "BULLSEYE", days: "Senin s/d Minggu", tutup: "12:00 WIB", buka: "12:15 WIB", website: "https://mylotto.co.nz/results/bullseye", live: null, prizeType: "price1"},
-            {name: "POIPET 12", days: "Senin s/d Minggu", tutup: "12:15 WIB", buka: "12:30 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
-            {name: "OREGON 12", days: "Senin s/d Minggu", tutup: "12:50 WIB", buka: "13:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
-            {name: "HOKI DRAW 13", days: "Senin s/d Minggu", tutup: "12:59 WIB", buka: "13:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MACAU SIANG", days: "Senin s/d Minggu", tutup: "13:00 WIB", buka: "13:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
-            {name: "HOKI DRAW 14", days: "Senin s/d Minggu", tutup: "13:59 WIB", buka: "14:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "SYDNEY", days: "Senin s/d Minggu", tutup: "13:49 WIB", buka: "14:05 WIB", website: "https://sydneyfunlotto.net/", live: "https://kick.com/sydney-lotto-official", prizeType: "price123"},
-            {name: "BRUNEI 14", days: "Senin s/d Minggu", tutup: "14:30 WIB", buka: "14:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
-            {name: "HOKI DRAW 15", days: "Senin s/d Minggu", tutup: "14:59 WIB", buka: "15:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "CHELSEA 15", days: "Senin s/d Minggu", tutup: "15:00 WIB", buka: "15:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
-            {name: "TOTO MALI 1530", days: "Senin s/d Minggu", tutup: "15:15 WIB", buka: "15:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "POIPET 15", days: "Senin s/d Minggu", tutup: "15:15 WIB", buka: "15:30 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
-            {name: "HOKI DRAW 16", days: "Senin s/d Minggu", tutup: "15:59 WIB", buka: "16:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MACAU SORE", days: "Senin s/d Minggu", tutup: "16:00 WIB", buka: "16:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
-            {name: "HUAHIN 1630", days: "Senin s/d Minggu", tutup: "16:15 WIB", buka: "16:30 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
-            {name: "HOKI DRAW 17", days: "Senin s/d Minggu", tutup: "16:59 WIB", buka: "17:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "KING KONG4D SORE", days: "Senin s/d Minggu", tutup: "17:00 WIB", buka: "17:15 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"},
-            {name: "SINGAPORE", days: "HARI SELASA & JUM'AT ( LIBUR )", tutup: "17:30 WIB", buka: "17:45 WIB", website: "https://www.singaporepools.com.sg/landing/en/Pages/index.html", live: null, prizeType: "price123", activeDays: [1, 3, 4, 6, 0]},
-            {name: "HOKI DRAW 18", days: "Senin s/d Minggu", tutup: "17:59 WIB", buka: "18:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "MAGNUM4D", days: "HARI RABU, SABTU & MINGGU", tutup: "18:10 WIB", buka: "18:40 WIB", website: "https://www.magnum4d.my/en", live: null, prizeType: "price123", activeDays: [3, 6, 0]},
-            {name: "HOKI DRAW 19", days: "Senin s/d Minggu", tutup: "18:59 WIB", buka: "19:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MACAU MALAM I", days: "Senin s/d Minggu", tutup: "19:00 WIB", buka: "19:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
-            {name: "CHELSEA 19", days: "Senin s/d Minggu", tutup: "19:00 WIB", buka: "19:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
-            {name: "POIPET 19", days: "Senin s/d Minggu", tutup: "19:30 WIB", buka: "19:45 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
-            {name: "PCSO", days: "Minggu Libur", tutup: "19:50 WIB", buka: "20:10 WIB", website: "https://www.pcso.gov.ph/", live: "https://www.youtube.com/@PCSOGOVPHOfficial/streams", prizeType: "price1", activeDays: [1, 2, 3, 4, 5, 6]},
-            {name: "HOKI DRAW 20", days: "Senin s/d Minggu", tutup: "19:59 WIB", buka: "20:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MALI 2030", days: "Senin s/d Minggu", tutup: "20:15 WIB", buka: "20:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "HUAHIN 2100", days: "Senin s/d Minggu", tutup: "20:45 WIB", buka: "21:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
-            {name: "HOKI DRAW 21", days: "Senin s/d Minggu", tutup: "20:59 WIB", buka: "21:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "CHELSEA 21", days: "Senin s/d Minggu", tutup: "21:00 WIB", buka: "21:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
-            {name: "NEVADA", days: "Senin s/d Minggu", tutup: "21:15 WIB", buka: "21:30 WIB", website: "https://www.nevadalottery.us/", live: null, prizeType: "price123"},
-            {name: "BRUNEI 21", days: "Senin s/d Minggu", tutup: "21:30 WIB", buka: "21:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
-            {name: "HOKI DRAW 22", days: "Senin s/d Minggu", tutup: "21:59 WIB", buka: "22:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "TOTO MACAU MALAM II", days: "Senin s/d Minggu", tutup: "22:00 WIB", buka: "22:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
-            {name: "POIPET 22", days: "Senin s/d Minggu", tutup: "22:30 WIB", buka: "22:45 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
-            {name: "HOKI DRAW 23", days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "HONGKONG", days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:15 WIB", website: "https://hongkongfunlotto.net/", live: "https://kick.com/hongkong-lotto-official", prizeType: "price123"},
-            {name: "TOTO MACAU MALAM III", days: "Senin s/d Minggu", tutup: "23:00 WIB", buka: "23:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
-            {name: "TOTO MALI 2330", days: "Senin s/d Minggu", tutup: "23:15 WIB", buka: "23:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "KING KONG4D MALAM", days: "Senin s/d Minggu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
+            {name: "HOKI DRAW 00",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "23:59 WIB", buka: "00:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "TOTO MACAU PAGI",     icon: `${BASE}/TTM6/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "00:00 WIB", buka: "00:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "HUAHIN 0100",         icon: `${BASE}/HUA01/icon/icon.png`, days: "Senin s/d Minggu", tutup: "00:45 WIB", buka: "01:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
+            {name: "HOKI DRAW 01",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "00:59 WIB", buka: "01:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "KENTUCKY MIDDAY",     icon: `${BASE}/KTM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "01:05 WIB", buka: "01:20 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
+            {name: "BANGKOK 0130",        icon: `${BASE}/BKK01/icon/icon.png`, days: "Senin s/d Minggu", tutup: "01:15 WIB", buka: "01:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
+            {name: "FLORIDA MIDDAY",      icon: `${BASE}/FLM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "01:20 WIB", buka: "01:30 WIB", website: "https://floridalottery.com/", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
+            {name: "HOKI DRAW 02",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "01:59 WIB", buka: "02:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "NEW YORK MIDDAY",     icon: `${BASE}/NYM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "02:15 WIB", buka: "02:25 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
+            {name: "BRUNEI 02",           icon: `${BASE}/BRU02/icon/icon.png`, days: "Senin s/d Minggu", tutup: "02:30 WIB", buka: "02:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
+            {name: "HOKI DRAW 03",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "02:59 WIB", buka: "03:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "CAROLINA DAY",        icon: `${BASE}/NCD/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "02:45 WIB", buka: "03:00 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
+            {name: "OREGON 03",           icon: `${BASE}/ORG03/icon/icon.png`, days: "Senin s/d Minggu", tutup: "03:50 WIB", buka: "04:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
+            {name: "HOKI DRAW 04",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "03:59 WIB", buka: "04:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "HOKI DRAW 05",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "04:59 WIB", buka: "05:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "HOKI DRAW 06",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "05:59 WIB", buka: "06:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "OREGON 06",           icon: `${BASE}/ORG6/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "06:50 WIB", buka: "07:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
+            {name: "HOKI DRAW 07",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "06:59 WIB", buka: "07:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "HOKI DRAW 08",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "07:59 WIB", buka: "08:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "HOKI DRAW 09",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "08:59 WIB", buka: "09:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "BANGKOK 0930",        icon: `${BASE}/BKK02/icon/icon.png`, days: "Senin s/d Minggu", tutup: "09:15 WIB", buka: "09:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
+            {name: "CALIFORNIA",          icon: `${BASE}/CLF/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "09:25 WIB", buka: "09:30 WIB", website: "https://www.calottery.com/draw-games/daily-4", live: null, prizeType: "price1"},
+            {name: "FLORIDA EVENING",     icon: `${BASE}/FLE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "09:35 WIB", buka: "09:45 WIB", website: "https://floridalottery.com/games/draw-games/pick-4", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
+            {name: "OREGON 09",           icon: `${BASE}/ORG09/icon/icon.png`, days: "Senin s/d Minggu", tutup: "09:50 WIB", buka: "10:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
+            {name: "HOKI DRAW 10",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "09:59 WIB", buka: "10:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "NEW YORK EVENING",    icon: `${BASE}/NYE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "10:25 WIB", buka: "10:35 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
+            {name: "KENTUCKY EVENING",    icon: `${BASE}/KTE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "10:45 WIB", buka: "11:00 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
+            {name: "TOTO CAMBODIA",       icon: `${BASE}/TTC/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "10:45 WIB", buka: "11:00 WIB", website: "https://totocambodialive.com/", live: "https://kick.com/totocambodia", prizeType: "price123"},
+            {name: "HOKI DRAW 11",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "10:59 WIB", buka: "11:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "CHELSEA 11",          icon: `${BASE}/CHS11/icon/icon.png`, days: "Senin s/d Minggu", tutup: "11:00 WIB", buka: "11:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
+            {name: "CAROLINA EVENING",    icon: `${BASE}/NCD2/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "11:17 WIB", buka: "11:22 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
+            {name: "HOKI DRAW 12",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "11:59 WIB", buka: "12:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "BULLSEYE",            icon: `${BASE}/BLE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "12:00 WIB", buka: "12:15 WIB", website: "https://mylotto.co.nz/results/bullseye", live: null, prizeType: "price1"},
+            {name: "POIPET 12",           icon: `${BASE}/PPT12/icon/icon.png`, days: "Senin s/d Minggu", tutup: "12:15 WIB", buka: "12:30 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
+            {name: "OREGON 12",           icon: `${BASE}/ORG12/icon/icon.png`, days: "Senin s/d Minggu", tutup: "12:50 WIB", buka: "13:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
+            {name: "HOKI DRAW 13",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "12:59 WIB", buka: "13:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "TOTO MACAU SIANG",    icon: `${BASE}/TTM1/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "13:00 WIB", buka: "13:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "HOKI DRAW 14",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "13:59 WIB", buka: "14:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "SYDNEY",              icon: `${BASE}/SYDLT/icon/icon.png`, days: "Senin s/d Minggu", tutup: "13:49 WIB", buka: "14:05 WIB", website: "https://sydneyfunlotto.net/", live: "https://kick.com/sydney-lotto-official", prizeType: "price123"},
+            {name: "BRUNEI 14",           icon: `${BASE}/BRU14/icon/icon.png`, days: "Senin s/d Minggu", tutup: "14:30 WIB", buka: "14:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
+            {name: "HOKI DRAW 15",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "14:59 WIB", buka: "15:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "CHELSEA 15",          icon: `${BASE}/CHS15/icon/icon.png`, days: "Senin s/d Minggu", tutup: "15:00 WIB", buka: "15:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
+            {name: "TOTO MALI 1530",      icon: `${BASE}/MALI15/icon/icon.png`,days: "Senin s/d Minggu", tutup: "15:15 WIB", buka: "15:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
+            {name: "POIPET 15",           icon: `${BASE}/PPT15/icon/icon.png`, days: "Senin s/d Minggu", tutup: "15:15 WIB", buka: "15:30 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
+            {name: "HOKI DRAW 16",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "15:59 WIB", buka: "16:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "TOTO MACAU SORE",     icon: `${BASE}/TTM2/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "16:00 WIB", buka: "16:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "HUAHIN 1630",         icon: `${BASE}/HUA02/icon/icon.png`, days: "Senin s/d Minggu", tutup: "16:15 WIB", buka: "16:30 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
+            {name: "HOKI DRAW 17",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "16:59 WIB", buka: "17:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "KING KONG4D SORE",    icon: `${BASE}/KK1/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "17:00 WIB", buka: "17:15 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"},
+            {name: "SINGAPORE",           icon: `${BASE}/SGD/icon/icon.png`,   days: "HARI SELASA & JUM'AT ( LIBUR )", tutup: "17:30 WIB", buka: "17:45 WIB", website: "https://www.singaporepools.com.sg/landing/en/Pages/index.html", live: null, prizeType: "price123", activeDays: [1, 3, 4, 6, 0]},
+            {name: "HOKI DRAW 18",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "17:59 WIB", buka: "18:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "MAGNUM4D",            icon: `${BASE}/MAG/icon/icon.png`,   days: "HARI RABU, SABTU & MINGGU", tutup: "18:10 WIB", buka: "18:40 WIB", website: "https://www.magnum4d.my/en", live: null, prizeType: "price123", activeDays: [3, 6, 0]},
+            {name: "HOKI DRAW 19",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "18:59 WIB", buka: "19:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "TOTO MACAU MALAM I",  icon: `${BASE}/TTM3/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "19:00 WIB", buka: "19:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "CHELSEA 19",          icon: `${BASE}/CHS19/icon/icon.png`, days: "Senin s/d Minggu", tutup: "19:00 WIB", buka: "19:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
+            {name: "POIPET 19",           icon: `${BASE}/PPT19/icon/icon.png`, days: "Senin s/d Minggu", tutup: "19:30 WIB", buka: "19:45 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
+            {name: "PCSO",                icon: `${BASE}/PCO/icon/icon.png`,   days: "Minggu Libur", tutup: "19:50 WIB", buka: "20:10 WIB", website: "https://www.pcso.gov.ph/", live: "https://www.youtube.com/@PCSOGOVPHOfficial/streams", prizeType: "price1", activeDays: [1, 2, 3, 4, 5, 6]},
+            {name: "HOKI DRAW 20",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "19:59 WIB", buka: "20:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "TOTO MALI 2030",      icon: `${BASE}/MALI20/icon/icon.png`,days: "Senin s/d Minggu", tutup: "20:15 WIB", buka: "20:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
+            {name: "HUAHIN 2100",         icon: `${BASE}/HUA03/icon/icon.png`, days: "Senin s/d Minggu", tutup: "20:45 WIB", buka: "21:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
+            {name: "HOKI DRAW 21",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "20:59 WIB", buka: "21:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "CHELSEA 21",          icon: `${BASE}/CHS21/icon/icon.png`, days: "Senin s/d Minggu", tutup: "21:00 WIB", buka: "21:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
+            {name: "NEVADA",              icon: `${BASE}/NVD/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "21:15 WIB", buka: "21:30 WIB", website: "https://www.nevadalottery.us/", live: null, prizeType: "price123"},
+            {name: "BRUNEI 21",           icon: `${BASE}/BRU21/icon/icon.png`, days: "Senin s/d Minggu", tutup: "21:30 WIB", buka: "21:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
+            {name: "HOKI DRAW 22",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "21:59 WIB", buka: "22:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "TOTO MACAU MALAM II", icon: `${BASE}/TTM4/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "22:00 WIB", buka: "22:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "POIPET 22",           icon: `${BASE}/PPT22/icon/icon.png`, days: "Senin s/d Minggu", tutup: "22:30 WIB", buka: "22:45 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
+            {name: "HOKI DRAW 23",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "HONGKONG",            icon: `${BASE}/HKGLT/icon/icon.png`, days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:15 WIB", website: "https://hongkongfunlotto.net/", live: "https://kick.com/hongkong-lotto-official", prizeType: "price123"},
+            {name: "TOTO MACAU MALAM III",icon: `${BASE}/TTM5/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "23:00 WIB", buka: "23:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "TOTO MALI 2330",      icon: `${BASE}/MALI23/icon/icon.png`,days: "Senin s/d Minggu", tutup: "23:15 WIB", buka: "23:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
+            {name: "KING KONG4D MALAM",   icon: `${BASE}/KK2/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
         ];
 
         const cardStates = {};
-        
         let alarmEnabled = localStorage.getItem('alarmEnabled') === 'true';
         let alarmVolume = parseInt(localStorage.getItem('alarmVolume') || '80') / 100;
         let selectedVoice = null;
         let voicesLoaded = false;
-        const alarmPlayed = {}; 
+        const alarmPlayed = {};
         const previousStates = {};
-
         const STORAGE_KEY = 'jadwalTogelCardStates';
 
         function saveToLocalStorage() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(cardStates));
-            } catch (error) {
-                console.error('Failed to save to localStorage:', error);
-            }
+            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(cardStates)); } catch(e) {}
         }
 
         function loadFromLocalStorage() {
             try {
                 const saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    const parsed = JSON.parse(saved);
-                    Object.assign(cardStates, parsed);
-                    return true;
-                }
-            } catch (error) {
-                console.error('Failed to load from localStorage:', error);
-            }
+                if (saved) { Object.assign(cardStates, JSON.parse(saved)); return true; }
+            } catch(e) {}
             return false;
         }
 
@@ -1507,11 +1257,9 @@
             const savedTimestamp = localStorage.getItem('jadwalTogelTimestamp');
             const now = Date.now();
             const twoDays = 2 * 24 * 60 * 60 * 1000;
-            
             if (savedTimestamp && (now - parseInt(savedTimestamp)) > twoDays) {
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem('jadwalTogelTimestamp');
-                console.log('♻️ Data lama (>2 hari) otomatis dihapus');
             } else if (!savedTimestamp) {
                 localStorage.setItem('jadwalTogelTimestamp', now.toString());
             }
@@ -1519,692 +1267,236 @@
 
         function loadVoices() {
             const voices = window.speechSynthesis.getVoices();
-            
-            if (voices.length === 0) {
-                return;
-            }
-
+            if (voices.length === 0) return;
             const indonesianVoice = voices.find(v => v.name.includes('Google Bahasa Indonesia'));
-            
-            if (indonesianVoice) {
-                selectedVoice = indonesianVoice;
-                voicesLoaded = true;
-                console.log('✅ Voice Loaded: Google Bahasa Indonesia (id-ID)');
-            } else {
-                const fallbackVoice = voices.find(v => v.lang.startsWith('id'));
-                selectedVoice = fallbackVoice || voices[0];
-                voicesLoaded = true;
-                console.log('⚠️ Fallback Voice:', selectedVoice?.name);
-            }
+            if (indonesianVoice) { selectedVoice = indonesianVoice; voicesLoaded = true; }
+            else { const fb = voices.find(v => v.lang.startsWith('id')); selectedVoice = fb || voices[0]; voicesLoaded = true; }
         }
 
         function parseTimeToMinutes(timeStr) {
-            const [time, period] = timeStr.split(' ');
-            const [hours, minutes] = time.split(':').map(Number);
-            return hours * 60 + minutes;
+            const [time] = timeStr.split(' ');
+            const [h, m] = time.split(':').map(Number);
+            return h * 60 + m;
         }
 
         function isActiveDay(data) {
             if (!data.activeDays) return true;
-            const now = new Date();
-            const currentDay = now.getDay();
-            return data.activeDays.includes(currentDay);
+            return data.activeDays.includes(new Date().getDay());
         }
 
         function getNextActiveDay(data) {
             if (!data.activeDays) return null;
-            const now = new Date();
-            const currentDay = now.getDay();
-            const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+            const dayNames = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const cur = new Date().getDay();
             for (let i = 1; i <= 7; i++) {
-                const nextDay = (currentDay + i) % 7;
-                if (data.activeDays.includes(nextDay)) {
-                    return dayNames[nextDay];
-                }
+                const nd = (cur + i) % 7;
+                if (data.activeDays.includes(nd)) return dayNames[nd];
             }
             return null;
         }
 
         function getNextActiveDayDate(data) {
             if (!data.activeDays) return null;
-            const now = new Date();
-            const currentDay = now.getDay();
+            const cur = new Date().getDay();
             for (let i = 1; i <= 7; i++) {
-                const nextDay = (currentDay + i) % 7;
-                if (data.activeDays.includes(nextDay)) {
-                    return {
-                        daysToAdd: i,
-                        dayOfWeek: nextDay
-                    };
-                }
+                const nd = (cur + i) % 7;
+                if (data.activeDays.includes(nd)) return { daysToAdd: i, dayOfWeek: nd };
             }
             return null;
         }
 
         function calculateCountdown(tutupTime, bukaTime, data) {
+            if (!isActiveDay(data)) return { isHoliday: true, nextActiveDay: getNextActiveDay(data) };
             const now = new Date();
             const currentDay = now.getDay();
-            
-            if (!isActiveDay(data)) {
-                return {
-                    isHoliday: true,
-                    nextActiveDay: getNextActiveDay(data)
-                };
-            }
-            
-            const currentMinutes = now.getHours() * 60 + now.getMinutes();
-            const tutupMinutes = parseTimeToMinutes(tutupTime);
-            const bukaMinutes = parseTimeToMinutes(bukaTime);
-            
-            let diff;
-            let phase;
-            
-            if (currentMinutes < tutupMinutes) {
-                diff = tutupMinutes - currentMinutes;
-                phase = 'countdown';
-            }
-            else if (currentMinutes >= tutupMinutes && currentMinutes < bukaMinutes) {
-                return {
-                    isBetClose: true,
-                    isHoliday: false
-                };
-            }
+            const cur = now.getHours() * 60 + now.getMinutes();
+            const tutup = parseTimeToMinutes(tutupTime);
+            const buka = parseTimeToMinutes(bukaTime);
+            let diff, phase;
+            if (cur < tutup) { diff = tutup - cur; phase = 'countdown'; }
+            else if (cur >= tutup && cur < buka) { return { isBetClose: true, isHoliday: false }; }
             else {
                 const tomorrow = (currentDay + 1) % 7;
-                const isTomorrowActive = !data.activeDays || data.activeDays.includes(tomorrow);
-                
-                if (isTomorrowActive) {
-                    diff = (24 * 60) - currentMinutes + tutupMinutes;
-                } else {
-                    const nextActive = getNextActiveDayDate(data);
-                    if (nextActive) {
-                        diff = (nextActive.daysToAdd * 24 * 60) - currentMinutes + tutupMinutes;
-                    } else {
-                        diff = (24 * 60) - currentMinutes + tutupMinutes;
-                    }
+                const isTomActive = !data.activeDays || data.activeDays.includes(tomorrow);
+                if (isTomActive) { diff = 24 * 60 - cur + tutup; }
+                else {
+                    const na = getNextActiveDayDate(data);
+                    diff = na ? (na.daysToAdd * 24 * 60 - cur + tutup) : (24 * 60 - cur + tutup);
                 }
                 phase = 'countdown';
             }
-            
-            const hours = Math.floor(diff / 60);
-            const minutes = diff % 60;
-            const seconds = 60 - now.getSeconds();
-            
-            return {
-                hours,
-                minutes,
-                seconds: seconds === 60 ? 0 : seconds,
-                totalMinutes: diff,
-                isHoliday: false,
-                isBetClose: false,
-                phase: phase
-            };
+            const secs = 60 - now.getSeconds();
+            return { hours: Math.floor(diff/60), minutes: diff%60, seconds: secs===60?0:secs, totalMinutes: diff, isHoliday: false, isBetClose: false, phase };
         }
 
-        function formatCountdown(countdown) {
-            if (countdown.isHoliday) {
-                return `LIBUR - Next: ${countdown.nextActiveDay}`;
-            }
-            
-            if (countdown.isBetClose) {
-                return 'BET CLOSE';
-            }
-            
-            const h = String(countdown.hours).padStart(2, '0');
-            const m = String(countdown.minutes).padStart(2, '0');
-            const s = String(countdown.seconds).padStart(2, '0');
-            return `${h}:${m}:${s}`;
+        function formatCountdown(cd) {
+            if (cd.isHoliday) return `LIBUR - Next: ${cd.nextActiveDay}`;
+            if (cd.isBetClose) return 'BET CLOSE';
+            return `${String(cd.hours).padStart(2,'0')}:${String(cd.minutes).padStart(2,'0')}:${String(cd.seconds).padStart(2,'0')}`;
         }
 
         function convertPasaranNameForSpeech(name) {
+            const reps = { 'MACAU':'Makau','SINGAPORE':'Singapura','HONGKONG':'Hong Kong','SYDNEY':'Sidney','BANGKOK':'Bangkok','FLORIDA':'Florida','CAROLINA':'Carolina','KENTUCKY':'Kentucky','CALIFORNIA':'California','OREGON':'Oregon','NEVADA':'Nevada','HUAHIN':'Hua Hin','POIPET':'Poi Pet','BRUNEI':'Brunei','CHELSEA':'Chelsea','MAGNUM':'Magnum','MALI':'Mali','NEW YORK':'New York','HOKI':'Hoki','TOTO':'Toto','KING KONG':'King Kong','BULLSEYE':'Bulls Eye','PCSO':'Pe Ce Es O' };
             let converted = name;
-            
-            const placeReplacements = {
-                'MACAU': 'Makau',
-                'SINGAPORE': 'Singapura',
-                'HONGKONG': 'Hong Kong',
-                'SYDNEY': 'Sidney',
-                'BANGKOK': 'Bangkok',
-                'FLORIDA': 'Florida',
-                'CAROLINA': 'Carolina',
-                'KENTUCKY': 'Kentucky',
-                'CALIFORNIA': 'California',
-                'OREGON': 'Oregon',
-                'NEVADA': 'Nevada',
-                'HUAHIN': 'Hua Hin',
-                'POIPET': 'Poi Pet',
-                'BRUNEI': 'Brunei',
-                'CHELSEA': 'Chelsea',
-                'MAGNUM': 'Magnum',
-                'MALI': 'Mali',
-                'NEW YORK': 'New York',
-                'YORK': 'York',
-                'NEW': 'New',
-                'HOKI': 'Hoki',
-                'TOTO': 'Toto',
-                'KING KONG': 'King Kong',
-                'KING': 'King',
-                'KONG': 'Kong',
-                'BULLSEYE': 'Bulls Eye',
-                'PCSO': 'Pe Ce Es O'
-            };
-            
-            for (const [key, value] of Object.entries(placeReplacements)) {
-                const regex = new RegExp('\\b' + key + '\\b', 'gi');
-                converted = converted.replace(regex, value);
-            }
-            
-            converted = converted.replace(/\bDRAW\b/gi, 'Draw');
-            converted = converted.replace(/\b4D\b/gi, 'Empat D');
-            
-            converted = converted.replace(/(\d{2,4})/g, function(match) {
-                return match.split('').join(' ');
-            });
-            
+            for (const [k,v] of Object.entries(reps)) converted = converted.replace(new RegExp('\\b'+k+'\\b','gi'), v);
+            converted = converted.replace(/\bDRAW\b/gi,'Draw').replace(/\b4D\b/gi,'Empat D');
+            converted = converted.replace(/(\d{2,4})/g, m => m.split('').join(' '));
             return converted;
         }
 
-        function playAlarm(pasaranNames, repeatCount = 1) {
-            console.log('🔔 playAlarm() called');
-            console.log('   alarmEnabled:', alarmEnabled);
-            console.log('   voicesLoaded:', voicesLoaded);
-            console.log('   selectedVoice:', selectedVoice?.name);
-            console.log('   pasaranNames:', pasaranNames);
-            
-            if (!alarmEnabled) {
-                console.log('❌ Alarm tidak aktif, keluar dari fungsi');
-                return;
-            }
-            
-            if (!voicesLoaded || !selectedVoice) {
-                console.log('⚠️ Voice belum loaded, mencoba load ulang...');
-                loadVoices();
-                if (!voicesLoaded || !selectedVoice) {
-                    console.error('❌ Voice masih belum loaded setelah retry');
-                    return;
-                }
-            }
-            
-            if (typeof pasaranNames === 'string') {
-                pasaranNames = [pasaranNames];
-            }
-            
+        function playAlarm(pasaranNames, repeatCount=1) {
+            if (!alarmEnabled || !voicesLoaded || !selectedVoice) return;
+            if (typeof pasaranNames === 'string') pasaranNames = [pasaranNames];
             const today = new Date().toDateString();
             const alarmKey = `${today}-${pasaranNames.join('-')}`;
-            
-            if (alarmPlayed[alarmKey]) {
-                console.log('⚠️ Alarm sudah dimainkan untuk:', alarmKey);
-                return;
-            }
-            
+            if (alarmPlayed[alarmKey]) return;
             alarmPlayed[alarmKey] = true;
-            console.log('✅ Marking alarm as played:', alarmKey);
-            
-            if (!('speechSynthesis' in window)) {
-                console.error('❌ Browser tidak support text-to-speech');
-                return;
-            }
-            
-            speakAnnouncement();
-            
-            function speakAnnouncement() {
-                const convertedNames = pasaranNames.map(name => convertPasaranNameForSpeech(name));
-                const namesText = convertedNames.join(', ');
-                
-                console.log('🔊 SPEAKING ANNOUNCEMENT');
-                console.log('   Original:', pasaranNames.join(', '));
-                console.log('   Converted:', namesText);
-                
-                const utteranceNames = new SpeechSynthesisUtterance(namesText);
-                utteranceNames.voice = selectedVoice;
-                utteranceNames.lang = selectedVoice.lang;
-                utteranceNames.rate = 1.0;
-                utteranceNames.pitch = 1.0;
-                utteranceNames.volume = alarmVolume;
-                
-                console.log('   Voice for Names:', utteranceNames.voice?.name);
-                console.log('   Lang for Names:', utteranceNames.lang);
-                console.log('   Volume:', utteranceNames.volume);
-                
-                const utteranceBetClose = new SpeechSynthesisUtterance('BET CLOSE');
-                utteranceBetClose.voice = selectedVoice;
-                utteranceBetClose.lang = selectedVoice.lang;
-                utteranceBetClose.rate = 1.0;
-                utteranceBetClose.pitch = 1.0;
-                utteranceBetClose.volume = alarmVolume;
-                
-                console.log('   Voice for BET CLOSE:', utteranceBetClose.voice?.name);
-                console.log('   Lang for BET CLOSE:', utteranceBetClose.lang);
-                
-                utteranceNames.onstart = function() {
-                    console.log('▶️ Started speaking NAMES');
-                };
-                
-                utteranceNames.onend = function() {
-                    console.log('✅ Finished speaking NAMES, now speaking BET CLOSE');
-                    window.speechSynthesis.speak(utteranceBetClose);
-                };
-                
-                utteranceNames.onerror = function(event) {
-                    console.error('❌ Speech error (Names):', event);
-                };
-                
-                utteranceBetClose.onstart = function() {
-                    console.log('▶️ Started speaking BET CLOSE');
-                };
-                
-                utteranceBetClose.onend = function() {
-                    console.log('✅ Finished speaking BET CLOSE');
-                };
-                
-                utteranceBetClose.onerror = function(event) {
-                    console.error('❌ Speech error (BET CLOSE):', event);
-                };
-                
-                console.log('🎙️ Calling speechSynthesis.speak()...');
-                window.speechSynthesis.speak(utteranceNames);
-            }
+            if (!('speechSynthesis' in window)) return;
+            const converted = pasaranNames.map(n => convertPasaranNameForSpeech(n)).join(', ');
+            const u1 = new SpeechSynthesisUtterance(converted);
+            u1.voice = selectedVoice; u1.lang = selectedVoice.lang; u1.rate = 1.0; u1.volume = alarmVolume;
+            const u2 = new SpeechSynthesisUtterance('BET CLOSE');
+            u2.voice = selectedVoice; u2.lang = selectedVoice.lang; u2.rate = 1.0; u2.volume = alarmVolume;
+            u1.onend = () => window.speechSynthesis.speak(u2);
+            window.speechSynthesis.speak(u1);
         }
 
         function toggleAlarm() {
             alarmEnabled = !alarmEnabled;
             localStorage.setItem('alarmEnabled', alarmEnabled);
-            
-            const alarmSwitch = document.getElementById('alarmSwitch');
-            const alarmToggle = alarmSwitch.closest('.alarm-toggle');
-            const alarmStatus = document.getElementById('alarmStatus');
-            
-            if (alarmEnabled) {
-                alarmSwitch.classList.add('active');
-                alarmToggle.classList.add('active');
-                alarmStatus.textContent = 'Alarm AKTIF';
-                showToast('Alarm Aktif', false, 'success');
-                
-                if (!voicesLoaded) {
-                    loadVoices();
-                }
-                
-                console.log('✅ Alarm diaktifkan');
-                console.log('   Voice:', selectedVoice?.name);
-            } else {
-                alarmSwitch.classList.remove('active');
-                alarmToggle.classList.remove('active');
-                alarmStatus.textContent = 'Klik untuk mengaktifkan';
-                showToast('Alarm NonAktif', true, 'error');
-                
-                console.log('❌ Alarm dinonaktifkan');
-            }
+            const sw = document.getElementById('alarmSwitch');
+            const tog = sw.closest('.alarm-toggle');
+            const st = document.getElementById('alarmStatus');
+            if (alarmEnabled) { sw.classList.add('active'); tog.classList.add('active'); st.textContent='Alarm AKTIF'; showToast('Alarm Aktif',false,'success'); if(!voicesLoaded) loadVoices(); }
+            else { sw.classList.remove('active'); tog.classList.remove('active'); st.textContent='Klik untuk mengaktifkan'; showToast('Alarm NonAktif',true,'error'); }
         }
 
         function updateVolume(value) {
-            alarmVolume = parseInt(value) / 100;
+            alarmVolume = parseInt(value)/100;
             localStorage.setItem('alarmVolume', value);
-            document.getElementById('volumeLabel').textContent = value + '%';
-            
-            console.log('🔊 Volume updated:', value + '%');
+            document.getElementById('volumeLabel').textContent = value+'%';
         }
 
         function updateCountdowns() {
             const betCloseGroups = {};
-            
             document.querySelectorAll('.countdown-timer').forEach((timer, index) => {
                 const data = pasaranData[index];
-                const countdown = calculateCountdown(data.tutup, data.buka, data);
-                
-                const previousState = previousStates[index];
-                const currentState = countdown.isBetClose ? 'betclose' : 
-                                   countdown.isHoliday ? 'holiday' : 'countdown';
-                
-                timer.textContent = formatCountdown(countdown);
-                
-                timer.classList.remove('warning', 'critical', 'expired', 'holiday', 'phase-countdown', 'phase-betclose');
-                timer.style.color = '';
-                timer.style.borderColor = '';
-                timer.style.background = '';
-                timer.style.textShadow = '';
-                
-                if (countdown.isHoliday) {
-                    timer.classList.add('holiday');
-                } else if (countdown.isBetClose) {
+                const cd = calculateCountdown(data.tutup, data.buka, data);
+                const prev = previousStates[index];
+                const cur = cd.isBetClose?'betclose':cd.isHoliday?'holiday':'countdown';
+                timer.textContent = formatCountdown(cd);
+                timer.classList.remove('warning','critical','expired','holiday','phase-countdown','phase-betclose');
+                if (cd.isHoliday) { timer.classList.add('holiday'); }
+                else if (cd.isBetClose) {
                     timer.classList.add('phase-betclose');
-                    
-                    if (previousState === 'countdown' && currentState === 'betclose') {
-                        const closeTime = data.tutup;
-                        if (!betCloseGroups[closeTime]) {
-                            betCloseGroups[closeTime] = [];
-                        }
-                        betCloseGroups[closeTime].push(data.name);
-                        
-                        console.log(`🔄 State changed to BET CLOSE for ${data.name}`);
+                    if (prev==='countdown' && cur==='betclose') {
+                        if (!betCloseGroups[data.tutup]) betCloseGroups[data.tutup]=[];
+                        betCloseGroups[data.tutup].push(data.name);
                     }
                 } else {
                     timer.classList.add('phase-countdown');
-                    // Red critical alert when <= 30 minutes until bet close
-                    if (countdown.totalMinutes <= 30 && countdown.totalMinutes > 0) {
-                        timer.classList.add('critical');
-                    }
+                    if (cd.totalMinutes<=30 && cd.totalMinutes>0) timer.classList.add('critical');
                 }
-                
-                previousStates[index] = currentState;
+                previousStates[index] = cur;
             });
-            
-            if (alarmEnabled && Object.keys(betCloseGroups).length > 0) {
-                console.log('🎯 BET CLOSE detected for groups:', betCloseGroups);
-                
-                for (const closeTime in betCloseGroups) {
-                    const pasaranNames = betCloseGroups[closeTime];
-                    console.log(`📣 Calling playAlarm for ${closeTime}:`, pasaranNames);
-                    playAlarm(pasaranNames, 1);
-                }
+            if (alarmEnabled && Object.keys(betCloseGroups).length>0) {
+                for (const t in betCloseGroups) playAlarm(betCloseGroups[t], 1);
             }
         }
 
         function clearAllData() {
             if (confirm('Yakin ingin menghapus SEMUA data tersimpan? Tindakan ini tidak dapat dibatalkan!')) {
-                Object.keys(cardStates).forEach(key => delete cardStates[key]);
-                
+                Object.keys(cardStates).forEach(k => delete cardStates[k]);
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem('jadwalTogelTimestamp');
-                
                 renderCards();
-                
                 showToast('🗑️ Semua data tersimpan berhasil dihapus!', false, 'info');
             }
         }
 
         function getShio(number) {
-            const shioTable = {
-                "KUDA": [1, 13, 25, 37, 49, 61, 73, 85, 97],
-                "ULAR": [2, 14, 26, 38, 50, 62, 74, 86, 98],
-                "NAGA": [3, 15, 27, 39, 51, 63, 75, 87, 99],
-                "KELINCI": [4, 16, 28, 40, 52, 64, 76, 88, 00],
-                "HARIMAU": [5, 17, 29, 41, 53, 65, 77, 89],
-                "KERBAU": [6, 18, 30, 42, 54, 66, 78, 90],
-                "TIKUS": [7, 19, 31, 43, 55, 67, 79, 91],
-                "BABI": [8, 20, 32, 44, 56, 68, 80, 92],
-                "ANJING": [9, 21, 33, 45, 57, 69, 81, 93],
-                "AYAM": [10, 22, 34, 46, 58, 70, 82, 94],
-                "MONYET": [11, 23, 35, 47, 59, 71, 83, 95],
-                "KAMBING": [12, 24, 36, 48, 60, 72, 84, 96]
-            };
-            
-            const lastTwo = parseInt(number.toString().slice(-2));
-            
-            for (const [shio, numbers] of Object.entries(shioTable)) {
-                if (numbers.includes(lastTwo)) {
-                    return shio;
-                }
-            }
-            
+            const shioTable = { "KUDA":[1,13,25,37,49,61,73,85,97],"ULAR":[2,14,26,38,50,62,74,86,98],"NAGA":[3,15,27,39,51,63,75,87,99],"KELINCI":[4,16,28,40,52,64,76,88,0],"HARIMAU":[5,17,29,41,53,65,77,89],"KERBAU":[6,18,30,42,54,66,78,90],"TIKUS":[7,19,31,43,55,67,79,91],"BABI":[8,20,32,44,56,68,80,92],"ANJING":[9,21,33,45,57,69,81,93],"AYAM":[10,22,34,46,58,70,82,94],"MONYET":[11,23,35,47,59,71,83,95],"KAMBING":[12,24,36,48,60,72,84,96] };
+            const lt = parseInt(number.toString().slice(-2));
+            for (const [s, nums] of Object.entries(shioTable)) if (nums.includes(lt)) return s;
             return "TIDAK DIKETAHUI";
-        }
-
-        function getCurrentDate() {
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-            const now = new Date();
-            return `${days[now.getDay()]} , ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
         }
 
         function updateDateTime() {
             const now = new Date();
-            
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            
-            const dayName = days[now.getDay()];
-            const date = String(now.getDate()).padStart(2, '0');
-            const monthName = months[now.getMonth()];
-            const year = now.getFullYear();
-            
-            const dateString = `${dayName}, ${date} ${monthName} ${year}`;
-            document.getElementById('currentDate').textContent = dateString;
-            
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            
-            const timeString = `${hours}:${minutes}:${seconds}`;
-            document.getElementById('currentTime').textContent = timeString;
+            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            document.getElementById('currentDate').textContent = `${days[now.getDay()]}, ${String(now.getDate()).padStart(2,'0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            document.getElementById('currentTime').textContent = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
         }
 
         function generateResultText(pasaran, prize1, prize2, prize3) {
             const shio = getShio(prize1);
             const now = new Date();
-            const days = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-            const months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-            
-            const date = `${days[now.getDay()]} , ${String(now.getDate()).padStart(2, '0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
-            
+            const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+            const months = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+            const date = `${days[now.getDay()]} , ${String(now.getDate()).padStart(2,'0')} ${months[now.getMonth()]} ${now.getFullYear()}`;
             let text = `Hasil Pengeluaran : ${pasaran}\nHARI ${date.toUpperCase()}\nResult Prize 1 : ${prize1}`;
-            
-            if (prize2 && prize3) {
-                text += `\nPrize 1 SHIO   : ${shio}\nResult Prize 2 : ${prize2}\nResult Prize 3 : ${prize3}`;
-            } else {
-                text += `\nPrize 1 SHIO   : ${shio}`;
-            }
-            
+            if (prize2 && prize3) text += `\nPrize 1 SHIO   : ${shio}\nResult Prize 2 : ${prize2}\nResult Prize 3 : ${prize3}`;
+            else text += `\nPrize 1 SHIO   : ${shio}`;
             text += `\nSelamat Kepada Pemenang, Salam JP`;
             return text;
         }
 
-        function showModal(pasaran, prize1, prize2, prize3) {
-            const text = generateResultText(pasaran, prize1, prize2, prize3);
-            document.getElementById('modalBody').textContent = text;
-            document.getElementById('resultModal').style.display = 'flex';
-        }
-
-        function closeModal() {
-            document.getElementById('resultModal').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('resultModal').style.display = 'none'; }
 
         function copyModalText() {
             const text = document.getElementById('modalBody').textContent;
             const button = document.querySelector('.btn-modal-copy');
-            const originalText = button.textContent;
-            
+            const orig = button.textContent;
             navigator.clipboard.writeText(text).then(() => {
-                button.textContent = '✓ Berhasil Dicopy!';
-                button.classList.add('copied');
-                
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                button.textContent = '✗ Gagal Copy';
-                setTimeout(() => {
-                    button.textContent = originalText;
-                }, 2000);
-            });
+                button.textContent='✓ Berhasil Dicopy!'; button.classList.add('copied');
+                setTimeout(() => { button.textContent=orig; button.classList.remove('copied'); }, 2000);
+            }).catch(() => { button.textContent='✗ Gagal Copy'; setTimeout(() => button.textContent=orig, 2000); });
         }
 
-        // NEW: Function to update result display
         function updateResultDisplay(index) {
             const card = document.querySelector(`[data-index="${index}"]`);
             if (!card) return;
-            
             const data = pasaranData[index];
             const resultDisplay = card.querySelector('.result-display');
             const resultNumbers = card.querySelector('.result-numbers');
-            
             const prize1 = card.querySelector('.prize1').value.trim();
-            const prize2Input = card.querySelector('.prize2');
-            const prize3Input = card.querySelector('.prize3');
-            
-            if (!prize1) {
-                resultDisplay.classList.remove('has-content');
-                return;
+            if (!prize1) { resultDisplay.classList.remove('has-content'); return; }
+            let displayText = prize1;
+            if (data.prizeType==='price123') {
+                const p2 = card.querySelector('.prize2')?.value.trim();
+                const p3 = card.querySelector('.prize3')?.value.trim();
+                if (p2 && p3) displayText = `${prize1},${p2},${p3}`;
             }
-            
-            let displayText = '';
-            
-            if (data.prizeType === 'price123' && prize2Input && prize3Input) {
-                const prize2 = prize2Input.value.trim();
-                const prize3 = prize3Input.value.trim();
-                
-                if (prize2 && prize3) {
-                    displayText = `${prize1},${prize2},${prize3}`;
-                } else if (prize1) {
-                    displayText = prize1;
-                }
-            } else {
-                displayText = prize1;
-            }
-            
-            if (displayText) {
-                resultNumbers.textContent = displayText;
-                resultDisplay.classList.add('has-content');
-            } else {
-                resultDisplay.classList.remove('has-content');
-            }
+            resultNumbers.textContent = displayText;
+            resultDisplay.classList.add('has-content');
         }
 
-        // NEW: Function to copy only numbers
         function copyNumbersOnly(button, index) {
             const card = button.closest('.ttg-card');
-            const resultNumbersElement = card.querySelector('.result-numbers');
-            
-            if (!resultNumbersElement) {
-                console.error('Result numbers element not found');
-                showToast('Tidak ada angka untuk dicopy!', true);
-                return;
-            }
-            
-            const resultNumbers = resultNumbersElement.textContent.trim();
-            
-            console.log('Copying numbers:', resultNumbers);
-            
-            if (!resultNumbers) {
-                showToast('Tidak ada angka untuk dicopy!', true);
-                return;
-            }
-            
-            // Method 1: Try execCommand (best for local files)
-            const textArea = document.createElement('textarea');
-            textArea.value = resultNumbers;
-            textArea.style.position = 'fixed';
-            textArea.style.top = '0';
-            textArea.style.left = '0';
-            textArea.style.width = '2em';
-            textArea.style.height = '2em';
-            textArea.style.padding = '0';
-            textArea.style.border = 'none';
-            textArea.style.outline = 'none';
-            textArea.style.boxShadow = 'none';
-            textArea.style.background = 'transparent';
-            
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            
-            let success = false;
-            
-            try {
-                success = document.execCommand('copy');
-                console.log('execCommand copy result:', success);
-            } catch (err) {
-                console.error('execCommand failed:', err);
-            }
-            
-            document.body.removeChild(textArea);
-            
-            if (success) {
-                button.classList.add('copied');
-                showToast('✓ Angka berhasil dicopy: ' + resultNumbers);
-                
-                setTimeout(() => {
-                    button.classList.remove('copied');
-                }, 2000);
-                return;
-            }
-            
-            // Method 2: Try modern clipboard API
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(resultNumbers).then(() => {
-                    button.classList.add('copied');
-                    showToast('✓ Angka berhasil dicopy: ' + resultNumbers);
-                    
-                    setTimeout(() => {
-                        button.classList.remove('copied');
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Clipboard API also failed:', err);
-                    // Method 3: Show prompt as last resort
-                    showCopyPrompt(resultNumbers);
-                });
-            } else {
-                // Method 3: Show prompt as last resort
-                showCopyPrompt(resultNumbers);
-            }
+            const resultNumbers = card.querySelector('.result-numbers')?.textContent.trim();
+            if (!resultNumbers) { showToast('Tidak ada angka untuk dicopy!', true); return; }
+            const ta = document.createElement('textarea');
+            ta.value = resultNumbers;
+            Object.assign(ta.style, {position:'fixed',top:'0',left:'0',width:'2em',height:'2em',padding:'0',border:'none',outline:'none',background:'transparent'});
+            document.body.appendChild(ta); ta.focus(); ta.select();
+            let ok = false;
+            try { ok = document.execCommand('copy'); } catch(e) {}
+            document.body.removeChild(ta);
+            if (ok) { button.classList.add('copied'); showToast('✓ Angka berhasil dicopy: '+resultNumbers); setTimeout(()=>button.classList.remove('copied'),2000); return; }
+            if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(resultNumbers).then(() => { button.classList.add('copied'); showToast('✓ Angka berhasil dicopy: '+resultNumbers); setTimeout(()=>button.classList.remove('copied'),2000); }).catch(() => showCopyPrompt(resultNumbers));
+            } else { showCopyPrompt(resultNumbers); }
         }
-        
-        // Show prompt dialog for manual copy
+
         function showCopyPrompt(text) {
-            const message = 'Copy angka ini secara manual:\n\n' + text;
-            
-            // Create custom modal
             const modal = document.createElement('div');
-            modal.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.8);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 99999;
-            `;
-            
-            const content = document.createElement('div');
-            content.style.cssText = `
-                background: #252525;
-                padding: 30px;
-                border-radius: 12px;
-                border: 2px solid #D4AF37;
-                max-width: 400px;
-                text-align: center;
-            `;
-            
-            content.innerHTML = `
-                <h3 style="color: #D4AF37; margin-bottom: 20px;">Copy Manual</h3>
-                <p style="color: #cccccc; margin-bottom: 15px;">Silakan copy angka berikut:</p>
-                <input type="text" value="${text}" readonly 
-                    style="width: 100%; padding: 15px; font-size: 1.2rem; font-weight: bold; 
-                    text-align: center; background: #1a1a1a; color: #51cf66; border: 2px solid #51cf66; 
-                    border-radius: 8px; margin-bottom: 20px; font-family: 'Courier New', monospace;"
-                    onclick="this.select()" id="copyInput">
-                <button onclick="this.closest('.copy-manual-modal').remove()" 
-                    style="padding: 12px 30px; background: #D4AF37; color: white; border: none; 
-                    border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem;">
-                    Tutup
-                </button>
-                <p style="color: #888; font-size: 0.85rem; margin-top: 15px;">
-                    Klik angka di atas, lalu tekan Ctrl+C (atau Cmd+C di Mac)
-                </p>
-            `;
-            
-            modal.appendChild(content);
+            modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);display:flex;justify-content:center;align-items:center;z-index:99999;';
             modal.className = 'copy-manual-modal';
+            modal.innerHTML = `<div style="background:#252525;padding:30px;border-radius:12px;border:2px solid #D4AF37;max-width:400px;text-align:center;"><h3 style="color:#D4AF37;margin-bottom:20px;">Copy Manual</h3><input type="text" value="${text}" readonly style="width:100%;padding:15px;font-size:1.2rem;font-weight:bold;text-align:center;background:#1a1a1a;color:#51cf66;border:2px solid #51cf66;border-radius:8px;margin-bottom:20px;font-family:'Courier New',monospace;" onclick="this.select()" id="copyInput"><button onclick="this.closest('.copy-manual-modal').remove()" style="padding:12px 30px;background:#D4AF37;color:white;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:1rem;">Tutup</button><p style="color:#888;font-size:0.85rem;margin-top:15px;">Klik angka di atas, lalu tekan Ctrl+C</p></div>`;
             document.body.appendChild(modal);
-            
-            // Auto select text
-            setTimeout(() => {
-                const input = document.getElementById('copyInput');
-                if (input) {
-                    input.focus();
-                    input.select();
-                }
-            }, 100);
-            
-            // Close on outside click
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) {
-                    modal.remove();
-                }
-            });
+            setTimeout(() => { const inp=document.getElementById('copyInput'); if(inp){inp.focus();inp.select();} }, 100);
+            modal.addEventListener('click', e => { if(e.target===modal) modal.remove(); });
         }
 
         function createCard(data, index) {
@@ -2213,49 +1505,39 @@
             card.setAttribute('data-title', data.name.toLowerCase());
             card.setAttribute('data-index', index);
             card.setAttribute('data-status', 'pending');
-            
+
+            const iconHtml = '';
+
             const inputSection = data.prizeType === 'price123' ? `
                 <div class="input-section">
-                    <div class="input-group">
-                        <label>Prize 1:</label>
-                        <input type="text" class="prize1" placeholder="Masukkan angka" oninput="autoSaveInput(${index})">
-                    </div>
-                    <div class="input-group">
-                        <label>Prize 2:</label>
-                        <input type="text" class="prize2" placeholder="Masukkan angka" oninput="autoSaveInput(${index})">
-                    </div>
-                    <div class="input-group">
-                        <label>Prize 3:</label>
-                        <input type="text" class="prize3" placeholder="Masukkan angka" oninput="autoSaveInput(${index})">
-                    </div>
+                    <div class="input-group"><label>Prize 1:</label><input type="text" class="prize1" placeholder="Masukkan angka" oninput="autoSaveInput(${index})"></div>
+                    <div class="input-group"><label>Prize 2:</label><input type="text" class="prize2" placeholder="Masukkan angka" oninput="autoSaveInput(${index})"></div>
+                    <div class="input-group"><label>Prize 3:</label><input type="text" class="prize3" placeholder="Masukkan angka" oninput="autoSaveInput(${index})"></div>
                     <div class="action-buttons">
-                        <button class="btn btn-copy" onclick="handleCopy(this, '${data.name}', '${data.prizeType}')">Copy Hasil</button>
-                        <button class="btn btn-done" onclick="handleDone(this, ${index})">Done</button>
+                        <button class="btn btn-copy" onclick="handleCopy(this,'${data.name}','${data.prizeType}')">Copy Hasil</button>
+                        <button class="btn btn-done" onclick="handleDone(this,${index})">Done</button>
                     </div>
-                    <button class="btn btn-reset" onclick="handleReset(this, ${index})" style="display: none; width: 100%; margin-top: 10px;">Reset</button>
-                </div>
-            ` : `
+                    <button class="btn btn-reset" onclick="handleReset(this,${index})" style="display:none;width:100%;margin-top:10px;">Reset</button>
+                </div>` : `
                 <div class="input-section">
-                    <div class="input-group">
-                        <label>Prize 1:</label>
-                        <input type="text" class="prize1" placeholder="Masukkan angka" oninput="autoSaveInput(${index})">
-                    </div>
+                    <div class="input-group"><label>Prize 1:</label><input type="text" class="prize1" placeholder="Masukkan angka" oninput="autoSaveInput(${index})"></div>
                     <div class="action-buttons">
-                        <button class="btn btn-copy" onclick="handleCopy(this, '${data.name}', '${data.prizeType}')">Copy Hasil</button>
-                        <button class="btn btn-done" onclick="handleDone(this, ${index})">Done</button>
+                        <button class="btn btn-copy" onclick="handleCopy(this,'${data.name}','${data.prizeType}')">Copy Hasil</button>
+                        <button class="btn btn-done" onclick="handleDone(this,${index})">Done</button>
                     </div>
-                    <button class="btn btn-reset" onclick="handleReset(this, ${index})" style="display: none; width: 100%; margin-top: 10px;">Reset</button>
-                </div>
-            `;
-            
+                    <button class="btn btn-reset" onclick="handleReset(this,${index})" style="display:none;width:100%;margin-top:10px;">Reset</button>
+                </div>`;
+
             card.innerHTML = `
-                <div class="ttg-card__title">
-                    <span>${data.name}</span>
+                <div class="ttg-card__title" ${data.icon ? `style="--card-icon-url: url('${data.icon}')"` : ''}>
+                    <div class="title-top-row">
+                        <span>${data.name}</span>
+                    </div>
                     <div class="countdown-timer">00:00:00</div>
                     <div class="result-display">
                         <span class="result-numbers"></span>
-                        <button class="copy-icon-btn" onclick="copyNumbersOnly(this, ${index})" title="Copy angka">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <button class="copy-icon-btn" onclick="copyNumbersOnly(this,${index})" title="Copy angka">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                             </svg>
@@ -2264,27 +1546,21 @@
                 </div>
                 <div class="ttg-card__row">
                     <span class="ttg-card__label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 1.75A10.25 10.25 0 1 0 22.25 12 10.262 10.262 0 0 0 12 1.75Zm0 18.5A8.25 8.25 0 1 1 20.25 12 8.259 8.259 0 0 1 12 20.25Zm.625-7.875V6.5a.625.625 0 0 0-1.25 0v6.25a.625.625 0 0 0 .274.522l3.5 2.375a.625.625 0 1 0 .702-1.03Z"></path>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.75A10.25 10.25 0 1 0 22.25 12 10.262 10.262 0 0 0 12 1.75Zm0 18.5A8.25 8.25 0 1 1 20.25 12 8.259 8.259 0 0 1 12 20.25Zm.625-7.875V6.5a.625.625 0 0 0-1.25 0v6.25a.625.625 0 0 0 .274.522l3.5 2.375a.625.625 0 1 0 .702-1.03Z"></path></svg>
                         Hari
                     </span>
                     <span class="ttg-card__value">${data.days}</span>
                 </div>
                 <div class="ttg-card__row">
                     <span class="ttg-card__label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 1.75A10.25 10.25 0 1 0 22.25 12 10.262 10.262 0 0 0 12 1.75Zm0 18.5A8.25 8.25 0 1 1 20.25 12 8.259 8.259 0 0 1 12 20.25Zm.625-7.875V6.5a.625.625 0 0 0-1.25 0v6.25a.625.625 0 0 0 .274.522l3.5 2.375a.625.625 0 1 0 .702-1.03Z"></path>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.75A10.25 10.25 0 1 0 22.25 12 10.262 10.262 0 0 0 12 1.75Zm0 18.5A8.25 8.25 0 1 1 20.25 12 8.259 8.259 0 0 1 12 20.25Zm.625-7.875V6.5a.625.625 0 0 0-1.25 0v6.25a.625.625 0 0 0 .274.522l3.5 2.375a.625.625 0 1 0 .702-1.03Z"></path></svg>
                         Tutup
                     </span>
                     <span class="ttg-card__value ttg-card__value--tutup">${data.tutup}</span>
                 </div>
                 <div class="ttg-card__row">
                     <span class="ttg-card__label">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 1.75A10.25 10.25 0 1 0 22.25 12 10.262 10.262 0 0 0 12 1.75Zm0 18.5A8.25 8.25 0 1 1 20.25 12 8.259 8.259 0 0 1 12 20.25Zm.625-7.875V6.5a.625.625 0 0 0-1.25 0v6.25a.625.625 0 0 0 .274.522l3.5 2.375a.625.625 0 1 0 .702-1.03Z"></path>
-                        </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.75A10.25 10.25 0 1 0 22.25 12 10.262 10.262 0 0 0 12 1.75Zm0 18.5A8.25 8.25 0 1 1 20.25 12 8.259 8.259 0 0 1 12 20.25Zm.625-7.875V6.5a.625.625 0 0 0-1.25 0v6.25a.625.625 0 0 0 .274.522l3.5 2.375a.625.625 0 1 0 .702-1.03Z"></path></svg>
                         Buka
                     </span>
                     <span class="ttg-card__value ttg-card__value--buka">${data.buka}</span>
@@ -2293,784 +1569,323 @@
                     <a href="${data.website}" target="_blank" rel="noopener">Website</a>
                     ${data.live ? `<a href="${data.live}" target="_blank" rel="noopener">Live</a>` : ''}
                 </div>
-                ${inputSection}
-            `;
-            
+                ${inputSection}`;
+
             return card;
         }
 
-        function showToast(message, isError = false, type = '') {
+        function showToast(message, isError=false, type='') {
             const toast = document.createElement('div');
-            let className = 'toast-notification';
-            
-            // Handle type parameter
-            if (type === 'success') {
-                className += ' success';
-            } else if (type === 'error' || isError) {
-                className += ' error';
-            } else if (type === 'info') {
-                className += ' info';
-            } else if (isError) {
-                className += ' error';
-            }
-            
-            toast.className = className;
-            
-            const icon = (type === 'error' || isError) ? 
-                '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>' :
-                '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
-            
-            toast.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    ${icon}
-                </svg>
-                <span>${message}</span>
-            `;
-            
+            let cls = 'toast-notification';
+            if (type==='success') cls+=' success';
+            else if (type==='error'||isError) cls+=' error';
+            else if (type==='info') cls+=' info';
+            toast.className = cls;
+            const icon = (type==='error'||isError)
+                ? '<circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line>'
+                : '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>';
+            toast.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${icon}</svg><span>${message}</span>`;
             document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
+            setTimeout(() => toast.remove(), 3000);
         }
 
         function handleCopy(button, pasaran, prizeType) {
             const card = button.closest('.ttg-card');
             const prize1 = card.querySelector('.prize1').value.trim();
-            
-            if (!prize1) {
-                showToast('Harap masukkan Prize 1!', true);
-                return;
-            }
-            
-            let prize2 = null;
-            let prize3 = null;
-            
-            if (prizeType === 'price123') {
+            if (!prize1) { showToast('Harap masukkan Prize 1!', true); return; }
+            let prize2=null, prize3=null;
+            if (prizeType==='price123') {
                 prize2 = card.querySelector('.prize2').value.trim();
                 prize3 = card.querySelector('.prize3').value.trim();
-                
-                if (!prize2 || !prize3) {
-                    showToast('Harap masukkan Prize 1, Prize 2, dan Prize 3!', true);
-                    return;
-                }
+                if (!prize2||!prize3) { showToast('Harap masukkan Prize 1, Prize 2, dan Prize 3!', true); return; }
             }
-            
-            const text = generateResultText(pasaran, prize1, prize2, prize3);
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('✓ Hasil berhasil dicopy!');
-            }).catch(err => {
-                showToast('✗ Gagal copy hasil', true);
-            });
+            navigator.clipboard.writeText(generateResultText(pasaran, prize1, prize2, prize3))
+                .then(() => showToast('✓ Hasil berhasil dicopy!'))
+                .catch(() => showToast('✗ Gagal copy hasil', true));
         }
 
         function handleDone(button, index) {
             const card = button.closest('.ttg-card');
             const prize1 = card.querySelector('.prize1').value.trim();
-            
-            if (!prize1) {
-                showToast('Harap masukkan Prize 1 terlebih dahulu!', true);
-                return;
+            if (!prize1) { showToast('Harap masukkan Prize 1 terlebih dahulu!', true); return; }
+            if (pasaranData[index].prizeType==='price123') {
+                const p2 = card.querySelector('.prize2').value.trim();
+                const p3 = card.querySelector('.prize3').value.trim();
+                if (!p2||!p3) { showToast('Harap masukkan semua Prize!', true); return; }
             }
-            
-            const prizeType = pasaranData[index].prizeType;
-            if (prizeType === 'price123') {
-                const prize2 = card.querySelector('.prize2').value.trim();
-                const prize3 = card.querySelector('.prize3').value.trim();
-                
-                if (!prize2 || !prize3) {
-                    showToast('Harap masukkan semua Prize!', true);
-                    return;
-                }
-            }
-            
-            card.classList.add('done');
-            card.setAttribute('data-status', 'done');
-            
-            const titleElement = card.querySelector('.ttg-card__title');
-            if (!titleElement.querySelector('.status-badge')) {
+            card.classList.add('done'); card.setAttribute('data-status','done');
+            const title = card.querySelector('.ttg-card__title');
+            if (!title.querySelector('.status-badge')) {
                 const badge = document.createElement('span');
-                badge.className = 'status-badge done';
-                badge.textContent = '✓ Done';
-                titleElement.appendChild(badge);
+                badge.className='status-badge done'; badge.textContent='✓ Done';
+                title.appendChild(badge);
             }
-            
-            card.querySelectorAll('input').forEach(input => {
-                input.disabled = true;
-            });
-            
-            card.querySelector('.btn-done').style.display = 'none';
-            card.querySelector('.btn-reset').style.display = 'block';
-            
-            cardStates[index] = {
-                isDone: true,
-                prize1: card.querySelector('.prize1').value,
-                prize2: card.querySelector('.prize2')?.value || null,
-                prize3: card.querySelector('.prize3')?.value || null
-            };
-            
-            saveToLocalStorage();
-            triggerComparisonUpdate();
-            
+            card.querySelectorAll('input').forEach(i => i.disabled=true);
+            card.querySelector('.btn-done').style.display='none';
+            card.querySelector('.btn-reset').style.display='block';
+            cardStates[index] = { isDone:true, prize1:card.querySelector('.prize1').value, prize2:card.querySelector('.prize2')?.value||null, prize3:card.querySelector('.prize3')?.value||null };
+            saveToLocalStorage(); triggerComparisonUpdate();
             showToast(`✓ ${pasaranData[index].name} ditandai selesai!`);
         }
 
         function handleReset(button, index) {
             const card = button.closest('.ttg-card');
-            
-            card.classList.remove('done');
-            card.setAttribute('data-status', 'pending');
-            
-            const badge = card.querySelector('.status-badge');
-            if (badge) {
-                badge.remove();
-            }
-            
-            card.querySelectorAll('input').forEach(input => {
-                input.disabled = false;
-                input.value = '';
-            });
-            
-            card.querySelector('.btn-done').style.display = 'block';
-            card.querySelector('.btn-reset').style.display = 'none';
-            
-            // Clear result display
-            const resultDisplay = card.querySelector('.result-display');
-            resultDisplay.classList.remove('has-content');
-            
+            card.classList.remove('done'); card.setAttribute('data-status','pending');
+            card.querySelector('.status-badge')?.remove();
+            card.querySelectorAll('input').forEach(i => { i.disabled=false; i.value=''; });
+            card.querySelector('.btn-done').style.display='block';
+            card.querySelector('.btn-reset').style.display='none';
+            card.querySelector('.result-display').classList.remove('has-content');
             delete cardStates[index];
-            
-            saveToLocalStorage();
-            triggerComparisonUpdate();
-            
+            saveToLocalStorage(); triggerComparisonUpdate();
             showToast(`↻ ${pasaranData[index].name} direset!`);
         }
 
         function autoSaveInput(index) {
             const card = document.querySelector(`[data-index="${index}"]`);
-            if (!card || card.classList.contains('done')) return;
-            
+            if (!card||card.classList.contains('done')) return;
             const prize1 = card.querySelector('.prize1').value;
-            const prize2Input = card.querySelector('.prize2');
-            const prize3Input = card.querySelector('.prize3');
-            
-            // Update result display
+            const p2 = card.querySelector('.prize2');
+            const p3 = card.querySelector('.prize3');
             updateResultDisplay(index);
-            
-            if (prize1 || (prize2Input && prize2Input.value) || (prize3Input && prize3Input.value)) {
-                if (!cardStates[index]) {
-                    cardStates[index] = { isDone: false };
-                }
-                
-                cardStates[index].prize1 = prize1;
-                if (prize2Input) cardStates[index].prize2 = prize2Input.value;
-                if (prize3Input) cardStates[index].prize3 = prize3Input.value;
-                
+            if (prize1||(p2&&p2.value)||(p3&&p3.value)) {
+                if (!cardStates[index]) cardStates[index]={isDone:false};
+                cardStates[index].prize1=prize1;
+                if (p2) cardStates[index].prize2=p2.value;
+                if (p3) cardStates[index].prize3=p3.value;
                 clearTimeout(window.autoSaveTimeout);
-                window.autoSaveTimeout = setTimeout(() => {
-                    saveToLocalStorage();
-                    triggerComparisonUpdate();
-                }, 500);
+                window.autoSaveTimeout = setTimeout(() => { saveToLocalStorage(); triggerComparisonUpdate(); }, 500);
             }
         }
 
         function renderCards() {
             const container = document.getElementById('jadwal-kartu');
             container.innerHTML = '';
-            
             pasaranData.forEach((data, index) => {
                 const card = createCard(data, index);
                 container.appendChild(card);
-                
                 if (cardStates[index]) {
-                    const cardElement = container.querySelector(`[data-index="${index}"]`);
-                    if (cardElement) {
-                        if (cardStates[index].prize1) {
-                            cardElement.querySelector('.prize1').value = cardStates[index].prize1;
-                        }
-                        if (cardStates[index].prize2) {
-                            const prize2Input = cardElement.querySelector('.prize2');
-                            if (prize2Input) prize2Input.value = cardStates[index].prize2;
-                        }
-                        if (cardStates[index].prize3) {
-                            const prize3Input = cardElement.querySelector('.prize3');
-                            if (prize3Input) prize3Input.value = cardStates[index].prize3;
-                        }
-                        
-                        // Update result display
-                        updateResultDisplay(index);
-                        
-                        if (cardStates[index].isDone) {
-                            cardElement.classList.add('done');
-                            cardElement.setAttribute('data-status', 'done');
-                            
-                            const titleElement = cardElement.querySelector('.ttg-card__title');
-                            if (!titleElement.querySelector('.status-badge')) {
-                                const badge = document.createElement('span');
-                                badge.className = 'status-badge done';
-                                badge.textContent = '✓ Done';
-                                titleElement.appendChild(badge);
-                            }
-                            
-                            cardElement.querySelectorAll('input').forEach(input => {
-                                input.disabled = true;
-                            });
-                            
-                            cardElement.querySelector('.btn-done').style.display = 'none';
-                            cardElement.querySelector('.btn-reset').style.display = 'block';
-                        }
+                    const el = container.querySelector(`[data-index="${index}"]`);
+                    if (!el) return;
+                    if (cardStates[index].prize1) el.querySelector('.prize1').value=cardStates[index].prize1;
+                    if (cardStates[index].prize2) { const i=el.querySelector('.prize2'); if(i) i.value=cardStates[index].prize2; }
+                    if (cardStates[index].prize3) { const i=el.querySelector('.prize3'); if(i) i.value=cardStates[index].prize3; }
+                    updateResultDisplay(index);
+                    if (cardStates[index].isDone) {
+                        el.classList.add('done'); el.setAttribute('data-status','done');
+                        const title=el.querySelector('.ttg-card__title');
+                        if (!title.querySelector('.status-badge')) { const b=document.createElement('span'); b.className='status-badge done'; b.textContent='✓ Done'; title.appendChild(b); }
+                        el.querySelectorAll('input').forEach(i=>i.disabled=true);
+                        el.querySelector('.btn-done').style.display='none';
+                        el.querySelector('.btn-reset').style.display='block';
                     }
                 }
             });
-            
             updateCountdowns();
         }
 
         function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-            const activeFilter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
-            const cards = document.querySelectorAll('.ttg-card');
-            
-            cards.forEach(card => {
+            const search = document.getElementById('searchInput').value.toLowerCase().trim();
+            const filter = document.querySelector('.filter-btn.active').getAttribute('data-filter');
+            document.querySelectorAll('.ttg-card').forEach(card => {
                 const title = card.getAttribute('data-title');
                 const status = card.getAttribute('data-status');
-                
-                const matchesSearch = title.includes(searchTerm);
-                const matchesFilter = activeFilter === 'all' || status === activeFilter;
-                
-                if (matchesSearch && matchesFilter) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
+                card.style.display = (title.includes(search)&&(filter==='all'||status===filter)) ? 'block' : 'none';
             });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🚀 App initialized');
-            
             clearOldData();
-            
-            const hasLoadedData = loadFromLocalStorage();
-            
-            const alarmSwitch = document.getElementById('alarmSwitch');
-            const alarmToggle = alarmSwitch.closest('.alarm-toggle');
-            const alarmStatus = document.getElementById('alarmStatus');
-            
-            if (alarmEnabled) {
-                alarmSwitch.classList.add('active');
-                alarmToggle.classList.add('active');
-                alarmStatus.textContent = 'Alarm AKTIF';
-            } else {
-                alarmStatus.textContent = 'Klik untuk mengaktifkan';
-            }
-            
-            const savedVolume = localStorage.getItem('alarmVolume') || '80';
-            document.getElementById('volumeSlider').value = savedVolume;
-            document.getElementById('volumeLabel').textContent = savedVolume + '%';
-            
+            const hasLoaded = loadFromLocalStorage();
+            const sw = document.getElementById('alarmSwitch');
+            const tog = sw.closest('.alarm-toggle');
+            const st = document.getElementById('alarmStatus');
+            if (alarmEnabled) { sw.classList.add('active'); tog.classList.add('active'); st.textContent='Alarm AKTIF'; }
+            else { st.textContent='Klik untuk mengaktifkan'; }
+            const vol = localStorage.getItem('alarmVolume')||'80';
+            document.getElementById('volumeSlider').value=vol;
+            document.getElementById('volumeLabel').textContent=vol+'%';
             loadVoices();
-            
-            if (window.speechSynthesis.onvoiceschanged !== undefined) {
-                window.speechSynthesis.onvoiceschanged = loadVoices;
-            }
-            
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
+            if (window.speechSynthesis.onvoiceschanged!==undefined) window.speechSynthesis.onvoiceschanged=loadVoices;
+            updateDateTime(); setInterval(updateDateTime,1000);
             renderCards();
-            
-            if (hasLoadedData && Object.keys(cardStates).length > 0) {
-                showToast(`✓ Data tersimpan dimuat (${Object.keys(cardStates).length} pasaran)`, false, 'info');
-            }
-            
-            setInterval(updateCountdowns, 1000);
-            
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', applyFilters);
-            
+            if (hasLoaded&&Object.keys(cardStates).length>0) showToast(`✓ Data tersimpan dimuat (${Object.keys(cardStates).length} pasaran)`,false,'info');
+            setInterval(updateCountdowns,1000);
+            const search = document.getElementById('searchInput');
+            search.addEventListener('input', applyFilters);
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    applyFilters();
+                    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+                    this.classList.add('active'); applyFilters();
                 });
             });
-            
-            searchInput.focus();
-            
-            console.log('✅ App ready');
-            console.log('   Alarm enabled:', alarmEnabled);
-            console.log('   Selected voice:', selectedVoice?.name);
+            search.focus();
         });
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('resultModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        };
+        window.onclick = e => { if(e.target===document.getElementById('resultModal')) closeModal(); };
+        document.addEventListener('keydown', e => { if(e.key==='Escape'&&document.getElementById('resultModal').style.display==='flex') closeModal(); });
 
-        // Comparison Table Functions
+        // ── Comparison Table ──
         let comparisonData = [];
         let isComparisonCollapsed = false;
 
         function toggleComparison() {
-            isComparisonCollapsed = !isComparisonCollapsed;
-            const content = document.getElementById('comparisonContent');
-            const toggle = document.getElementById('comparisonToggle');
-            
-            if (isComparisonCollapsed) {
-                content.classList.add('collapsed');
-                toggle.classList.add('collapsed');
-            } else {
-                content.classList.remove('collapsed');
-                toggle.classList.remove('collapsed');
-            }
+            isComparisonCollapsed=!isComparisonCollapsed;
+            document.getElementById('comparisonContent').classList.toggle('collapsed',isComparisonCollapsed);
+            document.getElementById('comparisonToggle').classList.toggle('collapsed',isComparisonCollapsed);
         }
 
         function normalizePassaranName(name) {
-            // Remove all spaces, special chars, and normalize to uppercase for better matching
-            return name.toUpperCase()
-                .replace(/\s+/g, '')  // Remove all spaces
-                .replace(/[^A-Z0-9]/g, '')  // Remove special chars
-                .trim();
+            return name.toUpperCase().replace(/\s+/g,'').replace(/[^A-Z0-9]/g,'').trim();
         }
 
         function parseManualData(text) {
-            const lines = text.split('\n').filter(line => line.trim());
-            const results = [];
-            let currentPasaran = null;
-            let currentPrizes = {};
-
+            const lines = text.split('\n').filter(l=>l.trim());
+            const results=[]; let curP=null, curPrizes={};
             for (let line of lines) {
-                line = line.trim();
-                if (!line) continue;
-
-                // Check if line is a prize entry
+                line=line.trim(); if(!line) continue;
                 if (line.match(/PRIZE\s*[123]\s*:/i)) {
-                    const match = line.match(/PRIZE\s*([123])\s*:\s*(\d+)/i);
-                    if (match && currentPasaran) {
-                        const prizeNum = match[1];
-                        const prizeValue = match[2];
-                        currentPrizes[`prize${prizeNum}`] = prizeValue;
-                    }
+                    const m=line.match(/PRIZE\s*([123])\s*:\s*(\d+)/i);
+                    if (m&&curP) curPrizes[`prize${m[1]}`]=m[2];
                 } else {
-                    // Save previous pasaran if exists
-                    if (currentPasaran) {
-                        results.push({
-                            name: currentPasaran,
-                            ...currentPrizes
-                        });
-                    }
-
-                    // Check if line has pasaran name and number
-                    const parts = line.split(/\s+/);
-                    
-                    // NEW: Check if this looks like a pasaran with time suffix (like HOKI DRAW 01)
-                    // Pattern: NAME + NUMBER where number is 2 digits (00-23 or similar)
-                    if (parts.length >= 2) {
-                        const lastPart = parts[parts.length - 1];
-                        const secondLastPart = parts.length >= 3 ? parts[parts.length - 2] : '';
-                        
-                        // Check if last part is a 4+ digit number (likely a prize)
-                        if (/^\d{4,}$/.test(lastPart)) {
-                            // Last part is prize number
-                            currentPasaran = parts.slice(0, -1).join(' ');
-                            currentPrizes = { prize1: lastPart };
-                        }
-                        // Check if last part is 2-digit number (likely time suffix like 00, 01, etc)
-                        else if (/^\d{2}$/.test(lastPart) && !/^\d+$/.test(secondLastPart)) {
-                            // This is a time suffix, keep it as part of name
-                            currentPasaran = line;
-                            currentPrizes = {};
-                        }
-                        // Check if last part is other short number pattern (3 digits or less)
-                        else if (/^\d{1,3}$/.test(lastPart)) {
-                            // Could be prize or part of name, keep as name for now
-                            currentPasaran = line;
-                            currentPrizes = {};
-                        }
-                        else {
-                            // No number, just pasaran name
-                            currentPasaran = line;
-                            currentPrizes = {};
-                        }
-                    } else {
-                        currentPasaran = line;
-                        currentPrizes = {};
-                    }
+                    if (curP) results.push({name:curP,...curPrizes});
+                    const parts=line.split(/\s+/);
+                    if (parts.length>=2) {
+                        const last=parts[parts.length-1];
+                        const slast=parts.length>=3?parts[parts.length-2]:'';
+                        if (/^\d{4,}$/.test(last)) { curP=parts.slice(0,-1).join(' '); curPrizes={prize1:last}; }
+                        else if (/^\d{2}$/.test(last)&&!/^\d+$/.test(slast)) { curP=line; curPrizes={}; }
+                        else if (/^\d{1,3}$/.test(last)) { curP=line; curPrizes={}; }
+                        else { curP=line; curPrizes={}; }
+                    } else { curP=line; curPrizes={}; }
                 }
             }
-
-            // Don't forget the last pasaran
-            if (currentPasaran) {
-                results.push({
-                    name: currentPasaran,
-                    ...currentPrizes
-                });
-            }
-
+            if (curP) results.push({name:curP,...curPrizes});
             return results;
         }
 
         function findMatchingPasaran(manualName) {
-            const normalizedManual = normalizePassaranName(manualName);
-            
-            console.log('Searching for:', manualName, '→ normalized:', normalizedManual);
-            
-            // First try: exact match without spaces
-            for (let i = 0; i < pasaranData.length; i++) {
-                const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
-                
-                if (normalizedManual === normalizedPasaran) {
-                    console.log('✓ Exact match found:', manualName, '→', pasaranData[i].name);
-                    return i;
-                }
-            }
-            
-            // Second try: for names without time suffix, try to match base name only
-            // But ONLY if the manual name doesn't have a time-like suffix
-            const hasTimeSuffix = /\d{2,4}$/.test(manualName.replace(/\s+/g, ''));
-            
-            if (!hasTimeSuffix) {
-                // Manual name has no time suffix (like "HOKI DRAW")
-                // Collect all matching pasarans
-                const matchingPasarans = [];
-                for (let i = 0; i < pasaranData.length; i++) {
-                    const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
-                    
-                    // Check if pasaran name starts with manual name
-                    if (normalizedPasaran.startsWith(normalizedManual)) {
-                        matchingPasarans.push({ index: i, name: pasaranData[i].name });
-                    }
-                }
-                
-                // If only one match, use it
-                if (matchingPasarans.length === 1) {
-                    console.log('✓ Single base match found:', manualName, '→', matchingPasarans[0].name);
-                    return matchingPasarans[0].index;
-                }
-                
-                // If multiple matches, cannot auto-match
-                // User should specify the full name with time suffix
-                if (matchingPasarans.length > 1) {
-                    console.log('⚠️ Multiple matches found for base name:', manualName);
-                    console.log('   Possible matches:', matchingPasarans.map(m => m.name).join(', '));
-                    console.log('   Please use full name with time suffix (e.g., "HOKI DRAW 01")');
-                    return -1;
-                }
+            const nm=normalizePassaranName(manualName);
+            for (let i=0;i<pasaranData.length;i++) if(normalizePassaranName(pasaranData[i].name)===nm) return i;
+            const hasTime=/\d{2,4}$/.test(manualName.replace(/\s+/g,''));
+            if (!hasTime) {
+                const matches=[];
+                for (let i=0;i<pasaranData.length;i++) if(normalizePassaranName(pasaranData[i].name).startsWith(nm)) matches.push(i);
+                if (matches.length===1) return matches[0];
+                return -1;
             } else {
-                // Manual name has time suffix, do contains match
-                for (let i = 0; i < pasaranData.length; i++) {
-                    const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
-                    
-                    // Check if one contains the other
-                    if (normalizedManual.includes(normalizedPasaran) || 
-                        normalizedPasaran.includes(normalizedManual)) {
-                        console.log('✓ Contains match found:', manualName, '→', pasaranData[i].name);
-                        return i;
-                    }
+                for (let i=0;i<pasaranData.length;i++) {
+                    const np=normalizePassaranName(pasaranData[i].name);
+                    if (nm.includes(np)||np.includes(nm)) return i;
                 }
             }
-            
-            console.log('✗ No match found for:', manualName);
             return -1;
         }
-        
-        // NEW: Smart matching based on prize values
+
         function findMatchingPasaranByPrize(manualName, prize1, prize2, prize3) {
             if (!prize1) return -1;
-            
-            const normalizedManual = normalizePassaranName(manualName);
-            console.log('🔍 Smart matching by prize for:', manualName, 'with prize:', prize1);
-            
-            // Find all pasarans that start with the manual name
-            const candidates = [];
-            for (let i = 0; i < pasaranData.length; i++) {
-                const normalizedPasaran = normalizePassaranName(pasaranData[i].name);
-                
-                if (normalizedPasaran.startsWith(normalizedManual)) {
-                    // Check if this pasaran has data in cardStates
-                    if (cardStates[i] && cardStates[i].prize1) {
-                        candidates.push({
-                            index: i,
-                            name: pasaranData[i].name,
-                            prize1: cardStates[i].prize1,
-                            prize2: cardStates[i].prize2,
-                            prize3: cardStates[i].prize3
-                        });
-                    }
+            const nm=normalizePassaranName(manualName);
+            const candidates=[];
+            for (let i=0;i<pasaranData.length;i++) {
+                if (normalizePassaranName(pasaranData[i].name).startsWith(nm)&&cardStates[i]?.prize1) {
+                    candidates.push({index:i,...cardStates[i]});
                 }
             }
-            
-            // Try to match by prize values
-            for (const candidate of candidates) {
-                // Check prize1 match
-                if (candidate.prize1 === prize1) {
-                    // If prize2 and prize3 also provided, check them too
-                    if (prize2 && prize3) {
-                        if (candidate.prize2 === prize2 && candidate.prize3 === prize3) {
-                            console.log('✓ Smart match found by all prizes:', manualName, '→', candidate.name);
-                            return candidate.index;
-                        }
-                    } else {
-                        // Only prize1 provided, match by that
-                        console.log('✓ Smart match found by prize1:', manualName, '→', candidate.name);
-                        return candidate.index;
-                    }
+            for (const c of candidates) {
+                if (c.prize1===prize1) {
+                    if (prize2&&prize3) { if(c.prize2===prize2&&c.prize3===prize3) return c.index; }
+                    else return c.index;
                 }
             }
-            
-            console.log('✗ No smart match found by prize');
             return -1;
         }
 
         function compareData() {
-            const input = document.getElementById('comparisonInput').value;
-            if (!input.trim()) {
-                showToast('Harap masukkan data untuk dibandingkan!', true);
-                return;
-            }
-
-            comparisonData = parseManualData(input);
-            
-            if (comparisonData.length === 0) {
-                showToast('Tidak ada data valid untuk dibandingkan!', true);
-                return;
-            }
-
+            const input=document.getElementById('comparisonInput').value;
+            if (!input.trim()) { showToast('Harap masukkan data!',true); return; }
+            comparisonData=parseManualData(input);
+            if (comparisonData.length===0) { showToast('Tidak ada data valid!',true); return; }
             renderComparisonTable();
-            // Notification will be shown by renderComparisonTable based on results
         }
 
         function autoCompare() {
-            const input = document.getElementById('comparisonInput').value;
-            if (input.trim()) {
-                // Debounce auto compare
-                clearTimeout(window.autoCompareTimeout);
-                window.autoCompareTimeout = setTimeout(() => {
-                    compareData();
-                }, 1000);
-            }
+            clearTimeout(window.autoCompareTimeout);
+            window.autoCompareTimeout=setTimeout(()=>{ if(document.getElementById('comparisonInput').value.trim()) compareData(); },1000);
         }
 
-        function renderComparisonTable(showNotification = true) {
-            const tbody = document.getElementById('comparisonTableBody');
-            const wrapper = document.getElementById('comparisonTableWrapper');
-            const empty = document.getElementById('comparisonEmpty');
-            const stats = document.getElementById('comparisonStats');
-
-            tbody.innerHTML = '';
-            
-            // Reset pasaran name tracking
-            window.matchedPasarans = [];
-            window.differentPasarans = [];
-            
-            let countSame = 0;
-            let countDiff = 0;
-            let countEmpty = 0;
-
+        function renderComparisonTable(showNotification=true) {
+            const tbody=document.getElementById('comparisonTableBody');
+            const wrapper=document.getElementById('comparisonTableWrapper');
+            const empty=document.getElementById('comparisonEmpty');
+            const stats=document.getElementById('comparisonStats');
+            tbody.innerHTML='';
+            window.matchedPasarans=[]; window.differentPasarans=[];
+            let same=0, diff=0, empty_=0;
             comparisonData.forEach(manual => {
-                let index = findMatchingPasaran(manual.name);
-                
-                // If normal matching fails, try smart matching by prize
-                if (index === -1 && manual.prize1) {
-                    index = findMatchingPasaranByPrize(manual.name, manual.prize1, manual.prize2, manual.prize3);
+                let idx=findMatchingPasaran(manual.name);
+                if (idx===-1&&manual.prize1) idx=findMatchingPasaranByPrize(manual.name,manual.prize1,manual.prize2,manual.prize3);
+                const row=document.createElement('tr');
+                const nc=document.createElement('td'); nc.className='comparison-name'; nc.textContent=manual.name; nc.title=manual.name;
+                const mc=document.createElement('td'); mc.className='comparison-numbers';
+                let manText='';
+                if (manual.prize1&&manual.prize2&&manual.prize3) manText=`${manual.prize1},${manual.prize2},${manual.prize3}`;
+                else if (manual.prize1) manText=manual.prize1;
+                mc.textContent=manText; mc.title=manText;
+                const fc=document.createElement('td'); fc.className='comparison-numbers';
+                let formText='', isMatch=false, matchedName='', hasData=manText.length>0;
+                if (idx!==-1&&cardStates[idx]) {
+                    matchedName=pasaranData[idx].name;
+                    if (cardStates[idx].prize1&&cardStates[idx].prize2&&cardStates[idx].prize3) formText=`${cardStates[idx].prize1},${cardStates[idx].prize2},${cardStates[idx].prize3}`;
+                    else if (cardStates[idx].prize1) formText=cardStates[idx].prize1;
+                    if (formText&&manText) isMatch=formText===manText;
                 }
-                
-                const row = document.createElement('tr');
-
-                // Pasaran name
-                const nameCell = document.createElement('td');
-                nameCell.className = 'comparison-name';
-                nameCell.textContent = manual.name;
-                nameCell.title = manual.name; // Tooltip for full name
-
-                // Manual data
-                const manualCell = document.createElement('td');
-                manualCell.className = 'comparison-numbers';
-                let manualText = '';
-                if (manual.prize1 && manual.prize2 && manual.prize3) {
-                    manualText = `${manual.prize1},${manual.prize2},${manual.prize3}`;
-                } else if (manual.prize1) {
-                    manualText = manual.prize1;
-                }
-                manualCell.textContent = manualText;
-                manualCell.title = manualText; // Tooltip
-
-                // Form data
-                const formCell = document.createElement('td');
-                formCell.className = 'comparison-numbers';
-                let formText = '';
-                let isMatch = false;
-                let matchedPasaranName = '';
-                let hasManualData = manualText.length > 0;
-                
-                if (index !== -1 && cardStates[index]) {
-                    matchedPasaranName = pasaranData[index].name;
-                    
-                    if (cardStates[index].prize1 && cardStates[index].prize2 && cardStates[index].prize3) {
-                        formText = `${cardStates[index].prize1},${cardStates[index].prize2},${cardStates[index].prize3}`;
-                    } else if (cardStates[index].prize1) {
-                        formText = cardStates[index].prize1;
-                    }
-                    
-                    // Compare
-                    if (formText && manualText) {
-                        isMatch = formText === manualText;
-                    }
-                }
-
-                formCell.textContent = formText || '-';
-                formCell.title = matchedPasaranName ? `${matchedPasaranName}: ${formText}` : 'Tidak ada data'; // Tooltip
-
-                // Status
-                const statusCell = document.createElement('td');
-                statusCell.className = 'comparison-status';
-                
-                // NEW LOGIC: If manual has data but no match found OR no form data, count as different
-                if (hasManualData && (!formText || index === -1)) {
-                    // Manual has data but form doesn't, or couldn't find match
-                    statusCell.innerHTML = '<span class="match-empty">○</span>';
-                    statusCell.title = index === -1 ? 'Tidak ditemukan atau belum diinput' : 'Belum diinput';
-                    manualCell.classList.add('match-empty');
-                    formCell.classList.add('match-empty');
-                    
-                    // NEW: Count as different if manual has data but no match
-                    if (index === -1 && hasManualData) {
-                        countDiff++; // Changed from countEmpty to countDiff
-                        // Store the manual name since we couldn't find a match
-                        if (!window.differentPasarans) window.differentPasarans = [];
-                        window.differentPasarans.push(manual.name);
-                    } else {
-                        countEmpty++;
-                    }
-                } else if (!hasManualData) {
-                    // Manual has no data
-                    statusCell.innerHTML = '<span class="match-empty">○</span>';
-                    statusCell.title = 'Tidak ada data manual';
-                    manualCell.classList.add('match-empty');
-                    formCell.classList.add('match-empty');
-                    countEmpty++;
+                fc.textContent=formText||'-'; fc.title=matchedName?`${matchedName}: ${formText}`:'Tidak ada data';
+                const sc=document.createElement('td'); sc.className='comparison-status';
+                if (hasData&&(!formText||idx===-1)) {
+                    sc.innerHTML='<span class="match-empty">○</span>';
+                    mc.classList.add('match-empty'); fc.classList.add('match-empty');
+                    if (idx===-1&&hasData) { diff++; window.differentPasarans.push(manual.name); }
+                    else empty_++;
+                } else if (!hasData) {
+                    sc.innerHTML='<span class="match-empty">○</span>';
+                    mc.classList.add('match-empty'); fc.classList.add('match-empty'); empty_++;
                 } else if (isMatch) {
-                    // Data matches - store for notification
-                    statusCell.innerHTML = '<span class="match-same">✓</span>';
-                    statusCell.title = `Sama dengan ${matchedPasaranName}`;
-                    manualCell.classList.add('match-same');
-                    formCell.classList.add('match-same');
-                    countSame++;
-                    
-                    // Store matched pasaran name FROM TABLE
-                    if (!window.matchedPasarans) window.matchedPasarans = [];
-                    window.matchedPasarans.push(matchedPasaranName);
+                    sc.innerHTML='<span class="match-same">✓</span>';
+                    mc.classList.add('match-same'); fc.classList.add('match-same'); same++;
+                    window.matchedPasarans.push(matchedName);
                 } else {
-                    // Data exists but different - store for notification
-                    statusCell.innerHTML = '<span class="match-different">✗</span>';
-                    statusCell.title = `Berbeda dengan ${matchedPasaranName}`;
-                    manualCell.classList.add('match-different');
-                    formCell.classList.add('match-different');
-                    countDiff++;
-                    
-                    // Store different pasaran name FROM TABLE
-                    if (!window.differentPasarans) window.differentPasarans = [];
-                    window.differentPasarans.push(matchedPasaranName);
+                    sc.innerHTML='<span class="match-different">✗</span>';
+                    mc.classList.add('match-different'); fc.classList.add('match-different'); diff++;
+                    window.differentPasarans.push(matchedName);
                 }
-
-                row.appendChild(nameCell);
-                row.appendChild(manualCell);
-                row.appendChild(formCell);
-                row.appendChild(statusCell);
-                tbody.appendChild(row);
+                row.append(nc,mc,fc,sc); tbody.appendChild(row);
             });
-
-            // Update stats
-            document.getElementById('statSame').textContent = countSame;
-            document.getElementById('statDiff').textContent = countDiff;
-            document.getElementById('statEmpty').textContent = countEmpty;
-
-            // Show/hide elements
-            wrapper.style.display = 'block';
-            empty.style.display = 'none';
-            stats.style.display = 'flex';
-            
-            // Show notification based on comparison results
+            document.getElementById('statSame').textContent=same;
+            document.getElementById('statDiff').textContent=diff;
+            document.getElementById('statEmpty').textContent=empty_;
+            wrapper.style.display='block'; empty.style.display='none'; stats.style.display='flex';
             if (showNotification) {
-                const totalChecked = countSame + countDiff; // Exclude empty ones
-                
-                console.log('📊 Comparison Results:');
-                console.log('   Same:', countSame, window.matchedPasarans);
-                console.log('   Different:', countDiff, window.differentPasarans);
-                console.log('   Empty:', countEmpty);
-                
-                if (totalChecked > 0) {
-                    if (countDiff === 0 && countSame > 0) {
-                        // All matched data are the same - GREEN
-                        // Show all matched pasaran names
-                        const matchedNames = window.matchedPasarans || [];
-                        if (matchedNames.length > 0) {
-                            console.log('🟢 Showing SAMA notifications for:', matchedNames);
-                            // Show each matched pasaran with delay
-                            matchedNames.forEach((name, index) => {
-                                setTimeout(() => {
-                                    showToast(`Perbandingan ${name} sama`, false, 'success');
-                                }, index * 500); // 500ms delay between each
-                            });
-                        } else {
-                            showToast('Perbandingan Sama', false, 'success');
-                        }
-                    } else if (countDiff > 0) {
-                        // Some data are different - RED
-                        // Show all different pasaran names
-                        const differentNames = window.differentPasarans || [];
-                        if (differentNames.length > 0) {
-                            console.log('🔴 Showing TIDAK SAMA notifications for:', differentNames);
-                            // Show each different pasaran with delay
-                            differentNames.forEach((name, index) => {
-                                setTimeout(() => {
-                                    // Format the message
-                                    const message = name ? `${name} tidak sama` : 'Data tidak sama';
-                                    showToast(message, true, 'error');
-                                }, index * 500); // 500ms delay between each
-                            });
-                        } else {
-                            showToast('Tidak Sama', true, 'error');
-                        }
-                    }
-                    
-                    // Clear stored pasaran names for next comparison
-                    window.matchedPasarans = [];
-                    window.differentPasarans = [];
+                if (diff===0&&same>0) {
+                    (window.matchedPasarans||[]).forEach((n,i) => setTimeout(()=>showToast(`Perbandingan ${n} sama`,false,'success'),i*500));
+                } else if (diff>0) {
+                    (window.differentPasarans||[]).forEach((n,i) => setTimeout(()=>showToast(`${n||'Data'} tidak sama`,true,'error'),i*500));
                 }
+                window.matchedPasarans=[]; window.differentPasarans=[];
             }
         }
 
         function clearComparison() {
-            document.getElementById('comparisonInput').value = '';
-            document.getElementById('comparisonTableBody').innerHTML = '';
-            document.getElementById('comparisonTableWrapper').style.display = 'none';
-            document.getElementById('comparisonEmpty').style.display = 'block';
-            document.getElementById('comparisonStats').style.display = 'none';
-            comparisonData = [];
-            showToast('Tabel perbandingan dihapus', false, 'info');
+            document.getElementById('comparisonInput').value='';
+            document.getElementById('comparisonTableBody').innerHTML='';
+            document.getElementById('comparisonTableWrapper').style.display='none';
+            document.getElementById('comparisonEmpty').style.display='block';
+            document.getElementById('comparisonStats').style.display='none';
+            comparisonData=[]; showToast('Tabel perbandingan dihapus',false,'info');
         }
 
-        // Trigger comparison update when form data changes
         function triggerComparisonUpdate() {
-            if (comparisonData.length > 0) {
-                renderComparisonTable();
-            }
+            if (comparisonData.length>0) renderComparisonTable(false);
         }
-
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const modal = document.getElementById('resultModal');
-                if (modal.style.display === 'flex') {
-                    closeModal();
-                }
-            }
-        });
     </script>
 </body>
 </html>

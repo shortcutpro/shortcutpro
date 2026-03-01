@@ -57,6 +57,35 @@
         .auto-date strong { display: block; color: var(--gold-primary); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
         .auto-date .date-display { font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-size: 28px; font-weight: 900; text-shadow: 0 0 20px rgba(255,215,0,0.8); }
 
+        /* DB STATUS PANEL */
+        .db-status-panel {
+            background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
+            border: 2px solid rgba(255,215,0,0.4); border-radius: 15px;
+            padding: 18px 25px; margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(255,215,0,0.15);
+        }
+        .db-status-panel h3 {
+            font-family: 'Orbitron', sans-serif; color: var(--gold-primary); font-size: 14px;
+            margin-bottom: 14px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .db-status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+        .db-status-item {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.4); border: 1px solid rgba(255,215,0,0.2);
+            border-radius: 10px; padding: 10px 14px;
+        }
+        .db-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+            background: #444; transition: background 0.3s ease;
+        }
+        .db-dot.loading { background: #ffaa00; animation: pulse 1s ease-in-out infinite; }
+        .db-dot.ok { background: #00ff88; box-shadow: 0 0 8px #00ff8880; }
+        .db-dot.error { background: #ff4444; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        .db-label { font-size: 12px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px; }
+        .db-count { margin-left: auto; font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: var(--gold-primary); }
+
         /* COLOR PANEL */
         .color-panel {
             background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
@@ -123,25 +152,16 @@
         textarea:focus { outline: none; border-color: var(--gold-primary); box-shadow: 0 0 20px rgba(255,215,0,0.5); }
         textarea::placeholder { color: rgba(255,255,255,0.4); }
 
-        /* OUTPUT — FIXED: tidak boleh melebar horizontal */
+        /* OUTPUT */
         .output-code {
             background: rgba(10,10,15,0.9);
             border: 2px solid rgba(255,215,0,0.4);
-            border-radius: 12px;
-            padding: 20px;
-            min-height: 350px;
-            max-height: 500px;
-            overflow-x: hidden;   /* ← tidak scroll ke samping */
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            white-space: pre-wrap;
-            word-break: break-all; /* ← paksa wrap di mana saja */
-            word-wrap: break-word;
-            color: #00ff88;
-            /* pastikan lebar tidak melebihi container */
-            width: 100%;
-            box-sizing: border-box;
+            border-radius: 12px; padding: 20px;
+            min-height: 350px; max-height: 500px;
+            overflow-x: hidden; overflow-y: auto;
+            font-family: 'Courier New', monospace; font-size: 11px;
+            white-space: pre-wrap; word-break: break-all; word-wrap: break-word;
+            color: #00ff88; width: 100%; box-sizing: border-box;
         }
         .output-code::-webkit-scrollbar { width: 10px; }
         .output-code::-webkit-scrollbar-track { background: rgba(255,215,0,0.05); border-radius: 5px; }
@@ -174,35 +194,22 @@
         @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }
         .preview-content { padding: 20px; background: var(--black-bg); }
 
-        /* ===== LEAGUE FILTER — DROPDOWN (SELECT) ===== */
+        /* LEAGUE FILTER DROPDOWN */
         .league-filter-wrap { display: none; margin-bottom: 16px; }
         .league-filter-label { font-size: 11px; color: rgba(255,215,0,0.7); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }
-
         .league-select-wrap { position: relative; }
         .league-select-wrap::after {
-            content: '▼';
-            position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+            content: '▼'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
             color: var(--gold-primary); font-size: 11px; pointer-events: none;
         }
         .league-select {
-            width: 100%;
-            padding: 10px 38px 10px 14px;
-            background: rgba(10,10,15,0.95);
-            border: 2px solid rgba(255,215,0,0.4);
-            border-radius: 10px;
-            color: var(--gold-primary);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            cursor: pointer;
-            appearance: none;
-            -webkit-appearance: none;
-            transition: all 0.25s ease;
-            outline: none;
+            width: 100%; padding: 10px 38px 10px 14px;
+            background: rgba(10,10,15,0.95); border: 2px solid rgba(255,215,0,0.4); border-radius: 10px;
+            color: var(--gold-primary); font-family: 'Rajdhani', sans-serif; font-size: 13px;
+            font-weight: 700; letter-spacing: 0.8px; cursor: pointer;
+            appearance: none; -webkit-appearance: none; transition: all 0.25s ease; outline: none;
         }
-        .league-select:focus,
-        .league-select:hover { border-color: var(--gold-primary); box-shadow: 0 0 14px rgba(255,215,0,0.35); }
+        .league-select:focus, .league-select:hover { border-color: var(--gold-primary); box-shadow: 0 0 14px rgba(255,215,0,0.35); }
         .league-select option { background: #0a0a0f; color: #fff; font-weight: 700; }
 
         /* PREVIEW TABLE */
@@ -222,7 +229,6 @@
         .preview-table tr:nth-child(odd) { background: linear-gradient(180deg,#2d2d2d,#3a3a3a); }
         .preview-table tbody tr:hover td { background: linear-gradient(135deg,var(--gold-primary),var(--gold-light)); color: #1a1a1a; font-weight: 900; }
         .preview-table .date-time { line-height: 1.4; white-space: nowrap; }
-
         .team-logo-prev { width: 32px; height: 32px; object-fit: contain; filter: drop-shadow(0 0 4px rgba(255,215,0,0.5)); display: block; margin: 0 auto; }
         .match-vs-cell { width: 100%; }
         .mv-logos { display: flex; align-items: center; justify-content: center; gap: 0; width: 100%; }
@@ -239,7 +245,7 @@
 
         /* RESPONSIVE */
         @media(max-width:1200px){.main-layout{grid-template-columns:1fr;}.preview-sticky{position:relative;top:0;}.color-grid{grid-template-columns:1fr;}}
-        @media(max-width:768px){.header img.logo{max-width:180px;}.header h1{font-size:32px;}.stats-bar{flex-direction:column;gap:10px;}button{font-size:12px;padding:12px 20px;}.color-grid{grid-template-columns:1fr;}}
+        @media(max-width:768px){.header img.logo{max-width:180px;}.header h1{font-size:32px;}.stats-bar{flex-direction:column;gap:10px;}button{font-size:12px;padding:12px 20px;}.color-grid{grid-template-columns:1fr;}.db-status-grid{grid-template-columns:1fr;}}
     </style>
 </head>
 <body>
@@ -249,7 +255,7 @@
     <div class="header">
         <img class="logo" src="https://hokben38422.com/resources/images/logo.png" alt="HOKBENTOTO Logo">
         <h1>HOKBENTOTO GENERATOR</h1>
-        <p>Gold Black Edition — Auto Team Logo dari TheSportsDB</p>
+        <p>Gold Black Edition — Auto Team Logo: TheSportsDB → Google Sheets DB → SVG</p>
     </div>
 
     <!-- AUTO DATE -->
@@ -257,6 +263,15 @@
         <strong>📅 TANGGAL OTOMATIS</strong>
         <div class="date-display" id="autoDate">Loading...</div>
     </div>
+
+    <!-- DB STATUS PANEL -->
+    <!-- hidden status elements -->
+    <span id="dot-api" style="display:none"></span><span id="cnt-api" style="display:none"></span>
+    <span id="dot-thesportsdb" style="display:none"></span><span id="cnt-thesportsdb" style="display:none"></span>
+    <span id="dot-media" style="display:none"></span><span id="cnt-media" style="display:none"></span>
+    <span id="dot-football" style="display:none"></span><span id="cnt-football" style="display:none"></span>
+    <span id="dot-footballdata" style="display:none"></span><span id="cnt-footballdata" style="display:none"></span>
+    <span id="dot-svg" style="display:none"></span><span id="cnt-svg" style="display:none"></span>
 
     <!-- COLOR PANEL -->
     <div class="color-panel">
@@ -358,7 +373,6 @@ ITALY SERIE A
                             <span>🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥</span>
                         </div>
                         <div class="preview-content" id="previewContent">
-                            <!-- League filter dropdown -->
                             <div class="league-filter-wrap" id="leagueFilterWrap">
                                 <div class="league-filter-label">🏆 Filter Liga</div>
                                 <div class="league-select-wrap">
@@ -367,7 +381,6 @@ ITALY SERIE A
                                     </select>
                                 </div>
                             </div>
-                            <!-- Tables -->
                             <div id="previewTables"></div>
                             <div class="preview-empty" id="previewEmpty">Preview akan muncul di sini secara otomatis...</div>
                         </div>
@@ -382,46 +395,144 @@ ITALY SERIE A
 
 <script>
 // =============================================
+// GOOGLE SHEETS CONFIG — JSONP via GID
+// =============================================
+var SHEET_CONFIG = {
+    SHEET_ID: '1n8DjRyyLgXgVi5Wu2OHSdh9TfONpcBAdYliKqeXyhlM',
+    SHEETS: [
+        { name: 'thesportsdb',      gid: '0',           dotId: 'dot-thesportsdb', cntId: 'cnt-thesportsdb' },
+        { name: 'media.api-sports', gid: '1366835347',  dotId: 'dot-media',       cntId: 'cnt-media'       },
+        { name: 'football-logos',   gid: '272853337',   dotId: 'dot-football',    cntId: 'cnt-football'    },
+        { name: 'football-data',    gid: '',            dotId: 'dot-footballdata', cntId: 'cnt-footballdata' }
+    ]
+};
+
+// Database logo dari Google Sheets: { 'nama tim lowercase': 'url logo' }
+var sheetsLogoDb = {};
+var sheetsDbLoaded = false;
+var sheetsDbLoadPromise = null;
+
+// =============================================
+// LOAD GOOGLE SHEETS VIA JSONP
+// fetch() TIDAK BISA dari file:// (origin null) → pakai script tag
+// Callback name harus valid JS: hapus karakter non-alphanumeric
+// =============================================
+function loadSingleSheet(sheet) {
+    return new Promise(function(resolve) {
+        var dotEl = document.getElementById(sheet.dotId);
+        var cntEl = document.getElementById(sheet.cntId);
+        if (dotEl) dotEl.className = 'db-dot loading';
+
+        // Sanitize callback name: "media.api-sports" → "gviz_media_api_sports"
+        var cbName = 'gviz_' + sheet.name.replace(/[^a-zA-Z0-9]/g, '_');
+
+        var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_CONFIG.SHEET_ID +
+                  '/gviz/tq?tqx=out:json;responseHandler:' + cbName +
+                  '&sheet=' + encodeURIComponent(sheet.name);
+
+        var scriptId = 'gviz_script_' + cbName;
+        var timeout  = setTimeout(function() {
+            cleanup();
+            if (dotEl) dotEl.className = 'db-dot error';
+            if (cntEl) cntEl.textContent = 'Timeout';
+            resolve(0);
+        }, 20000);
+
+        function cleanup() {
+            clearTimeout(timeout);
+            var s = document.getElementById(scriptId);
+            if (s) s.parentNode.removeChild(s);
+            delete window[cbName];
+        }
+
+        window[cbName] = function(json) {
+            var rows = (json && json.table && json.table.rows) ? json.table.rows : [];
+            var count = 0;
+            rows.forEach(function(row) {
+                if (!row.c) return;
+                var nameCell = row.c[1];
+                var urlCell  = row.c[2];
+                if (!nameCell || !nameCell.v) return;
+                if (!urlCell  || !urlCell.v)  return;
+                var n = String(nameCell.v).trim().toLowerCase();
+                var u = String(urlCell.v).trim();
+                if (n && u && !sheetsLogoDb[n]) {
+                    sheetsLogoDb[n] = u;
+                    count++;
+                }
+            });
+            if (dotEl) dotEl.className = 'db-dot ok';
+            if (cntEl) cntEl.textContent = count + ' tim';
+            cleanup();
+            resolve(count);
+        };
+
+        var script   = document.createElement('script');
+        script.id    = scriptId;
+        script.async = true;
+        script.onerror = function() {
+            cleanup();
+            if (dotEl) dotEl.className = 'db-dot error';
+            if (cntEl) cntEl.textContent = 'Error';
+            resolve(0);
+        };
+        script.src = url;
+        document.head.appendChild(script);
+    });
+}
+
+async function loadAllSheets() {
+    if (sheetsDbLoaded) return;
+    await Promise.all(SHEET_CONFIG.SHEETS.map(function(s) {
+        return loadSingleSheet(s);
+    }));
+    sheetsDbLoaded = true;
+}
+
+// Mulai load sheets saat halaman terbuka
+sheetsDbLoadPromise = loadAllSheets();
+
+// =============================================
 // TEAM LOGO CACHE
 // =============================================
 var teamLogoCache = {};
 
 var SHORT_NAMES = {
-    'manchester city': 'Man City',
-    'manchester united': 'Man United',
-    'manchester utd': 'Man United',
-    'atletico madrid': 'Atletico Madrid',
-    'inter milan': 'Inter',
-    'internazionale': 'Inter',
-    'ac milan': 'Milan',
-    'as roma': 'Roma',
-    'ss lazio': 'Lazio',
-    'rb leipzig': 'RB Leipzig',
-    'bayer leverkusen': 'Leverkusen',
-    'borussia dortmund': 'Dortmund',
-    'paris saint-germain': 'PSG',
-    'paris saint germain': 'PSG',
-    'olympique marseille': 'Marseille',
-    'olympique lyonnais': 'Lyon',
-    'tottenham hotspur': 'Tottenham',
-    'west ham united': 'West Ham',
-    'newcastle united': 'Newcastle',
-    'wolverhampton wanderers': 'Wolverhampton',
-    'nottingham forest': 'Nottingham Forest',
-    'brighton & hove albion': 'Brighton',
-    'athletic club': 'Athletic Bilbao',
-    'athletic bilbao': 'Athletic Bilbao',
-    'girona fc': 'Girona',
-    'getafe cf': 'Getafe',
-    'rcd mallorca': 'Mallorca',
-    'rcd espanyol': 'Espanyol',
-    'hellas verona': 'Verona',
-    'atalanta bc': 'Atalanta',
-    'udinese calcio': 'Udinese',
-    'cagliari calcio': 'Cagliari',
-    'us lecce': 'Lecce',
-    'bologna fc': 'Bologna',
-    'como 1907': 'Como',
+    'manchester city'          : 'Man City',
+    'manchester united'        : 'Man United',
+    'manchester utd'           : 'Man United',
+    'atletico madrid'          : 'Atletico Madrid',
+    'inter milan'              : 'Inter',
+    'internazionale'           : 'Inter',
+    'ac milan'                 : 'Milan',
+    'as roma'                  : 'Roma',
+    'ss lazio'                 : 'Lazio',
+    'rb leipzig'               : 'RB Leipzig',
+    'bayer leverkusen'         : 'Leverkusen',
+    'borussia dortmund'        : 'Dortmund',
+    'paris saint-germain'      : 'PSG',
+    'paris saint germain'      : 'PSG',
+    'olympique marseille'      : 'Marseille',
+    'olympique lyonnais'       : 'Lyon',
+    'tottenham hotspur'        : 'Tottenham',
+    'west ham united'          : 'West Ham',
+    'newcastle united'         : 'Newcastle',
+    'wolverhampton wanderers'  : 'Wolverhampton',
+    'nottingham forest'        : 'Nottingham Forest',
+    'brighton & hove albion'   : 'Brighton',
+    'athletic club'            : 'Athletic Bilbao',
+    'athletic bilbao'          : 'Athletic Bilbao',
+    'girona fc'                : 'Girona',
+    'getafe cf'                : 'Getafe',
+    'rcd mallorca'             : 'Mallorca',
+    'rcd espanyol'             : 'Espanyol',
+    'hellas verona'            : 'Verona',
+    'atalanta bc'              : 'Atalanta',
+    'udinese calcio'           : 'Udinese',
+    'cagliari calcio'          : 'Cagliari',
+    'us lecce'                 : 'Lecce',
+    'bologna fc'               : 'Bologna',
+    'como 1907'                : 'Como',
 };
 
 function getShortName(name) {
@@ -445,20 +556,55 @@ function generateSVGLogo(teamName) {
     catch(e) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
 }
 
+// Cari logo di Sheets DB — cocokkan nama lengkap & variasi
+function lookupSheetDb(teamName) {
+    var key = teamName.toLowerCase().trim();
+    if (sheetsLogoDb[key]) return sheetsLogoDb[key];
+
+    var shortName = getShortName(teamName);
+    if (shortName && sheetsLogoDb[shortName.toLowerCase()]) {
+        return sheetsLogoDb[shortName.toLowerCase()];
+    }
+
+    var words = key.split(/\s+/);
+    if (words.length > 0 && words[0].length >= 4) {
+        var keys = Object.keys(sheetsLogoDb);
+        for (var i = 0; i < keys.length; i++) {
+            var dbWords = keys[i].split(/\s+/);
+            var match = dbWords.some(function(dw) {
+                return dw.length >= 4 && words.indexOf(dw) !== -1;
+            });
+            if (match) return sheetsLogoDb[keys[i]];
+        }
+    }
+    return null;
+}
+
+// =============================================
+// FETCH TEAM LOGO — URUTAN: API → SHEETS → SVG
+// =============================================
 async function fetchTeamLogo(teamName) {
     var key = teamName.toLowerCase().trim();
     if (key in teamLogoCache) return teamLogoCache[key];
-    teamLogoCache[key] = { url: null };
+
+    teamLogoCache[key] = { url: null, source: 'svg' };
+
+    // ── STEP 1: TheSportsDB API ──
     try {
         var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(teamName));
         var data = await res.json();
         if (data && data.teams && data.teams.length > 0) {
             var t = data.teams[0];
             var logoUrl = t.strTeamBadge || t.strBadge || t.strTeamLogo || null;
-            teamLogoCache[key] = { url: logoUrl, fullName: t.strTeam };
-            return teamLogoCache[key];
+            if (logoUrl) {
+                teamLogoCache[key] = { url: logoUrl, fullName: t.strTeam, source: 'api' };
+                updateApiCounter();
+                return teamLogoCache[key];
+            }
         }
     } catch(e) {}
+
+    // Coba short name di API
     var shortName = getShortName(teamName);
     if (shortName) {
         try {
@@ -466,13 +612,39 @@ async function fetchTeamLogo(teamName) {
             var data2 = await res2.json();
             if (data2 && data2.teams && data2.teams.length > 0) {
                 var t2 = data2.teams[0];
-                teamLogoCache[key] = { url: t2.strTeamBadge || t2.strBadge || null, fullName: t2.strTeam };
-                return teamLogoCache[key];
+                var logoUrl2 = t2.strTeamBadge || t2.strBadge || null;
+                if (logoUrl2) {
+                    teamLogoCache[key] = { url: logoUrl2, fullName: t2.strTeam, source: 'api' };
+                    updateApiCounter();
+                    return teamLogoCache[key];
+                }
             }
         } catch(e2) {}
     }
-    teamLogoCache[key] = { url: null };
+
+    // ── STEP 2: Google Sheets Database ──
+    if (!sheetsDbLoaded) {
+        try { await sheetsDbLoadPromise; } catch(e) {}
+    }
+
+    var sheetUrl = lookupSheetDb(teamName);
+    if (sheetUrl) {
+        teamLogoCache[key] = { url: sheetUrl, source: 'sheet' };
+        return teamLogoCache[key];
+    }
+
+    // ── STEP 3: SVG Fallback ──
+    teamLogoCache[key] = { url: null, source: 'svg' };
     return teamLogoCache[key];
+}
+
+var apiLogoCount = 0;
+function updateApiCounter() {
+    apiLogoCount++;
+    var el = document.getElementById('cnt-api');
+    if (el) el.textContent = apiLogoCount + ' tim';
+    var dot = document.getElementById('dot-api');
+    if (dot) dot.className = 'db-dot ok';
 }
 
 function getTeamLogoUrl(name) {
@@ -486,13 +658,17 @@ function getTeamLogoUrl(name) {
 // =============================================
 function parseMatchLine(line) {
     var hasVS = /\s+(vs|VS|Vs|vS)\s+/i.test(line);
-    var hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}:\d{2}/.test(line);
+    var hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}\s*:\s*\d{2}/.test(line);
     var hasScore = /\d+\s*[:]\s*\d+/.test(line);
     if (!hasVS) return null;
     if (!hasDateOrTime && !hasScore) return null;
     var tmp = line, date = '', time = '', team1 = '', team2 = '', score1 = '', score2 = '';
-    var dtm = tmp.match(/(\d{1,2}[\/\-]\d{1,2})\s+(\d{1,2}:\d{2}(?:\s+WIB)?)/i);
-    if (dtm) { date = dtm[1]; time = dtm[2].trim(); tmp = tmp.replace(dtm[0], '').trim(); }
+    var dtm = tmp.match(/(\d{1,2}[\/\-]\d{1,2})\s+(\d{1,2}\s*:\s*\d{2}(?:\s+WIB)?)/i);
+    if (dtm) {
+        date = dtm[1];
+        time = dtm[2].replace(/\s*:\s*/, ':').trim();
+        tmp = tmp.replace(dtm[0], '').trim();
+    }
     var sm = tmp.match(/(\d+)\s*[:]\s*(\d+)\s*$/);
     if (sm) { score1 = sm[1]; score2 = sm[2]; tmp = tmp.replace(sm[0], '').trim(); }
     var tm = tmp.match(/(.+?)\s+(vs|VS|Vs|vS)\s+(.+?)$/i);
@@ -553,8 +729,6 @@ function buildLeagueDropdown(leagues) {
     var sel = document.getElementById('leagueSelect');
     if (!leagues.length) { wrap.style.display = 'none'; return; }
     wrap.style.display = 'block';
-
-    // Rebuild options
     sel.innerHTML = '<option value="all">Semua Liga</option>';
     leagues.forEach(function(l) {
         var opt = document.createElement('option');
@@ -568,11 +742,7 @@ function buildLeagueDropdown(leagues) {
 function filterLeague(leagueName) {
     var wrappers = document.querySelectorAll('#previewTables .preview-table-wrapper');
     wrappers.forEach(function(w) {
-        if (leagueName === 'all' || w.getAttribute('data-league') === leagueName) {
-            w.style.display = '';
-        } else {
-            w.style.display = 'none';
-        }
+        w.style.display = (leagueName === 'all' || w.getAttribute('data-league') === leagueName) ? '' : 'none';
     });
 }
 
@@ -581,7 +751,7 @@ function filterLeague(leagueName) {
 // =============================================
 function renderPreview(leagues) {
     var tablesDiv = document.getElementById('previewTables');
-    var emptyDiv = document.getElementById('previewEmpty');
+    var emptyDiv  = document.getElementById('previewEmpty');
 
     if (!leagues.length) {
         tablesDiv.innerHTML = '';
@@ -640,8 +810,6 @@ function buildOutputHTML(leagues) {
     var c = getColors();
     var lighterBg = adjustColor(c.bg, 30);
 
-    var leagueNames = leagues.map(function(l){ return l.name; });
-
     var tables = '';
     leagues.forEach(function(league) {
         tables += '<div class="tbl-wrap" data-league="' + league.name.replace(/"/g,'&quot;') + '">\n<table>\n<tbody>\n';
@@ -680,7 +848,6 @@ function buildOutputHTML(leagues) {
         tables += '</tbody>\n</table>\n</div>\n';
     });
 
-    // Dropdown untuk output HTML
     var selectHTML = '<div class="filter-section">\n' +
 '<div class="filter-label">🏆 Pilih Liga</div>\n' +
 '<div class="filter-select-wrap">\n' +
@@ -701,7 +868,6 @@ function buildOutputHTML(leagues) {
 '.marquee-container { overflow: hidden; white-space: nowrap; background: linear-gradient(135deg,#1a1a1a,' + c.hd + ',#1a1a1a); color: ' + c.mq + '; padding: 15px 0; font-size: clamp(12px,3vw,16px); font-weight: 900; border: 3px solid ' + c.mq + '; border-radius: 15px; margin: 20px auto; width: 90%; text-shadow: 0 0 15px ' + c.mq + '; letter-spacing: 1.5px; box-shadow: 0 0 20px ' + c.mq + '80; }\n' +
 '.marquee-content { display: inline-block; animation: marquee 40s linear infinite; padding-left: 100%; }\n' +
 '@keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-100%)} }\n' +
-'/* ===== FILTER SELECT ===== */\n' +
 '.filter-section { width: 90%; margin: 0 auto 12px auto; }\n' +
 '.filter-label { font-size: 11px; color: ' + c.bg + 'bb; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 8px; }\n' +
 '.filter-select-wrap { position: relative; }\n' +
@@ -709,7 +875,6 @@ function buildOutputHTML(leagues) {
 '.fselect { width: 100%; padding: 10px 38px 10px 14px; background: rgba(0,0,0,0.8); border: 2px solid ' + c.bg + '66; border-radius: 10px; color: ' + c.bg + '; font-size: 13px; font-weight: 700; letter-spacing: 0.8px; cursor: pointer; appearance: none; -webkit-appearance: none; outline: none; transition: all 0.25s; }\n' +
 '.fselect:focus, .fselect:hover { border-color: ' + c.bg + '; box-shadow: 0 0 14px ' + c.bg + '55; }\n' +
 '.fselect option { background: #0a0a0f; color: #fff; font-weight: 700; }\n' +
-'/* ===== TABLE ===== */\n' +
 '.tbl-wrap { overflow: hidden; margin: 20px auto; width: 90%; border: 3px solid ' + c.bg + '; border-radius: 15px; padding: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px ' + c.bg + '80; }\n' +
 'table { width: 100%; table-layout: fixed; border-collapse: collapse; border-spacing: 0; border-radius: 10px; overflow: hidden; }\n' +
 '.league-hdr { font-size: clamp(12px,3vw,16px); font-weight: 900; padding: 13px 10px; text-align: center; text-transform: uppercase; letter-spacing: 1.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }\n' +
@@ -784,14 +949,13 @@ async function handleInput() {
     document.getElementById('totalLeagues').textContent = leagues.length;
     document.getElementById('totalMatches').textContent = totalM;
 
-    // ── RENDER LANGSUNG dengan logo SVG fallback ──
+    // Render langsung dengan SVG fallback
     renderPreview(leagues);
     document.getElementById('outputCode').textContent = buildOutputHTML(leagues);
 
     var newTeams = allTeams.filter(function(t) { return !(t.toLowerCase().trim() in teamLogoCache); });
 
     if (newTeams.length === 0) {
-        // Semua logo sudah di cache, update counter
         var found0 = allTeams.filter(function(n) {
             var cached = teamLogoCache[n.toLowerCase().trim()];
             return cached && cached.url;
@@ -800,16 +964,14 @@ async function handleInput() {
         return;
     }
 
-    // ── FETCH LOGO DI BACKGROUND, update img satu per satu ──
     document.getElementById('fetchIndicator').classList.add('active');
-    document.getElementById('fetchStatus').textContent = 'Memperbarui logo ' + newTeams.length + ' tim...';
+    document.getElementById('fetchStatus').textContent = 'Mencari logo ' + newTeams.length + ' tim...';
 
     var fetched = 0;
     var fetchPromises = newTeams.map(async function(name) {
         var result = await fetchTeamLogo(name);
         fetched++;
 
-        // Update gambar di preview secara langsung (tanpa re-render penuh)
         if (result && result.url) {
             var key = name.toLowerCase().trim();
             document.querySelectorAll('#previewTables img[data-team]').forEach(function(img) {
@@ -819,25 +981,23 @@ async function handleInput() {
             });
         }
 
-        // Update counter logo
         var foundSoFar = allTeams.filter(function(n) {
             var cached = teamLogoCache[n.toLowerCase().trim()];
             return cached && cached.url;
         }).length;
         document.getElementById('totalLogos').textContent = foundSoFar;
 
-        // Update status indicator
         var remaining = newTeams.length - fetched;
         if (remaining > 0) {
-            document.getElementById('fetchStatus').textContent = 'Memperbarui logo... sisa ' + remaining + ' tim';
+            var src = result && result.source ? result.source.toUpperCase() : '';
+            document.getElementById('fetchStatus').textContent =
+                '[' + src + '] Sisa ' + remaining + ' tim...';
         }
     });
 
     await Promise.all(fetchPromises);
 
     document.getElementById('fetchIndicator').classList.remove('active');
-
-    // Setelah semua logo selesai, regenerate output HTML dengan logo asli
     document.getElementById('outputCode').textContent = buildOutputHTML(leagues);
 }
 
@@ -959,6 +1119,9 @@ function clearInput() {
     document.getElementById('totalLogos').textContent = '0';
     document.getElementById('fetchIndicator').classList.remove('active');
     teamLogoCache = {};
+    apiLogoCount = 0;
+    document.getElementById('cnt-api').textContent = '—';
+    document.getElementById('dot-api').className = 'db-dot';
     showNotification('✓ Input berhasil dibersihkan!', 'success');
 }
 
@@ -979,6 +1142,8 @@ window.addEventListener('DOMContentLoaded', function() {
     generateAutoDate();
     initColorPickers();
     updatePreviewColors();
+    document.getElementById('dot-api').className = 'db-dot ok';
+    document.getElementById('cnt-api').textContent = 'On-demand';
 });
 </script>
 kunci script

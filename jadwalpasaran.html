@@ -418,7 +418,6 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            /* Background icon */
             position: relative;
             overflow: hidden;
         }
@@ -456,7 +455,6 @@
             background: rgba(45, 122, 45, 0.15);
         }
 
-        /* Result Display */
         .result-display {
             display: none;
             align-items: center;
@@ -831,7 +829,6 @@
             .result-numbers { font-size: 0.95rem; }
         }
 
-        /* Comparison Table */
         .comparison-container {
             position: fixed;
             top: 20px;
@@ -1048,11 +1045,10 @@
     </style>
 </head>
 <body>
-    <!-- Comparison Table -->
     <div class="comparison-container">
         <div class="comparison-header" onclick="toggleComparison()">
             <div class="comparison-title"><span>Perbandingan</span></div>
-            <div class="comparison-toggle" id="comparisonToggle">▼</div>
+            <div class="comparison-toggle" id="comparisonToggle">&#9660;</div>
         </div>
         <div class="comparison-content" id="comparisonContent">
             <textarea class="comparison-textarea" id="comparisonInput" placeholder="Paste data hasil dari line" oninput="autoCompare()"></textarea>
@@ -1067,7 +1063,7 @@
                             <th>Pasaran</th>
                             <th>Man</th>
                             <th>Form</th>
-                            <th>✓</th>
+                            <th>&#10003;</th>
                         </tr>
                     </thead>
                     <tbody id="comparisonTableBody"></tbody>
@@ -1095,11 +1091,11 @@
         <h1>JADWAL TOGEL</h1>
         <div class="datetime-display">
             <div class="date-box">
-                <div class="date-label">📅 Tanggal Hari Ini</div>
+                <div class="date-label">&#128197; Tanggal Hari Ini</div>
                 <div class="date-value" id="currentDate">Loading...</div>
             </div>
             <div class="time-box">
-                <div class="time-label">🕐 Jam Sekarang</div>
+                <div class="time-label">&#128336; Jam Sekarang</div>
                 <div class="time-value" id="currentTime">00:00:00</div>
                 <div class="timezone">WIB (GMT+7)</div>
             </div>
@@ -1109,12 +1105,12 @@
                 <div class="toggle-switch" id="alarmSwitch">
                     <div class="toggle-slider"></div>
                 </div>
-                <span class="alarm-icon">🔔</span>
+                <span class="alarm-icon">&#128276;</span>
                 <div style="display: flex; flex-direction: column; gap: 2px;">
                     <span class="toggle-label">Alarm Suara</span>
                     <div class="alarm-status" id="alarmStatus">Klik untuk mengaktifkan</div>
                     <div class="volume-control">
-                        <span style="font-size: 0.8rem;">🔊</span>
+                        <span style="font-size: 0.8rem;">&#128266;</span>
                         <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="80" onchange="updateVolume(this.value)">
                         <span id="volumeLabel" style="font-size: 0.8rem; min-width: 30px;">80%</span>
                     </div>
@@ -1160,39 +1156,39 @@
         const pasaranData = [
             {name: "HOKI DRAW 00",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "23:59 WIB", buka: "00:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "TOTO MACAU PAGI",     icon: `${BASE}/TTM6/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "00:00 WIB", buka: "00:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
+            {name: "KENTUCKY MIDDAY",     icon: `${BASE}/KTM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "00:05 WIB", buka: "00:20 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
+            {name: "FLORIDA MIDDAY",      icon: `${BASE}/FLM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "00:20 WIB", buka: "00:30 WIB", website: "https://floridalottery.com/", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
             {name: "HUAHIN 0100",         icon: `${BASE}/HUA01/icon/icon.png`, days: "Senin s/d Minggu", tutup: "00:45 WIB", buka: "01:00 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
             {name: "HOKI DRAW 01",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "00:59 WIB", buka: "01:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "KENTUCKY MIDDAY",     icon: `${BASE}/KTM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "01:05 WIB", buka: "01:20 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
+            {name: "NEW YORK MIDDAY",     icon: `${BASE}/NYM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "01:15 WIB", buka: "01:25 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
             {name: "BANGKOK 0130",        icon: `${BASE}/BKK01/icon/icon.png`, days: "Senin s/d Minggu", tutup: "01:15 WIB", buka: "01:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
-            {name: "FLORIDA MIDDAY",      icon: `${BASE}/FLM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "01:20 WIB", buka: "01:30 WIB", website: "https://floridalottery.com/", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
+            {name: "CAROLINA DAY",        icon: `${BASE}/NCD/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "01:45 WIB", buka: "02:00 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 02",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "01:59 WIB", buka: "02:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "NEW YORK MIDDAY",     icon: `${BASE}/NYM/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "02:15 WIB", buka: "02:25 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
             {name: "BRUNEI 02",           icon: `${BASE}/BRU02/icon/icon.png`, days: "Senin s/d Minggu", tutup: "02:30 WIB", buka: "02:45 WIB", website: "https://bruneipools.com/", live: null, prizeType: "price123"},
+            {name: "OREGON 03",           icon: `${BASE}/ORG03/icon/icon.png`, days: "Senin s/d Minggu", tutup: "02:50 WIB", buka: "03:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 03",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "02:59 WIB", buka: "03:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "CAROLINA DAY",        icon: `${BASE}/NCD/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "02:45 WIB", buka: "03:00 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
-            {name: "OREGON 03",           icon: `${BASE}/ORG03/icon/icon.png`, days: "Senin s/d Minggu", tutup: "03:50 WIB", buka: "04:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 04",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "03:59 WIB", buka: "04:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "HOKI DRAW 05",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "04:59 WIB", buka: "05:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "OREGON 06",           icon: `${BASE}/ORG6/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "05:50 WIB", buka: "06:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 06",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "05:59 WIB", buka: "06:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "OREGON 06",           icon: `${BASE}/ORG6/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "06:50 WIB", buka: "07:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 07",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "06:59 WIB", buka: "07:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "HOKI DRAW 08",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "07:59 WIB", buka: "08:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
+            {name: "CALIFORNIA",          icon: `${BASE}/CLF/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "08:25 WIB", buka: "08:30 WIB", website: "https://www.calottery.com/draw-games/daily-4", live: null, prizeType: "price1"},
+            {name: "FLORIDA EVENING",     icon: `${BASE}/FLE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "08:35 WIB", buka: "08:45 WIB", website: "https://floridalottery.com/games/draw-games/pick-4", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
+            {name: "OREGON 09",           icon: `${BASE}/ORG09/icon/icon.png`, days: "Senin s/d Minggu", tutup: "08:50 WIB", buka: "09:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 09",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "08:59 WIB", buka: "09:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "BANGKOK 0930",        icon: `${BASE}/BKK02/icon/icon.png`, days: "Senin s/d Minggu", tutup: "09:15 WIB", buka: "09:30 WIB", website: "https://bangkokpoolstoday.com/", live: null, prizeType: "price123"},
-            {name: "CALIFORNIA",          icon: `${BASE}/CLF/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "09:25 WIB", buka: "09:30 WIB", website: "https://www.calottery.com/draw-games/daily-4", live: null, prizeType: "price1"},
-            {name: "FLORIDA EVENING",     icon: `${BASE}/FLE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "09:35 WIB", buka: "09:45 WIB", website: "https://floridalottery.com/games/draw-games/pick-4", live: "https://www.youtube.com/user/floridalottery", prizeType: "price1"},
-            {name: "OREGON 09",           icon: `${BASE}/ORG09/icon/icon.png`, days: "Senin s/d Minggu", tutup: "09:50 WIB", buka: "10:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
+            {name: "NEW YORK EVENING",    icon: `${BASE}/NYE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "09:25 WIB", buka: "09:35 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
+            {name: "KENTUCKY EVENING",    icon: `${BASE}/KTE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "09:45 WIB", buka: "10:00 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 10",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "09:59 WIB", buka: "10:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "NEW YORK EVENING",    icon: `${BASE}/NYE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "10:25 WIB", buka: "10:35 WIB", website: "https://nylottery.ny.gov/", live: "https://www.youtube.com/@NewYorkLottery/streams", prizeType: "price1"},
-            {name: "KENTUCKY EVENING",    icon: `${BASE}/KTE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "10:45 WIB", buka: "11:00 WIB", website: "https://www.kylottery.com/apps/", live: null, prizeType: "price1"},
+            {name: "CAROLINA EVENING",    icon: `${BASE}/NCD2/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "10:17 WIB", buka: "10:22 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
             {name: "TOTO CAMBODIA",       icon: `${BASE}/TTC/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "10:45 WIB", buka: "11:00 WIB", website: "https://totocambodialive.com/", live: "https://kick.com/totocambodia", prizeType: "price123"},
             {name: "HOKI DRAW 11",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "10:59 WIB", buka: "11:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "CHELSEA 11",          icon: `${BASE}/CHS11/icon/icon.png`, days: "Senin s/d Minggu", tutup: "11:00 WIB", buka: "11:15 WIB", website: "https://chelseapools.co.uk/", live: null, prizeType: "price123"},
-            {name: "CAROLINA EVENING",    icon: `${BASE}/NCD2/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "11:17 WIB", buka: "11:22 WIB", website: "https://www.wral.com/entertainment/lottery/", live: null, prizeType: "price1"},
+            {name: "OREGON 12",           icon: `${BASE}/ORG12/icon/icon.png`, days: "Senin s/d Minggu", tutup: "11:50 WIB", buka: "12:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 12",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "11:59 WIB", buka: "12:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "BULLSEYE",            icon: `${BASE}/BLE/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "12:00 WIB", buka: "12:15 WIB", website: "https://mylotto.co.nz/results/bullseye", live: null, prizeType: "price1"},
             {name: "POIPET 12",           icon: `${BASE}/PPT12/icon/icon.png`, days: "Senin s/d Minggu", tutup: "12:15 WIB", buka: "12:30 WIB", website: "https://poipetlottery.com/", live: "https://dlive.tv/PoipetPools", prizeType: "price123"},
-            {name: "OREGON 12",           icon: `${BASE}/ORG12/icon/icon.png`, days: "Senin s/d Minggu", tutup: "12:50 WIB", buka: "13:00 WIB", website: "https://www.oregonlottery.org/pick-4/winning-numbers/", live: null, prizeType: "price1"},
             {name: "HOKI DRAW 13",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "12:59 WIB", buka: "13:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "TOTO MACAU SIANG",    icon: `${BASE}/TTM1/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "13:00 WIB", buka: "13:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "HOKI DRAW 14",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "13:59 WIB", buka: "14:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
@@ -1206,7 +1202,7 @@
             {name: "TOTO MACAU SORE",     icon: `${BASE}/TTM2/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "16:00 WIB", buka: "16:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "HUAHIN 1630",         icon: `${BASE}/HUA02/icon/icon.png`, days: "Senin s/d Minggu", tutup: "16:15 WIB", buka: "16:30 WIB", website: "https://huahinlottery.com/", live: "https://www.youtube.com/@huahinlottery5727", prizeType: "price123"},
             {name: "HOKI DRAW 17",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "16:59 WIB", buka: "17:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
-            {name: "KING KONG4D SORE",    icon: `${BASE}/KK1/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "17:00 WIB", buka: "17:15 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"},
+            {name: "KING KONG 4D SORE",   icon: `${BASE}/KK1/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "17:00 WIB", buka: "17:15 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"},
             {name: "SINGAPORE",           icon: `${BASE}/SGD/icon/icon.png`,   days: "HARI SELASA & JUM'AT ( LIBUR )", tutup: "17:30 WIB", buka: "17:45 WIB", website: "https://www.singaporepools.com.sg/landing/en/Pages/index.html", live: null, prizeType: "price123", activeDays: [1, 3, 4, 6, 0]},
             {name: "HOKI DRAW 18",        icon: `${BASE}/HKDW/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "17:59 WIB", buka: "18:00 WIB", website: "https://hokidraw.com/", live: "https://dlive.tv/u/HOKIDRAW", prizeType: "price1"},
             {name: "MAGNUM4D",            icon: `${BASE}/MAG/icon/icon.png`,   days: "HARI RABU, SABTU & MINGGU", tutup: "18:10 WIB", buka: "18:40 WIB", website: "https://www.magnum4d.my/en", live: null, prizeType: "price123", activeDays: [3, 6, 0]},
@@ -1229,7 +1225,7 @@
             {name: "HONGKONG",            icon: `${BASE}/HKGLT/icon/icon.png`, days: "Senin s/d Minggu", tutup: "22:59 WIB", buka: "23:15 WIB", website: "https://hongkongfunlotto.net/", live: "https://kick.com/hongkong-lotto-official", prizeType: "price123"},
             {name: "TOTO MACAU MALAM III",icon: `${BASE}/TTM5/icon/icon.png`,  days: "Senin s/d Minggu", tutup: "23:00 WIB", buka: "23:15 WIB", website: "https://totomacaunew.us/", live: "https://kick.com/live-ttm4d", prizeType: "price1"},
             {name: "TOTO MALI 2330",      icon: `${BASE}/MALI23/icon/icon.png`,days: "Senin s/d Minggu", tutup: "23:15 WIB", buka: "23:30 WIB", website: "https://totomali.com/", live: "https://www.youtube.com/@TotoMaliLive", prizeType: "price123"},
-            {name: "KING KONG4D MALAM",   icon: `${BASE}/KK2/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
+            {name: "KING KONG 4D MALAM",  icon: `${BASE}/KK2/icon/icon.png`,   days: "Senin s/d Minggu", tutup: "23:30 WIB", buka: "23:45 WIB", website: "https://kingkongpools.id/", live: "https://kick.com/king-kong-pools", prizeType: "price1"}
         ];
 
         const cardStates = {};
@@ -1410,7 +1406,7 @@
                 localStorage.removeItem(STORAGE_KEY);
                 localStorage.removeItem('jadwalTogelTimestamp');
                 renderCards();
-                showToast('🗑️ Semua data tersimpan berhasil dihapus!', false, 'info');
+                showToast('Semua data tersimpan berhasil dihapus!', false, 'info');
             }
         }
 
@@ -1449,9 +1445,9 @@
             const button = document.querySelector('.btn-modal-copy');
             const orig = button.textContent;
             navigator.clipboard.writeText(text).then(() => {
-                button.textContent='✓ Berhasil Dicopy!'; button.classList.add('copied');
+                button.textContent='Berhasil Dicopy!'; button.classList.add('copied');
                 setTimeout(() => { button.textContent=orig; button.classList.remove('copied'); }, 2000);
-            }).catch(() => { button.textContent='✗ Gagal Copy'; setTimeout(() => button.textContent=orig, 2000); });
+            }).catch(() => { button.textContent='Gagal Copy'; setTimeout(() => button.textContent=orig, 2000); });
         }
 
         function updateResultDisplay(index) {
@@ -1483,9 +1479,9 @@
             let ok = false;
             try { ok = document.execCommand('copy'); } catch(e) {}
             document.body.removeChild(ta);
-            if (ok) { button.classList.add('copied'); showToast('✓ Angka berhasil dicopy: '+resultNumbers); setTimeout(()=>button.classList.remove('copied'),2000); return; }
+            if (ok) { button.classList.add('copied'); showToast('Angka berhasil dicopy: '+resultNumbers); setTimeout(()=>button.classList.remove('copied'),2000); return; }
             if (navigator.clipboard?.writeText) {
-                navigator.clipboard.writeText(resultNumbers).then(() => { button.classList.add('copied'); showToast('✓ Angka berhasil dicopy: '+resultNumbers); setTimeout(()=>button.classList.remove('copied'),2000); }).catch(() => showCopyPrompt(resultNumbers));
+                navigator.clipboard.writeText(resultNumbers).then(() => { button.classList.add('copied'); showToast('Angka berhasil dicopy: '+resultNumbers); setTimeout(()=>button.classList.remove('copied'),2000); }).catch(() => showCopyPrompt(resultNumbers));
             } else { showCopyPrompt(resultNumbers); }
         }
 
@@ -1505,8 +1501,6 @@
             card.setAttribute('data-title', data.name.toLowerCase());
             card.setAttribute('data-index', index);
             card.setAttribute('data-status', 'pending');
-
-            const iconHtml = '';
 
             const inputSection = data.prizeType === 'price123' ? `
                 <div class="input-section">
@@ -1600,8 +1594,8 @@
                 if (!prize2||!prize3) { showToast('Harap masukkan Prize 1, Prize 2, dan Prize 3!', true); return; }
             }
             navigator.clipboard.writeText(generateResultText(pasaran, prize1, prize2, prize3))
-                .then(() => showToast('✓ Hasil berhasil dicopy!'))
-                .catch(() => showToast('✗ Gagal copy hasil', true));
+                .then(() => showToast('Hasil berhasil dicopy!'))
+                .catch(() => showToast('Gagal copy hasil', true));
         }
 
         function handleDone(button, index) {
@@ -1617,7 +1611,7 @@
             const title = card.querySelector('.ttg-card__title');
             if (!title.querySelector('.status-badge')) {
                 const badge = document.createElement('span');
-                badge.className='status-badge done'; badge.textContent='✓ Done';
+                badge.className='status-badge done'; badge.textContent='Done';
                 title.appendChild(badge);
             }
             card.querySelectorAll('input').forEach(i => i.disabled=true);
@@ -1625,7 +1619,7 @@
             card.querySelector('.btn-reset').style.display='block';
             cardStates[index] = { isDone:true, prize1:card.querySelector('.prize1').value, prize2:card.querySelector('.prize2')?.value||null, prize3:card.querySelector('.prize3')?.value||null };
             saveToLocalStorage(); triggerComparisonUpdate();
-            showToast(`✓ ${pasaranData[index].name} ditandai selesai!`);
+            showToast(`${pasaranData[index].name} ditandai selesai!`);
         }
 
         function handleReset(button, index) {
@@ -1638,7 +1632,7 @@
             card.querySelector('.result-display').classList.remove('has-content');
             delete cardStates[index];
             saveToLocalStorage(); triggerComparisonUpdate();
-            showToast(`↻ ${pasaranData[index].name} direset!`);
+            showToast(`${pasaranData[index].name} direset!`);
         }
 
         function autoSaveInput(index) {
@@ -1674,7 +1668,7 @@
                     if (cardStates[index].isDone) {
                         el.classList.add('done'); el.setAttribute('data-status','done');
                         const title=el.querySelector('.ttg-card__title');
-                        if (!title.querySelector('.status-badge')) { const b=document.createElement('span'); b.className='status-badge done'; b.textContent='✓ Done'; title.appendChild(b); }
+                        if (!title.querySelector('.status-badge')) { const b=document.createElement('span'); b.className='status-badge done'; b.textContent='Done'; title.appendChild(b); }
                         el.querySelectorAll('input').forEach(i=>i.disabled=true);
                         el.querySelector('.btn-done').style.display='none';
                         el.querySelector('.btn-reset').style.display='block';
@@ -1709,7 +1703,7 @@
             if (window.speechSynthesis.onvoiceschanged!==undefined) window.speechSynthesis.onvoiceschanged=loadVoices;
             updateDateTime(); setInterval(updateDateTime,1000);
             renderCards();
-            if (hasLoaded&&Object.keys(cardStates).length>0) showToast(`✓ Data tersimpan dimuat (${Object.keys(cardStates).length} pasaran)`,false,'info');
+            if (hasLoaded&&Object.keys(cardStates).length>0) showToast(`Data tersimpan dimuat (${Object.keys(cardStates).length} pasaran)`,false,'info');
             setInterval(updateCountdowns,1000);
             const search = document.getElementById('searchInput');
             search.addEventListener('input', applyFilters);
@@ -1725,7 +1719,6 @@
         window.onclick = e => { if(e.target===document.getElementById('resultModal')) closeModal(); };
         document.addEventListener('keydown', e => { if(e.key==='Escape'&&document.getElementById('resultModal').style.display==='flex') closeModal(); });
 
-        // ── Comparison Table ──
         let comparisonData = [];
         let isComparisonCollapsed = false;
 
@@ -1842,19 +1835,19 @@
                 fc.textContent=formText||'-'; fc.title=matchedName?`${matchedName}: ${formText}`:'Tidak ada data';
                 const sc=document.createElement('td'); sc.className='comparison-status';
                 if (hasData&&(!formText||idx===-1)) {
-                    sc.innerHTML='<span class="match-empty">○</span>';
+                    sc.innerHTML='<span class="match-empty">&#9675;</span>';
                     mc.classList.add('match-empty'); fc.classList.add('match-empty');
                     if (idx===-1&&hasData) { diff++; window.differentPasarans.push(manual.name); }
                     else empty_++;
                 } else if (!hasData) {
-                    sc.innerHTML='<span class="match-empty">○</span>';
+                    sc.innerHTML='<span class="match-empty">&#9675;</span>';
                     mc.classList.add('match-empty'); fc.classList.add('match-empty'); empty_++;
                 } else if (isMatch) {
-                    sc.innerHTML='<span class="match-same">✓</span>';
+                    sc.innerHTML='<span class="match-same">&#10003;</span>';
                     mc.classList.add('match-same'); fc.classList.add('match-same'); same++;
                     window.matchedPasarans.push(matchedName);
                 } else {
-                    sc.innerHTML='<span class="match-different">✗</span>';
+                    sc.innerHTML='<span class="match-different">&#10007;</span>';
                     mc.classList.add('match-different'); fc.classList.add('match-different'); diff++;
                     window.differentPasarans.push(matchedName);
                 }

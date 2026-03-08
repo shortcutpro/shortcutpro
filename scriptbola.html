@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HOKBENTOTO Generator</title>
-    <link rel="icon" type="image/png" id="favicon" href="https://hokben38422.com/resources/images/logo.png">
+    <link rel="icon" type="image/x-icon" id="favicon" href="https://hokben84059.com/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -37,77 +37,48 @@
 
         .container { max-width: 1800px; margin: 0 auto; padding: 20px; }
 
-        /* ═══════════════════════════════════════
-           SITE SWITCHER
-        ═══════════════════════════════════════ */
         .site-switcher {
-            display: flex;
-            gap: 0;
-            margin-bottom: 25px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 3px solid var(--primary);
-            box-shadow: 0 0 40px var(--glow-alpha);
-            transition: all 0.5s ease;
+            display: flex; gap: 0; margin-bottom: 25px; border-radius: 20px;
+            overflow: hidden; border: 3px solid var(--primary);
+            box-shadow: 0 0 40px var(--glow-alpha); transition: all 0.5s ease;
         }
         .site-tab {
-            flex: 1;
-            padding: 20px 15px;
-            text-align: center;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 900;
-            font-size: 17px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            border: none;
-            outline: none;
+            flex: 1; padding: 20px 15px; text-align: center; cursor: pointer;
+            font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 17px;
+            letter-spacing: 2px; text-transform: uppercase; transition: all 0.4s ease;
+            position: relative; overflow: hidden; border: none; outline: none;
             background: linear-gradient(135deg, rgba(26,26,46,0.5), rgba(21,21,32,0.8));
         }
         .site-tab.hokben { color: rgba(255,215,0,0.45); border-right: 2px solid rgba(255,215,0,0.2); }
         .site-tab.hokben.active {
-            background: linear-gradient(135deg, #1a1a00, #3a3000, #1a1a00);
-            color: #FFD700;
+            background: linear-gradient(135deg, #1a1a00, #3a3000, #1a1a00); color: #FFD700;
             text-shadow: 0 0 20px rgba(255,215,0,0.9), 0 0 40px rgba(255,215,0,0.5);
             box-shadow: inset 0 0 40px rgba(255,215,0,0.12);
         }
         .site-tab.bandar { color: rgba(0,191,255,0.4); }
         .site-tab.bandar.active {
-            background: linear-gradient(135deg, #000020, #000050, #000020);
-            color: #00BFFF;
+            background: linear-gradient(135deg, #000020, #000050, #000020); color: #00BFFF;
             text-shadow: 0 0 20px rgba(0,191,255,0.9), 0 0 40px rgba(0,191,255,0.5);
             box-shadow: inset 0 0 40px rgba(0,191,255,0.12);
         }
         .site-tab .tab-logo {
             width: 120px; max-width: 32%; object-fit: contain;
             display: block; margin: 0 auto 10px;
-            filter: drop-shadow(0 0 8px currentColor);
-            transition: filter 0.4s, transform 0.3s;
+            filter: drop-shadow(0 0 8px currentColor); transition: filter 0.4s, transform 0.3s;
         }
         .site-tab.active .tab-logo { transform: scale(1.05); filter: drop-shadow(0 0 14px currentColor); }
         .site-tab .tab-sub { font-size: 11px; letter-spacing: 1.5px; opacity: 0.6; margin-top: 4px; font-family: 'Rajdhani', sans-serif; font-weight: 600; }
         .site-tab.active .tab-sub { opacity: 1; }
-        .active-bar {
-            position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
-            border-radius: 2px 2px 0 0; transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
+        .active-bar { position: absolute; bottom: 0; left: 0; right: 0; height: 4px; border-radius: 2px 2px 0 0; transform: scaleX(0); transition: transform 0.4s ease; }
         .site-tab.hokben .active-bar { background: linear-gradient(90deg, transparent, #FFD700, transparent); }
         .site-tab.bandar .active-bar { background: linear-gradient(90deg, transparent, #00BFFF, transparent); }
         .site-tab.active .active-bar { transform: scaleX(1); }
 
-        /* ═══════════════════════════════════════
-           HEADER
-        ═══════════════════════════════════════ */
         .header {
             text-align: center; padding: 30px 20px; margin-bottom: 30px;
             background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
             border-radius: 20px; border: 3px solid var(--primary);
-            box-shadow: 0 0 40px var(--glow-alpha);
-            transition: all 0.5s ease;
+            box-shadow: 0 0 40px var(--glow-alpha); transition: all 0.5s ease;
         }
         .header img.logo { max-width: 300px; filter: drop-shadow(0 0 25px var(--primary)); transition: all 0.5s; }
         .header h1 {
@@ -117,9 +88,6 @@
         }
         .header p { font-size: 16px; color: #ffffff; letter-spacing: 1px; }
 
-        /* ═══════════════════════════════════════
-           AUTO DATE
-        ═══════════════════════════════════════ */
         .auto-date {
             background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
             border: 3px solid var(--primary); border-radius: 15px;
@@ -129,9 +97,7 @@
         .auto-date strong { display: block; color: var(--primary); font-size: 14px; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
         .auto-date .date-display { font-family: 'Orbitron', sans-serif; color: var(--primary); font-size: 28px; font-weight: 900; text-shadow: 0 0 20px var(--primary); }
 
-        /* ═══════════════════════════════════════
-           COLOR PANEL
-        ═══════════════════════════════════════ */
+        /* COLOR PANEL */
         .color-panel {
             background: linear-gradient(135deg, rgba(26,26,46,0.7), rgba(21,21,32,0.9));
             border: 2px solid rgba(255,215,0,0.5); border-radius: 15px;
@@ -143,7 +109,7 @@
             margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
             text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
         }
-        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 20px; margin-bottom: 20px; }
+        .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr)); gap: 20px; margin-bottom: 20px; }
         .color-item { display: flex; flex-direction: column; gap: 10px; }
         .color-item label { font-size: 12px; color: var(--primary); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; transition: color 0.5s; }
         .color-input-group { display: flex; gap: 12px; align-items: center; }
@@ -161,9 +127,7 @@
         }
         .btn-reset-colors:hover { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #000; box-shadow: 0 0 30px var(--primary); transform: translateY(-2px); }
 
-        /* ═══════════════════════════════════════
-           MAIN LAYOUT
-        ═══════════════════════════════════════ */
+        /* MAIN LAYOUT */
         .main-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; align-items: start; }
 
         .section {
@@ -212,9 +176,7 @@
         .btn-clear { background: rgba(255,255,255,0.1); color: #ffffff; border: 2px solid rgba(255,255,255,0.3); }
         .btn-clear:hover { background: rgba(255,255,255,0.2); border-color: #ffffff; transform: translateY(-2px); }
 
-        /* ═══════════════════════════════════════
-           PREVIEW
-        ═══════════════════════════════════════ */
+        /* PREVIEW */
         .preview-sticky { position: sticky; top: 20px; }
         .preview-container { background: var(--bg-main); border-radius: 15px; border: 3px solid var(--primary); overflow: visible; box-shadow: 0 0 40px var(--glow-alpha); transition: all 0.5s; }
         .preview-header { text-align: center; padding: 20px; background: linear-gradient(180deg,#1a1a1a,#000); border-bottom: 3px solid var(--primary); transition: all 0.5s; }
@@ -267,13 +229,13 @@
         @keyframes slideIn { from{transform:translateX(400px);opacity:0} to{transform:translateX(0);opacity:1} }
 
         @media(max-width:1200px){.main-layout{grid-template-columns:1fr;}.preview-sticky{position:relative;top:0;}.color-grid{grid-template-columns:1fr;}}
-        @media(max-width:768px){.header img.logo{max-width:180px;}.header h1{font-size:28px;letter-spacing:1px;}.stats-bar{flex-direction:column;gap:10px;}button{font-size:12px;padding:12px 20px;}.color-grid{grid-template-columns:1fr;}.site-tab{font-size:13px;padding:15px 10px;}.site-tab .tab-logo{width:90px;}.db-status-grid{grid-template-columns:1fr;}}
+        @media(max-width:768px){.header img.logo{max-width:180px;}.header h1{font-size:28px;letter-spacing:1px;}.stats-bar{flex-direction:column;gap:10px;}button{font-size:12px;padding:12px 20px;}.color-grid{grid-template-columns:1fr;}.site-tab{font-size:13px;padding:15px 10px;}.site-tab .tab-logo{width:90px;}}
     </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- ═══ SITE SWITCHER ═══ -->
+    <!-- SITE SWITCHER -->
     <div class="site-switcher" id="siteSwitcher">
         <button class="site-tab hokben active" id="tabHokben" onclick="switchSite('hokben')">
             <div class="active-bar"></div>
@@ -289,14 +251,14 @@
         </button>
     </div>
 
-    <!-- ═══ HEADER ═══ -->
+    <!-- HEADER -->
     <div class="header">
         <img class="logo" id="headerLogo" src="https://hokben38422.com/resources/images/logo.png" alt="Logo">
         <h1 id="headerTitle">HOKBENTOTO GENERATOR</h1>
         <p id="headerSub">Gold Black Edition — Auto Team Logo</p>
     </div>
 
-    <!-- ═══ AUTO DATE ═══ -->
+    <!-- AUTO DATE -->
     <div class="auto-date">
         <strong>📅 TANGGAL OTOMATIS</strong>
         <div class="date-display" id="autoDate">Loading...</div>
@@ -309,46 +271,47 @@
     <span id="dot-football" style="display:none"></span><span id="cnt-football" style="display:none"></span>
     <span id="dot-footballdata" style="display:none"></span><span id="cnt-footballdata" style="display:none"></span>
 
-    <!-- ═══ COLOR PANEL ═══ -->
-    <div class="color-panel">
-        <h3>🎨 EDIT WARNA HTML OUTPUT</h3>
-        <div class="color-grid">
-            <div class="color-item">
-                <label>Background Color</label>
-                <div class="color-input-group">
-                    <input type="color" id="colorBackground" value="#d4af37">
-                    <input type="text" id="colorBackgroundText" value="#d4af37">
-                </div>
-            </div>
-            <div class="color-item">
-                <label>Text Color</label>
-                <div class="color-input-group">
-                    <input type="color" id="colorText" value="#fff1c4">
-                    <input type="text" id="colorTextText" value="#fff1c4">
-                </div>
-            </div>
-            <div class="color-item">
-                <label>Header BG Color</label>
-                <div class="color-input-group">
-                    <input type="color" id="colorHeaderBg" value="#000000">
-                    <input type="text" id="colorHeaderBgText" value="#000000">
-                </div>
-            </div>
-            <div class="color-item">
-                <label>Marquee BG Color</label>
-                <div class="color-input-group">
-                    <input type="color" id="colorMarqueeBg" value="#d4af37">
-                    <input type="text" id="colorMarqueeBgText" value="#d4af37">
-                </div>
-            </div>
-        </div>
-        <button class="btn-reset-colors" onclick="resetColors()">RESET KE DEFAULT TEMA INI</button>
-    </div>
-
-    <!-- ═══ MAIN LAYOUT ═══ -->
+    <!-- MAIN LAYOUT -->
     <div class="main-layout">
-        <!-- KIRI -->
+        <!-- KIRI: Color Panel + Input + Output -->
         <div class="left-column">
+
+            <!-- COLOR PANEL — sekarang di dalam kolom kiri, sejajar dengan input & output -->
+            <div class="color-panel">
+                <h3>🎨 EDIT WARNA HTML OUTPUT</h3>
+                <div class="color-grid">
+                    <div class="color-item">
+                        <label>Background Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="colorBackground" value="#d4af37">
+                            <input type="text" id="colorBackgroundText" value="#d4af37">
+                        </div>
+                    </div>
+                    <div class="color-item">
+                        <label>Text Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="colorText" value="#fff1c4">
+                            <input type="text" id="colorTextText" value="#fff1c4">
+                        </div>
+                    </div>
+                    <div class="color-item">
+                        <label>Header BG Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="colorHeaderBg" value="#000000">
+                            <input type="text" id="colorHeaderBgText" value="#000000">
+                        </div>
+                    </div>
+                    <div class="color-item">
+                        <label>Marquee BG Color</label>
+                        <div class="color-input-group">
+                            <input type="color" id="colorMarqueeBg" value="#d4af37">
+                            <input type="text" id="colorMarqueeBgText" value="#d4af37">
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-reset-colors" onclick="resetColors()">RESET KE DEFAULT TEMA INI</button>
+            </div>
+
             <div class="section">
                 <h2>📝 INPUT PREDIKSI</h2>
                 <div class="stats-bar">
@@ -430,14 +393,12 @@ ITALY SERIE A
 <div class="notification" id="notification">✓ Notification</div>
 
 <script>
-// ═══════════════════════════════════════════════
-// SITE CONFIG
-// ═══════════════════════════════════════════════
 var SITES = {
     hokben: {
         name: 'HOKBENTOTO',
         sub: 'Gold Black Edition — Auto Team Logo',
         logo: 'https://hokben38422.com/resources/images/logo.png',
+        favicon: 'https://hokben84059.com/favicon.ico',
         bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg',
         bgOverlay: 'rgba(10,10,15,0.9), rgba(21,21,32,0.9)',
         marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥',
@@ -453,6 +414,7 @@ var SITES = {
         name: 'BANDAR80',
         sub: 'Casino Online Edition — Auto Team Logo',
         logo: 'https://bandar80.com/resources/images/logo.png',
+        favicon: 'https://bandar81209.com/favicon.ico',
         bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/02/02/20260202/3e6aabe1cc793a0589e3568b5c34ffed/bandar80-background-cny2026.jpg',
         bgOverlay: 'rgba(0,8,32,0.92), rgba(0,17,51,0.92)',
         marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di BANDAR80 dan nikmati pengalaman Casino Online terbaik dengan peluang besar! ♠',
@@ -472,49 +434,28 @@ function switchSite(site) {
     currentSite = site;
     var cfg = SITES[site];
     var root = document.documentElement;
-
-    // CSS Variables
     Object.keys(cfg.cssVars).forEach(function(k) { root.style.setProperty(k, cfg.cssVars[k]); });
-
-    // Background
     document.body.style.background = 'linear-gradient(135deg,' + cfg.bgOverlay + '), url("' + cfg.bg + '")';
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
-
-    // Tabs
     document.getElementById('tabHokben').classList.toggle('active', site === 'hokben');
     document.getElementById('tabBandar').classList.toggle('active', site === 'bandar80');
-
-    // Header
     document.getElementById('headerLogo').src = cfg.logo;
     document.getElementById('headerTitle').textContent = cfg.name + ' GENERATOR';
     document.getElementById('headerSub').textContent = cfg.sub;
     document.title = cfg.name + ' Generator';
-    document.getElementById('favicon').href = cfg.logo;
-
-    // Preview
+    // Update favicon menggunakan URL .ico masing-masing site
+    document.getElementById('favicon').href = cfg.favicon;
     document.getElementById('previewLogo').src = cfg.logo;
     document.getElementById('previewSiteName').textContent = cfg.name;
     document.getElementById('previewMarqueeText').textContent = cfg.marquee;
-
-    // Preview header background
     var ph = document.querySelector('.preview-header');
-    if (site === 'bandar80') {
-        ph.style.background = 'linear-gradient(180deg,#001133,#000020)';
-    } else {
-        ph.style.background = 'linear-gradient(180deg,#1a1a1a,#000)';
-    }
-
-    // DB count color
-    document.querySelectorAll('.db-count').forEach(function(el) { el.style.color = ''; });
-
-    // Reset colors to defaults
+    ph.style.background = site === 'bandar80' ? 'linear-gradient(180deg,#001133,#000020)' : 'linear-gradient(180deg,#1a1a1a,#000)';
     var d = cfg.defaultColors;
     setColorValues(d.bg, d.txt, d.hd, d.mq);
     updatePreviewColors();
     reRenderIfHasData();
-
     showNotification('✓ Beralih ke ' + cfg.name + '!', 'success');
 }
 
@@ -529,9 +470,6 @@ function setColorValues(bg, txt, hd, mq) {
     document.getElementById('colorMarqueeBgText').value = mq;
 }
 
-// ═══════════════════════════════════════════════
-// GOOGLE SHEETS CONFIG — JSONP via GID
-// ═══════════════════════════════════════════════
 var SHEET_CONFIG = {
     SHEET_ID: '1n8DjRyyLgXgVi5Wu2OHSdh9TfONpcBAdYliKqeXyhlM',
     SHEETS: [
@@ -551,36 +489,31 @@ function loadSingleSheet(sheet) {
         var dotEl = document.getElementById(sheet.dotId);
         var cntEl = document.getElementById(sheet.cntId);
         if (dotEl) dotEl.className = 'db-dot loading';
-
         var cbName = 'gviz_' + sheet.name.replace(/[^a-zA-Z0-9]/g, '_');
         var url = 'https://docs.google.com/spreadsheets/d/' + SHEET_CONFIG.SHEET_ID +
                   '/gviz/tq?tqx=out:json;responseHandler:' + cbName +
                   '&sheet=' + encodeURIComponent(sheet.name);
         var scriptId = 'gviz_script_' + cbName;
-
         var timeout = setTimeout(function() {
             cleanup();
             if (dotEl) dotEl.className = 'db-dot error';
             if (cntEl) cntEl.textContent = 'Timeout';
             resolve(0);
         }, 20000);
-
         function cleanup() {
             clearTimeout(timeout);
             var s = document.getElementById(scriptId);
             if (s) s.parentNode.removeChild(s);
             delete window[cbName];
         }
-
         window[cbName] = function(json) {
             var rows = (json && json.table && json.table.rows) ? json.table.rows : [];
             var count = 0;
             rows.forEach(function(row) {
                 if (!row.c) return;
-                var nameCell = row.c[1];
-                var urlCell  = row.c[2];
+                var nameCell = row.c[1]; var urlCell = row.c[2];
                 if (!nameCell || !nameCell.v) return;
-                if (!urlCell  || !urlCell.v)  return;
+                if (!urlCell || !urlCell.v) return;
                 var n = String(nameCell.v).trim().toLowerCase();
                 var u = String(urlCell.v).trim();
                 if (n && u && !sheetsLogoDb[n]) { sheetsLogoDb[n] = u; count++; }
@@ -589,15 +522,9 @@ function loadSingleSheet(sheet) {
             if (cntEl) cntEl.textContent = count + ' tim';
             cleanup(); resolve(count);
         };
-
         var script = document.createElement('script');
         script.id = scriptId; script.async = true;
-        script.onerror = function() {
-            cleanup();
-            if (dotEl) dotEl.className = 'db-dot error';
-            if (cntEl) cntEl.textContent = 'Error';
-            resolve(0);
-        };
+        script.onerror = function() { cleanup(); if (dotEl) dotEl.className = 'db-dot error'; if (cntEl) cntEl.textContent = 'Error'; resolve(0); };
         script.src = url;
         document.head.appendChild(script);
     });
@@ -608,14 +535,9 @@ async function loadAllSheets() {
     await Promise.all(SHEET_CONFIG.SHEETS.map(function(s) { return loadSingleSheet(s); }));
     sheetsDbLoaded = true;
 }
-
 sheetsDbLoadPromise = loadAllSheets();
 
-// ═══════════════════════════════════════════════
-// TEAM LOGO CACHE
-// ═══════════════════════════════════════════════
 var teamLogoCache = {};
-
 var SHORT_NAMES = {
     'manchester city':'Man City','manchester united':'Man United','manchester utd':'Man United',
     'atletico madrid':'Atletico Madrid','inter milan':'Inter','internazionale':'Inter',
@@ -645,8 +567,7 @@ function generateSVGLogo(teamName) {
     var color = colors[Math.abs(hash)%colors.length];
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120">' +
         '<circle cx="60" cy="60" r="55" fill="'+color+'" stroke="#000" stroke-width="5"/>' +
-        '<text x="50%" y="55%" text-anchor="middle" fill="#000" font-size="38" font-weight="bold" font-family="Arial" dy=".3em">'+initials+'</text>' +
-        '</svg>';
+        '<text x="50%" y="55%" text-anchor="middle" fill="#000" font-size="38" font-weight="bold" font-family="Arial" dy=".3em">'+initials+'</text></svg>';
     try { return 'data:image/svg+xml;base64,' + btoa(svg); }
     catch(e) { return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg); }
 }
@@ -679,22 +600,15 @@ async function fetchTeamLogo(teamName) {
     var key = teamName.toLowerCase().trim();
     if (key in teamLogoCache) return teamLogoCache[key];
     teamLogoCache[key] = { url: null, source: 'svg' };
-
-    // Step 1: TheSportsDB API
     try {
         var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(teamName));
         var data = await res.json();
         if (data && data.teams && data.teams.length > 0) {
             var t = data.teams[0];
             var logoUrl = t.strTeamBadge || t.strBadge || t.strTeamLogo || null;
-            if (logoUrl) {
-                teamLogoCache[key] = { url: logoUrl, fullName: t.strTeam, source: 'api' };
-                updateApiCounter();
-                return teamLogoCache[key];
-            }
+            if (logoUrl) { teamLogoCache[key] = { url: logoUrl, fullName: t.strTeam, source: 'api' }; updateApiCounter(); return teamLogoCache[key]; }
         }
     } catch(e) {}
-
     var shortName = getShortName(teamName);
     if (shortName) {
         try {
@@ -703,24 +617,13 @@ async function fetchTeamLogo(teamName) {
             if (data2 && data2.teams && data2.teams.length > 0) {
                 var t2 = data2.teams[0];
                 var logoUrl2 = t2.strTeamBadge || t2.strBadge || null;
-                if (logoUrl2) {
-                    teamLogoCache[key] = { url: logoUrl2, fullName: t2.strTeam, source: 'api' };
-                    updateApiCounter();
-                    return teamLogoCache[key];
-                }
+                if (logoUrl2) { teamLogoCache[key] = { url: logoUrl2, fullName: t2.strTeam, source: 'api' }; updateApiCounter(); return teamLogoCache[key]; }
             }
         } catch(e2) {}
     }
-
-    // Step 2: Google Sheets
     if (!sheetsDbLoaded) { try { await sheetsDbLoadPromise; } catch(e) {} }
     var sheetUrl = lookupSheetDb(teamName);
-    if (sheetUrl) {
-        teamLogoCache[key] = { url: sheetUrl, source: 'sheet' };
-        return teamLogoCache[key];
-    }
-
-    // Step 3: SVG fallback
+    if (sheetUrl) { teamLogoCache[key] = { url: sheetUrl, source: 'sheet' }; return teamLogoCache[key]; }
     teamLogoCache[key] = { url: null, source: 'svg' };
     return teamLogoCache[key];
 }
@@ -731,9 +634,6 @@ function getTeamLogoUrl(name) {
     return generateSVGLogo(name);
 }
 
-// ═══════════════════════════════════════════════
-// PARSE INPUT
-// ═══════════════════════════════════════════════
 function parseMatchLine(line) {
     var hasVS = /\s+(vs|VS|Vs|vS)\s+/i.test(line);
     var hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}\s*:\s*\d{2}/.test(line);
@@ -773,9 +673,6 @@ function getAllTeams(leagues) {
     return Object.keys(set);
 }
 
-// ═══════════════════════════════════════════════
-// COLOR HELPERS
-// ═══════════════════════════════════════════════
 function adjustColor(color, amount) {
     var num = parseInt(color.replace('#',''),16);
     var r = Math.min(255,Math.max(0,(num>>16)+amount));
@@ -792,9 +689,6 @@ function getColors() {
     };
 }
 
-// ═══════════════════════════════════════════════
-// LEAGUE FILTER
-// ═══════════════════════════════════════════════
 function buildLeagueDropdown(leagues) {
     var wrap = document.getElementById('leagueFilterWrap');
     var sel  = document.getElementById('leagueSelect');
@@ -812,9 +706,6 @@ function filterLeague(leagueName) {
     });
 }
 
-// ═══════════════════════════════════════════════
-// RENDER PREVIEW
-// ═══════════════════════════════════════════════
 function renderPreview(leagues) {
     var tablesDiv = document.getElementById('previewTables');
     var emptyDiv  = document.getElementById('previewEmpty');
@@ -846,20 +737,15 @@ function renderPreview(leagues) {
     filterLeague('all');
 }
 
-// ═══════════════════════════════════════════════
-// BUILD OUTPUT HTML
-// ═══════════════════════════════════════════════
 function buildOutputHTML(leagues) {
     var autoDate = document.getElementById('autoDate').textContent;
     var c = getColors();
     var lighterBg = adjustColor(c.bg,30);
     var darkerBg  = adjustColor(c.bg,-20);
     var cfg = SITES[currentSite];
-
     var selectHTML = '<div class="filter-section">\n<div class="filter-label">🏆 Pilih Liga</div>\n<div class="filter-select-wrap">\n<select class="fselect" id="leagueFilterOut" onchange="filterOut(this.value)">\n<option value="all">Semua Liga</option>\n';
     leagues.forEach(function(l){ selectHTML+='<option value="'+l.name.replace(/"/g,'&quot;')+'">🏆 '+l.name+'</option>\n'; });
     selectHTML+='</select>\n</div>\n</div>\n\n';
-
     var tables='';
     leagues.forEach(function(league) {
         tables+='<div class="tbl-wrap" data-league="'+league.name.replace(/"/g,'&quot;')+'">\n<table>\n<tbody>\n';
@@ -885,7 +771,6 @@ function buildOutputHTML(leagues) {
         });
         tables+='</tbody>\n</table>\n</div>\n';
     });
-
     return '<!-- KODE GENERATED BY '+cfg.name+' - Team Logo Edition -->\n'+
 '<style>\n'+
 '* { box-sizing: border-box; }\n'+
@@ -943,9 +828,6 @@ selectHTML+tables+'\n'+
 '<\/script>\n';
 }
 
-// ═══════════════════════════════════════════════
-// AUTO GENERATE (DEBOUNCE)
-// ═══════════════════════════════════════════════
 var debounceTimer = null;
 document.getElementById('inputText').addEventListener('input', function() {
     clearTimeout(debounceTimer);
@@ -1002,9 +884,6 @@ async function handleInput() {
     document.getElementById('outputCode').textContent=buildOutputHTML(leagues);
 }
 
-// ═══════════════════════════════════════════════
-// COLOR PICKERS
-// ═══════════════════════════════════════════════
 function initColorPickers() {
     ['Background','Text','HeaderBg','MarqueeBg'].forEach(function(name) {
         var picker=document.getElementById('color'+name);
@@ -1059,9 +938,6 @@ function resetColors() {
     showNotification('✓ Warna direset ke default '+SITES[currentSite].name+'!','success');
 }
 
-// ═══════════════════════════════════════════════
-// DATE
-// ═══════════════════════════════════════════════
 function generateAutoDate() {
     var today=new Date(), tomorrow=new Date(today);
     tomorrow.setDate(today.getDate()+1);
@@ -1073,9 +949,6 @@ function generateAutoDate() {
     return str;
 }
 
-// ═══════════════════════════════════════════════
-// COPY & CLEAR
-// ═══════════════════════════════════════════════
 function copyToClipboard() {
     var output=document.getElementById('outputCode').textContent;
     if (output.startsWith('Script HTML')){showNotification('⚠️ Belum ada script yang di-generate!','warning');return;}
@@ -1111,9 +984,6 @@ function showNotification(msg,type) {
     setTimeout(function(){n.style.display='none';},3000);
 }
 
-// ═══════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded',function(){
     generateAutoDate();
     initColorPickers();

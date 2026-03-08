@@ -600,6 +600,13 @@ async function fetchTeamLogo(teamName) {
     var key = teamName.toLowerCase().trim();
     if (key in teamLogoCache) return teamLogoCache[key];
     teamLogoCache[key] = { url: null, source: 'svg' };
+
+    // Step 1: Google Sheets DB (prioritas utama)
+    if (!sheetsDbLoaded) { try { await sheetsDbLoadPromise; } catch(e) {} }
+    var sheetUrl = lookupSheetDb(teamName);
+    if (sheetUrl) { teamLogoCache[key] = { url: sheetUrl, source: 'sheet' }; return teamLogoCache[key]; }
+
+    // Step 2: TheSportsDB API (fallback ke API)
     try {
         var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(teamName));
         var data = await res.json();
@@ -611,6 +618,9 @@ async function fetchTeamLogo(teamName) {
     } catch(e) {}
     var shortName = getShortName(teamName);
     if (shortName) {
+        // cek sheet dulu untuk shortName
+        var sheetUrlShort = lookupSheetDb(shortName);
+        if (sheetUrlShort) { teamLogoCache[key] = { url: sheetUrlShort, source: 'sheet' }; return teamLogoCache[key]; }
         try {
             var res2 = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(shortName));
             var data2 = await res2.json();
@@ -621,9 +631,8 @@ async function fetchTeamLogo(teamName) {
             }
         } catch(e2) {}
     }
-    if (!sheetsDbLoaded) { try { await sheetsDbLoadPromise; } catch(e) {} }
-    var sheetUrl = lookupSheetDb(teamName);
-    if (sheetUrl) { teamLogoCache[key] = { url: sheetUrl, source: 'sheet' }; return teamLogoCache[key]; }
+
+    // Step 3: SVG fallback
     teamLogoCache[key] = { url: null, source: 'svg' };
     return teamLogoCache[key];
 }

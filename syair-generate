@@ -1,0 +1,654 @@
+<html lang="id"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SYAIR + Card Shio + Kemenangan + BBFS + BEBAS + Lokasi</title>
+<style>
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: #000000;
+    margin: 0;
+    padding: 15px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  :root {
+    --elegant-gold: #f5c542;
+    --gold-glow: #ffd86b;
+    --deep-black: #000;
+    --dark-gray: #111;
+  }
+
+  .main-card {
+    background: linear-gradient(180deg, #111, #000);
+    border: 3px solid var(--elegant-gold);
+    border-radius: 20px;
+    box-shadow: 
+      0 0 30px rgba(245, 197, 66, 0.6),
+      inset 0 0 40px rgba(245, 197, 66, 0.15),
+      0 0 60px rgba(245, 197, 66, 0.3),
+      0 8px 20px rgba(0, 0, 0, 0.8);
+    padding: 25px;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: #ffd86b;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .main-card::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: -2px; right: -2px; bottom: -2px;
+    background: linear-gradient(45deg, 
+      transparent 0%, rgba(245,197,66,0.1) 25%,
+      rgba(245,197,66,0.3) 50%, rgba(245,197,66,0.1) 75%, transparent 100%);
+    border-radius: 22px;
+    z-index: 1;
+    pointer-events: none;
+    animation: shimmer 3s infinite linear;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: -150px 0; }
+    100% { background-position: 150px 0; }
+  }
+
+  .main-card::after {
+    content: '';
+    position: absolute;
+    top: 8px; left: 8px; right: 8px; bottom: 8px;
+    border: 1px solid rgba(245,197,66,0.2);
+    border-radius: 16px;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .main-card > * { position: relative; z-index: 2; }
+
+  .syair-header,
+  .compass-card,
+  .extra-cards .card,
+  .footer-card,
+  .locations-card,
+  .shio-card {
+    background: linear-gradient(180deg, #1a1a1a 0%, #000 100%);
+    border: 2px solid var(--elegant-gold);
+    border-radius: 15px;
+    box-shadow: 
+      inset 0 0 15px rgba(245,197,66,0.15),
+      0 0 15px rgba(245,197,66,0.4),
+      0 4px 10px rgba(0,0,0,0.6);
+    color: var(--gold-glow);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .syair-header {
+    padding: 15px;
+    text-align: center;
+  }
+
+  .syair-header h2 {
+    margin: 0;
+    font-size: 22px;
+    text-shadow: 0 0 10px var(--elegant-gold), 0 0 20px rgba(245,197,66,0.4), 1px 1px 3px rgba(0,0,0,0.7);
+    color: var(--elegant-gold);
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+
+  .hokbentoto-logo-img {
+    display: block;
+    margin: 10px auto;
+    max-height: 60px;
+    max-width: 260px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(245,197,66,0.7)) drop-shadow(0 0 20px rgba(245,197,66,0.4));
+  }
+
+  .syair-header .date-text {
+    font-size: 16px;
+    text-shadow: 0 0 6px var(--elegant-gold), 0 0 12px rgba(245,197,66,0.4);
+    margin-top: 8px;
+    color: #ffeebb;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .syair-header .syair-subtitle {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--elegant-gold), 1px 1px 3px rgba(0,0,0,0.7);
+    color: #ffdd88;
+    letter-spacing: 0.5px;
+  }
+
+  .middle-section { 
+    display: flex; 
+    flex-direction: column;
+    gap: 20px; 
+  }
+
+  .compass-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .compass-card {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .compass-card img {
+    width: 80%;
+    height: 80%;
+    border-radius: 12px;
+    border: 1px solid var(--elegant-gold);
+    box-shadow: 0 0 12px rgba(245,197,66,0.3);
+  }
+
+  .random-number {
+    position: absolute;
+    color: var(--elegant-gold);
+    font-size: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 10px var(--elegant-gold), 0 0 18px rgba(245,197,66,0.5), 1px 1px 3px rgba(0,0,0,0.8);
+    background: rgba(102,85,0,0.7);
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--elegant-gold);
+  }
+
+  .top    { top: 8px;    left: 50%; transform: translateX(-50%); }
+  .bottom { bottom: 8px; left: 50%; transform: translateX(-50%); }
+  .left   { left: 8px;   top: 50%;  transform: translateY(-50%); }
+  .right  { right: 8px;  top: 50%;  transform: translateY(-50%); }
+
+  .shio-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  /* ===== SHIO CARD DENGAN EMOJI ART ===== */
+  .shio-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    gap: 8px;
+    width: 180px;
+    height: 240px;
+  }
+
+  /* Ganti background-image div dengan emoji art frame */
+  .shio-emoji-frame {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    border: 2px solid var(--elegant-gold);
+    box-shadow: 
+      0 0 20px rgba(245,197,66,0.5),
+      0 0 40px rgba(245,197,66,0.2),
+      inset 0 0 20px rgba(245,197,66,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 30% 30%, #2a2000, #0a0800);
+    animation: shioGlow 2s ease-in-out infinite alternate;
+    flex-shrink: 0;
+  }
+
+  @keyframes shioGlow {
+    0%  { box-shadow: 0 0 15px rgba(245,197,66,0.4), 0 0 30px rgba(245,197,66,0.15), inset 0 0 15px rgba(245,197,66,0.08); }
+    100%{ box-shadow: 0 0 25px rgba(245,197,66,0.7), 0 0 50px rgba(245,197,66,0.3), inset 0 0 25px rgba(245,197,66,0.15); }
+  }
+
+  /* Ornamen lingkaran dalam */
+  .shio-emoji-frame::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    border: 1px solid rgba(245,197,66,0.3);
+  }
+
+  /* Ornamen bintang sudut */
+  .shio-emoji-frame::after {
+    content: '✦';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    font-size: 10px;
+    color: rgba(245,197,66,0.5);
+  }
+
+  .shio-emoji {
+    font-size: 72px;
+    line-height: 1;
+    filter: drop-shadow(0 0 8px rgba(245,197,66,0.6)) drop-shadow(0 2px 4px rgba(0,0,0,0.9));
+    position: relative;
+    z-index: 1;
+    animation: shioFloat 3s ease-in-out infinite;
+  }
+
+  @keyframes shioFloat {
+    0%, 100% { transform: translateY(0px) scale(1); }
+    50%       { transform: translateY(-4px) scale(1.05); }
+  }
+
+  .shio-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .shio-info h2 {
+    margin: 4px 0 0 0;
+    font-size: 14px;
+    text-shadow: 0 0 10px var(--elegant-gold), 1px 1px 3px rgba(0,0,0,0.7);
+    color: var(--elegant-gold);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-align: center;
+  }
+
+  .shio-angka-tengah {
+    font-size: 26px;
+    font-weight: bold;
+    color: var(--elegant-gold);
+    text-shadow: 0 0 15px var(--elegant-gold), 0 0 25px rgba(245,197,66,0.5), 2px 2px 4px rgba(0,0,0,0.9);
+    background: linear-gradient(145deg, #1a1a1a, #000);
+    padding: 8px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--elegant-gold);
+    box-shadow: inset 0 0 15px rgba(245,197,66,0.2), 0 0 20px rgba(245,197,66,0.3);
+    margin: 4px 0;
+    letter-spacing: 2px;
+    display: inline-block;
+    text-align: center;
+    min-width: 70px;
+  }
+
+  .extra-cards { display: flex; gap: 10px; }
+
+  .extra-cards .card {
+    text-align: center;
+    padding: 12px 15px;
+    min-width: 80px;
+  }
+
+  .extra-cards h3 {
+    margin: 0;
+    font-size: 16px;
+    text-shadow: 0 0 8px var(--elegant-gold), 1px 1px 3px rgba(0,0,0,0.7);
+    color: var(--elegant-gold);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .extra-cards p {
+    margin: 6px 0 0 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffdd88;
+    text-shadow: 0 0 8px rgba(245,197,66,0.5);
+  }
+
+  .footer-card {
+    padding: 15px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffdd88;
+    line-height: 1.4;
+  }
+
+  .link-HOKBENTOTO-outside {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--elegant-gold);
+    text-align: center;
+    text-shadow: 0 0 10px var(--elegant-gold), 0 0 20px var(--elegant-gold), 1px 1px 3px rgba(0,0,0,0.7);
+    position: relative;
+    z-index: 2;
+    letter-spacing: 1px;
+    padding: 10px;
+    background: linear-gradient(45deg, rgba(245,197,66,0.2), rgba(102,85,0,0.2));
+    border-radius: 8px;
+    border: 1px solid var(--elegant-gold);
+  }
+
+  .locations-card {
+    margin-top: 15px;
+    padding: 15px;
+    text-align: center;
+  }
+
+  .locations-card h3 {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    text-shadow: 0 0 8px var(--elegant-gold), 1px 1px 3px rgba(0,0,0,0.7);
+    color: var(--elegant-gold);
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+
+  .pasaran-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, rgba(245,197,66,0.15), rgba(102,85,0,0.15));
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--elegant-gold);
+    box-shadow: 0 0 10px rgba(245,197,66,0.5), 0 4px 6px rgba(0,0,0,0.4), inset 0 0 6px rgba(245,197,66,0.1);
+    margin: 4px;
+    min-width: 120px;
+    min-height: 50px;
+  }
+
+  .pasaran-logo-wrap img {
+    max-height: 42px;
+    max-width: 170px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 5px rgba(245,197,66,0.4)) brightness(1.1);
+  }
+
+  .pasaran-name-fallback {
+    font-weight: bold;
+    font-size: 14px;
+    color: var(--gold-glow);
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 8px rgba(245,197,66,0.5);
+    display: none;
+  }
+
+  /* Tablet */
+  @media (min-width: 768px) {
+    .main-card { padding: 30px; max-width: 700px; }
+    .middle-section { flex-direction: row; justify-content: space-between; }
+    .compass-row { flex-direction: column; align-items: center; width: 48%; }
+    .shio-row { width: 48%; justify-content: center; }
+    .syair-header h2 { font-size: 24px; }
+    .extra-cards { flex-direction: row; justify-content: center; width: 100%; }
+    .hokbentoto-logo-img { max-height: 65px; max-width: 280px; }
+  }
+
+  /* Desktop */
+  @media (min-width: 1024px) {
+    .main-card { max-width: 800px; padding: 35px; }
+    .compass-card { width: 200px; height: 200px; }
+    .shio-card { width: 200px; height: 260px; }
+    .shio-emoji-frame { width: 155px; height: 155px; }
+    .shio-emoji { font-size: 82px; }
+    .random-number { font-size: 22px; width: 40px; height: 40px; }
+    .extra-cards .card { padding: 15px 20px; }
+    .extra-cards h3 { font-size: 18px; }
+    .extra-cards p { font-size: 16px; }
+  }
+
+  /* Mobile kecil */
+  @media (max-width: 480px) {
+    body { padding: 10px; }
+    .main-card { padding: 15px; border-radius: 15px; }
+    .compass-card { width: 150px; height: 150px; }
+    .shio-card { width: 155px; height: 210px; }
+    .shio-emoji-frame { width: 115px; height: 115px; }
+    .shio-emoji { font-size: 58px; }
+    .shio-angka-tengah { font-size: 22px; min-width: 60px; padding: 6px 12px; }
+    .random-number { font-size: 16px; width: 28px; height: 28px; }
+    .extra-cards { flex-direction: column; align-items: center; }
+    .extra-cards .card { width: 100%; max-width: 180px; }
+    .hokbentoto-logo-img { max-height: 48px; max-width: 190px; }
+    .syair-header h2 { font-size: 20px; }
+    .link-HOKBENTOTO-outside { font-size: 16px; padding: 8px; }
+    .pasaran-logo-wrap img { max-height: 32px; max-width: 120px; }
+    .pasaran-logo-wrap { min-width: 90px; min-height: 42px; padding: 8px 12px; }
+  }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="main-card">
+
+  <!-- HEADER -->
+  <div class="syair-header">
+    <h2>SYAIR TOGEL</h2>
+    <img
+      class="hokbentoto-logo-img"
+      src="https://cdn.areabermain.club/assets/cdn/az6/2026/02/04/20260204/b320864d719e41630e6662f49dee7ebf/logo-mobile.png"
+      alt="HOKBENTOTO"
+    >
+    <div class="date-text" id="currentDate">Rabu, 11 Maret 2026</div>
+    <p class="syair-subtitle">SYAIR TOGEL HOKBENTOTO</p>
+  </div>
+
+  <!-- MIDDLE -->
+  <div class="middle-section">
+
+    <!-- Compass + BBFS/BEBAS -->
+    <div class="compass-row">
+      <div class="compass-card">
+        <img src="https://i.postimg.cc/J02cS7xF/POSTINGAN-KEMENANGAN-35.png" alt="Kemenangan">
+        <div class="random-number top"    id="numTop">4</div>
+        <div class="random-number bottom" id="numBottom">0</div>
+        <div class="random-number left"   id="numLeft">6</div>
+        <div class="random-number right"  id="numRight">6</div>
+      </div>
+      <div class="extra-cards">
+        <div class="card"><h3>BBFS</h3><p id="bbfsNumbers">3348377</p></div>
+        <div class="card"><h3>BEBAS</h3><p id="bebasNumbers">6/1</p></div>
+      </div>
+    </div>
+
+    <!-- Shio Card -->
+    <div class="shio-row">
+      <div class="shio-card" id="shioCard">
+        <!-- Frame emoji menggantikan background-image -->
+        <div class="shio-emoji-frame">
+          <span class="shio-emoji" id="shioEmoji">🐓</span>
+        </div>
+        <div class="shio-info">
+          <h2 id="shioName">SHIO AYAM</h2>
+          <div id="shioAngkaTengah" class="shio-angka-tengah">46</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer-card" id="footer">
+    Jika dia memang bukan jodohnya<br>Mari diikhlaskan saja dirinya<br>
+    Moga nanti akan kita mendapat<br>Pengganti yang jauh lebih tepat
+  </div>
+
+  <div class="link-HOKBENTOTO-outside">heylink.me/hokbentotosbm</div>
+
+  <!-- Pasaran -->
+  <div class="locations-card">
+    <h3>PASARAN</h3>
+    <div class="locations-list" id="locationsList"></div>
+  </div>
+
+</div>
+
+<script>
+  // ── Tanggal ───────────────────────────────────────────────
+  function updateDate() {
+    const opts = { weekday:'long', day:'numeric', month:'long', year:'numeric' };
+    document.getElementById('currentDate').innerText =
+      new Date().toLocaleDateString('id-ID', opts);
+  }
+
+  // ── Footer ────────────────────────────────────────────────
+  const footerTexts = [
+    `Rajin-rajinlah beribadah<br>Jangan lupa salat<br>Dan perbanyak zakat<br>Untuk bekal akhirat`,
+    `Dalam malam yang kelam, rindu membeku<br>Kesedihan menari di antara bayang-bayang`,
+    'Dalam malam yang kelam, langit berurai<br>Rindu membeku dalam angin yang merintih<br>Hati terbelah, diwarnai senyap pilu<br>Kesedihan menari di antara bayang-bayang',
+    'Di ujung hari yang hampa, bintang meredup<br>Menyisakan jejak air mata di cakrawala<br>Cinta yang hilang, seperti debu tertiup<br>Menghilang dalam ruang yang tak bertepi',
+    'Setiap suara angin, menyimpan cerita<br>Tentang harapan yang melayang jauh<br>Di balik awan, gemericik duka<br>Mengiringi langkah yang penuh ragu',
+    'Di tengah tawa, air mata menari lembut<br>Senyum yang tulus, membasahi pipi yang cerah<br>Kebahagiaan mengalir dalam setiap tetes<br>Menjadi pelangi setelah hujan yang reda',
+    'Ketika harapan menjadi nyata, dan mimpi terwujud<br>Rasa syukur menjadikan air mata sebagai saksi<br>Bahagia mengalir, seiring waktu yang berharga<br>Menyatukan jiwa dalam pelukan cinta yang abadi',
+    'Di ujung langit, matahari terbenam lembut<br>Menyeruput warna, melukis cakrawala malam<br>Angin berbisik lembut di antara pepohonan<br>Menyapu jiwa, menenangkan dengan kasih sayang',
+    'Bunga-bunga menari dalam embun pagi<br>Keharuman mereka menggema di udara<br>Setiap kelopak, seolah membawa pesan cinta<br>Mengisi hari dengan keajaiban yang nyata',
+    'Seorang gadis cantik jelita<br>Telah melintas di depan mata<br>Membuat diri ini terpana<br>Dan juga mendambakan sosoknya',
+    'Wajahnya selalu ada dibenak<br>Membuat tidurku jadi tak nyenyak<br>Apakah ini adalah cinta<br>Atau sekadar terkagum saja',
+    'Cinta yang ada di ini dada<br>Kian merekah bagai sang bunga<br>Yang telah merekahkan kelopaknya<br>Yang punya warna indah di mata',
+    'Kalau mencinta jangan memaksa<br>Supaya tidak saling menyiksa<br>Mencintalah dengan seikhlas rasa<br>Supaya tidak saling menyiksa',
+    'Jangan engkau buta dalam mencinta<br>Agar kau tidak membabi buta<br>Dalam mencintai sosoknya<br>Dalam mencemburi sosoknya',
+    'Jikalau dia memang jodohnya<br>Pastilah nanti akan berjumpa<br>Jikalau memang bukan jodohnya<br>Marilah coba ikhlaskan saja',
+    'Wahai kau kekasih yang tercinta<br>Dimanakah engkau kini berada<br>Daku sangat ingin kita berjumpa<br>Dan bercanda tawa bersama-sama',
+    'Akan kupanjatkan sebuah doa<br>Untuk dirinya yang kucinta<br>Semoga dia selalu bahagia<br>Dan berada dalam lindungan-Nya',
+    'Aku diam bukan karena tak cinta<br>Aku hanya sedang memendam rasa<br>Yang belum saatnya diungkapkan<br>Yang belum saatnya dicurahkan',
+    'Jangan mencintai karena materi<br>Nanti kita akan jadi merugi<br>Jangan pula cinta karena rupa<br>Nanti cinta kita akan mudah sirna',
+    'Jika dia memang bukan jodohnya<br>Mari diikhlaskan saja dirinya<br>Moga nanti akan kita mendapat<br>Pengganti yang jauh lebih tepat',
+    'Di ujung hari, bintang meredup<br>Cinta yang hilang menghilang dalam ruang tak bertepi'
+  ];
+  function randomFooter() {
+    document.getElementById('footer').innerHTML =
+      footerTexts[Math.floor(Math.random() * footerTexts.length)];
+  }
+
+  // ── Shio data dengan emoji keren ──────────────────────────
+  const shioData = [
+    { name:'SHIO KUDA',    emoji:'🐎', angka:["01","13","25","37","49","61","73","85","97"] },
+    { name:'SHIO ULAR',    emoji:'🐍', angka:["02","14","26","38","50","62","74","86","98"] },
+    { name:'SHIO NAGA',    emoji:'🐉', angka:["03","15","27","39","51","63","75","87","99"] },
+    { name:'SHIO KELINCI', emoji:'🐇', angka:["04","16","28","40","52","64","76","88","00"] },
+    { name:'SHIO HARIMAU', emoji:'🐅', angka:["05","17","29","41","53","65","77","89"] },
+    { name:'SHIO KERBAU',  emoji:'🐂', angka:["06","18","30","42","54","66","78","90"] },
+    { name:'SHIO TIKUS',   emoji:'🐀', angka:["07","19","31","43","55","67","79","91"] },
+    { name:'SHIO BABI',    emoji:'🐗', angka:["08","20","32","44","56","68","80","92"] },
+    { name:'SHIO ANJING',  emoji:'🐕', angka:["09","21","33","45","57","69","81","93"] },
+    { name:'SHIO AYAM',    emoji:'🐓', angka:["10","22","34","46","58","70","82","94"] },
+    { name:'SHIO MONYET',  emoji:'🐒', angka:["11","23","35","47","59","71","83","95"] },
+    { name:'SHIO KAMBING', emoji:'🐐', angka:["12","24","36","48","60","72","84","96"] }
+  ];
+
+  let currentShio = null, angkaIndex = 0, intervalId = null;
+
+  function randomShio() {
+    const shio = shioData[Math.floor(Math.random() * shioData.length)];
+    currentShio = shio; angkaIndex = 0;
+    document.getElementById('shioName').innerText = shio.name;
+    document.getElementById('shioEmoji').innerText = shio.emoji;
+    document.getElementById('shioAngkaTengah').innerText = shio.angka[0];
+  }
+
+  function rotateAngkaShio() {
+    if (!currentShio) return;
+    angkaIndex = (angkaIndex + 1) % currentShio.angka.length;
+    document.getElementById('shioAngkaTengah').innerText = currentShio.angka[angkaIndex];
+  }
+
+  // ── Compass ───────────────────────────────────────────────
+  function randomNumbers() {
+    ['numTop','numBottom','numLeft','numRight'].forEach(id => {
+      document.getElementById(id).innerText = Math.floor(Math.random()*10);
+    });
+  }
+
+  // ── BBFS & BEBAS ──────────────────────────────────────────
+  function updateBBFS() {
+    let n = '';
+    for (let i=0;i<7;i++) n += Math.floor(Math.random()*10);
+    document.getElementById('bbfsNumbers').innerText = n;
+  }
+  function updateBEBAS() {
+    document.getElementById('bebasNumbers').innerText =
+      `${Math.floor(Math.random()*10)}/${Math.floor(Math.random()*10)}`;
+  }
+
+  // ── Pasaran dengan logo ───────────────────────────────────
+  const locations = [
+    { name:'BANGKOK',        logo:'https://bangkokpoolstoday.com/assets/img/bangkokpools_logo.png' },
+    { name:'BRUNEI',         logo:'https://bruneipools.com/assets/img/brunei-logo.png' },
+    { name:'CHELSEA',        logo:'https://chelseapools.co.uk/assets/img/chelseaPools_logo.png' },
+    { name:'FLORIDA',        logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/a3e564ccb04c2b751ad4fa88c06e39c1/1-removebg-preview.png' },
+    { name:'HUAHIN',         logo:'https://huahinlottery.com/assets/img/logo.png' },
+    { name:'KENTUCKY',       logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/a5fafa0102d98ab3959ceb9bb1045729/kl-logo.png' },
+    { name:'KING KONG 4D',   logo:'https://cdn.areabermain.club/assets/cdn/az9/2024/11/26/20241126/d1f18e378e4a422b41ffe8d03065ce7d/logo-7.png' },
+    { name:'NEW YORK',       logo:'https://edit.nylottery.ny.gov/sites/default/files/logo-2179655b4229a219a9305b3f0e734bd0.png' },
+    { name:'OREGON',         logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/81ec15c616becd5dafbb18ae7ba01828/logo-ol-black-horiz.png' },
+    { name:'POIPET',         logo:'https://poipetlottery.com/img/logo.png' },
+    { name:'TOTOMALI',       logo:'https://totomali.com/assets/img/logo.svg' },
+    { name:'TOTOMACAU',      logo:'https://cdn.areabermain.club/assets/cdn/az1/2025/09/07/20250907/dc9e0cea8a5e80da56d0b803d30586fe/totomacau-12-photoroom-photoroom.png' },
+    { name:'CAROLINA',       logo:'https://nclottery.com/Site/GFX/NCEL_Alt.svg' },
+    { name:'HOKI DRAW',      logo:'https://hokidraw.com/assets/img/logo.png' },
+    { name:'BULLSEYE',       logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/f07d4e2a6517ef1cea9e2a897e4abb98/nz-bullseye.png' },
+    { name:'CALIFORNIA',     logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/7c3b7b0affd7880d2dddf918ba2ac258/calottlogo.png' },
+    { name:'HONGKONG LOTTO', logo:'https://cdn.areabermain.club/assets/cdn/az1/2025/09/07/20250907/7d2086796fd3d3af9aaed27d19fd9170/hongkong-lotto-1.png' },
+    { name:'MAGNUM 4D',      logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/8889f1c5fc738b5148145100c08a0ebc/439-4390693-magnum-pengeluaran-magnum-4d-hari-clipart-removebg-preview.png' },
+    { name:'NEVADA',         logo:'https://www.nevadalottery.us/images/src/components/PageHead/images/logo.gif' },
+    { name:'PCSO',           logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/32b1d9cb48d2c0a9f1c7e77853565fa1/pcso.png' },
+    { name:'SINGAPORE',      logo:'https://cdn.areabermain.club/assets/cdn/az4/2024/08/11/20240811/07da64b7b63e905cf7e3adde14e57424/sgp.png' },
+    { name:'SYDNEY LOTTO',   logo:'https://sydneylotto.direct/assets/image/logo_sydney.png' },
+    { name:'TOTO CAMBODIA',  logo:'https://totocambodialive.com/assets/img/logo.png' }
+  ];
+
+  function renderRandomLocation() {
+    const container = document.getElementById('locationsList');
+    container.innerHTML = '';
+    const item = locations[Math.floor(Math.random() * locations.length)];
+    const wrap = document.createElement('div');
+    wrap.className = 'pasaran-logo-wrap';
+    const img = document.createElement('img');
+    img.src = item.logo;
+    img.alt = item.name;
+    const fallback = document.createElement('span');
+    fallback.className = 'pasaran-name-fallback';
+    fallback.innerText = item.name;
+    img.onerror = function() {
+      this.style.display = 'none';
+      fallback.style.display = 'inline';
+    };
+    wrap.appendChild(img);
+    wrap.appendChild(fallback);
+    container.appendChild(wrap);
+  }
+
+  // ── Init ──────────────────────────────────────────────────
+  updateDate();
+  randomShio();
+  randomFooter();
+  randomNumbers();
+  updateBBFS();
+  updateBEBAS();
+  renderRandomLocation();
+
+  if (intervalId) clearInterval(intervalId);
+  intervalId = setInterval(rotateAngkaShio, 1000);
+  setInterval(randomNumbers, 1000);
+</script>
+
+</body></html>

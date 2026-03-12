@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator BBFS - HOKBENTOTO</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --gold-primary: #d4af37;
+            --gold-light: #f5e17a;
+            --gold-dark: #a07c20;
+            --gold-shine: #ffe566;
+            --black-deep: #080808;
+            --black-card: rgba(5, 5, 5, 0.82);
+            --black-input: rgba(0, 0, 0, 0.65);
+            --border-gold: rgba(212, 175, 55, 0.45);
+            --border-gold-strong: rgba(212, 175, 55, 0.75);
+            --text-gold: #d4af37;
+            --text-light: #f0e6c0;
+        }
+
+        body {
+            font-family: 'Rajdhani', 'Segoe UI', sans-serif;
+            background: var(--black-deep);
+            min-height: 100vh;
+            padding: 30px 20px 50px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background image layer */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            background-image: url('https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/997f37bf3bc90016a5e32ae52406c5c4/background-web-hokbentoto-1.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        /* Dark overlay over background */
+        .bg-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(
+                160deg,
+                rgba(0,0,0,0.75) 0%,
+                rgba(5,4,2,0.72) 40%,
+                rgba(0,0,0,0.78) 100%
+            );
+            z-index: 1;
+        }
+
+        /* Gold dust particles effect */
+        .bg-overlay::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 30%, rgba(212,175,55,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 70%, rgba(212,175,55,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 10%, rgba(212,175,55,0.05) 0%, transparent 40%);
+        }
+
+        /* Page header */
+        .page-header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 36px;
+        }
+
+        .page-header .brand {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(22px, 4vw, 38px);
+            font-weight: 900;
+            letter-spacing: 3px;
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-light) 40%, var(--gold-shine) 60%, var(--gold-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: none;
+            filter: drop-shadow(0 0 18px rgba(212,175,55,0.55));
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .page-header .sub {
+            font-family: 'Rajdhani', sans-serif;
+            color: rgba(212,175,55,0.6);
+            font-size: 13px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        .header-line {
+            width: 220px;
+            height: 1px;
+            margin: 12px auto 0;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), var(--gold-shine), var(--gold-primary), transparent);
+            box-shadow: 0 0 10px rgba(212,175,55,0.5);
+        }
+
+        .container {
+            max-width: 1350px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(580px, 1fr));
+            gap: 28px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Card section */
+        .section {
+            background: var(--black-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
+            padding: 36px 38px;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            box-shadow:
+                0 8px 32px rgba(0,0,0,0.6),
+                0 0 0 1px rgba(212,175,55,0.08),
+                inset 0 1px 0 rgba(212,175,55,0.15),
+                inset 0 -1px 0 rgba(0,0,0,0.4);
+            transition: border-color 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        /* Top gold accent line */
+        .section::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 12%; right: 12%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), var(--gold-shine), var(--gold-primary), transparent);
+            border-radius: 0 0 4px 4px;
+            opacity: 0.8;
+        }
+
+        /* Corner ornaments */
+        .section::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 16px;
+            background:
+                radial-gradient(ellipse at 0% 0%, rgba(212,175,55,0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 100% 100%, rgba(212,175,55,0.04) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .section:hover {
+            border-color: var(--border-gold-strong);
+            box-shadow:
+                0 12px 40px rgba(0,0,0,0.7),
+                0 0 30px rgba(212,175,55,0.12),
+                inset 0 1px 0 rgba(212,175,55,0.2);
+        }
+
+        /* Section title */
+        h2 {
+            margin-bottom: 28px;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-shine), var(--gold-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 10px rgba(212,175,55,0.4));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        h2 i {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-shine));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 20px;
+        }
+
+        h3 {
+            color: var(--gold-primary);
+            margin: 22px 0 14px;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 17px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 8px rgba(212,175,55,0.3);
+        }
+
+        /* Divider under h2 */
+        .title-divider {
+            width: 80px;
+            height: 1px;
+            margin: -18px auto 24px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+        }
+
+        /* Input group */
+        .input-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            color: var(--gold-primary);
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 11px 16px;
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            background: var(--black-input);
+            color: var(--text-light);
+            cursor: pointer;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            background: rgba(0,0,0,0.8);
+            box-shadow:
+                0 0 0 3px rgba(212,175,55,0.15),
+                0 0 16px rgba(212,175,55,0.2);
+        }
+
+        input::placeholder {
+            color: rgba(212,175,55,0.3);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23d4af37' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 38px;
+        }
+
+        select option {
+            background: #0f0e0c;
+            color: var(--text-light);
+        }
+
+        /* Buttons */
+        button {
+            color: #0a0800;
+            border: none;
+            padding: 11px 24px;
+            font-size: 13px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, var(--gold-dark) 0%, var(--gold-primary) 45%, var(--gold-shine) 100%);
+            box-shadow: 0 3px 12px rgba(212,175,55,0.35), 0 1px 0 rgba(255,255,255,0.1) inset;
+        }
+
+        .btn-generate:hover {
+            background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-shine) 50%, var(--gold-light) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212,175,55,0.55), 0 0 30px rgba(212,175,55,0.25);
+        }
+
+        .btn-clear {
+            background: linear-gradient(135deg, #2a2520, #1a1510);
+            color: var(--gold-primary);
+            border: 1px solid var(--border-gold);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.4);
+        }
+
+        .btn-clear:hover {
+            background: linear-gradient(135deg, #3a3020, #2a2010);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.5), 0 0 12px rgba(212,175,55,0.2);
+        }
+
+        button:active {
+            transform: translateY(0) !important;
+        }
+
+        /* Ripple effect */
+        button::before {
+            content: "";
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 0; height: 0;
+            background: rgba(255,255,255,0.25);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s, opacity 0.5s;
+            opacity: 0;
+        }
+
+        button:hover::before {
+            width: 280px; height: 280px;
+            opacity: 0;
+        }
+
+        /* Notification bar */
+        .notification-wrapper {
+            margin: 18px 0;
+        }
+
+        .notification {
+            background: linear-gradient(135deg, rgba(212,175,55,0.07), rgba(160,124,32,0.12));
+            border: 1px solid rgba(212,175,55,0.25);
+            color: var(--text-light);
+            padding: 13px 18px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .notification span {
+            font-weight: 700;
+            color: var(--gold-shine);
+            text-shadow: 0 0 8px rgba(212,175,55,0.5);
+        }
+
+        /* Result displays */
+        #result {
+            background: rgba(0,0,0,0.55);
+            border: 1px solid rgba(212,175,55,0.25);
+            color: var(--gold-light);
+            padding: 22px;
+            border-radius: 10px;
+            min-height: 220px;
+            max-height: 460px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 2;
+            word-wrap: break-word;
+            margin-bottom: 18px;
+            letter-spacing: 1px;
+        }
+
+        #combinationOutput {
+            width: 100%;
+            background: rgba(0,0,0,0.55);
+            border: 1px solid rgba(212,175,55,0.25);
+            color: var(--gold-light);
+            padding: 22px;
+            border-radius: 10px;
+            min-height: 330px;
+            max-height: 550px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 2.1;
+            resize: vertical;
+            margin-bottom: 18px;
+            word-break: break-all;
+            letter-spacing: 1px;
+        }
+
+        #combinationOutput:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        /* Section inner divider */
+        .inner-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(212,175,55,0.3), transparent);
+            margin: 20px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .footer .copyright {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary), var(--gold-shine));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-primary));
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, var(--gold-primary), var(--gold-shine));
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+            .section { padding: 22px 18px; }
+            h2 { font-size: 19px; }
+        }
+
+        /* Subtle shimmer on cards */
+        @keyframes shimmer {
+            0%   { box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.08), inset 0 1px 0 rgba(212,175,55,0.12); }
+            50%  { box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 18px rgba(212,175,55,0.1), inset 0 1px 0 rgba(212,175,55,0.18); }
+            100% { box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(212,175,55,0.08), inset 0 1px 0 rgba(212,175,55,0.12); }
+        }
+
+        .section {
+            animation: shimmer 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-layer"></div>
+    <div class="bg-overlay"></div>
+
+    <!-- Header -->
+    <div class="page-header">
+        <span class="brand"><i class="fas fa-dice"></i> &nbsp;BBFS GENERATOR</span>
+        <span class="sub">HOKBENTOTO — Professional Edition</span>
+        <div class="header-line"></div>
+    </div>
+
+    <div class="container">
+        <!-- LEFT: Generator BBFS -->
+        <div class="section">
+            <h2><i class="fas fa-dice"></i> Generator BBFS</h2>
+            <div class="title-divider"></div>
+            <form id="bbfsForm">
+                <div class="input-group">
+                    <label for="bbfsInput">Masukkan Angka BBFS (maksimal 9 digit)</label>
+                    <input type="text" id="bbfsInput" name="bbfsInput" maxlength="9" pattern="[0-9]*" placeholder="Contoh: 12345678" required>
+                </div>
+                <div class="input-group">
+                    <label for="digitInput">Pilih Tipe Angka</label>
+                    <select id="digitInput" name="digitInput" required>
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="5">5D (5 Digit)</option>
+                        <option value="4">4D (4 Digit)</option>
+                        <option value="3">3D (3 Digit)</option>
+                        <option value="2">2D (2 Digit)</option>
+                    </select>
+                </div>
+            </form>
+            <div class="notification-wrapper">
+                <div class="notification">
+                    Jumlah: <span id="totalCombinations">–</span> &nbsp;|&nbsp; Waktu: <span id="executionTime">0</span> detik
+                </div>
+            </div>
+            <div class="inner-divider"></div>
+            <center>
+                <h3>Hasil:</h3>
+                <p id="result"></p>
+                <button type="button" class="btn-generate" onclick="generateBBFS()">
+                    <i class="fas fa-bolt"></i> Generate
+                </button>
+                <button type="button" class="btn-clear" onclick="clearBBFS()">
+                    <i class="fas fa-times"></i> Clear
+                </button>
+            </center>
+        </div>
+
+        <!-- RIGHT: Kombinasi BBFS -->
+        <div class="section center">
+            <h2><i class="fas fa-layer-group"></i> Kombinasi BBFS</h2>
+            <div class="title-divider"></div>
+            <form id="combinationForm">
+                <div class="input-group" style="text-align:left">
+                    <label for="combinationInput">Masukkan Angka</label>
+                    <input type="text" id="combinationInput" name="combinationInput" maxlength="9" pattern="[0-9]*" placeholder="Contoh: 123456" required>
+                </div>
+                <div class="input-group" style="text-align:left">
+                    <label for="combinationType">Pilih Tipe Kombinasi</label>
+                    <select id="combinationType" name="combinationType" required>
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="5">5D (5 Digit)</option>
+                        <option value="4">4D (4 Digit)</option>
+                        <option value="3">3D (3 Digit)</option>
+                        <option value="2">2D (2 Digit)</option>
+                    </select>
+                </div>
+            </form>
+            <div class="notification-wrapper">
+                <div class="notification">
+                    Jumlah kombinasi: <span id="notification">–</span>
+                </div>
+            </div>
+            <div class="inner-divider"></div>
+            <h3>Hasil:</h3>
+            <textarea id="combinationOutput" readonly></textarea>
+            <center>
+                <button type="button" class="btn-generate" onclick="generateCombinations()">
+                    <i class="fas fa-bolt"></i> Generate
+                </button>
+                <button type="button" class="btn-clear" onclick="clearCombinations()">
+                    <i class="fas fa-times"></i> Clear
+                </button>
+            </center>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p class="copyright">© 2025 BBFS Generator &nbsp;—&nbsp; HOKBENTOTO</p>
+    </footer>
+
+    <script>
+        function getCombinations(arr, length) {
+            if (length === 1) return arr.map(el => [el]);
+            const result = [];
+            arr.forEach((el, i) => {
+                const smaller = getCombinations(arr.slice(i + 1), length - 1);
+                smaller.forEach(combo => result.push([el, ...combo]));
+            });
+            return result;
+        }
+
+        function getPermutations(arr) {
+            if (arr.length <= 1) return [arr];
+            const result = [];
+            for (let i = 0; i < arr.length; i++) {
+                const curr = arr[i];
+                const rest = arr.slice(0, i).concat(arr.slice(i + 1));
+                getPermutations(rest).forEach(p => result.push([curr, ...p]));
+            }
+            return result;
+        }
+
+        function generateBBFS() {
+            const startTime = performance.now();
+            const bbfsInput = document.getElementById('bbfsInput').value.trim();
+            const digitInput = document.getElementById('digitInput').value;
+            const resultEl = document.getElementById('result');
+            const totalEl = document.getElementById('totalCombinations');
+            const timeEl = document.getElementById('executionTime');
+
+            if (!bbfsInput || bbfsInput.length < 2) { alert('Masukkan minimal 2 digit angka!'); return; }
+            if (!/^\d+$/.test(bbfsInput)) { alert('Hanya masukkan angka saja!'); return; }
+            if (!digitInput) { alert('Pilih tipe angka terlebih dahulu!'); return; }
+
+            const digitCount = parseInt(digitInput);
+            if (digitCount > bbfsInput.length) { alert('Jumlah digit yang diminta lebih besar dari angka yang tersedia!'); return; }
+
+            const uniqueDigits = [...new Set(bbfsInput.split(''))];
+            const combinations = getCombinations(uniqueDigits, digitCount);
+
+            let allResults = [];
+            combinations.forEach(combo => {
+                getPermutations(combo).forEach(perm => allResults.push(perm.join('')));
+            });
+            allResults = [...new Set(allResults)].sort();
+
+            resultEl.textContent = allResults.join(' ');
+            totalEl.textContent = allResults.length.toLocaleString('id-ID');
+            const endTime = performance.now();
+            timeEl.textContent = ((endTime - startTime) / 1000).toFixed(3);
+        }
+
+        function clearBBFS() {
+            document.getElementById('bbfsInput').value = '';
+            document.getElementById('digitInput').value = '';
+            document.getElementById('result').textContent = '';
+            document.getElementById('totalCombinations').textContent = '–';
+            document.getElementById('executionTime').textContent = '0';
+        }
+
+        function generateCombinations() {
+            const input = document.getElementById('combinationInput').value.trim();
+            const combinationType = document.getElementById('combinationType').value;
+            const outputEl = document.getElementById('combinationOutput');
+            const notifEl = document.getElementById('notification');
+
+            if (!input) { alert('Masukkan angka terlebih dahulu!'); return; }
+            if (!/^\d+$/.test(input)) { alert('Hanya masukkan angka saja!'); return; }
+            if (!combinationType) { alert('Pilih tipe kombinasi terlebih dahulu!'); return; }
+
+            const digitCount = parseInt(combinationType);
+            const digits = [...new Set(input.split(''))];
+
+            function generateWithRepetition(arr, length) {
+                if (length === 1) return arr.map(el => [el]);
+                const result = [];
+                const smaller = generateWithRepetition(arr, length - 1);
+                arr.forEach(el => smaller.forEach(combo => result.push([el, ...combo])));
+                return result;
+            }
+
+            const combinations = generateWithRepetition(digits, digitCount);
+            let allResults = combinations.map(c => c.join('')).sort();
+
+            let formattedOutput = '';
+            for (let i = 0; i < allResults.length; i += 10) {
+                const row = allResults.slice(i, Math.min(i + 10, allResults.length));
+                formattedOutput += row.join('*');
+                if (i + 10 < allResults.length) formattedOutput += '*\n';
+            }
+
+            outputEl.value = formattedOutput;
+            notifEl.textContent = `${allResults.length.toLocaleString('id-ID')} (${digitCount}D)`;
+        }
+
+        function clearCombinations() {
+            document.getElementById('combinationInput').value = '';
+            document.getElementById('combinationType').value = '';
+            document.getElementById('combinationOutput').value = '';
+            document.getElementById('notification').textContent = '–';
+        }
+
+        // Input validation
+        document.getElementById('bbfsInput').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+        document.getElementById('combinationInput').addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Enter / change triggers
+        document.getElementById('bbfsInput').addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); generateBBFS(); } });
+        document.getElementById('digitInput').addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); generateBBFS(); } });
+        document.getElementById('digitInput').addEventListener('change', () => { if (document.getElementById('bbfsInput').value.trim()) generateBBFS(); });
+        document.getElementById('combinationInput').addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); generateCombinations(); } });
+        document.getElementById('combinationType').addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); generateCombinations(); } });
+        document.getElementById('combinationType').addEventListener('change', () => { if (document.getElementById('combinationInput').value.trim()) generateCombinations(); });
+    </script>
+</body>
+</html>

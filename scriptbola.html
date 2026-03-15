@@ -276,7 +276,6 @@
         <!-- KIRI: Color Panel + Input + Output -->
         <div class="left-column">
 
-            <!-- COLOR PANEL — sekarang di dalam kolom kiri, sejajar dengan input & output -->
             <div class="color-panel">
                 <h3>🎨 EDIT WARNA HTML OUTPUT</h3>
                 <div class="color-grid">
@@ -334,15 +333,15 @@
                 </div>
                 <textarea id="inputText" placeholder="Masukkan prediksi di sini...
 
-Contoh format:
+Contoh format (mendukung : maupun - sebagai pemisah skor):
 
 ENGLISH PREMIER LEAGUE
 08/02 21:00 WIB Brighton VS Crystal Palace 1 : 1
-08/02 23:30 WIB Liverpool VS Manchester City 2 : 2
+08/02 23:30 WIB Liverpool VS Manchester City 2 - 2
 
 ITALY SERIE A
 08/02 18:30 WIB Bologna VS Parma 2 : 0
-08/02 21:00 WIB Lecce VS Udinese 1 : 1"></textarea>
+08/02 21:00 WIB Lecce VS Udinese 1 - 1"></textarea>
                 <div class="button-group">
                     <button class="btn-clear" onclick="clearInput()">🗑️ Clear Semua</button>
                 </div>
@@ -445,7 +444,6 @@ function switchSite(site) {
     document.getElementById('headerTitle').textContent = cfg.name + ' GENERATOR';
     document.getElementById('headerSub').textContent = cfg.sub;
     document.title = cfg.name + ' Generator';
-    // Update favicon menggunakan URL .ico masing-masing site
     document.getElementById('favicon').href = cfg.favicon;
     document.getElementById('previewLogo').src = cfg.logo;
     document.getElementById('previewSiteName').textContent = cfg.name;
@@ -603,12 +601,10 @@ async function fetchTeamLogo(teamName) {
     if (key in teamLogoCache) return teamLogoCache[key];
     teamLogoCache[key] = { url: null, source: 'svg' };
 
-    // Step 1: Google Sheets DB (prioritas utama)
     if (!sheetsDbLoaded) { try { await sheetsDbLoadPromise; } catch(e) {} }
     var sheetUrl = lookupSheetDb(teamName);
     if (sheetUrl) { teamLogoCache[key] = { url: sheetUrl, source: 'sheet' }; return teamLogoCache[key]; }
 
-    // Step 2: TheSportsDB API (fallback ke API)
     try {
         var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(teamName));
         var data = await res.json();
@@ -620,7 +616,6 @@ async function fetchTeamLogo(teamName) {
     } catch(e) {}
     var shortName = getShortName(teamName);
     if (shortName) {
-        // cek sheet dulu untuk shortName
         var sheetUrlShort = lookupSheetDb(shortName);
         if (sheetUrlShort) { teamLogoCache[key] = { url: sheetUrlShort, source: 'sheet' }; return teamLogoCache[key]; }
         try {
@@ -634,7 +629,6 @@ async function fetchTeamLogo(teamName) {
         } catch(e2) {}
     }
 
-    // Step 3: SVG fallback
     teamLogoCache[key] = { url: null, source: 'svg' };
     return teamLogoCache[key];
 }
@@ -645,23 +639,48 @@ function getTeamLogoUrl(name) {
     return generateSVGLogo(name);
 }
 
+// =====================================================================
+// PARSE — mendukung format skor "1 : 0" maupun "1 - 0"
+// =====================================================================
 function parseMatchLine(line) {
-    var hasVS = /\s+(vs|VS|Vs|vS)\s+/i.test(line);
-    var hasDateOrTime = /\d{1,2}[\/\-]\d{1,2}|\d{1,2}\s*:\s*\d{2}/.test(line);
-    var hasScore = /\d+\s*[:]\s*\d+/.test(line);
+    var hasVS = /\s+vs\s+/i.test(line);
+    var hasDateOrTime = /\d{1,2}[\/]\d{1,2}|\d{1,2}\s*:\s*\d{2}/.test(line);
+    // skor: angka dipisah : atau - (spasi opsional di kiri-kanan)
+    var hasScore = /\d+\s*[:\-]\s*\d+/.test(line);
     if (!hasVS) return null;
     if (!hasDateOrTime && !hasScore) return null;
-    var tmp=line, date='', time='', team1='', team2='', score1='', score2='';
-    var dtm = tmp.match(/(\d{1,2}[\/\-]\d{1,2})\s+(\d{1,2}\s*:\s*\d{2}(?:\s+WIB)?)/i);
-    if (dtm) { date=dtm[1]; time=dtm[2].replace(/\s*:\s*/,':').trim(); tmp=tmp.replace(dtm[0],'').trim(); }
-    var sm = tmp.match(/(\d+)\s*[:]\s*(\d+)\s*$/);
-    if (sm) { score1=sm[1]; score2=sm[2]; tmp=tmp.replace(sm[0],'').trim(); }
-    var tm = tmp.match(/(.+?)\s+(vs|VS|Vs|vS)\s+(.+?)$/i);
-    if (tm) { team1=tm[1].trim(); team2=tm[3].trim(); }
-    if (team1 && team2 && score1!=='' && score2!=='')
-        return { date:date||'-', time:time||'-', team1:team1, team2:team2, score1:score1, score2:score2 };
+
+    var tmp = line, date = '', time = '', team1 = '', team2 = '', score1 = '', score2 = '';
+
+    // Ambil tanggal + waktu (format: DD/MM HH:MM [WIB/WITA/WIT])
+    var dtm = tmp.match(/(\d{1,2}\/\d{1,2})\s+(\d{1,2}:\d{2}(?:\s+(?:WIB|WITA|WIT))?)/i);
+    if (dtm) {
+        date = dtm[1];
+        time = dtm[2].trim();
+        tmp = tmp.replace(dtm[0], '').trim();
+    }
+
+    // Ambil skor di akhir baris — format "N : N" atau "N - N"
+    // Gunakan regex ketat agar tidak nangkap bagian tengah nama tim
+    var sm = tmp.match(/(\d+)\s*[:\-]\s*(\d+)\s*$/);
+    if (sm) {
+        score1 = sm[1];
+        score2 = sm[2];
+        tmp = tmp.replace(sm[0], '').trim();
+    }
+
+    // Ambil nama tim (dipisah "vs" case-insensitive)
+    var tm = tmp.match(/^(.+?)\s+vs\s+(.+?)$/i);
+    if (tm) {
+        team1 = tm[1].trim();
+        team2 = tm[2].trim();
+    }
+
+    if (team1 && team2 && score1 !== '' && score2 !== '')
+        return { date: date || '-', time: time || '-', team1: team1, team2: team2, score1: score1, score2: score2 };
     return null;
 }
+// =====================================================================
 
 function parseAll(input) {
     var lines = input.split('\n').filter(function(l){return l.trim()!=='';});

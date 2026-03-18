@@ -358,10 +358,6 @@
             color: var(--text-secondary);
         }
         
-        .shortcut__link {
-            display: none;
-        }
-        
         /* ============================================
            NO RESULTS MESSAGE
            ============================================ */
@@ -808,6 +804,14 @@
                 </div>
                 <h2 class="shortcut__name">Generator Password</h2>
             </article>
+            
+            <!-- QRIS DEPOSIT -->
+            <article class="shortcut" data-name="qris deposit" data-category="finance" data-url="https://leo07.vercel.app/qris-deposit.html">
+                <div class="shortcut__icon" aria-hidden="true">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h2 class="shortcut__name">QRIS DEPOSIT</h2>
+            </article>
         </div>
         
         <!-- No Results Message -->
@@ -829,65 +833,53 @@
         // ============================================
         // MATRIX BACKGROUND ANIMATION
         // ============================================
-        class MatrixRain {
-            constructor(canvasId) {
-                this.canvas = document.getElementById(canvasId);
-                this.ctx = this.canvas.getContext('2d');
-                this.characters = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                this.fontSize = 16;
-                this.columns = 0;
-                this.drops = [];
+        function initMatrix() {
+            const canvas = document.getElementById('matrix-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+            const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const nums = '0123456789';
+            const symbols = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+            
+            const alphabet = katakana + latin + nums + symbols;
+            
+            const fontSize = 16;
+            const columns = canvas.width / fontSize;
+            
+            const rainDrops = [];
+            
+            for (let x = 0; x < columns; x++) {
+                rainDrops[x] = Math.random() * -100;
+            }
+            
+            const draw = () => {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
-                this.init();
-                this.setupResizeHandler();
-            }
-            
-            init() {
-                this.resize();
-                this.animate();
-            }
-            
-            resize() {
-                this.canvas.width = window.innerWidth;
-                this.canvas.height = window.innerHeight;
-                this.columns = Math.floor(this.canvas.width / this.fontSize);
-                this.drops = Array(this.columns).fill(0).map(() => Math.random() * -100);
-            }
-            
-            setupResizeHandler() {
-                let resizeTimeout;
-                window.addEventListener('resize', () => {
-                    clearTimeout(resizeTimeout);
-                    resizeTimeout = setTimeout(() => this.resize(), 250);
-                });
-            }
-            
-            draw() {
-                this.ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                ctx.fillStyle = '#0f0';
+                ctx.font = fontSize + 'px monospace';
                 
-                this.ctx.fillStyle = '#0f0';
-                this.ctx.font = `${this.fontSize}px monospace`;
-                
-                for (let i = 0; i < this.drops.length; i++) {
-                    const char = this.characters.charAt(Math.floor(Math.random() * this.characters.length));
-                    const x = i * this.fontSize;
-                    const y = this.drops[i] * this.fontSize;
+                for (let i = 0; i < rainDrops.length; i++) {
+                    const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                    ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
                     
-                    this.ctx.fillText(char, x, y);
-                    
-                    if (y > this.canvas.height && Math.random() > 0.975) {
-                        this.drops[i] = 0;
+                    if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                        rainDrops[i] = 0;
                     }
-                    
-                    this.drops[i]++;
+                    rainDrops[i]++;
                 }
-            }
+            };
             
-            animate() {
-                this.draw();
-                setTimeout(() => this.animate(), 30);
-            }
+            setInterval(draw, 30);
+            
+            window.addEventListener('resize', () => {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
         }
         
         // ============================================
@@ -910,13 +902,11 @@
             
             async fetchIP() {
                 try {
-                    // Try primary API
                     const response = await fetch('https://api.ipify.org?format=json');
                     const data = await response.json();
                     this.currentIP = data.ip;
                     this.updateDisplay(this.currentIP);
                 } catch (error) {
-                    // Fallback to alternative API
                     try {
                         const response = await fetch('https://api.my-ip.io/ip');
                         const data = await response.json();
@@ -950,7 +940,6 @@
                     await navigator.clipboard.writeText(text);
                     this.showCopyFeedback();
                 } catch (error) {
-                    // Fallback for older browsers
                     const textArea = document.createElement('textarea');
                     textArea.value = text;
                     textArea.style.position = 'fixed';
@@ -994,7 +983,6 @@
             
             async init() {
                 await this.measurePing();
-                // Update ping every 10 seconds
                 setInterval(() => this.measurePing(), 10000);
             }
             
@@ -1002,7 +990,6 @@
                 try {
                     const startTime = performance.now();
                     
-                    // Use fetch with cache disabled
                     await fetch(this.testURL + '?t=' + Date.now(), {
                         method: 'HEAD',
                         cache: 'no-cache'
@@ -1013,7 +1000,6 @@
                     
                     this.updateDisplay(ping);
                 } catch (error) {
-                    // Fallback method
                     this.measurePingFallback();
                 }
             }
@@ -1042,15 +1028,14 @@
                     this.pingValue.textContent = `${ping} ms`;
                     this.pingBox.classList.remove('info-box--loading');
                     
-                    // Color based on ping quality
                     if (ping < 50) {
-                        this.pingValue.style.color = '#00ff00'; // Excellent
+                        this.pingValue.style.color = '#00ff00';
                     } else if (ping < 100) {
-                        this.pingValue.style.color = '#90EE90'; // Good
+                        this.pingValue.style.color = '#90EE90';
                     } else if (ping < 200) {
-                        this.pingValue.style.color = '#ffff00'; // Fair
+                        this.pingValue.style.color = '#ffff00';
                     } else {
-                        this.pingValue.style.color = '#ff5500'; // Poor
+                        this.pingValue.style.color = '#ff5500';
                     }
                 }
             }
@@ -1078,12 +1063,10 @@
             }
             
             setupSearchFunctionality() {
-                // Search input handler
                 this.searchInput.addEventListener('input', (e) => {
                     this.filterShortcuts(e.target.value);
                 });
                 
-                // Focus/blur effects
                 this.searchInput.addEventListener('focus', () => {
                     this.searchWrapper.classList.add('search__wrapper--focused');
                 });
@@ -1116,7 +1099,6 @@
                     }
                 });
                 
-                // Show/hide no results message
                 if (visibleCount === 0 && term !== '') {
                     this.noResults.classList.add('no-results--visible');
                 } else {
@@ -1160,69 +1142,52 @@
         // INITIALIZE APPLICATION
         // ============================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Initialize Matrix background
-            new MatrixRain('matrix-canvas');
-            
-            // Initialize IP Info Display
+            initMatrix();
             new IPInfo();
-            
-            // Initialize Ping Monitor
             new PingMonitor();
-            
-            // Initialize Shortcut Manager
             new ShortcutManager();
         });
     </script>
     
-    <!-- Security Script: Block Inspect Element & Developer Tools -->
+    <!-- Security Script -->
     <script>
-        // Blokir shortcut keyboard untuk inspect
         document.addEventListener('keydown', function(e) {
-            // Ctrl+Shift+I
             if (e.ctrlKey && e.shiftKey && e.key === 'I') {
                 e.preventDefault();
                 return false;
             }
-            // Ctrl+Shift+J
             if (e.ctrlKey && e.shiftKey && e.key === 'J') {
                 e.preventDefault();
                 return false;
             }
-            // Ctrl+Shift+C
             if (e.ctrlKey && e.shiftKey && e.key === 'C') {
                 e.preventDefault();
                 return false;
             }
-            // Ctrl+U
             if (e.ctrlKey && e.key === 'u') {
                 e.preventDefault();
                 return false;
             }
-            // Ctrl+Shift+U
             if (e.ctrlKey && e.shiftKey && e.key === 'U') {
                 e.preventDefault();
                 return false;
             }
-            // F12
             if (e.key === 'F12') {
                 e.preventDefault();
                 return false;
             }
         });
         
-        // Blokir klik kanan (context menu)
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             return false;
         });
         
-        // Cegah drag dan drop
         document.addEventListener('dragstart', function(e) {
             e.preventDefault();
             return false;
         });
         
-        // Optional: Blokir selection teks (bisa dihapus jika tidak perlu)
         document.addEventListener('selectstart', function(e) {
             e.preventDefault();
             return false;
@@ -1230,6 +1195,3 @@
     </script>
 </body>
 </html>
-
-
-

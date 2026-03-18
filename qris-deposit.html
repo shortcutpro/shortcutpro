@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QRIS Deposit Calculator – HOKBENTOTO</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080a10;
+    --surface: #10121c;
+    --surface2: #181b28;
+    --surface3: #1f2235;
+    --border: #272a3d;
+    --border-bright: #3a3f5c;
+    --gold: #f5c842;
+    --gold2: #d4a017;
+    --gold-glow: rgba(245,200,66,0.12);
+    --text: #dde3f5;
+    --muted: #5a6080;
+    --purple: #a78bfa;
+    --cyan: #38bdf8;
+    --green: #4ade80;
+    --red: #f87171;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    padding: 20px 12px 50px;
+    background-image:
+      radial-gradient(ellipse 70% 30% at 50% 0%, rgba(245,200,66,0.05) 0%, transparent 60%);
+  }
+
+  /* HEADER */
+  .header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(13px, 2.5vw, 20px);
+    font-weight: 900;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-shadow: 0 0 24px rgba(245,200,66,0.35);
+  }
+  .date-pill {
+    display: inline-block;
+    background: var(--gold-glow);
+    border: 1px solid rgba(245,200,66,0.3);
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 14px;
+    border-radius: 20px;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  /* 5-CARD ROW */
+  .cards-row {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 900px) {
+    .cards-row { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 580px) {
+    .cards-row { grid-template-columns: 1fr 1fr; }
+  }
+
+  /* CARD */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--gold2); }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .card-head {
+    background: linear-gradient(135deg, #14172a, #1c2035);
+    padding: 9px 11px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card-icon { font-size: 13px; color: var(--gold); flex-shrink: 0; }
+  .card-head h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.3px;
+    line-height: 1.3;
+  }
+
+  .card-body { padding: 10px; }
+
+  /* TWO INPUT COLUMNS */
+  .input-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 7px;
+    margin-bottom: 8px;
+  }
+  .input-col {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .col-lbl {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 5px;
+  }
+  .col-lbl.lkiri  { color: var(--purple); }
+  .col-lbl.lkanan { color: var(--cyan); }
+
+  input[type="number"] {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 7px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    -moz-appearance: textfield;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; }
+  input[type="number"]:focus {
+    border-color: var(--gold2);
+    box-shadow: 0 0 0 2px rgba(245,200,66,0.12);
+  }
+
+  .col-sub {
+    margin-top: 5px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 6px;
+    border-radius: 5px;
+    min-height: 21px;
+    display: flex;
+    align-items: center;
+  }
+  .col-sub.kiri  { background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.18); color: #c4b5fd; }
+  .col-sub.kanan { background: rgba(56,189,248,0.07);  border: 1px solid rgba(56,189,248,0.18);  color: var(--cyan); }
+
+  /* TOTAL MUTASI */
+  .tot-mutasi {
+    text-align: center;
+    background: var(--surface3);
+    border: 1px solid var(--border-bright);
+    border-radius: 7px;
+    padding: 5px 6px;
+    margin-bottom: 8px;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+  .tot-mutasi strong {
+    display: block;
+    font-family: 'Orbitron', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  /* TOTAL PENDAPATAN */
+  .pend-wrap {
+    background: var(--surface3);
+    border: 1px solid rgba(245,200,66,0.18);
+    border-radius: 8px;
+    padding: 8px;
+  }
+  .pend-lbl {
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--gold2);
+    margin-bottom: 5px;
+  }
+  .pend-wrap input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px rgba(245,200,66,0.15);
+  }
+  .pend-result {
+    margin-top: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--gold);
+    padding: 3px 6px;
+    background: var(--gold-glow);
+    border: 1px solid rgba(245,200,66,0.18);
+    border-radius: 5px;
+    min-height: 21px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* RESET */
+  .card-foot {
+    padding: 6px 10px 8px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .btn-reset {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-reset:hover { border-color: var(--red); color: var(--red); }
+
+  /* OUTPUT */
+  .output-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .out-head {
+    background: linear-gradient(135deg, #14172a, #1c2035);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .out-head h3 {
+    font-family: 'Orbitron', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .btn-copy {
+    background: linear-gradient(135deg, var(--gold2), var(--gold));
+    border: none;
+    color: #000;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 18px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn-copy:hover { opacity: 0.85; }
+  .btn-copy:active { transform: scale(0.97); }
+  .btn-copy.ok { background: linear-gradient(135deg, #16a34a, #4ade80); }
+
+  #output-box {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 1.85;
+    padding: 16px 18px;
+    white-space: pre;
+    color: #94a3b8;
+    min-height: 60px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>⬡ QRIS DEPOSIT CALCULATOR</h1>
+  <div class="date-pill" id="date-pill">📅 —</div>
+</div>
+
+<div class="cards-row" id="cards-row"></div>
+
+<div class="output-wrap">
+  <div class="out-head">
+    <h3>📋 OUTPUT LAPORAN</h3>
+    <button class="btn-copy" id="copy-btn" onclick="copyOutput()">⧉ Copy</button>
+  </div>
+  <div id="output-box"></div>
+</div>
+
+<script>
+const QRIS = [
+  { id:'q1', name:'QRIS MINERA',         icon:'◈' },
+  { id:'q2', name:'QRIS MINERA (ORION)', icon:'◉' },
+  { id:'q3', name:'QRIS VIP (NST)',      icon:'◆' },
+  { id:'q4', name:'QRIS VIP (PRN)',      icon:'◇' },
+  { id:'q5', name:'QRIS PAY2MIH',       icon:'◈' },
+];
+
+const S = {};
+QRIS.forEach(q => { S[q.id] = { kiri: 0, kanan: 0, pendapatan: 0 }; });
+
+const BULAN = ['Januari','Februari','Maret','April','Mei','Juni',
+               'Juli','Agustus','September','Oktober','November','Desember'];
+
+function today() {
+  const d = new Date();
+  return `${d.getDate()} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
+}
+function fmtN(n) {
+  return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+function fmtRp(n) {
+  const v = Math.round(parseFloat(n) || 0);
+  return 'Rp.' + v.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ',-';
+}
+
+// Build 5 cards
+function buildCards() {
+  const row = document.getElementById('cards-row');
+  QRIS.forEach(q => {
+    const d = document.createElement('div');
+    d.className = 'card';
+    d.innerHTML = `
+      <div class="card-head">
+        <span class="card-icon">${q.icon}</span>
+        <h2>${q.name}</h2>
+      </div>
+      <div class="card-body">
+        <!-- Kiri + Kanan -->
+        <div class="input-cols">
+          <div class="input-col">
+            <div class="col-lbl lkiri">Kiri</div>
+            <input type="number" id="kiri-${q.id}" min="0" placeholder="0"
+              oninput="onInput('${q.id}','kiri',this.value)">
+            <div class="col-sub kiri" id="sub-kiri-${q.id}">—</div>
+          </div>
+          <div class="input-col">
+            <div class="col-lbl lkanan">Kanan</div>
+            <input type="number" id="kanan-${q.id}" min="0" placeholder="0"
+              oninput="onInput('${q.id}','kanan',this.value)">
+            <div class="col-sub kanan" id="sub-kanan-${q.id}">—</div>
+          </div>
+        </div>
+        <!-- Total Mutasi -->
+        <div class="tot-mutasi">
+          Total Mutasi
+          <strong id="tot-${q.id}">0 Mutasi</strong>
+        </div>
+        <!-- Total Pendapatan -->
+        <div class="pend-wrap">
+          <div class="pend-lbl">💰 Total Pendapatan</div>
+          <input type="number" id="pend-${q.id}" min="0" placeholder="0"
+            oninput="onInput('${q.id}','pendapatan',this.value)">
+          <div class="pend-result" id="pend-res-${q.id}">—</div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <button class="btn-reset" onclick="resetCard('${q.id}')">↺ Reset</button>
+      </div>
+    `;
+    row.appendChild(d);
+  });
+}
+
+function onInput(id, field, val) {
+  S[id][field] = parseFloat(val) || 0;
+  refreshCard(id);
+}
+
+function refreshCard(id) {
+  const s = S[id];
+  const totMutasi = (s.kiri * 50) + s.kanan;
+
+  // sub kiri
+  const sk = document.getElementById(`sub-kiri-${id}`);
+  sk.textContent = s.kiri > 0 ? `${fmtN(s.kiri)} × 50 = ${fmtN(s.kiri * 50)}` : '—';
+
+  // sub kanan
+  const skn = document.getElementById(`sub-kanan-${id}`);
+  skn.textContent = s.kanan > 0 ? `${fmtN(s.kanan)} Mutasi` : '—';
+
+  // total mutasi (kiri + kanan)
+  document.getElementById(`tot-${id}`).textContent = `${fmtN(totMutasi)} Mutasi`;
+
+  // pendapatan result
+  const pr = document.getElementById(`pend-res-${id}`);
+  pr.textContent = s.pendapatan > 0 ? fmtRp(s.pendapatan) : '—';
+
+  renderOutput();
+}
+
+function resetCard(id) {
+  S[id] = { kiri: 0, kanan: 0, pendapatan: 0 };
+  ['kiri','kanan','pend'].forEach(x => {
+    const el = document.getElementById(`${x}-${id}`);
+    if (el) el.value = '';
+  });
+  refreshCard(id);
+}
+
+function renderOutput() {
+  const lines = [
+    'Info : Hokbentoto',
+    'Perihal : Deposit QRIS',
+    `Tanggal : ${today()}`,
+  ];
+  let ada = false;
+  QRIS.forEach(q => {
+    const s = S[q.id];
+    const tot = (s.kiri * 50) + s.kanan;
+    const pend = s.pendapatan;
+    if (tot > 0 || pend > 0) {
+      ada = true;
+      lines.push('');
+      lines.push(q.name);
+      lines.push(`Total Mutasi : ${fmtN(tot)} Mutasi`);
+      lines.push(`Total Pendapatan : ${fmtRp(pend)}`);
+    }
+  });
+  if (!ada) { lines.push(''); lines.push('— Belum ada data —'); }
+  document.getElementById('output-box').textContent = lines.join('\n');
+}
+
+function copyOutput() {
+  navigator.clipboard.writeText(document.getElementById('output-box').textContent).then(() => {
+    const b = document.getElementById('copy-btn');
+    b.textContent = '✓ Tersalin!';
+    b.classList.add('ok');
+    setTimeout(() => { b.textContent = '⧉ Copy'; b.classList.remove('ok'); }, 2000);
+  });
+}
+
+// Init
+document.getElementById('date-pill').textContent = `📅 ${today()}`;
+buildCards();
+renderOutput();
+</script>
+</body>
+</html>

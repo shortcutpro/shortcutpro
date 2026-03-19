@@ -798,8 +798,10 @@
                 // Cari baris data: col[9] harus FREE SPIN atau BUY SPIN (skip header)
                 const dataLine = lines.find(l => {
                     const cols = l.split('\t').map(s => s.trim());
-                    const spin = (cols[9] || '').toUpperCase();
-                    return spin === 'FREE SPIN' || spin === 'BUY SPIN';
+                    const raw = (cols[9] || '').toUpperCase().replace(/\s+/g, '');
+                    return raw === 'FREESPIN' || raw === 'FRESPIN' || raw === 'FREESPIN'
+                        || raw === 'BUYSPIN'  || raw === 'FREE'
+                        || raw.includes('FREE') || raw.includes('BUY');
                 });
 
                 if (!dataLine) {
@@ -809,7 +811,13 @@
 
                 const p = dataLine.split('\t').map(s => s.trim());
 
-                const jenisSpin  = (p[9] || '').toUpperCase().trim();
+                const rawSpin = (p[9] || '').toUpperCase().replace(/\s+/g, '');
+                // Fleksibel: FRESPIN, FREESPIN, FREE SPIN → FREE SPIN | BUYSPIN, BUY SPIN → BUY SPIN
+                const jenisSpin = rawSpin.includes('FREE') || rawSpin === 'FRESPIN' || rawSpin === 'FREESPIN'
+                    ? 'FREE SPIN'
+                    : rawSpin.includes('BUY') || rawSpin === 'BUYSPIN'
+                    ? 'BUY SPIN'
+                    : '';
                 const bankInfo   = parseBankInfo(p[1]);
                 const periode    = p[10] || '';
                 // Kumpulkan semua link gambar dari col[11],[12],[13] — filter valid & unik
@@ -831,8 +839,14 @@
                     totalKemenangan = parseNum(p[3]);
                 }
 
+                // UserID: ambil kata pertama saja, sisanya jadi suffix (misal "ts")
+                const userIdParts = (p[0] || '').trim().split(/\s+/);
+                const userId      = userIdParts[0];
+                const userSuffix  = userIdParts.slice(1).join(' ').toUpperCase(); // "TS" / ""
+
                 currentData = {
-                    userId: p[0] || '',
+                    userId,
+                    userSuffix,
                     bank: bankInfo.bank,
                     namaRekening: bankInfo.nama,
                     nomorRekening: bankInfo.norek,
@@ -855,11 +869,12 @@
         function displayResults() {
             document.getElementById('resultsSection').style.display = 'block';
 
-            document.getElementById('userId').textContent        = currentData.userId;
+            document.getElementById('userId').textContent = currentData.userId;
 
-            // --- Periode: "FREE SPIN 2034..." atau "BUY SPIN 815..." ---
-            const spinLabel = currentData.jenisSpin === 'FREE SPIN' ? 'FREE SPIN' : 'BUY SPIN';
-            document.getElementById('periode').textContent = spinLabel + ' ' + currentData.periode;
+            // Periode: "FREE SPIN TS 2034..." atau "FREE SPIN 2034..." (tanpa suffix kalau kosong)
+            const spinLabel  = currentData.jenisSpin === 'FREE SPIN' ? 'FREE SPIN' : 'BUY SPIN';
+            const suffixPart = currentData.userSuffix ? ' ' + currentData.userSuffix : '';
+            document.getElementById('periode').textContent = spinLabel + suffixPart + ' ' + currentData.periode;
             document.getElementById('totalKemenangan').textContent = formatNumber(currentData.totalKemenangan);
             document.getElementById('modal').textContent         = currentData.jenisSpin === 'FREE SPIN'
                                                                     ? '— (Free Spin)'
@@ -1056,8 +1071,12 @@
                 { id: 'userId',        text: () => currentData.userId },
                 { id: 'nomorRekening', text: () => currentData.nomorRekening },
                 { id: 'nominalClaim',  text: () => nominalClaimFormatted },
-                // periode: copy full "FREE SPIN 2034..." atau "BUY SPIN 815..."
-                { id: 'periode',       text: () => (currentData.jenisSpin === 'FREE SPIN' ? 'FREE SPIN' : 'BUY SPIN') + ' ' + currentData.periode },
+                // periode: copy full "FREE SPIN TS 2034..." atau "BUY SPIN 815..."
+                { id: 'periode', text: () => {
+                    const sl = currentData.jenisSpin === 'FREE SPIN' ? 'FREE SPIN' : 'BUY SPIN';
+                    const sf = currentData.userSuffix ? ' ' + currentData.userSuffix : '';
+                    return sl + sf + ' ' + currentData.periode;
+                }},
             ];
 
             targets.forEach(({ id, text }) => {

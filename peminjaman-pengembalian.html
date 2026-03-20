@@ -32,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Ocean waves background */
         .ocean-bg {
             position: fixed;
             bottom: 0;
@@ -65,7 +64,6 @@
             100% { transform: translateX(-600px); }
         }
 
-        /* Clouds */
         .clouds {
             position: fixed;
             top: 50px;
@@ -122,7 +120,6 @@
             z-index: 1;
         }
 
-        /* Header - Wanted Poster Style */
         .header {
             background: linear-gradient(135deg, #f4e4c1 0%, #d4c4a1 100%);
             border: 8px solid var(--wood-dark);
@@ -255,14 +252,12 @@
             letter-spacing: 2px;
         }
 
-        /* Content Grid */
         .content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
         }
 
-        /* Panel - Treasure Chest/Map Style */
         .panel {
             background: linear-gradient(135deg, #2a1810 0%, #4a2810 100%);
             border: 6px solid var(--treasure-gold);
@@ -286,7 +281,6 @@
             pointer-events: none;
         }
 
-        /* Corner decorations - UPDATED WITH IMAGES */
         .corner-ornament {
             position: absolute;
             width: 60px;
@@ -302,7 +296,6 @@
             display: block;
         }
 
-        /* Position each corner */
         .corner-ornament.tl { 
             top: -10px; 
             left: -10px;
@@ -327,108 +320,40 @@
             animation: corner-bounce-br 2.3s ease-in-out infinite 0.9s;
         }
 
-        /* Corner animations - Different for each corner - CONTINUOUS WIGGLE */
         @keyframes corner-bounce-tl {
-            0% { 
-                transform: rotate(-5deg) scale(1);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
-            25% { 
-                transform: rotate(-15deg) scale(1.08);
-                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
-            }
-            50% { 
-                transform: rotate(-8deg) scale(1.05);
-                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
-            }
-            75% { 
-                transform: rotate(-12deg) scale(1.1);
-                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
-            }
-            100% { 
-                transform: rotate(-5deg) scale(1);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
+            0% { transform: rotate(-5deg) scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+            25% { transform: rotate(-15deg) scale(1.08); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)); }
+            50% { transform: rotate(-8deg) scale(1.05); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7)); }
+            75% { transform: rotate(-12deg) scale(1.1); filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8)); }
+            100% { transform: rotate(-5deg) scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
         }
 
         @keyframes corner-bounce-tr {
-            0% { 
-                transform: rotate(5deg) scale(1);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
-            25% { 
-                transform: rotate(15deg) scale(1.08);
-                filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9));
-            }
-            50% { 
-                transform: rotate(8deg) scale(1.05);
-                filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7));
-            }
-            75% { 
-                transform: rotate(12deg) scale(1.1);
-                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
-            }
-            100% { 
-                transform: rotate(5deg) scale(1);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
+            0% { transform: rotate(5deg) scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+            25% { transform: rotate(15deg) scale(1.08); filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.9)); }
+            50% { transform: rotate(8deg) scale(1.05); filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.7)); }
+            75% { transform: rotate(12deg) scale(1.1); filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8)); }
+            100% { transform: rotate(5deg) scale(1); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
         }
 
         @keyframes corner-bounce-bl {
-            0% { 
-                transform: rotate(-3deg) scale(1) translateY(0);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
-            20% { 
-                transform: rotate(-8deg) scale(1.06) translateY(-3px);
-                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
-            }
-            40% { 
-                transform: rotate(2deg) scale(1.1) translateY(-5px);
-                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1));
-            }
-            60% { 
-                transform: rotate(-5deg) scale(1.08) translateY(-4px);
-                filter: drop-shadow(0 0 22px rgba(255, 215, 0, 0.9));
-            }
-            80% { 
-                transform: rotate(-10deg) scale(1.12) translateY(-6px);
-                filter: drop-shadow(0 0 28px rgba(255, 215, 0, 1));
-            }
-            100% { 
-                transform: rotate(-3deg) scale(1) translateY(0);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
+            0% { transform: rotate(-3deg) scale(1) translateY(0); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+            20% { transform: rotate(-8deg) scale(1.06) translateY(-3px); filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8)); }
+            40% { transform: rotate(2deg) scale(1.1) translateY(-5px); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)); }
+            60% { transform: rotate(-5deg) scale(1.08) translateY(-4px); filter: drop-shadow(0 0 22px rgba(255, 215, 0, 0.9)); }
+            80% { transform: rotate(-10deg) scale(1.12) translateY(-6px); filter: drop-shadow(0 0 28px rgba(255, 215, 0, 1)); }
+            100% { transform: rotate(-3deg) scale(1) translateY(0); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
         }
 
         @keyframes corner-bounce-br {
-            0% { 
-                transform: rotate(3deg) scale(1) translateY(0);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
-            20% { 
-                transform: rotate(8deg) scale(1.06) translateY(-3px);
-                filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8));
-            }
-            40% { 
-                transform: rotate(-2deg) scale(1.1) translateY(-5px);
-                filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1));
-            }
-            60% { 
-                transform: rotate(5deg) scale(1.08) translateY(-4px);
-                filter: drop-shadow(0 0 22px rgba(255, 215, 0, 0.9));
-            }
-            80% { 
-                transform: rotate(10deg) scale(1.12) translateY(-6px);
-                filter: drop-shadow(0 0 28px rgba(255, 215, 0, 1));
-            }
-            100% { 
-                transform: rotate(3deg) scale(1) translateY(0);
-                filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
-            }
+            0% { transform: rotate(3deg) scale(1) translateY(0); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
+            20% { transform: rotate(8deg) scale(1.06) translateY(-3px); filter: drop-shadow(0 0 18px rgba(255, 215, 0, 0.8)); }
+            40% { transform: rotate(-2deg) scale(1.1) translateY(-5px); filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)); }
+            60% { transform: rotate(5deg) scale(1.08) translateY(-4px); filter: drop-shadow(0 0 22px rgba(255, 215, 0, 0.9)); }
+            80% { transform: rotate(10deg) scale(1.12) translateY(-6px); filter: drop-shadow(0 0 28px rgba(255, 215, 0, 1)); }
+            100% { transform: rotate(3deg) scale(1) translateY(0); filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)); }
         }
 
-        /* Hover effect for corners - keeps wiggling but adds extra glow */
         .corner-ornament:hover {
             filter: drop-shadow(0 0 30px rgba(255, 215, 0, 1)) brightness(1.2) !important;
             transition: filter 0.3s ease;
@@ -479,7 +404,6 @@
             box-shadow: 0 3px 10px rgba(211, 47, 47, 0.5);
         }
 
-        /* Input Area */
         .input-container {
             margin-bottom: 20px;
         }
@@ -536,7 +460,6 @@
             color: rgba(90, 45, 12, 0.5);
         }
 
-        /* Status Log */
         .status-log {
             margin-top: 20px;
             padding: 15px 20px;
@@ -589,7 +512,6 @@
             border-left-color: #f44336;
         }
 
-        /* Stats - Berry System */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -657,7 +579,6 @@
             text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.2);
         }
 
-        /* Action Button - Treasure Style */
         .action-button {
             width: 100%;
             padding: 20px 30px;
@@ -722,7 +643,6 @@
             transform: translateY(-1px);
         }
 
-        /* Table - Log Book Style */
         .table-wrapper {
             background: linear-gradient(135deg, #f4e4c1 0%, #e4d4b1 100%);
             border: 5px solid var(--wood-dark);
@@ -820,71 +740,25 @@
             object-fit: contain;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
-            .content {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-
-            .header {
-                transform: rotate(0deg);
-            }
+            .content { grid-template-columns: 1fr; }
+            .stats-container { grid-template-columns: 1fr; }
+            .header { transform: rotate(0deg); }
         }
 
         @media (max-width: 768px) {
-            body {
-                padding: 15px 10px;
-            }
-
-            .header h1 {
-                font-size: 2.5rem;
-            }
-
-            .wanted-banner {
-                grid-template-columns: 80px 1fr 80px;
-                gap: 10px;
-                padding: 10px 15px;
-            }
-
-            .wanted-banner .hat-left,
-            .wanted-banner .hat-right {
-                width: 70px;
-                height: 70px;
-            }
-
-            .wanted-banner .wanted-text {
-                font-size: 2rem;
-            }
-
-            .luffy-hat-pin {
-                width: 60px;
-                top: -30px;
-            }
-
-            .bounty-amount {
-                font-size: 1.8rem;
-            }
-
-            .panel {
-                padding: 20px;
-            }
-
-            th, td {
-                padding: 10px 8px;
-                font-size: 0.75rem;
-            }
-
-            .corner-ornament {
-                width: 45px;
-                height: 45px;
-            }
+            body { padding: 15px 10px; }
+            .header h1 { font-size: 2.5rem; }
+            .wanted-banner { grid-template-columns: 80px 1fr 80px; gap: 10px; padding: 10px 15px; }
+            .wanted-banner .hat-left, .wanted-banner .hat-right { width: 70px; height: 70px; }
+            .wanted-banner .wanted-text { font-size: 2rem; }
+            .luffy-hat-pin { width: 60px; top: -30px; }
+            .bounty-amount { font-size: 1.8rem; }
+            .panel { padding: 20px; }
+            th, td { padding: 10px 8px; font-size: 0.75rem; }
+            .corner-ornament { width: 45px; height: 45px; }
         }
 
-        /* Floating treasure */
         .floating-treasure {
             position: fixed;
             font-size: 2rem;
@@ -894,38 +768,25 @@
         }
 
         @keyframes float-treasure {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.3;
-            }
-            90% {
-                opacity: 0.3;
-            }
-            100% {
-                transform: translateY(-100vh) rotate(360deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
-    <!-- Ocean Background -->
     <div class="ocean-bg">
         <div class="wave"></div>
         <div class="wave"></div>
     </div>
 
-    <!-- Clouds -->
     <div class="clouds">
         <div class="cloud"></div>
         <div class="cloud"></div>
         <div class="cloud"></div>
     </div>
 
-    <!-- Floating Treasures -->
     <div class="floating-treasure" style="left: 10%; animation-delay: 0s;">💰</div>
     <div class="floating-treasure" style="left: 30%; animation-delay: 5s;">💎</div>
     <div class="floating-treasure" style="left: 50%; animation-delay: 10s;">🏴‍☠️</div>
@@ -933,14 +794,11 @@
     <div class="floating-treasure" style="left: 90%; animation-delay: 3s;">🗺️</div>
 
     <div class="container">
-        <!-- Header - Wanted Poster Style -->
         <div class="header">
-            <!-- Luffy Hat Pin -->
             <div class="luffy-hat-pin">
                 <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/6d6cb9137afa39a4d7a52b4ff8af033a/one-piece-hat-luffy-hat.gif" alt="Luffy Hat">
             </div>
 
-            <!-- Wanted Banner with Hats -->
             <div class="wanted-banner">
                 <div class="hat-left">
                     <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/4baa50c23c40701ae22e5cc09dce63a7/acehat-one-piece-ace-hat.gif" alt="Ace Hat">
@@ -961,23 +819,13 @@
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="content">
-            <!-- Input Panel - Treasure Map -->
+            <!-- Input Panel -->
             <div class="panel">
-                <!-- UPDATED: Corner Ornaments with Images -->
-                <div class="corner-ornament tl">
-                    <img src="https://i.postimg.cc/G4n6YStW/download-(8).png" alt="Corner TL">
-                </div>
-                <div class="corner-ornament tr">
-                    <img src="https://i.postimg.cc/k2PL8hGk/download-(10).png" alt="Corner TR">
-                </div>
-                <div class="corner-ornament bl">
-                    <img src="https://i.postimg.cc/crRFq14s/download-(11).png" alt="Corner BL">
-                </div>
-                <div class="corner-ornament br">
-                    <img src="https://i.postimg.cc/vcr0R8H8/download-(12).png" alt="Corner BR">
-                </div>
+                <div class="corner-ornament tl"><img src="https://i.postimg.cc/G4n6YStW/download-(8).png" alt="Corner TL"></div>
+                <div class="corner-ornament tr"><img src="https://i.postimg.cc/k2PL8hGk/download-(10).png" alt="Corner TR"></div>
+                <div class="corner-ornament bl"><img src="https://i.postimg.cc/crRFq14s/download-(11).png" alt="Corner BL"></div>
+                <div class="corner-ornament br"><img src="https://i.postimg.cc/vcr0R8H8/download-(12).png" alt="Corner BR"></div>
 
                 <div class="panel-header">
                     <div class="panel-title">
@@ -1031,21 +879,12 @@ Dan berbagai format lainnya!"></textarea>
                 </div>
             </div>
 
-            <!-- Output Panel - Treasure Chest -->
+            <!-- Output Panel -->
             <div class="panel">
-                <!-- UPDATED: Corner Ornaments with Different Images for Treasure Log -->
-                <div class="corner-ornament tl">
-                    <img src="https://i.postimg.cc/9zQryJsX/download-(13).png" alt="Corner TL">
-                </div>
-                <div class="corner-ornament tr">
-                    <img src="https://i.postimg.cc/6TpyCYFW/download-(14).png" alt="Corner TR">
-                </div>
-                <div class="corner-ornament bl">
-                    <img src="https://i.postimg.cc/Qtj9X8SH/download-(16).png" alt="Corner BL">
-                </div>
-                <div class="corner-ornament br">
-                    <img src="https://i.postimg.cc/JtzGjPSz/download-(16).png" alt="Corner BR">
-                </div>
+                <div class="corner-ornament tl"><img src="https://i.postimg.cc/9zQryJsX/download-(13).png" alt="Corner TL"></div>
+                <div class="corner-ornament tr"><img src="https://i.postimg.cc/6TpyCYFW/download-(14).png" alt="Corner TR"></div>
+                <div class="corner-ornament bl"><img src="https://i.postimg.cc/Qtj9X8SH/download-(16).png" alt="Corner BL"></div>
+                <div class="corner-ornament br"><img src="https://i.postimg.cc/JtzGjPSz/download-(16).png" alt="Corner BR"></div>
 
                 <div class="panel-header">
                     <div class="panel-title">
@@ -1113,27 +952,33 @@ Dan berbagai format lainnya!"></textarea>
         function showStatus(message, type = 'info') {
             const statusLog = document.getElementById('statusLog');
             const statusText = document.getElementById('statusText');
-            
             statusLog.className = `status-log ${type}`;
             statusText.textContent = message;
             statusLog.style.display = 'flex';
-            
-            setTimeout(() => {
-                statusLog.style.display = 'none';
-            }, 5000);
+            setTimeout(() => { statusLog.style.display = 'none'; }, 5000);
         }
 
+        // ============================================================
+        // SPLIT NOMINAL — mapping tetap sesuai permintaan
+        // ============================================================
         function splitNominal(nominal) {
-            const splits = [];
-            let chunkSize = 25000000;
-            
-            const specialAmounts = [100000000, 150000000, 200000000, 250000000];
-            if (specialAmounts.includes(nominal)) {
-                chunkSize = 39000000;
+            const SPLIT_MAP = {
+                50000000:  [39000000, 11000000],
+                100000000: [39000000, 38000000, 23000000],
+                150000000: [39000000, 38000000, 37000000, 36000000],
+                200000000: [39000000, 38000000, 37000000, 36000000, 35000000, 15000000],
+                250000000: [39000000, 38000000, 37000000, 36000000, 35000000, 34000000, 31000000]
+            };
+
+            // Jika nominal cocok dengan mapping, gunakan langsung
+            if (SPLIT_MAP[nominal]) {
+                return SPLIT_MAP[nominal];
             }
-            
+
+            // Fallback: nominal lain dipecah per 25 juta
+            const splits = [];
+            const chunkSize = 25000000;
             let remaining = nominal;
-            
             while (remaining > 0) {
                 if (remaining >= chunkSize) {
                     splits.push(chunkSize);
@@ -1143,21 +988,10 @@ Dan berbagai format lainnya!"></textarea>
                     remaining = 0;
                 }
             }
-            
             return splits;
         }
 
         function formatCurrency(amount) {
-            return amount.toLocaleString('en-US');
-        }
-
-        function formatCurrencyShort(amount) {
-            if (amount >= 1000000000) {
-                return (amount / 1000000000).toFixed(1) + 'B';
-            }
-            if (amount >= 1000000) {
-                return (amount / 1000000).toFixed(1) + 'M';
-            }
             return amount.toLocaleString('en-US');
         }
 
@@ -1167,339 +1001,155 @@ Dan berbagai format lainnya!"></textarea>
         }
 
         function extractBankName(bankStr) {
-            // Clean the string: remove asterisks, extra spaces
             let cleanStr = bankStr.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
-            
-            // Remove common prefixes (including TYPE BANK)
             cleanStr = cleanStr.replace(/^(TYPE\s+BANK|JENIS\s+BANK|NAMA\s+BANK|BANK|KAS)\s*:?\s*/i, '');
-            
-            // Remove status indicators in parentheses
             cleanStr = cleanStr.replace(/\(\s*(KAS\s+)?(BE\s*RSIH|BERSIH|KO\s*TOR|KOTOR|BESAR)\s*\)/gi, '');
-            
-            // Remove status keywords without parentheses
             cleanStr = cleanStr.replace(/\b(KAS|BESAR|BERSIH|KOTOR)\b/gi, '').replace(/\s+/g, ' ').trim();
-            
+
             const bankNames = {
-                'MANDIRI': 'MANDIRI',
-                'BNI': 'BNI',
-                'BRI': 'BRI', 
-                'BCA': 'BCA',
-                'DANAMON': 'DANAMON',
-                'CIMB': 'CIMB',
-                'PERMATA': 'PERMATA',
-                'OCBC': 'OCBC',
-                'PANIN': 'PANIN',
-                'BSI': 'BSI',
-                'SINARMAS': 'SINARMAS',
-                'BTN': 'BTN',
-                'MEGA': 'MEGA',
-                'NIAGA': 'NIAGA',
-                'BUKOPIN': 'BUKOPIN',
-                'SEABANK': 'SEABANK',
-                'JAGO': 'JAGO',
-                'NEO': 'NEO',
-                'JENIUS': 'JENIUS',
-                'BII': 'BII',
-                'MAYBANK': 'MAYBANK',
-                'UOB': 'UOB',
-                'HSBC': 'HSBC',
-                'CITIBANK': 'CITIBANK',
-                'STANDARD CHARTERED': 'SCB',
-                'COMMONWEALTH': 'COMMONWEALTH',
-                'ANZ': 'ANZ',
-                'BANK JATIM': 'BANK JATIM',
-                'BANK JATENG': 'BANK JATENG',
-                'BANK DKI': 'BANK DKI',
-                'BJB': 'BJB',
-                'BPD': 'BPD',
-                'MUAMALAT': 'MUAMALAT',
-                'SYARIAH': 'BSI',
-                'MBNI': 'MBNI',
-                'IBBIZ': 'IBBIZ',
-                'GOPAY': 'GOPAY',
-                'OVO': 'OVO',
-                'DANA': 'DANA',
-                'LINKAJA': 'LINKAJA',
-                'SHOPEEPAY': 'SHOPEEPAY'
+                'MANDIRI':'MANDIRI','BNI':'BNI','BRI':'BRI','BCA':'BCA','DANAMON':'DANAMON',
+                'CIMB':'CIMB','PERMATA':'PERMATA','OCBC':'OCBC','PANIN':'PANIN','BSI':'BSI',
+                'SINARMAS':'SINARMAS','BTN':'BTN','MEGA':'MEGA','NIAGA':'NIAGA','BUKOPIN':'BUKOPIN',
+                'SEABANK':'SEABANK','JAGO':'JAGO','NEO':'NEO','JENIUS':'JENIUS','BII':'BII',
+                'MAYBANK':'MAYBANK','UOB':'UOB','HSBC':'HSBC','CITIBANK':'CITIBANK',
+                'STANDARD CHARTERED':'SCB','COMMONWEALTH':'COMMONWEALTH','ANZ':'ANZ',
+                'BANK JATIM':'BANK JATIM','BANK JATENG':'BANK JATENG','BANK DKI':'BANK DKI',
+                'BJB':'BJB','BPD':'BPD','MUAMALAT':'MUAMALAT','SYARIAH':'BSI','MBNI':'MBNI',
+                'IBBIZ':'IBBIZ','GOPAY':'GOPAY','OVO':'OVO','DANA':'DANA','LINKAJA':'LINKAJA',
+                'SHOPEEPAY':'SHOPEEPAY'
             };
-            
+
             const upperBank = cleanStr.toUpperCase();
-            
-            // Try exact match first
             for (const [key, value] of Object.entries(bankNames)) {
-                if (upperBank.includes(key)) {
-                    return value;
-                }
+                if (upperBank.includes(key)) return value;
             }
-            
-            // If not found, try to extract first capitalized word sequence
+
             const match = cleanStr.match(/[A-Z]{2,}[A-Z\s]*/);
-            if (match) {
-                return match[0].trim();
-            }
-            
+            if (match) return match[0].trim();
             return 'UNKNOWN';
         }
 
         function processData(inputText) {
-            console.log('=== PROCESSING DATA ===');
-            console.log('Input length:', inputText.length);
-            
             const lines = inputText.split('\n').map(line => line.trim()).filter(line => line);
-            console.log('Total lines:', lines.length);
-            
             const results = [];
             let infoSection = {};
             const entries = [];
             let currentEntry = {};
-            
-            // Bank names list
-            const BANK_NAMES = ['MANDIRI', 'BNI', 'BRI', 'BCA', 'DANAMON', 'CIMB', 'PERMATA', 
-                               'OCBC', 'PANIN', 'BSI', 'SINARMAS', 'BTN', 'MEGA', 'NIAGA', 
-                               'BUKOPIN', 'SEABANK', 'JAGO', 'NEO', 'JENIUS', 'BII', 'MAYBANK',
-                               'UOB', 'HSBC', 'CITIBANK', 'STANDARD CHARTERED', 'COMMONWEALTH',
-                               'ANZ', 'JATIM', 'JATENG', 'DKI', 'BJB', 'BPD', 'MUAMALAT',
-                               'SYARIAH', 'MBNI', 'IBBIZ', 'GOPAY', 'OVO', 'DANA', 'LINKAJA', 'SHOPEEPAY'];
-            
-            // Helper: Check if line contains bank name
+
+            const BANK_NAMES = [
+                'MANDIRI','BNI','BRI','BCA','DANAMON','CIMB','PERMATA','OCBC','PANIN','BSI',
+                'SINARMAS','BTN','MEGA','NIAGA','BUKOPIN','SEABANK','JAGO','NEO','JENIUS','BII',
+                'MAYBANK','UOB','HSBC','CITIBANK','STANDARD CHARTERED','COMMONWEALTH','ANZ',
+                'JATIM','JATENG','DKI','BJB','BPD','MUAMALAT','SYARIAH','MBNI','IBBIZ',
+                'GOPAY','OVO','DANA','LINKAJA','SHOPEEPAY'
+            ];
+
             function containsBankName(line) {
                 const upperLine = line.toUpperCase();
                 return BANK_NAMES.some(bank => upperLine.includes(bank));
             }
-            
-            // SUPER FLEXIBLE: Detect field type dari ANY format
+
             function detectFieldType(line) {
-                // Clean: remove asterisks, normalize spaces
                 const cleanLine = line.replace(/\*/g, '').replace(/\s+/g, ' ').trim();
                 const upperLine = cleanLine.toUpperCase();
-                
-                // Skip @ lines
+
                 if (line.match(/^@/)) return { type: 'skip' };
-                
-                // INFO keywords - very loose matching
-                if (upperLine.match(/^INFO/i)) {
-                    return { type: 'info', value: cleanLine.replace(/^INFO\s*:?\s*/i, '').trim() };
-                }
-                
-                // PERIHAL keywords - berbagai variasi
-                if (upperLine.match(/^(PERIHAL|KETERANGAN|PRIHAL|SUBJECT)/i)) {
-                    return { type: 'perihal', value: cleanLine.replace(/^(PERIHAL|KETERANGAN|PRIHAL|SUBJECT)\s*:?\s*/i, '').trim() };
-                }
-                
-                // DARI SITUS keywords
-                if (upperLine.match(/^(DARI|SITUS|FROM|SITE)/i) && upperLine.match(/(SITUS|SITE)/i)) {
-                    return { type: 'dari_situs', value: cleanLine.replace(/^(DARI\s*)?(SITUS|SITE)\s*:?\s*/i, '').replace(/@/g, '').trim() };
-                }
-                
-                // QRIS / EMAIL FORMAT DETECTION
-                if (upperLine.match(/^(SALDO\s+)?QRIS/i)) {
-                    return { type: 'qris_account', value: cleanLine };
-                }
-                
-                if (upperLine.match(/^(ACCOUNT|EMAIL)\s*:/i)) {
-                    return { type: 'qris_account', value: cleanLine.replace(/^(ACCOUNT|EMAIL)\s*:?\s*/i, '').trim() };
-                }
-                
-                // BANK detection - SUPER FLEXIBLE
-                // Pattern 1: TYPE BANK (NEW!)
-                if (upperLine.match(/^TYPE\s+BANK/i) || upperLine.match(/^JENIS\s+BANK/i)) {
-                    return { type: 'bank', value: extractBankName(cleanLine) };
-                }
-                
-                // Pattern 2: Kata "BANK" atau "Nama Bank" di awal
-                if (upperLine.match(/^(JENIS\s*)?BANK/i) || upperLine.match(/^NAMA\s*BANK/i)) {
-                    return { type: 'bank', value: extractBankName(cleanLine) };
-                }
-                
-                // Pattern 3: KAS BERSIH/KOTOR pattern (standalone or with bank)
-                if (upperLine.match(/^KAS\s+(BESAR\s+)?(BERSIH|KOTOR)/i)) {
-                    // Check if next line might be bank name
-                    return { type: 'bank', value: extractBankName(cleanLine) };
-                }
-                
-                // Pattern 4: Bank name + (BERSIH/KOTOR/KAS)
+                if (upperLine.match(/^INFO/i)) return { type: 'info', value: cleanLine.replace(/^INFO\s*:?\s*/i, '').trim() };
+                if (upperLine.match(/^(PERIHAL|KETERANGAN|PRIHAL|SUBJECT)/i)) return { type: 'perihal', value: cleanLine.replace(/^(PERIHAL|KETERANGAN|PRIHAL|SUBJECT)\s*:?\s*/i, '').trim() };
+                if (upperLine.match(/^(DARI|SITUS|FROM|SITE)/i) && upperLine.match(/(SITUS|SITE)/i)) return { type: 'dari_situs', value: cleanLine.replace(/^(DARI\s*)?(SITUS|SITE)\s*:?\s*/i, '').replace(/@/g, '').trim() };
+                if (upperLine.match(/^(SALDO\s+)?QRIS/i)) return { type: 'qris_account', value: cleanLine };
+                if (upperLine.match(/^(ACCOUNT|EMAIL)\s*:/i)) return { type: 'qris_account', value: cleanLine.replace(/^(ACCOUNT|EMAIL)\s*:?\s*/i, '').trim() };
+
+                if (upperLine.match(/^TYPE\s+BANK/i) || upperLine.match(/^JENIS\s+BANK/i)) return { type: 'bank', value: extractBankName(cleanLine) };
+                if (upperLine.match(/^(JENIS\s*)?BANK/i) || upperLine.match(/^NAMA\s*BANK/i)) return { type: 'bank', value: extractBankName(cleanLine) };
+                if (upperLine.match(/^KAS\s+(BESAR\s+)?(BERSIH|KOTOR)/i)) return { type: 'bank', value: extractBankName(cleanLine) };
+
                 if (containsBankName(cleanLine)) {
                     if (upperLine.match(/\(\s*(KAS\s+)?(BE\s*RSIH|BERSIH|KO\s*TOR|KOTOR)\s*\)/i) ||
                         upperLine.match(/(KAS\s+)?(BERSIH|KOTOR|BESAR)/i)) {
                         return { type: 'bank', value: extractBankName(cleanLine) };
                     }
                 }
-                
-                // Pattern 5: Direct bank name at start (BCA, MANDIRI, etc)
+
                 const directBankMatch = upperLine.match(/^(BCA|MANDIRI|BNI|BRI|DANAMON|CIMB|PERMATA|OCBC|PANIN|BSI|SINARMAS|BTN|MEGA|NIAGA|BUKOPIN|SEABANK|JAGO|NEO|JENIUS|MBNI|IBBIZ)/i);
-                if (directBankMatch && (upperLine.match(/[\(\n]/) || upperLine.length < 20)) {
-                    return { type: 'bank', value: extractBankName(cleanLine) };
-                }
-                
-                // NAMA REKENING detection - SUPER FLEXIBLE
-                // Support: NAMA REKENING, NAMA REK, Nama Rek, NAMA, dll
-                if (upperLine.match(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?(\s*:|$)/i) && 
-                    !upperLine.match(/NAMA\s*BANK/i)) {
+                if (directBankMatch && (upperLine.match(/[\(\n]/) || upperLine.length < 20)) return { type: 'bank', value: extractBankName(cleanLine) };
+
+                if (upperLine.match(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?(\s*:|$)/i) && !upperLine.match(/NAMA\s*BANK/i)) {
                     const value = cleanLine.split(/:\s*/);
-                    if (value.length > 1) {
-                        return { type: 'nama', value: value.slice(1).join(':').trim() };
-                    } else {
-                        return { type: 'nama', value: cleanLine.replace(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?\s*:?\s*/i, '').trim() };
-                    }
+                    return { type: 'nama', value: value.length > 1 ? value.slice(1).join(':').trim() : cleanLine.replace(/^NAMA(\s+(REKENING|REK|PENERIMA|PEMILIK|ACCOUNT))?\s*:?\s*/i, '').trim() };
                 }
-                
-                // NOMOR REKENING detection - SUPER FLEXIBLE (including "Rek", "NO REK")
-                // Support: NOMOR REKENING, NO REKENING, NO REK, NOMOR REK, Rek, dll
-                if (upperLine.match(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM|REK)(\s+(REKENING|REK|ACCOUNT))?(\s*:|$)/i) && 
-                    !upperLine.match(/NAMA/i)) {
+
+                if (upperLine.match(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM|REK)(\s+(REKENING|REK|ACCOUNT))?(\s*:|$)/i) && !upperLine.match(/NAMA/i)) {
                     const value = cleanLine.split(/:\s*/);
-                    if (value.length > 1) {
-                        return { type: 'nomor', value: value.slice(1).join(':').trim() };
-                    } else {
-                        return { type: 'nomor', value: cleanLine.replace(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM|REK)(\s+(REKENING|REK|ACCOUNT))?\s*:?\s*/i, '').trim() };
-                    }
+                    return { type: 'nomor', value: value.length > 1 ? value.slice(1).join(':').trim() : cleanLine.replace(/^(NOMOR|NO\.?|NUMBER|NOMER|NUM|REK)(\s+(REKENING|REK|ACCOUNT))?\s*:?\s*/i, '').trim() };
                 }
-                
-                // NOMINAL detection - SUPER FLEXIBLE
+
                 if (upperLine.match(/^(NOMINAL|RP\.?|JUMLAH|AMOUNT|TOTAL|NILAI)(\s*:|$)/i)) {
                     const value = cleanLine.split(/:\s*/);
-                    let nominalStr = '';
-                    if (value.length > 1) {
-                        nominalStr = value.slice(1).join(':').trim();
-                    } else {
-                        nominalStr = cleanLine.replace(/^(NOMINAL|RP\.?|JUMLAH|AMOUNT|TOTAL|NILAI)\s*:?\s*/i, '').trim();
-                    }
+                    let nominalStr = value.length > 1 ? value.slice(1).join(':').trim() : cleanLine.replace(/^(NOMINAL|RP\.?|JUMLAH|AMOUNT|TOTAL|NILAI)\s*:?\s*/i, '').trim();
                     return { type: 'nominal', value: parseNominal(nominalStr) };
                 }
-                
-                // Standalone NUMBER (10+ digits) - likely account number
-                if (line.match(/^\d{10,}$/)) {
-                    return { type: 'standalone_number', value: line };
-                }
-                
-                // Standalone NAME (capitalized text, no bank names)
-                if (line.match(/^[A-Z][A-Za-z\s\.]{2,}$/) && 
-                    !containsBankName(line) && 
-                    !upperLine.match(/BERSIH|KOTOR|KAS/)) {
-                    return { type: 'standalone_name', value: line };
-                }
-                
+
+                if (line.match(/^\d{10,}$/)) return { type: 'standalone_number', value: line };
+                if (line.match(/^[A-Z][A-Za-z\s\.]{2,}$/) && !containsBankName(line) && !upperLine.match(/BERSIH|KOTOR|KAS/)) return { type: 'standalone_name', value: line };
+
                 return { type: 'unknown' };
             }
-            
-            // MAIN PARSING LOOP - Using intelligent field detection
+
             let lastLine = null;
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 const detected = detectFieldType(line);
-                
-                console.log(`Line ${i}: "${line}" → ${detected.type}`);
-                
+
                 switch (detected.type) {
-                    case 'skip':
-                        console.log('  → Skipping');
-                        break;
-                        
-                    case 'info':
-                        infoSection.info = detected.value;
-                        console.log('  → Info:', detected.value);
-                        break;
-                        
-                    case 'perihal':
-                        infoSection.perihal = detected.value;
-                        console.log('  → Perihal:', detected.value);
-                        break;
-                        
-                    case 'dari_situs':
-                        infoSection.dariSitus = detected.value;
-                        console.log('  → Dari Situs:', detected.value);
-                        break;
-                        
+                    case 'skip': break;
+                    case 'info': infoSection.info = detected.value; break;
+                    case 'perihal': infoSection.perihal = detected.value; break;
+                    case 'dari_situs': infoSection.dariSitus = detected.value; break;
+
                     case 'qris_account':
-                        // QRIS format - treat as bank with email/account
-                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                            console.log('  → Saving previous entry:', currentEntry);
-                            entries.push({...currentEntry});
-                        }
+                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) entries.push({...currentEntry});
                         currentEntry = { bank: 'QRIS', nomorRekening: detected.value };
-                        console.log('  → QRIS Account:', detected.value);
                         break;
-                        
+
                     case 'bank':
-                        // Save previous entry if exists
-                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                            console.log('  → Saving previous entry:', currentEntry);
-                            entries.push({...currentEntry});
-                        }
-                        
-                        // Check if previous line was "KAS BERSIH/KOTOR" - multi-line bank format
+                        if (Object.keys(currentEntry).length > 0 && currentEntry.bank) entries.push({...currentEntry});
                         if (lastLine && lastLine.match(/^KAS\s+(BERSIH|KOTOR)$/i)) {
                             const status = lastLine.match(/(BERSIH|KOTOR)/i)[0];
                             currentEntry = { bank: detected.value + ' (' + status + ')' };
-                            console.log('  → Multi-line Bank:', currentEntry.bank);
                         } else {
                             currentEntry = { bank: detected.value };
-                            console.log('  → New Bank:', detected.value);
                         }
                         break;
-                        
-                    case 'nama':
-                        currentEntry.namaRekening = detected.value;
-                        console.log('  → Nama:', detected.value);
-                        break;
-                        
-                    case 'nomor':
-                        currentEntry.nomorRekening = detected.value;
-                        console.log('  → Nomor:', detected.value);
-                        break;
-                        
+
+                    case 'nama': currentEntry.namaRekening = detected.value; break;
+                    case 'nomor': currentEntry.nomorRekening = detected.value; break;
+
                     case 'nominal':
                         currentEntry.nominal = detected.value;
-                        console.log('  → Nominal:', detected.value);
-                        
-                        // Auto-save after nominal detected
                         if (currentEntry.bank) {
-                            console.log('  → Auto-saving entry with nominal');
                             entries.push({...currentEntry});
                             currentEntry = {};
                         }
                         break;
-                        
+
                     case 'standalone_number':
-                        // Smart assignment: if no nomor yet, assign it
-                        if (!currentEntry.nomorRekening && currentEntry.bank) {
-                            currentEntry.nomorRekening = detected.value;
-                            console.log('  → Auto-detected Nomor (standalone):', detected.value);
-                        }
+                        if (!currentEntry.nomorRekening && currentEntry.bank) currentEntry.nomorRekening = detected.value;
                         break;
-                        
+
                     case 'standalone_name':
-                        // Smart assignment: if bank exists but no name yet
-                        if (!currentEntry.namaRekening && currentEntry.bank) {
-                            currentEntry.namaRekening = detected.value;
-                            console.log('  → Auto-detected Nama (standalone):', detected.value);
-                        }
+                        if (!currentEntry.namaRekening && currentEntry.bank) currentEntry.namaRekening = detected.value;
                         break;
                 }
-                
-                // Remember last line for multi-line format detection
                 lastLine = line;
             }
-            
-            // Save last entry if exists
-            if (Object.keys(currentEntry).length > 0 && currentEntry.bank) {
-                console.log('Saving final entry:', currentEntry);
-                entries.push(currentEntry);
-            }
-            
-            console.log('Total entries found:', entries.length);
-            console.log('Entries:', entries);
-            
-            // Process entries
-            entries.forEach((entry, index) => {
-                console.log(`Processing entry ${index}:`, entry);
-                
+
+            if (Object.keys(currentEntry).length > 0 && currentEntry.bank) entries.push(currentEntry);
+
+            entries.forEach(entry => {
                 if (entry.nominal > 0 && entry.bank && entry.nomorRekening && entry.namaRekening) {
                     const splits = splitNominal(entry.nominal);
                     const keterangan = `${infoSection.perihal || 'Transfer'} ke ${infoSection.info || 'Unknown'}`;
-                    
-                    console.log(`  → Creating ${splits.length} splits`);
-                    
                     splits.forEach(splitAmount => {
                         results.push({
                             bank: entry.bank,
@@ -1509,59 +1159,31 @@ Dan berbagai format lainnya!"></textarea>
                             nominal: splitAmount
                         });
                     });
-                } else {
-                    console.log('  → Entry incomplete, skipping:', {
-                        hasNominal: entry.nominal > 0,
-                        hasBank: !!entry.bank,
-                        hasNomor: !!entry.nomorRekening,
-                        hasNama: !!entry.namaRekening
-                    });
                 }
             });
-            
-            console.log('Final results:', results.length, 'records');
-            console.log('=== END PROCESSING ===');
-            
+
             return results;
         }
 
         function updateStats(data) {
             const statsContainer = document.getElementById('statsContainer');
-            
-            if (data.length === 0) {
-                statsContainer.style.display = 'none';
-                return;
-            }
-
+            if (data.length === 0) { statsContainer.style.display = 'none'; return; }
             statsContainer.style.display = 'grid';
-            
-            const totalTransactions = data.length;
-            const uniqueBanks = new Set(data.map(item => item.bank)).size;
-            const totalAmount = data.reduce((sum, item) => sum + item.nominal, 0);
-            
-            document.getElementById('statTotal').textContent = totalTransactions;
-            document.getElementById('statBanks').textContent = uniqueBanks;
-            document.getElementById('statAmount').textContent = formatCurrency(totalAmount);
+            document.getElementById('statTotal').textContent = data.length;
+            document.getElementById('statBanks').textContent = new Set(data.map(item => item.bank)).size;
+            document.getElementById('statAmount').textContent = formatCurrency(data.reduce((sum, item) => sum + item.nominal, 0));
         }
 
         function updateTable(data) {
             const tbody = document.getElementById('resultBody');
-            
             if (data.length === 0) {
-                tbody.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <div class="empty-icon">
-                                <img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/0db3533a8811bee0edcdba6afa7a8c83/e.gif" alt="One Piece">
-                            </div>
-                            <div>No Treasure Found Yet!</div>
-                            <div style="font-size: 0.8rem; margin-top: 10px; opacity: 0.7;">Start Your Adventure Above</div>
-                        </td>
-                    </tr>
-                `;
+                tbody.innerHTML = `<tr><td colspan="5" class="empty-state">
+                    <div class="empty-icon"><img src="https://cdn.areabermain.club/assets/cdn/az1/2025/12/30/20251230/0db3533a8811bee0edcdba6afa7a8c83/e.gif" alt="One Piece"></div>
+                    <div>No Treasure Found Yet!</div>
+                    <div style="font-size:0.8rem;margin-top:10px;opacity:0.7;">Start Your Adventure Above</div>
+                </td></tr>`;
                 return;
             }
-            
             tbody.innerHTML = data.map((item, index) => `
                 <tr style="animation-delay: ${index * 0.05}s">
                     <td><strong>${item.bank}</strong></td>
@@ -1574,34 +1196,20 @@ Dan berbagai format lainnya!"></textarea>
         }
 
         function copyAllData() {
-            if (processedData.length === 0) {
-                showStatus('🏴‍☠️ No Treasure to Claim!', 'info');
-                return;
-            }
-            
-            const rows = processedData.map(item => 
+            if (processedData.length === 0) { showStatus('🏴‍☠️ No Treasure to Claim!', 'info'); return; }
+            const text = processedData.map(item =>
                 `${item.bank}\t${item.nomorRekening}\t${item.namaRekening}\t${item.keterangan}\t${formatCurrency(item.nominal)}`
-            );
-            
-            const text = rows.join('\n');
-            
-            navigator.clipboard.writeText(text).then(() => {
-                showStatus(`💰 Treasure Claimed! ${processedData.length} Records Collected!`, 'success');
-            }).catch(() => {
-                showStatus('❌ Failed to Claim Treasure!', 'error');
-            });
+            ).join('\n');
+            navigator.clipboard.writeText(text)
+                .then(() => showStatus(`💰 Treasure Claimed! ${processedData.length} Records Collected!`, 'success'))
+                .catch(() => showStatus('❌ Failed to Claim Treasure!', 'error'));
         }
 
-        // Event listener dengan debounce
         let debounceTimer;
         document.getElementById('dataInput').addEventListener('input', function(e) {
             clearTimeout(debounceTimer);
-            
             debounceTimer = setTimeout(() => {
                 const inputText = e.target.value;
-                
-                console.log('Input changed, length:', inputText.length);
-                
                 if (inputText.trim() === '') {
                     processedData = [];
                     updateTable(processedData);
@@ -1609,29 +1217,22 @@ Dan berbagai format lainnya!"></textarea>
                     showStatus('⚓ Ready to Set Sail!', 'info');
                     return;
                 }
-                
                 try {
                     processedData = processData(inputText);
                     updateTable(processedData);
                     updateStats(processedData);
-                    
                     if (processedData.length > 0) {
                         const totalAmount = processedData.reduce((sum, item) => sum + item.nominal, 0);
-                        showStatus(
-                            `🎉 Treasure Found! ${processedData.length} Records | Total: ${formatCurrency(totalAmount)}`, 
-                            'success'
-                        );
+                        showStatus(`🎉 Treasure Found! ${processedData.length} Records | Total: ${formatCurrency(totalAmount)}`, 'success');
                     } else {
                         showStatus('🗺️ Keep Searching for Treasure!', 'info');
                     }
                 } catch (error) {
-                    console.error('Processing error:', error);
                     showStatus('⚠️ Navigation Error: ' + error.message, 'error');
                 }
             }, 300);
         });
 
-        // Initial status
         showStatus('⚓ Ready to Set Sail on the Grand Line!', 'info');
     </script>
 </body>

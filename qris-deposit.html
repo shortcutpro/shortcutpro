@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QRIS Deposit Calculator – HOKBENTOTO</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%23080a10'/><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40'>⬡</text><text x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-size='40' fill='%23f5c842'>⬡</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -326,6 +327,7 @@ const BULAN = ['Januari','Februari','Maret','April','Mei','Juni',
 
 function today() {
   const d = new Date();
+  d.setDate(d.getDate() - 1);
   return `${d.getDate()} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
 }
 function fmtN(n) {

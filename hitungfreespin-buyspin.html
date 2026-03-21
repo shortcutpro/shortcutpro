@@ -589,6 +589,9 @@
                     <div class="input-group">
                         <label for="scatterData"><i class="fas fa-paste"></i> Paste Data dari Docs Scatter:</label>
                         <textarea id="scatterData" class="input-control" placeholder="Paste data scatter disini..." oninput="parseScatterData()"></textarea>
+                        <div id="scatterError" style="display:none; margin-top:10px; padding:10px 14px; background:rgba(255,61,113,0.12); border:1px solid rgba(255,61,113,0.4); border-radius:8px; font-size:0.85rem; color:var(--danger);">
+                            <i class="fas fa-exclamation-circle"></i> <span id="scatterErrorMsg"></span>
+                        </div>
                         <div class="format-hint">
                             <b>Format FREE SPIN:</b> UserID | Bank,Nama,NoRek | ... | TotalKemenangan | Modal | TRUE | FREE SPIN | PeriodeID | LinkGambar<br>
                             <b>Format BUY SPIN:</b> UserID | Bank,Nama,NoRek | Modal | TotalKemenangan | NominalClaim | ... | TRUE | BUY SPIN | PeriodeID | LinkGambar
@@ -640,18 +643,6 @@
                 <div style="display:flex; flex-direction:column; gap:20px;">
                     <div class="result-details">
                         <div class="result-item">
-                            <span class="result-label"><i class="fas fa-university"></i> Bank</span>
-                            <span class="result-value" id="provider">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-id-card"></i> Nama Rekening</span>
-                            <span class="result-value" id="namaRekening">-</span>
-                        </div>
-                        <div class="result-item">
-                            <span class="result-label"><i class="fas fa-hashtag"></i> No. Rekening</span>
-                            <span class="result-value" id="nomorRekening">-</span>
-                        </div>
-                        <div class="result-item">
                             <span class="result-label"><i class="fas fa-sync-alt"></i> Jenis Spin</span>
                             <span class="result-value" id="jenisSpin">-</span>
                         </div>
@@ -690,6 +681,10 @@
                     <div class="summary-card">
                         <h4><i class="fas fa-check-circle"></i> Status Validasi</h4>
                         <div class="validation-badge" id="validationStatus">-</div>
+                    </div>
+                    <div class="summary-card" id="selisihCard" style="display:none;">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Selisih</h4>
+                        <div class="value" id="selisihValue" style="color:var(--danger);">-</div>
                     </div>
                 </div>
                 
@@ -735,6 +730,7 @@
         function clearScatterData() {
             document.getElementById('scatterData').value = '';
             document.getElementById('resultsSection').style.display = 'none';
+            hideScatterError();
             currentData = {};
         }
 
@@ -768,9 +764,21 @@
             return { bank, nama, norek };
         }
 
+        function showScatterError(msg) {
+            const box = document.getElementById('scatterError');
+            document.getElementById('scatterErrorMsg').textContent = msg;
+            box.style.display = 'block';
+            document.getElementById('resultsSection').style.display = 'none';
+        }
+
+        function hideScatterError() {
+            document.getElementById('scatterError').style.display = 'none';
+        }
+
         function parseScatterData() {
             const input = document.getElementById('scatterData').value.trim();
             if (!input) {
+                hideScatterError();
                 document.getElementById('resultsSection').style.display = 'none';
                 return;
             }
@@ -795,6 +803,11 @@
                  */
                 const lines = input.split('\n').filter(l => l.trim());
 
+                if (lines.length === 0) {
+                    showScatterError('Data kosong, tidak ada baris yang dapat dibaca.');
+                    return;
+                }
+
                 // Cari baris data: col[9] harus FREE SPIN atau BUY SPIN (skip header)
                 const dataLine = lines.find(l => {
                     const cols = l.split('\t').map(s => s.trim());
@@ -805,9 +818,19 @@
                 });
 
                 if (!dataLine) {
-                    document.getElementById('resultsSection').style.display = 'none';
+                    // Coba diagnosa penyebabnya
+                    const firstLine = lines[lines.length - 1]; // ambil baris terakhir (biasanya data)
+                    const cols = firstLine.split('\t');
+                    if (cols.length < 10) {
+                        showScatterError(`Format tidak dikenali — ditemukan ${cols.length} kolom, minimal butuh 10. Pastikan data disalin dari Google Docs dengan benar (Tab-separated).`);
+                    } else {
+                        const col9val = (cols[9] || '').trim();
+                        showScatterError(`Kolom jenis spin tidak terbaca — nilai col[9]: "${col9val}". Harus berisi FREE SPIN atau BUY SPIN.`);
+                    }
                     return;
                 }
+
+                hideScatterError();
 
                 const p = dataLine.split('\t').map(s => s.trim());
 
@@ -862,7 +885,7 @@
 
             } catch (error) {
                 console.error('Error parsing scatter data:', error);
-                document.getElementById('resultsSection').style.display = 'none';
+                showScatterError('Terjadi kesalahan saat membaca data: ' + error.message);
             }
         }
 
@@ -879,9 +902,6 @@
             document.getElementById('modal').textContent         = currentData.jenisSpin === 'FREE SPIN'
                                                                     ? '— (Free Spin)'
                                                                     : formatNumber(currentData.modal);
-            document.getElementById('provider').textContent      = currentData.bank;
-            document.getElementById('namaRekening').textContent  = currentData.namaRekening;
-            document.getElementById('nomorRekening').textContent = currentData.nomorRekening;
             document.getElementById('jenisSpin').textContent     = currentData.jenisSpin;
 
             // Hitung & tampilkan status + nominal claim
@@ -922,7 +942,9 @@
                     img.src = url;
                     img.alt = labels[i] || '';
                     img.style.cssText = 'max-width:100%; max-height:100%; object-fit:contain; transition:transform 0.3s;';
-                    img.onmouseover = () => img.style.transform = 'scale(1.04)';
+                    img.onerror = () => {
+                        imgWrap.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;color:rgba(255,255,255,0.4);gap:8px;"><i class="fas fa-image-slash" style="font-size:1.8rem;"></i><span style="font-size:0.75rem;">Gambar tidak tersedia</span></div>';
+                    };
                     img.onmouseout  = () => img.style.transform = 'scale(1)';
                     img.onclick = () => openModal(url);
 
@@ -1012,19 +1034,36 @@
             document.getElementById('totalKredit').textContent = formatNumber(totalKredit);
             document.getElementById('totalKemenanganCompare').textContent = formatNumber(currentData.totalKemenangan);
 
+            const diff = totalKredit - currentData.totalKemenangan;
             const validationStatus = document.getElementById('validationStatus');
-            if (Math.abs(totalKredit - currentData.totalKemenangan) < 1) {
+            const selisihCard  = document.getElementById('selisihCard');
+            const selisihValue = document.getElementById('selisihValue');
+
+            if (Math.abs(diff) < 1) {
                 validationStatus.className = 'validation-badge status-match pulse';
                 validationStatus.innerHTML = '<i class="fas fa-check-circle"></i> COCOK PROSES';
+                selisihCard.style.display = 'none';
             } else {
                 validationStatus.className = 'validation-badge status-mismatch pulse';
                 validationStatus.innerHTML = '<i class="fas fa-times-circle"></i> TIDAK COCOK JANGAN PROSES';
+                selisihCard.style.display = 'block';
+                const sign = diff > 0 ? '+' : '';
+                selisihValue.textContent = sign + formatNumber(Math.round(diff));
+                selisihValue.style.color = diff > 0 ? 'var(--warning)' : 'var(--danger)';
             }
 
             const tbody = document.getElementById('transactionTableBody');
             tbody.innerHTML = '';
+            const target = currentData.totalKemenangan;
+
             currentTransactions.forEach(t => {
                 const row = tbody.insertRow();
+                // Highlight baris yang kredit-nya match dengan total kemenangan
+                const isMatch = Math.abs(t.kredit - target) < 1;
+                if (isMatch) {
+                    row.style.background = 'rgba(0, 230, 118, 0.12)';
+                    row.style.outline = '1px solid rgba(0, 230, 118, 0.3)';
+                }
                 row.innerHTML = `
                     <td>${t.no}</td>
                     <td>${t.periode}</td>
@@ -1033,7 +1072,7 @@
                     <td>${t.keteranganId}</td>
                     <td>${t.status}</td>
                     <td>${formatNumber(t.debet)}</td>
-                    <td>${formatNumber(t.kredit)}</td>
+                    <td style="${isMatch ? 'color:var(--success); font-weight:700;' : ''}">${formatNumber(t.kredit)}</td>
                     <td>${formatNumber(t.balance)}</td>
                     <td>${t.via}</td>`;
             });
@@ -1068,10 +1107,8 @@
             const nominalClaimFormatted = new Intl.NumberFormat('en-US').format(nominalClaim);
 
             const targets = [
-                { id: 'userId',        text: () => currentData.userId },
-                { id: 'nomorRekening', text: () => currentData.nomorRekening },
-                { id: 'nominalClaim',  text: () => nominalClaimFormatted },
-                // periode: copy full "FREE SPIN TS 2034..." atau "BUY SPIN 815..."
+                { id: 'userId',       text: () => currentData.userId },
+                { id: 'nominalClaim', text: () => nominalClaimFormatted },
                 { id: 'periode', text: () => {
                     const sl = currentData.jenisSpin === 'FREE SPIN' ? 'FREE SPIN' : 'BUY SPIN';
                     const sf = currentData.userSuffix ? ' ' + currentData.userSuffix : '';
@@ -1081,6 +1118,7 @@
 
             targets.forEach(({ id, text }) => {
                 const el = document.getElementById(id);
+                if (!el) return;
                 el.querySelectorAll('.copy-btn').forEach(b => b.remove());
                 const btn = document.createElement('button');
                 btn.className = 'copy-btn';

@@ -100,44 +100,159 @@ h1 i {
   color: var(--accent-gold);
 }
 
-.url-input-section {
+/* ======= TAB SUMBER INPUT ======= */
+.input-tabs {
+  display: flex;
+  gap: 8px;
   margin-bottom: 15px;
 }
 
-.url-input-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.url-input-header h3 {
-  color: var(--accent-gold);
+.tab-btn {
+  flex: 1;
+  padding: 10px 15px;
+  background: rgba(20, 20, 20, 0.8);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: rgba(245, 245, 245, 0.5);
+  font-size: 0.9rem;
   font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 1rem;
+  transition: all 0.3s;
 }
 
-.supported-services {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.service-badge {
-  background: rgba(212, 175, 55, 0.12);
-  border: 1px solid rgba(212, 175, 55, 0.5);
-  border-radius: 15px;
-  padding: 5px 12px;
-  font-size: 0.8rem;
-  display: flex;
-  align-items: center;
-  gap: 5px;
+.tab-btn:hover {
+  border-color: rgba(212, 175, 55, 0.4);
   color: var(--accent-gold);
+}
+
+.tab-btn.active {
+  background: rgba(212, 175, 55, 0.12);
+  border-color: var(--primary-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.15);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ======= DRAG & DROP ZONE ======= */
+.drop-zone {
+  border: 2px dashed var(--border-gold);
+  border-radius: 12px;
+  padding: 35px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(212, 175, 55, 0.04);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.drop-zone::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--accent-gold);
+  background: rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15), inset 0 0 20px rgba(212, 175, 55, 0.05);
+  transform: scale(1.005);
+}
+
+.drop-zone.dragover {
+  border-style: solid;
+}
+
+.drop-zone-icon {
+  font-size: 3rem;
+  color: var(--accent-gold);
+  margin-bottom: 12px;
+  display: block;
+  opacity: 0.8;
+  transition: transform 0.3s;
+}
+
+.drop-zone:hover .drop-zone-icon,
+.drop-zone.dragover .drop-zone-icon {
+  transform: translateY(-5px) scale(1.1);
+  opacity: 1;
+}
+
+.drop-zone-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+}
+
+.drop-zone-sub {
+  font-size: 0.82rem;
+  color: rgba(245, 245, 245, 0.45);
+  margin-bottom: 18px;
+}
+
+.select-file-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  background: var(--btn-primary);
+  color: #0D0D0D;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+}
+
+.select-file-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+  filter: brightness(1.1);
+}
+
+#fileInput {
+  display: none;
+}
+
+.file-type-badges {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+.file-type-badge {
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  padding: 3px 10px;
+  font-size: 0.75rem;
+  color: rgba(212, 175, 55, 0.8);
   font-weight: 500;
+}
+
+/* ======= URL INPUT ======= */
+.url-input-section {
+  margin-bottom: 15px;
 }
 
 .url-input-group {
@@ -180,6 +295,27 @@ h1 i {
   gap: 8px;
 }
 
+.supported-services {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.service-badge {
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  border-radius: 15px;
+  padding: 5px 12px;
+  font-size: 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--accent-gold);
+  font-weight: 500;
+}
+
+/* ======= SETTINGS ======= */
 .settings {
   margin: 20px 0;
 }
@@ -214,6 +350,7 @@ h1 i {
   box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
+/* ======= PREVIEW ======= */
 .preview-container {
   margin-top: 20px;
 }
@@ -262,23 +399,46 @@ h1 i {
   display: block;
 }
 
+.preview-item .item-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  padding: 4px 6px 4px;
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.8);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-item .item-label i {
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  color: var(--accent-gold);
+}
+
 .preview-item .remove-btn {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
   background: rgba(0, 0, 0, 0.85);
   color: var(--accent-gold);
   border: 1px solid rgba(212, 175, 55, 0.5);
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   cursor: pointer;
   font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  font-size: 14px;
+  font-size: 12px;
   transition: all 0.3s;
 }
 
@@ -287,6 +447,7 @@ h1 i {
   transform: scale(1.1);
 }
 
+/* ======= RESULT ======= */
 .result-container {
   text-align: center;
   margin-top: 25px;
@@ -396,7 +557,6 @@ h1 i {
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
-  display: flex;
   align-items: center;
   gap: 10px;
   display: none;
@@ -442,6 +602,15 @@ h1 i {
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-border {
+  0%, 100% { border-color: rgba(212, 175, 55, 0.4); }
+  50% { border-color: rgba(212, 175, 55, 0.9); }
+}
+
+.drop-zone.dragover {
+  animation: pulse-border 0.8s ease infinite;
 }
 
 /* ======= LIGHTBOX ======= */
@@ -493,7 +662,7 @@ h1 i {
   color: white;
   padding: 12px 18px;
   border-radius: 8px;
-  z-index: 1000;
+  z-index: 9999;
   box-shadow: 0 5px 15px rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
@@ -514,48 +683,22 @@ h1 i {
 
 /* ======= RESPONSIVE ======= */
 @media (max-width: 768px) {
-  .header {
-    padding: 15px;
-  }
-  
-  h1 {
-    font-size: 1.8rem;
-  }
-  
-  .panel {
-    padding: 15px;
-  }
-  
-  .image-previews {
-    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-  }
-  
-  .download-btn, .reset-btn {
-    width: 100%;
-  }
+  .header { padding: 15px; }
+  h1 { font-size: 1.8rem; }
+  .panel { padding: 15px; }
+  .image-previews { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+  .download-btn, .reset-btn { width: 100%; }
+  .tab-btn { font-size: 0.8rem; padding: 8px 10px; }
 }
 
 @media (max-width: 480px) {
-  h1 {
-    font-size: 1.6rem;
-  }
-  
-  .image-previews {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-  }
-  
-  .result-container {
-    padding: 15px;
-  }
-  
-  .panel-title {
-    font-size: 1.1rem;
-  }
-  
-  .service-badge {
-    padding: 4px 8px;
-    font-size: 0.7rem;
-  }
+  h1 { font-size: 1.6rem; }
+  .image-previews { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+  .result-container { padding: 15px; }
+  .panel-title { font-size: 1.1rem; }
+  .service-badge { padding: 4px 8px; font-size: 0.7rem; }
+  .drop-zone { padding: 25px 15px; }
+  .drop-zone-icon { font-size: 2.2rem; }
 }
 </style>
 </head>
@@ -566,45 +709,67 @@ h1 i {
     <p style="text-align: center; color: var(--accent-gold); font-weight: 500; margin-top: 3px; font-size: 1rem;">Penggabung Gambar Otomatis</p>
   </div>
 
-  <!-- Aplikasi Penggabung Gambar -->
   <div id="merger-app">
     <div class="panel">
       <h2 class="panel-title">
         <i class="fas fa-cogs"></i> Input &amp; Pengaturan
       </h2>
-      
-      <div class="url-input-section">
-        <div class="url-input-group">
-          <textarea id="mergerImageUrls" placeholder="Masukkan URL gambar (pisahkan dengan koma atau enter). Contoh: https://prnt.sc/abc123, https://sleekshot.app/def456"></textarea>
-          <div class="input-hint">
-            <i class="fas fa-info-circle"></i> Gambar akan otomatis digabungkan ketika URL dimasukkan
+
+      <!-- TAB PILIHAN SUMBER -->
+      <div class="input-tabs">
+        <button class="tab-btn active" onclick="switchTab('file')" id="tab-file">
+          <i class="fas fa-folder-open"></i> File Komputer
+        </button>
+        <button class="tab-btn" onclick="switchTab('url')" id="tab-url">
+          <i class="fas fa-link"></i> URL Gambar
+        </button>
+      </div>
+
+      <!-- TAB: UPLOAD FILE DARI KOMPUTER -->
+      <div class="tab-content active" id="content-file">
+        <div class="drop-zone" id="dropZone">
+          <span class="drop-zone-icon"><i class="fas fa-cloud-upload-alt"></i></span>
+          <div class="drop-zone-text">Seret &amp; Lepas Gambar Di Sini</div>
+          <div class="drop-zone-sub">atau klik tombol di bawah untuk memilih file</div>
+          <button class="select-file-btn" onclick="document.getElementById('fileInput').click()">
+            <i class="fas fa-folder-open"></i> Pilih File
+          </button>
+          <input type="file" id="fileInput" accept="image/*" multiple>
+          <div class="file-type-badges">
+            <span class="file-type-badge">JPG</span>
+            <span class="file-type-badge">PNG</span>
+            <span class="file-type-badge">WEBP</span>
+            <span class="file-type-badge">GIF</span>
+            <span class="file-type-badge">BMP</span>
+            <span class="file-type-badge">Maks. 10 gambar</span>
           </div>
         </div>
-        
-        <div class="supported-services">
-          <span class="service-badge">
-            <i class="fas fa-check-circle"></i> prnt.sc
-          </span>
-          <span class="service-badge">
-            <i class="fas fa-check-circle"></i> sleekshot.app
-          </span>
-          <span class="service-badge">
-            <i class="fas fa-check-circle"></i> imghostr.com
-          </span>
-          <span class="service-badge">
-            <i class="fas fa-check-circle"></i> imgur.com
-          </span>
-          <span class="service-badge">
-            <i class="fas fa-check-circle"></i> gambar langsung
-          </span>
+      </div>
+
+      <!-- TAB: URL GAMBAR -->
+      <div class="tab-content" id="content-url">
+        <div class="url-input-section">
+          <div class="url-input-group">
+            <textarea id="mergerImageUrls" placeholder="Masukkan URL gambar (pisahkan dengan koma atau enter). Contoh: https://prnt.sc/abc123, https://sleekshot.app/def456"></textarea>
+            <div class="input-hint">
+              <i class="fas fa-info-circle"></i> Gambar akan otomatis digabungkan ketika URL dimasukkan
+            </div>
+          </div>
+          <div class="supported-services">
+            <span class="service-badge"><i class="fas fa-check-circle"></i> prnt.sc</span>
+            <span class="service-badge"><i class="fas fa-check-circle"></i> sleekshot.app</span>
+            <span class="service-badge"><i class="fas fa-check-circle"></i> imghostr.com</span>
+            <span class="service-badge"><i class="fas fa-check-circle"></i> imgur.com</span>
+            <span class="service-badge"><i class="fas fa-check-circle"></i> gambar langsung</span>
+          </div>
         </div>
       </div>
-      
+
+      <!-- PENGATURAN -->
       <div class="settings">
         <h2 class="panel-title">
           <i class="fas fa-sliders-h"></i> Pengaturan Gabungan
         </h2>
-        
         <div class="setting-group">
           <label for="layout">Tata Letak Gambar:</label>
           <select id="layout">
@@ -614,7 +779,6 @@ h1 i {
             <option value="grid3">Grid 3 Kolom</option>
           </select>
         </div>
-        
         <div class="setting-group">
           <label for="spacing">Jarak Antar Gambar:</label>
           <select id="spacing">
@@ -625,7 +789,6 @@ h1 i {
             <option value="20">20px</option>
           </select>
         </div>
-        
         <div class="setting-group">
           <label for="background">Latar Belakang:</label>
           <select id="background">
@@ -635,41 +798,33 @@ h1 i {
           </select>
         </div>
       </div>
-      
+
       <button id="resetBtn" class="reset-btn">
         <i class="fas fa-trash-alt"></i> Reset Semua
       </button>
     </div>
-    
+
     <div class="panel">
       <h2 class="panel-title">
         <i class="fas fa-images"></i> Preview &amp; Hasil
       </h2>
-      
       <div class="preview-container">
         <div class="counter">
           <i class="fas fa-layer-group"></i> Gambar Terpilih: <span id="imageCount">0</span>/10
         </div>
-        
-        <div class="image-previews" id="previewContainer">
-          <!-- Preview gambar akan muncul di sini -->
-        </div>
+        <div class="image-previews" id="previewContainer"></div>
       </div>
-      
+
       <div class="result-container" id="resultContainer">
         <p class="placeholder">Hasil gabungan gambar akan muncul di sini<br>Klik pada gambar untuk memperbesar</p>
         <img id="resultImage" alt="Hasil gabungan gambar">
-        
         <div class="link-container" id="linkContainer">
           <h4><i class="fas fa-link"></i> Link Gambar Hasil Gabungan:</h4>
           <div class="image-link">
             <input type="text" id="imageLink" readonly>
-            <button id="copyLinkBtn">
-              <i class="fas fa-copy"></i> Salin
-            </button>
+            <button id="copyLinkBtn"><i class="fas fa-copy"></i> Salin</button>
           </div>
         </div>
-        
         <button id="downloadBtn" class="download-btn">
           <i class="fas fa-download"></i> Unduh Gambar
         </button>
@@ -678,7 +833,7 @@ h1 i {
   </div>
 </div>
 
-<!-- Lightbox untuk tampilan gambar besar -->
+<!-- Lightbox -->
 <div id="lightbox" class="lightbox">
   <span class="close-btn">×</span>
   <img class="lightbox-content" id="lightboxImg">
@@ -695,87 +850,112 @@ let mergedImageData = null;
 let urlProcessingTimeout = null;
 let autoMergeEnabled = true;
 
-// ======= FUNGSI UMUM =======
+// ======= TAB SWITCH =======
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  document.getElementById('content-' + tab).classList.add('active');
+}
 
+// ======= NOTIFIKASI =======
 function showNotification(message, type = 'success') {
   const notification = document.getElementById('copyNotification');
   const notificationText = document.getElementById('notificationText');
-  
-  if (type === 'error') {
-    notification.style.background = 'var(--error)';
-  } else if (type === 'warning') {
-    notification.style.background = 'var(--warning)';
-  } else {
-    notification.style.background = 'var(--success)';
-  }
-  
+  const colors = { error: 'var(--error)', warning: 'var(--warning)', success: 'var(--success)', info: '#2196F3' };
+  notification.style.background = colors[type] || colors.success;
   notificationText.textContent = message;
   notification.classList.add('show');
-  
-  setTimeout(() => {
-    notification.classList.remove('show');
-  }, 3000);
+  setTimeout(() => notification.classList.remove('show'), 3000);
 }
 
+// ======= PROSES FILE DARI KOMPUTER =======
+function handleFiles(fileList) {
+  const files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  if (files.length === 0) {
+    showNotification('Tidak ada file gambar yang dipilih!', 'error');
+    return;
+  }
+
+  const remaining = 10 - images.length;
+  if (remaining <= 0) {
+    showNotification('Maksimal 10 gambar!', 'warning');
+    return;
+  }
+
+  const toProcess = files.slice(0, remaining);
+  if (files.length > remaining) {
+    showNotification(`Hanya ${remaining} gambar lagi yang bisa ditambahkan (maks. 10).`, 'warning');
+  }
+
+  let loaded = 0;
+  toProcess.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        canvas.getContext('2d').drawImage(img, 0, 0);
+        images.push({
+          src: canvas.toDataURL('image/png'),
+          name: file.name,
+          type: 'file'
+        });
+        loaded++;
+        updatePreviews();
+        if (loaded === toProcess.length) {
+          showNotification(`${loaded} gambar dari komputer berhasil ditambahkan!`, 'success');
+          if (autoMergeEnabled && images.length > 0) mergeImages();
+        }
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ======= FUNGSI URL =======
 async function extractImageUrl(url) {
   try {
-    if (/\.(jpeg|jpg|gif|png|webp|bmp)$/i.test(url)) {
-      return url;
-    }
-    
+    if (/\.(jpeg|jpg|gif|png|webp|bmp)$/i.test(url)) return url;
+
     if (url.includes('prnt.sc') || url.includes('prntscr.com')) {
       const proxyUrls = [
         `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
         `https://corsproxy.io/?${encodeURIComponent(url)}`,
         `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`
       ];
-      
       for (const proxyUrl of proxyUrls) {
         try {
           const response = await fetch(proxyUrl);
           const html = await response.text();
-          
-          const ogImageRegex = /<meta\s+property="og:image"\s+content="([^"]+)"/i;
-          const ogMatch = ogImageRegex.exec(html);
+          const ogMatch = /<meta\s+property="og:image"\s+content="([^"]+)"/i.exec(html);
           if (ogMatch && ogMatch[1]) {
             const imageUrl = ogMatch[1].replace(/&amp;/g, '&');
             if (await checkImageExists(imageUrl)) return imageUrl;
           }
-          
-          const classRegex = /<img[^>]+class="[^"]*screenshot-image[^"]*"[^>]+src="([^">]+)"/i;
-          const classMatch = classRegex.exec(html);
+          const classMatch = /<img[^>]+class="[^"]*screenshot-image[^"]*"[^>]+src="([^">]+)"/i.exec(html);
           if (classMatch && classMatch[1]) {
             let imageUrl = classMatch[1];
             if (imageUrl.startsWith('//')) imageUrl = 'https:' + imageUrl;
             if (await checkImageExists(imageUrl)) return imageUrl;
           }
-          
-          const imgRegex = /<img[^>]+src="([^">]+)"/gi;
-          let match;
-          while ((match = imgRegex.exec(html)) !== null) {
-            if (match[1].includes('screenshot') || match[1].includes('image')) {
-              let imageUrl = match[1];
-              if (imageUrl.startsWith('//')) imageUrl = 'https:' + imageUrl;
-              if (await checkImageExists(imageUrl)) return imageUrl;
-            }
-          }
-        } catch (e) {
-          continue;
-        }
+        } catch (e) { continue; }
       }
       return url;
     }
-    
+
     if (url.includes('sleekshot.app')) {
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
       const response = await fetch(proxyUrl);
       const html = await response.text();
-      const ogImageRegex = /<meta\s+property="og:image"\s+content="([^">]+)"/i;
-      const matches = ogImageRegex.exec(html);
+      const matches = /<meta\s+property="og:image"\s+content="([^">]+)"/i.exec(html);
       if (matches && matches[1]) return matches[1];
       return url;
     }
-    
+
     if (url.includes('imghostr.com')) {
       const idMatch = url.match(/imghostr\.com\/([a-zA-Z0-9]+)_/);
       if (idMatch && idMatch[1]) {
@@ -785,12 +965,11 @@ async function extractImageUrl(url) {
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
       const response = await fetch(proxyUrl);
       const html = await response.text();
-      const imgRegex = /<img[^>]+id="image-view"[^>]+src="([^">]+)"/i;
-      const matches = imgRegex.exec(html);
+      const matches = /<img[^>]+id="image-view"[^>]+src="([^">]+)"/i.exec(html);
       if (matches && matches[1]) return matches[1];
       return url;
     }
-    
+
     if (url.includes('imgur.com')) {
       if (url.includes('/gallery/') || url.includes('/a/')) {
         const idMatch = url.match(/\/([a-zA-Z0-9]+)$/);
@@ -798,10 +977,9 @@ async function extractImageUrl(url) {
       }
       return url;
     }
-    
+
     return url;
   } catch (error) {
-    console.error('Extraction error:', error);
     return url;
   }
 }
@@ -811,33 +989,37 @@ async function checkImageExists(url) {
   try {
     const response = await fetch(url, { method: 'HEAD' });
     return response.ok;
-  } catch (error) {
-    return false;
-  }
+  } catch { return false; }
 }
 
+// ======= UPDATE PREVIEW =======
 function updatePreviews() {
   const previewContainer = document.getElementById('previewContainer');
   previewContainer.innerHTML = '';
-  
   images.forEach((image, index) => {
     const previewItem = document.createElement('div');
     previewItem.className = 'preview-item';
-    
+
     const img = document.createElement('img');
     img.src = image.src;
     img.alt = `Preview ${index + 1}`;
-    
+
+    const label = document.createElement('div');
+    label.className = 'item-label';
+    const icon = image.type === 'file' ? 'fa-file-image' : 'fa-link';
+    const name = image.type === 'file' ? image.name : 'URL';
+    label.innerHTML = `<i class="fas ${icon}"></i><span>${name}</span>`;
+
     const removeBtn = document.createElement('button');
     removeBtn.className = 'remove-btn';
     removeBtn.innerHTML = '<i class="fas fa-times"></i>';
     removeBtn.onclick = () => removeImage(index);
-    
+
     previewItem.appendChild(img);
+    previewItem.appendChild(label);
     previewItem.appendChild(removeBtn);
     previewContainer.appendChild(previewItem);
   });
-  
   document.getElementById('imageCount').textContent = images.length;
 }
 
@@ -848,95 +1030,120 @@ function removeImage(index) {
   if (autoMergeEnabled && images.length > 0) mergeImages();
 }
 
-async function processImageUrls(urlText) {
-  const urls = urlText
-    .split(/[\n,]+/)
-    .map(url => url.trim())
-    .filter(url => url.length > 0);
-  
-  if (urls.length === 0) return;
-  
-  let processedCount = 0;
-  let errorCount = 0;
-  
-  for (const url of urls) {
-    if (images.length >= 10) {
-      showNotification('Maksimal 10 gambar!', 'warning');
-      break;
+// ======= LOAD GAMBAR VIA PROXY (bypass CORS) =======
+async function loadImageViaProxy(imageUrl) {
+  const proxies = [
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(imageUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(imageUrl)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(imageUrl)}`
+  ];
+
+  // Coba langsung dulu (untuk server yang support CORS)
+  try {
+    const blob = await fetch(imageUrl).then(r => {
+      if (!r.ok) throw new Error('fetch failed');
+      return r.blob();
+    });
+    if (blob.type.startsWith('image/')) {
+      return await blobToDataUrl(blob);
     }
-    
+  } catch (_) {}
+
+  // Kalau gagal, coba lewat proxy satu per satu
+  for (const proxy of proxies) {
+    try {
+      const blob = await Promise.race([
+        fetch(proxy).then(r => { if (!r.ok) throw new Error('proxy failed'); return r.blob(); }),
+        new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 8000))
+      ]);
+      if (blob && blob.size > 0) {
+        return await blobToDataUrl(blob);
+      }
+    } catch (_) { continue; }
+  }
+
+  throw new Error('Semua proxy gagal untuk: ' + imageUrl);
+}
+
+function blobToDataUrl(blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+// ======= PROSES URL =======
+async function processImageUrls(urlText) {
+  const urls = urlText.split(/[\n,]+/).map(u => u.trim()).filter(u => u.length > 0);
+  if (urls.length === 0) return;
+
+  let processedCount = 0, errorCount = 0;
+  for (const url of urls) {
+    if (images.length >= 10) { showNotification('Maksimal 10 gambar!', 'warning'); break; }
     try {
       const directImageUrl = await extractImageUrl(url);
+
+      // Gunakan fetch+proxy untuk bypass CORS, hasil berupa dataURL
+      const dataUrl = await loadImageViaProxy(directImageUrl);
+
       const img = new Image();
-      img.crossOrigin = 'Anonymous';
-      
       await new Promise((resolve, reject) => {
         img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error('Gagal memuat gambar'));
-        img.src = directImageUrl;
+        img.onerror = () => reject(new Error('Gagal decode'));
+        img.src = dataUrl;
         setTimeout(() => reject(new Error('Timeout')), 10000);
       });
-      
+
       const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
       canvas.width = img.width;
       canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      
-      images.push({
-        src: canvas.toDataURL('image/png'),
-        name: 'url-image',
-        type: 'url',
-        originalUrl: url
-      });
-      
+      canvas.getContext('2d').drawImage(img, 0, 0);
+
+      images.push({ src: canvas.toDataURL('image/png'), name: 'url-image', type: 'url', originalUrl: url });
       processedCount++;
       updatePreviews();
-    } catch (error) {
+    } catch (err) {
+      console.warn('Gagal memuat:', url, err.message);
       errorCount++;
-      showNotification(`Gagal memuat gambar: ${url.substring(0, 30)}...`, 'error');
     }
   }
-  
-  if (processedCount > 0 && errorCount === 0) {
-    showNotification(`Berhasil menambahkan ${processedCount} gambar!`, 'success');
-    if (autoMergeEnabled && images.length > 0) mergeImages();
-  } else if (processedCount > 0 && errorCount > 0) {
-    showNotification(`Berhasil menambahkan ${processedCount} gambar, ${errorCount} gagal.`, 'warning');
+
+  if (processedCount > 0) {
+    const msg = errorCount > 0
+      ? `Berhasil: ${processedCount} gambar, gagal: ${errorCount}.`
+      : `Berhasil menambahkan ${processedCount} gambar!`;
+    showNotification(msg, errorCount > 0 ? 'warning' : 'success');
     if (autoMergeEnabled && images.length > 0) mergeImages();
   } else {
-    showNotification('Gagal memuat semua gambar. Pastikan URL benar dan mendukung CORS.', 'error');
+    showNotification('Gagal memuat semua gambar. Pastikan URL benar atau coba dari File Komputer.', 'error');
   }
 }
 
+// ======= GABUNG GAMBAR =======
 async function mergeImages() {
-  if (images.length === 0) {
-    showNotification('Tidak ada gambar untuk digabungkan!', 'error');
-    return;
-  }
-  
+  if (images.length === 0) { showNotification('Tidak ada gambar untuk digabungkan!', 'error'); return; }
   try {
     const placeholder = document.querySelector('.placeholder');
     if (placeholder) placeholder.style.display = 'none';
-    
+
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    
     const layout = document.getElementById('layout').value;
     const spacing = parseInt(document.getElementById('spacing').value);
     const background = document.getElementById('background').value;
-    
+
     const imgElements = await Promise.all(images.map(imageData => {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         const img = new Image();
         img.onload = () => resolve(img);
         img.src = imageData.src;
       });
     }));
-    
-    let canvasWidth = 0;
-    let canvasHeight = 0;
-    
+
+    let canvasWidth = 0, canvasHeight = 0;
+
     if (layout === 'horizontal') {
       canvasWidth = imgElements.reduce((sum, img) => sum + img.width, 0) + spacing * (imgElements.length - 1);
       canvasHeight = Math.max(...imgElements.map(img => img.height));
@@ -949,49 +1156,36 @@ async function mergeImages() {
       let maxWidths = Array(columns).fill(0);
       let maxHeights = Array(rows).fill(0);
       imgElements.forEach((img, i) => {
-        const col = i % columns;
-        const row = Math.floor(i / columns);
+        const col = i % columns, row = Math.floor(i / columns);
         if (img.width > maxWidths[col]) maxWidths[col] = img.width;
         if (img.height > maxHeights[row]) maxHeights[row] = img.height;
       });
-      canvasWidth = maxWidths.reduce((sum, w) => sum + w, 0) + spacing * (columns - 1);
-      canvasHeight = maxHeights.reduce((sum, h) => sum + h, 0) + spacing * (rows - 1);
+      canvasWidth = maxWidths.reduce((s, w) => s + w, 0) + spacing * (columns - 1);
+      canvasHeight = maxHeights.reduce((s, h) => s + h, 0) + spacing * (rows - 1);
     }
-    
+
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
-    
-    if (background === 'white') {
-      ctx.fillStyle = '#ffffff';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-    } else if (background === 'black') {
-      ctx.fillStyle = '#000000';
-      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-    }
-    
-    let x = 0;
-    let y = 0;
-    
+
+    if (background === 'white') { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvasWidth, canvasHeight); }
+    else if (background === 'black') { ctx.fillStyle = '#000000'; ctx.fillRect(0, 0, canvasWidth, canvasHeight); }
+
+    let x = 0, y = 0;
     imgElements.forEach((img, i) => {
-      if (layout === 'horizontal') {
-        ctx.drawImage(img, x, 0);
-        x += img.width + spacing;
-      } else if (layout === 'vertical') {
-        ctx.drawImage(img, 0, y);
-        y += img.height + spacing;
-      } else {
+      if (layout === 'horizontal') { ctx.drawImage(img, x, 0); x += img.width + spacing; }
+      else if (layout === 'vertical') { ctx.drawImage(img, 0, y); y += img.height + spacing; }
+      else {
         const columns = layout === 'grid2' ? 2 : 3;
-        const col = i % columns;
-        const row = Math.floor(i / columns);
-        let offsetX = 0;
+        const col = i % columns, row = Math.floor(i / columns);
+        let offsetX = 0, offsetY = 0;
         for (let c = 0; c < col; c++) {
           let maxW = 0;
-          for (let r = row * columns; r < (row + 1) * columns; r++) {
-            if (r < imgElements.length && imgElements[r].width > maxW) maxW = imgElements[r].width;
+          for (let r2 = 0; r2 < Math.ceil(imgElements.length / columns); r2++) {
+            const idx = r2 * columns + c;
+            if (idx < imgElements.length && imgElements[idx].width > maxW) maxW = imgElements[idx].width;
           }
           offsetX += maxW + spacing;
         }
-        let offsetY = 0;
         for (let r = 0; r < row; r++) {
           let maxH = 0;
           for (let c = 0; c < columns; c++) {
@@ -1003,21 +1197,19 @@ async function mergeImages() {
         ctx.drawImage(img, offsetX, offsetY);
       }
     });
-    
+
     const format = background === 'transparent' ? 'image/png' : 'image/jpeg';
     mergedImageData = canvas.toDataURL(format, 0.95);
-    
+
     const resultImage = document.getElementById('resultImage');
     resultImage.src = mergedImageData;
     resultImage.style.display = 'block';
     document.getElementById('downloadBtn').style.display = 'flex';
-    
-    const imageLink = document.getElementById('imageLink');
-    imageLink.value = mergedImageData;
+    document.getElementById('imageLink').value = mergedImageData;
     document.getElementById('linkContainer').style.display = 'block';
     document.getElementById('resultContainer').style.display = 'flex';
-    
-    showNotification('Gambar berhasil digabungkan! Klik pada gambar untuk memperbesar.', 'success');
+
+    showNotification('Gambar berhasil digabungkan! Klik untuk memperbesar.', 'success');
   } catch (error) {
     console.error('Merge error:', error);
     showNotification('Terjadi kesalahan saat menggabungkan gambar.', 'error');
@@ -1028,8 +1220,8 @@ function downloadImage() {
   if (!mergedImageData) return;
   const link = document.createElement('a');
   link.href = mergedImageData;
-  const background = document.getElementById('background').value;
-  link.download = `gabungan-gambar-${new Date().getTime()}.${background === 'transparent' ? 'png' : 'jpg'}`;
+  const ext = document.getElementById('background').value === 'transparent' ? 'png' : 'jpg';
+  link.download = `gabungan-gambar-${Date.now()}.${ext}`;
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -1055,19 +1247,28 @@ function resetAll() {
   const placeholder = document.querySelector('.placeholder');
   if (placeholder) placeholder.style.display = 'block';
   document.getElementById('mergerImageUrls').value = '';
+  document.getElementById('fileInput').value = '';
   showNotification('Semua gambar telah direset', 'info');
 }
 
 // ======= EVENT LISTENERS =======
 document.addEventListener('DOMContentLoaded', function() {
+  // File input
+  const fileInput = document.getElementById('fileInput');
+  fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+
+  // Drag & Drop
+  const dropZone = document.getElementById('dropZone');
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    handleFiles(e.dataTransfer.files);
+  });
+
+  // URL input
   const mergerImageUrls = document.getElementById('mergerImageUrls');
-  const downloadBtn = document.getElementById('downloadBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const copyLinkBtn = document.getElementById('copyLinkBtn');
-  const lightbox = document.getElementById('lightbox');
-  const lightboxImg = document.getElementById('lightboxImg');
-  const closeBtn = document.querySelector('.lightbox .close-btn');
-  
   if (mergerImageUrls) {
     mergerImageUrls.addEventListener('input', function() {
       if (urlProcessingTimeout) clearTimeout(urlProcessingTimeout);
@@ -1077,26 +1278,39 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 800);
     });
   }
-  
-  if (downloadBtn) downloadBtn.addEventListener('click', downloadImage);
-  if (resetBtn) resetBtn.addEventListener('click', resetAll);
-  if (copyLinkBtn) copyLinkBtn.addEventListener('click', copyImageLink);
-  
-  if (lightboxImg) {
-    const resultImage = document.getElementById('resultImage');
-    resultImage.addEventListener('click', () => {
-      if (mergedImageData) {
-        lightboxImg.src = mergedImageData;
-        lightbox.style.display = 'block';
-      }
+
+  document.getElementById('downloadBtn').addEventListener('click', downloadImage);
+  document.getElementById('resetBtn').addEventListener('click', resetAll);
+  document.getElementById('copyLinkBtn').addEventListener('click', copyImageLink);
+
+  // Lightbox
+  const resultImage = document.getElementById('resultImage');
+  const lightbox = document.getElementById('lightbox');
+  const lightboxImg = document.getElementById('lightboxImg');
+  resultImage.addEventListener('click', () => {
+    if (mergedImageData) { lightboxImg.src = mergedImageData; lightbox.style.display = 'block'; }
+  });
+  document.querySelector('.lightbox .close-btn').addEventListener('click', () => lightbox.style.display = 'none');
+  window.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.style.display = 'none'; });
+
+  // Settings auto-merge
+  ['layout', 'spacing', 'background'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => {
+      if (autoMergeEnabled && images.length > 0) mergeImages();
     });
-    closeBtn.addEventListener('click', () => { lightbox.style.display = 'none'; });
-    window.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.style.display = 'none'; });
-  }
-  
-  document.getElementById('layout').addEventListener('change', () => { if (autoMergeEnabled && images.length > 0) mergeImages(); });
-  document.getElementById('spacing').addEventListener('change', () => { if (autoMergeEnabled && images.length > 0) mergeImages(); });
-  document.getElementById('background').addEventListener('change', () => { if (autoMergeEnabled && images.length > 0) mergeImages(); });
+  });
+
+  // Paste gambar dari clipboard
+  document.addEventListener('paste', (e) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+    const imageItems = Array.from(items).filter(item => item.type.startsWith('image/'));
+    if (imageItems.length > 0) {
+      const files = imageItems.map(item => item.getAsFile()).filter(Boolean);
+      handleFiles(files);
+      showNotification('Gambar dari clipboard berhasil ditempel!', 'success');
+    }
+  });
 });
 </script>
 </body>

@@ -2,13 +2,12 @@
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <title>Vault Zero - Stadium Dark v10</title>
+    <title>Vault Zero - Stadium Dark v12</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-      /* Warna Khusus Sepakbola Dark */
       :root {
-        --pitch-dark: #0f172a; /* Biru Dongker Gelap */
-        --grass-green: #22c55e; /* Hijau Lapangan */
+        --pitch-dark: #0f172a;
+        --grass-green: #22c55e;
         --stadium-border: #1e293b;
       }
       body {
@@ -25,7 +24,6 @@
         -webkit-appearance: none;
         margin: 0;
       }
-
       .win-text {
         color: var(--grass-green);
         font-weight: 800;
@@ -40,69 +38,56 @@
         color: #94a3b8;
         font-weight: 800;
       }
+      .custom-scroll::-webkit-scrollbar { width: 6px; }
+      .custom-scroll::-webkit-scrollbar-track { background: #0f172a; }
+      .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
 
-      .custom-scroll::-webkit-scrollbar {
-        width: 6px;
-      }
-      .custom-scroll::-webkit-scrollbar-track {
-        background: #0f172a;
-      }
-      .custom-scroll::-webkit-scrollbar-thumb {
-        background: #334155;
-        border-radius: 10px;
-      }
-
-      /* Animasi saat generate */
       @keyframes glow {
-        0% {
-          border-color: #1e293b;
-        }
-        50% {
-          border-color: #22c55e;
-        }
-        100% {
-          border-color: #1e293b;
-        }
+        0%   { border-color: #1e293b; }
+        50%  { border-color: #22c55e; }
+        100% { border-color: #1e293b; }
       }
-      .active-row {
-        animation: glow 2s infinite;
+      .active-row { animation: glow 2s infinite; }
+
+      /* Badge 1H */
+      .badge-1h {
+        background: #1e3a5f;
+        color: #60a5fa;
+        border: 1px solid #2563eb44;
+        font-size: 8px;
+        font-weight: 900;
+        padding: 1px 5px;
+        border-radius: 4px;
+        letter-spacing: 0.05em;
+        vertical-align: middle;
+      }
+      /* Auto-filled score highlight */
+      input.auto-filled {
+        border-color: #22c55e44 !important;
+        background-color: #0f2d1a !important;
       }
     </style>
   </head>
   <body>
-    <header
-      class="bg-[#1e293b] border-b border-slate-700 px-8 py-4 flex justify-between items-center shrink-0 shadow-lg"
-    >
-      <h1
-        class="text-xl font-black italic tracking-tighter text-white uppercase"
-      >
+    <header class="bg-[#1e293b] border-b border-slate-700 px-8 py-4 flex justify-between items-center shrink-0 shadow-lg">
+      <h1 class="text-xl font-black italic tracking-tighter text-white uppercase">
         Vault Zero <span class="text-green-500 italic">Stadium Dark</span>
       </h1>
       <div class="flex items-center gap-4">
-        <span
-          class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"
-        ></span>
-        <div
-          class="text-[10px] font-mono text-slate-400 uppercase tracking-widest"
-        >
-          Live Engine v10.0
-        </div>
+        <span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span>
+        <div class="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Live Engine v12.0</div>
       </div>
     </header>
 
     <main class="flex flex-1 overflow-hidden">
-      <section
-        class="w-[30%] border-r border-slate-800 bg-[#0f172a] p-6 flex flex-col gap-4"
-      >
+      <!-- LEFT: Input -->
+      <section class="w-[30%] border-r border-slate-800 bg-[#0f172a] p-6 flex flex-col gap-4">
         <div class="flex-1 flex flex-col">
-          <span
-            class="text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest"
-            >Parlay Ticket Input</span
-          >
+          <span class="text-[10px] font-black text-slate-500 uppercase mb-2 tracking-widest">Parlay Ticket Input</span>
           <textarea
             id="rawInput"
             class="flex-1 w-full border border-slate-800 rounded-2xl p-5 text-[11px] font-mono outline-none focus:border-green-500 bg-[#1e293b] text-slate-200 resize-none custom-scroll shadow-inner transition-all"
-            placeholder="Tempel bill di sini..."
+            placeholder="Tempel bill Soccer / Football di sini..."
           ></textarea>
         </div>
         <button
@@ -113,16 +98,13 @@
         </button>
       </section>
 
+      <!-- RIGHT: Result -->
       <section class="flex-1 bg-[#020617] p-8 overflow-y-auto custom-scroll">
         <div id="resultArea" class="hidden">
-          <div
-            class="bg-[#0f172a] rounded-[32px] border border-slate-800 shadow-2xl overflow-hidden mb-6"
-          >
+          <div class="bg-[#0f172a] rounded-[32px] border border-slate-800 shadow-2xl overflow-hidden mb-6">
             <table class="w-full text-left">
               <thead>
-                <tr
-                  class="bg-slate-900/50 text-[10px] font-bold text-slate-500 border-b border-slate-800 uppercase tracking-widest"
-                >
+                <tr class="bg-slate-900/50 text-[10px] font-bold text-slate-500 border-b border-slate-800 uppercase tracking-widest">
                   <th class="p-6">Match Details</th>
                   <th class="p-6 text-center">Pick</th>
                   <th class="p-6">Description</th>
@@ -130,28 +112,14 @@
                   <th class="p-6 text-right">Status</th>
                 </tr>
               </thead>
-              <tbody
-                id="matchList"
-                class="text-xs font-semibold text-slate-300"
-              ></tbody>
+              <tbody id="matchList" class="text-xs font-semibold text-slate-300"></tbody>
             </table>
           </div>
 
-          <div
-            class="bg-[#1e293b] rounded-[32px] p-8 flex justify-between items-center border border-slate-700 shadow-2xl"
-          >
+          <div class="bg-[#1e293b] rounded-[32px] p-8 flex justify-between items-center border border-slate-700 shadow-2xl">
             <div>
-              <p
-                class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1"
-              >
-                Final Outcome
-              </p>
-              <h2
-                id="finalStatus"
-                class="text-3xl font-black italic tracking-tighter uppercase"
-              >
-                Waiting...
-              </h2>
+              <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Final Outcome</p>
+              <h2 id="finalStatus" class="text-3xl font-black italic tracking-tighter uppercase">Waiting...</h2>
             </div>
             <div class="flex gap-3">
               <button
@@ -164,32 +132,26 @@
           </div>
         </div>
 
-        <div
-          id="placeholder"
-          class="h-full flex flex-col items-center justify-center text-slate-600 italic text-center"
-        >
-          <svg
-            class="w-16 h-16 mb-4 opacity-10"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"
-            />
+        <div id="placeholder" class="h-full flex flex-col items-center justify-center text-slate-600 italic text-center">
+          <svg class="w-16 h-16 mb-4 opacity-10" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
           </svg>
-          <p>
-            Silahkan masukkan bill parlay<br />untuk tampilan visual premium
-          </p>
+          <p>Silahkan masukkan bill parlay<br/>untuk tampilan visual premium</p>
+          <p class="text-[10px] mt-3 text-slate-700">Mendukung format Soccer &amp; Football</p>
         </div>
       </section>
     </main>
 
     <script>
+      // ─── PARSER ───────────────────────────────────────────────────────────────
       function processData() {
         const rawText = document.getElementById("rawInput").value;
+
+        // Split by "Soccer" or "Football" keyword (case-insensitive)
         const blocks = rawText
-          .split(/Soccer\s+/)
-          .filter((b) => b.trim() !== "");
+          .split(/(?:Soccer|Football)\s+/i)
+          .filter(b => b.trim() !== "");
+
         const list = document.getElementById("matchList");
         if (blocks.length === 0) return;
 
@@ -197,147 +159,221 @@
         document.getElementById("placeholder").classList.add("hidden");
         document.getElementById("resultArea").classList.remove("hidden");
 
-        blocks.forEach((block) => {
-          const lines = block
-            .split("\n")
-            .map((l) => l.trim())
-            .filter((l) => l !== "");
-          const matchLine =
-            lines.find((l) => l.includes(" vs ")) || "Home vs Away";
-          const teams = matchLine.split(" vs ");
-          const league =
-            lines.find((l) => l.toUpperCase() === l && l.includes(" ")) ||
-            "Tournament";
+        blocks.forEach(block => {
+          const lines = block.split("\n").map(l => l.trim()).filter(l => l !== "");
 
+          // ── Teams
+          const matchLine = lines.find(l => l.includes(" vs ")) || "Home vs Away";
+          const parts    = matchLine.split(" vs ");
+          const homeTeam = parts[0].trim();
+          const awayTeam = (parts[1] || "Away").trim();
+
+          // ── League (exclude: vs line, ISO date, Type:, Bet:, result:)
+          const league = lines.find(l =>
+            !l.includes(" vs ") &&
+            !l.match(/^\d{4}-\d{2}-\d{2}/) &&
+            !l.startsWith("Type:") &&
+            !l.startsWith("Bet:") &&
+            !l.toLowerCase().includes("result:") &&
+            l.length > 2
+          ) || "Tournament";
+
+          // ── Bet line
+          const betLine      = lines.find(l => l.startsWith("Bet:")) || "";
+          const isFirstHalf  = /\b1H\b/i.test(betLine);
+          const isOU         = /over\/under/i.test(betLine);
+          const isHDP        = /handicap/i.test(betLine);
+
+          // ── Result lines (for auto-fill)
+          const ftLine = lines.find(l => /full.?time.?result/i.test(l)) || "";
+          const htLine = lines.find(l => /half.?time.?result/i.test(l)) || "";
+
+          let type, pick, betValue, side;
+
+          if (isOU) {
+            // ── Over/Under (Soccer & Football OU)
+            type  = "OU";
+            pick  = /under/i.test(betLine) ? "UNDER" : "OVER";
+            // Match the OU value: "under 2.75" or "over 1.5"
+            const valMatch = betLine.match(/(?:over|under)\s+([\d.]+)/i);
+            betValue = valMatch ? parseFloat(valMatch[1]) : 0;
+            side = "home"; // unused for OU
+
+          } else if (isHDP) {
+            // ── Handicap format: "Bet: Handicap [TeamName] [value] @odds"
+            type = "HDP";
+            const hdpMatch = betLine.match(/Handicap\s+(.+?)\s+([-\d.]+)\s*@/i);
+            if (hdpMatch) {
+              const pickedTeam = hdpMatch[1].trim();
+              betValue = parseFloat(hdpMatch[2]);
+              // Determine home/away by matching team name
+              const awayMatch =
+                awayTeam.toLowerCase().includes(pickedTeam.toLowerCase()) ||
+                pickedTeam.toLowerCase().includes(awayTeam.toLowerCase());
+              side = awayMatch ? "away" : "home";
+              pick = pickedTeam;
+            } else {
+              betValue = 0; side = "home"; pick = homeTeam;
+            }
+
+          } else if (/1x2/i.test(betLine)) {
+            // 1X2 (Win/Draw/Win): "Bet: FT.1X2 away|home|draw @odds"
+            type = "1X2";
+            if      (/\bdraw\b/i.test(betLine)) { pick = "DRAW"; side = "draw"; }
+            else if (/\baway\b/i.test(betLine)) { pick = awayTeam; side = "away"; }
+            else                                { pick = homeTeam; side = "home"; }
+            betValue = 0;
+
+          } else {
+            // Old Soccer HDP fallback
+            type = "HDP";
+            const sideStr = /away/i.test(betLine) ? "away" : "home";
+            side = sideStr;
+            pick = sideStr === "away" ? awayTeam : homeTeam;
+            const valMatch = betLine.match(/([-]?[\d.]+)/);
+            betValue = valMatch ? parseFloat(valMatch[0]) : 0;
+          }
+
+          // ── Auto-fill scores from bill
+          // For 1H bets → use half-time result; otherwise → full-time result
+          let autoH = "", autoA = "";
+          const scoreSource = isFirstHalf ? htLine : ftLine;
+          if (scoreSource) {
+            const m = scoreSource.match(/(\d+)\s*:\s*(\d+)/);
+            if (m) { autoH = m[1]; autoA = m[2]; }
+          }
+          const hasAutoScore = autoH !== "" && autoA !== "";
+
+          // ── Description text
+          let ket;
+          if (type === "OU") {
+            const prefix = isFirstHalf ? '<span class="badge-1h">1H</span> ' : "";
+            ket = `${prefix}Main <span class="text-green-500">${pick}</span> gol <span class="text-white">${betValue}</span>`;
+          } else if (type === "1X2") {
+            const label1x2 = side === "draw"
+              ? `Bet <span class="text-yellow-400">DRAW</span>`
+              : `Bet <span class="text-green-500">${pick}</span> menang`;
+            ket = label1x2 + ` <span class="text-slate-400 text-[9px]">(1X2)</span>`;
+          } else {
+            ket = betValue < 0
+              ? `<span class="text-green-500">${pick}</span> memberi voor <span class="text-white">${Math.abs(betValue)}</span>`
+              : `<span class="text-green-500">${pick}</span> menerima voor <span class="text-white">${betValue}</span>`;
+          }
+
+          // ── Live score link
           const searchQuery = encodeURIComponent(matchLine + " live score");
           const liveLink = `https://www.google.com/search?q=${searchQuery}`;
 
-          const betLine = lines.find((l) => l.includes("Bet: ")) || "";
-          let type = "HDP",
-            pick = teams[0],
-            betValue = 0;
-
-          if (betLine.toLowerCase().includes("over/under")) {
-            type = "OU";
-            pick = betLine.includes("over") ? "OVER" : "UNDER";
-            betValue = parseFloat(betLine.match(/[\d.]+/));
-          } else {
-            const side = betLine.toLowerCase().includes("away")
-              ? "AWAY"
-              : "HOME";
-            pick = side === "AWAY" ? teams[1] : teams[0];
-            betValue = parseFloat(betLine.match(/[-]*[\d.]+/));
-          }
-
-          let ket =
-            type === "OU"
-              ? `Main <span class="text-green-500">${pick}</span> gol <span class="text-white">${betValue}</span>`
-              : betValue < 0
-              ? `<span class="text-green-500">${pick}</span> memberi poor <span class="text-white">${Math.abs(
-                  betValue
-                )}</span>`
-              : `<span class="text-green-500">${pick}</span> menerima poor <span class="text-white">${betValue}</span>`;
-
+          // ── Build row
           const tr = document.createElement("tr");
-          tr.className =
-            "border-b border-slate-800/50 hover:bg-slate-800/30 transition-all";
+          tr.className = "border-b border-slate-800/50 hover:bg-slate-800/30 transition-all";
           tr.innerHTML = `
-                    <td class="p-6">
-                        <div class="text-slate-100 font-bold tracking-tight">${
-                          teams[0]
-                        } vs ${teams[1]}</div>
-                        <div class="flex flex-col gap-1 mt-1">
-                            <span class="text-[9px] text-slate-500 uppercase tracking-tighter">${league}</span>
-                            <a href="${liveLink}" target="_blank" class="text-green-500/80 text-[10px] font-bold hover:text-green-400 flex items-center gap-1 transition-all">
-                                <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> LIVE SCORE
-                            </a>
-                        </div>
-                    </td>
-                    <td class="p-6 text-center">
-                        <span class="bg-slate-800 text-green-400 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border border-slate-700 shadow-sm">${pick}</span>
-                    </td>
-                    <td class="p-6 text-[11px] text-slate-500 italic font-medium">${ket}</td>
-                    <td class="p-6 text-center">
-                        <div class="flex items-center justify-center gap-2">
-                            <input type="number" placeholder="0" oninput="calculate()" class="h-score w-10 text-center bg-slate-800 border border-slate-700 rounded-lg p-2 outline-none font-bold text-white focus:ring-1 focus:ring-green-500 transition-all">
-                            <span class="text-slate-600 font-bold">:</span>
-                            <input type="number" placeholder="0" oninput="calculate()" class="a-score w-10 text-center bg-slate-800 border border-slate-700 rounded-lg p-2 outline-none font-bold text-white focus:ring-1 focus:ring-green-500 transition-all">
-                        </div>
-                    </td>
-                    <td class="p-6 text-right status-label italic uppercase text-[10px] font-black tracking-widest text-slate-600">Pending</td>
-                    <input type="hidden" class="bet-type" value="${type}">
-                    <input type="hidden" class="bet-side" value="${
-                      betLine.toLowerCase().includes("away") ? "away" : "home"
-                    }">
-                    <input type="hidden" class="bet-val" value="${betValue}">
-                    <input type="hidden" class="ou-pick" value="${pick}">
-                `;
+            <td class="p-6">
+              <div class="text-slate-100 font-bold tracking-tight">${homeTeam} vs ${awayTeam}</div>
+              <div class="flex flex-col gap-1 mt-1">
+                <span class="text-[9px] text-slate-500 uppercase tracking-tighter">${league}</span>
+                <a href="${liveLink}" target="_blank"
+                   class="text-green-500/80 text-[10px] font-bold hover:text-green-400 flex items-center gap-1 transition-all">
+                  <span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> LIVE SCORE
+                </a>
+              </div>
+            </td>
+            <td class="p-6 text-center">
+              <span class="bg-slate-800 text-green-400 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase border border-slate-700 shadow-sm">${pick}</span>
+            </td>
+            <td class="p-6 text-[11px] text-slate-500 italic font-medium">${ket}</td>
+            <td class="p-6 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <input type="number" placeholder="0" value="${autoH}" oninput="calculate()"
+                  class="h-score w-10 text-center bg-slate-800 border border-slate-700 rounded-lg p-2 outline-none font-bold text-white focus:ring-1 focus:ring-green-500 transition-all${hasAutoScore ? " auto-filled" : ""}">
+                <span class="text-slate-600 font-bold">:</span>
+                <input type="number" placeholder="0" value="${autoA}" oninput="calculate()"
+                  class="a-score w-10 text-center bg-slate-800 border border-slate-700 rounded-lg p-2 outline-none font-bold text-white focus:ring-1 focus:ring-green-500 transition-all${hasAutoScore ? " auto-filled" : ""}">
+              </div>
+              ${hasAutoScore ? '<div class="text-[8px] text-green-600/60 mt-1 font-bold uppercase tracking-wider">' + (isFirstHalf ? "1H" : "FT") + " auto</div>" : ""}
+            </td>
+            <td class="p-6 text-right status-label italic uppercase text-[10px] font-black tracking-widest text-slate-600">Pending</td>
+            <input type="hidden" class="bet-type"  value="${type}">
+            <input type="hidden" class="bet-side"  value="${side || "home"}">
+            <input type="hidden" class="bet-val"   value="${betValue}">
+            <input type="hidden" class="ou-pick"   value="${pick}">
+          `;
           list.appendChild(tr);
         });
+
         calculate();
       }
 
+      // ─── CALCULATE ────────────────────────────────────────────────────────────
       function calculate() {
         const rows = document.querySelectorAll("#matchList tr");
-        let parlayStatus = "WIN";
+        let parlayStatus  = "WIN";
+        let hasPending    = false;
 
-        rows.forEach((row) => {
-          const hVal = row.querySelector(".h-score").value;
-          const aVal = row.querySelector(".a-score").value;
-          const h = parseInt(hVal) || 0;
-          const a = parseInt(aVal) || 0;
-          const type = row.querySelector(".bet-type").value;
-          const side = row.querySelector(".bet-side").value;
-          const bet = parseFloat(row.querySelector(".bet-val").value);
+        rows.forEach(row => {
+          const hVal   = row.querySelector(".h-score").value;
+          const aVal   = row.querySelector(".a-score").value;
+          const h      = parseInt(hVal) || 0;
+          const a      = parseInt(aVal) || 0;
+          const type   = row.querySelector(".bet-type").value;
+          const side   = row.querySelector(".bet-side").value;
+          const bet    = parseFloat(row.querySelector(".bet-val").value);
           const ouPick = row.querySelector(".ou-pick").value;
-          const label = row.querySelector(".status-label");
+          const label  = row.querySelector(".status-label");
 
           if (hVal === "" && aVal === "") {
+            hasPending = true;
             label.innerText = "Pending";
-            label.className =
-              "p-6 text-right status-label italic uppercase text-[10px] font-black text-slate-600";
+            label.className = "p-6 text-right status-label italic uppercase text-[10px] font-black text-slate-600";
             return;
           }
 
-          let res = 0;
-          if (type === "OU") {
+          let res, stat;
+          if (type === "1X2") {
+            // Pure WIN/LOSE — no half results
+            const ftDiff = h - a;
+            const matchResult = ftDiff > 0 ? "home" : ftDiff < 0 ? "away" : "draw";
+            stat = matchResult === side ? "WIN" : "LOSE";
+          } else if (type === "OU") {
             res = h + a - bet;
             if (ouPick === "UNDER") res = -res;
           } else {
+            // HDP
             const diff = side === "away" ? a - h : h - a;
             res = bet < 0 ? diff - Math.abs(bet) : diff + bet;
           }
 
-          if (res > 0.25) updateLabel(label, "WIN");
-          else if (res === 0.25) updateLabel(label, "WIN 1/2");
-          else if (res === 0) updateLabel(label, "DRAW");
-          else if (res === -0.25) {
-            updateLabel(label, "LOSE 1/2");
-            parlayStatus = "LOSE 1/2";
-          } else {
-            updateLabel(label, "LOSE");
-            parlayStatus = "LOSE";
+          if (stat === undefined) {
+            // Threshold logic for HDP/OU (0.25 steps)
+            if      (res >  0.25)  stat = "WIN";
+            else if (res === 0.25) stat = "WIN 1/2";
+            else if (res === 0)    stat = "DRAW";
+            else if (res === -0.25) stat = "LOSE 1/2";
+            else                   stat = "LOSE";
           }
+
+          updateLabel(label, stat);
+
+          if (stat === "LOSE 1/2" && parlayStatus === "WIN") parlayStatus = "LOSE 1/2";
+          if (stat === "LOSE")                               parlayStatus = "LOSE";
+          if (stat === "DRAW" && parlayStatus === "WIN")     parlayStatus = "DRAW";
         });
 
-        function updateLabel(el, stat) {
-          el.innerText = stat;
-          el.className = `p-6 text-right status-label italic uppercase text-[10px] font-black ${
-            stat.includes("WIN")
-              ? "win-text"
-              : stat.includes("LOSE")
-              ? "lose-text"
-              : "draw-text"
-          }`;
-        }
-
         const final = document.getElementById("finalStatus");
-        final.innerText =
-          parlayStatus === "WIN"
-            ? "RUNNING / ALL WIN"
-            : "TICKET " + parlayStatus;
-        final.className = `text-3xl font-black italic tracking-tighter ${
-          parlayStatus === "WIN" ? "text-green-500" : "text-red-500"
+        if (parlayStatus === "WIN") {
+          final.innerText   = hasPending ? "RUNNING..." : "ALL WIN ✓";
+          final.className   = "text-3xl font-black italic tracking-tighter text-green-500";
+        } else {
+          final.innerText   = "TICKET " + parlayStatus;
+          final.className   = "text-3xl font-black italic tracking-tighter text-red-500";
+        }
+      }
+
+      function updateLabel(el, stat) {
+        el.innerText = stat;
+        el.className = `p-6 text-right status-label italic uppercase text-[10px] font-black ${
+          stat.includes("WIN")  ? "win-text"  :
+          stat.includes("LOSE") ? "lose-text" : "draw-text"
         }`;
       }
     </script>

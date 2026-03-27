@@ -532,10 +532,15 @@
         const homeTeam = home0.trim();
         const awayTeam = (away0 || "Away").trim();
 
-        const league  = normLines.find(l =>
+        const leagueRaw = normLines.find(l =>
           !l.includes(" vs ") && !/^\d{4}-\d{2}/.test(l) &&
           !/^Type:/i.test(l) && !/^Bet:/i.test(l) &&
           !/result:/i.test(l) && l.length > 2) || "Tournament";
+        // Strip glued datetime and Type: suffix (e.g. "Club Friendlies2026-03-27 06:00:00Type: -")
+        const league = leagueRaw
+          .replace(/\d{4}-\d{2}-\d{2}.*$/i, '')
+          .replace(/Type:.*$/i, '')
+          .trim() || "Tournament";
 
         const betLine = normLines.find(l => /^Bet:/i.test(l)) || "";
 
@@ -570,7 +575,8 @@
 
         if (/over\/under|\bO\/U\b/i.test(bl)) {
           type = "OU";
-          pick = /under/i.test(bl) ? "UNDER" : "OVER";
+          const ouPickM = bl.match(/over\/under\s+(over|under)/i) || bl.match(/\bO\/U\b\s+(over|under)/i);
+          pick = ouPickM && /^under$/i.test(ouPickM[1]) ? "UNDER" : "OVER";
           const vm = bl.match(/(?:over|under)\s+([\d.]+)/i) || bl.match(/\bO\/U\b\s+(?:over|under)\s+([\d.]+)/i) || bl.match(/\bO\/U\b\s+([\d.]+)/i);
           betValue = vm ? parseFloat(vm[1]) : 0;
 
@@ -596,13 +602,14 @@
             betValue = parseFloat(m[2]);
           } else { pick=homeTeam; betValue=0; }
 
-        } else if (/1[xX]2/i.test(bl)) {
+        } else if (/FT\.1[xX]2|(?<!\w)1[xX]2/i.test(bl)) {
+          // FIX: handle FT.1X2, 1H 1X2, and plain 1X2
           type = "1X2";
-          const tm = bl.match(/1[xX]2\s+(\S+)/i);
+          const tm = bl.match(/(?:FT\.)?1[xX]2\s+(\S+)/i);
           const tok = tm ? tm[1].toUpperCase() : "1";
-          if      (["X","DRAW","EVEN"].includes(tok)) { pick="DRAW"; side="draw"; }
-          else if (["2","AWAY"].includes(tok))         { pick=awayTeam; side="away"; }
-          else                                         { pick=homeTeam; side="home"; }
+          if      (["X","DRAW","EVEN","DRAW"].includes(tok)) { pick="DRAW"; side="draw"; }
+          else if (["2","AWAY"].includes(tok))                { pick=awayTeam; side="away"; }
+          else                                                { pick=homeTeam; side="home"; }
 
         } else if (/ht\/ft.*odd\/even|odd\/even.*ht\/ft/i.test(bl)) {
           type = "HTFT_OE";
@@ -668,7 +675,14 @@
         } else {
           const bareHdp = bl.match(/^Bet:\s*([-]?[\d.]+)\s*@/i);
           if (bareHdp) {
-            type = "HDP"; betValue = parseFloat(bareHdp[1]); side="home"; pick=homeTeam;
+            const bv = parseFloat(bareHdp[1]);
+            if (bv < 0) {
+              // Negative → almost certainly HDP
+              type = "HDP"; betValue = bv; side = "home"; pick = homeTeam;
+            } else {
+              // Positive bare number → ambiguous (HDP or OU), mark manual
+              type = "MANUAL"; pick = `HDP/OU ${bv}?`;
+            }
           } else {
             type = "MANUAL";
             pick = bl.replace(/^Bet:\s*/i,"").replace(/@[\d.]+.*/,"").trim() || "?";
@@ -706,7 +720,9 @@
           case "MANUAL":
             ket = pick==="NO BET"
               ? `<span class="text-slate-600 italic text-[9px]">Tipe bet tidak tersedia di bill</span>`
-              : `<span class="text-amber-500">${pick}</span>`; break;
+              : pick.includes("HDP/OU")
+                ? `<span class="text-amber-500 text-[9px]">⚠ Ambiguous — bisa HDP atau OU, input manual</span>`
+                : `<span class="text-amber-500">${pick}</span>`; break;
           default: ket = bl.replace(/^Bet:\s*/i,"");
         }
 

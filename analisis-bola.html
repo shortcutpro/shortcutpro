@@ -68,6 +68,8 @@
       .b-ft  { background: #0f2e1a; color: #6ee7b7; border: 1px solid #059669; }
       .b-man { background: #2d1f08; color: #f59e0b; border: 1px solid #78350f; }
       .b-neg { background: #2d1a08; color: #fb923c; border: 1px solid #c2410c44; }
+      /* ── AP provider badge ── */
+      .b-ap  { background: #28100d; color: #f87171; border: 1px solid #b91c1c44; }
 
       /* ── Result colors ── */
       .pill-win    { background: rgba(34,197,94,.15);  color: #22c55e;  border: 1px solid rgba(34,197,94,.3); }
@@ -159,7 +161,7 @@
         <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Paste Bill Parlay</label>
         <textarea id="rawInput"
           class="flex-1 w-full border border-slate-800 rounded-xl p-4 text-[10.5px] mono outline-none focus:border-green-500/50 bg-slate-900/50 text-slate-300 resize-none scroll transition-all placeholder-slate-700"
-          placeholder="Tempel bill Soccer / Football di sini...&#10;&#10;Contoh:&#10;Soccer&#10;Premier League&#10;Arsenal vs Chelsea&#10;Bet: Handicap Home -0.75 @1.92&#10;Full Time Result: 2:1&#10;Half Time Result: 1:0&#10;&#10;Odds negatif Indo (e.g. @-1.87) juga didukung"></textarea>
+          placeholder="Tempel bill Soccer / Football di sini...&#10;&#10;Format SBO:&#10;Soccer&#10;Premier League&#10;Arsenal vs Chelsea&#10;Bet: Handicap Home -0.75 @1.92&#10;Full Time Result: 2:1&#10;Half Time Result: 1:0&#10;&#10;Format AP (4 baris per match):&#10;Chile -0.75 @ 1.52 (I)&#10;Chile -vs- Cape Verde&#10;Soccer / Match Handicap&#10;International Friendlies @ 2026-03-26&#10;&#10;Odds negatif (e.g. @-1.87) otomatis dikonversi"></textarea>
 
         <!-- Nilai Bet -->
         <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-3">
@@ -305,18 +307,222 @@
     }
 
     // ═══════════════════════════════════════════════════════════════════
+    //  AP FORMAT DETECTION & PARSER
+    //  Format: 4 lines per match
+    //   Line 1: pick + betValue + @ + odds + (I/D)
+    //   Line 2: Home -vs- Away
+    //   Line 3: [LIVE] Soccer/Sepak Bola / [1st Half/Pertengahan 1] BetType [score]
+    //   Line 4: League @ date
+    // ═══════════════════════════════════════════════════════════════════
+
+    function detectAPFormat(rawText) {
+      const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+      if (lines.length < 4) return false;
+      // Line 1 must end with "(I)" or "(D)" and contain "@"
+      // Line 2 must contain "-vs-"
+      return /^.+@\s*[-\d.]+\s*\([ID]\)\s*$/.test(lines[0]) && /-vs-/.test(lines[1]);
+    }
+
+    /** Fuzzy match pick team name to home or away side */
+    function fuzzyMatchSide(pickName, homeTeam, awayTeam) {
+      const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+      const p = norm(pickName), h = norm(homeTeam), a = norm(awayTeam);
+      if (!p) return 'home';
+      if (p === h || h.includes(p) || p.includes(h)) return 'home';
+      if (p === a || a.includes(p) || p.includes(a)) return 'away';
+      // Prefix match ≥3 chars
+      const pfx = Math.min(p.length, 4);
+      if (pfx >= 3) {
+        if (h.startsWith(p.slice(0, pfx)) || p.startsWith(h.slice(0, pfx))) return 'home';
+        if (a.startsWith(p.slice(0, pfx)) || p.startsWith(a.slice(0, pfx))) return 'away';
+      }
+      return 'home';
+    }
+
+    /** Build one AP match row and append to list */
+    function buildAPRow(line1, line2, line3, line4, list) {
+      // ── Line 2: teams
+      const matchLine = line2.replace(/-vs-/gi, ' vs ');
+      const [home0, away0] = matchLine.split(' vs ');
+      const homeTeam = home0.trim();
+      const awayTeam = (away0 || 'Away').trim();
+
+      // ── Line 3: bet type + half + live score
+      const is1H = /1st Half|Pertengahan\s*1/i.test(line3);
+      const liveM = line3.match(/\[(\d+)-(\d+)\]/);
+
+      let betTypeLine;
+      if (/\bHandicap\b|Rintangan/i.test(line3))      betTypeLine = 'HDP';
+      else if (/\bOU\b|Atas Bawah/i.test(line3))       betTypeLine = 'OU';
+      else if (/\b1x2\b|Garis Uang/i.test(line3))      betTypeLine = '1X2';
+      else                                               betTypeLine = 'MANUAL';
+
+      // ── Line 4: league (strip date)
+      const league = line4.replace(/@\s*\d{4}-\d{2}-\d{2}.*/, '').replace(/@.*/, '').trim() || 'Tournament';
+
+      // ── Line 1: parse pick / betValue / odds
+      let pick = '', type = betTypeLine, side = 'home', betValue = 0, betOdds = 0, extra = {};
+
+      // OU: "Over/Under/Atas/Di Bawah X @ odds (I/D)"
+      const ouM = line1.match(/^(Over|Under|Atas|Di\s+Bawah)\s+([\d.]+)\s+@\s+([-\d.]+)\s*\([ID]\)/i);
+      if (ouM) {
+        type     = 'OU';
+        pick     = /^(over|atas)$/i.test(ouM[1].trim()) ? 'OVER' : 'UNDER';
+        betValue = parseFloat(ouM[2]);
+        betOdds  = parseFloat(ouM[3]);
+
+      // HDP: "TeamName ±X @ odds (I/D)"  — has explicit +/- before number
+      } else if (/^.+?\s+[+-][\d.]+\s+@\s+[-\d.]+\s*\([ID]\)/.test(line1)) {
+        const hdpM = line1.match(/^(.+?)\s+([+-][\d.]+)\s+@\s+([-\d.]+)\s*\([ID]\)/);
+        if (hdpM) {
+          type     = 'HDP';
+          pick     = hdpM[1].trim();
+          betValue = parseFloat(hdpM[2]);
+          betOdds  = parseFloat(hdpM[3]);
+          side     = fuzzyMatchSide(pick, homeTeam, awayTeam);
+        }
+
+      // 1X2: "Pick @ odds (D/I)"  — no number before @
+      } else {
+        const moneyM = line1.match(/^(.+?)\s+@\s+([\d.]+)\s*\([ID]\)/);
+        if (moneyM) {
+          type    = '1X2';
+          const pickRaw = moneyM[1].trim();
+          betOdds = parseFloat(moneyM[2]);
+          if (/^(Draw|Seri)$/i.test(pickRaw)) {
+            pick = 'DRAW'; side = 'draw';
+          } else {
+            pick = pickRaw;
+            side = fuzzyMatchSide(pickRaw, homeTeam, awayTeam);
+          }
+        }
+      }
+
+      // ── Badge prefix for 1st half
+      const b1H   = `<span class="badge b-1h">1H</span> `;
+      const bHalf = is1H ? b1H : '';
+
+      // ── Keterangan
+      let ket;
+      if (type === 'HDP') {
+        ket = betValue < 0
+          ? `${bHalf}<span class="text-green-400">${pick}</span> beri voor <span class="text-slate-300">${Math.abs(betValue)}</span>`
+          : `${bHalf}<span class="text-green-400">${pick}</span> terima voor <span class="text-slate-300">${betValue}</span>`;
+      } else if (type === 'OU') {
+        ket = `${bHalf}${pick} <span class="text-slate-300">${betValue}</span> gol`;
+      } else if (type === '1X2') {
+        ket = side === 'draw'
+          ? `${bHalf}Bet <span class="text-amber-400">DRAW</span>`
+          : `${bHalf}<span class="text-green-400">${pick}</span> menang`;
+      } else {
+        ket = `<span class="text-slate-600 italic text-[9px]">Tipe bet tidak dikenali</span>`;
+      }
+
+      // Live score info (not FT — user must input manually)
+      if (liveM) {
+        ket += ` <span class="text-[8px] text-slate-600 ml-1">[live ${liveM[1]}-${liveM[2]}]</span>`;
+      }
+
+      // ── Score cell (always manual — AP bills don't contain FT result)
+      const lbl = is1H
+        ? `<span class="badge b-1h">1H</span>`
+        : `<span class="text-[8px] text-slate-600 font-black tracking-widest">FT</span>`;
+      const scoreCell = `<td class="px-4 py-3 text-center">
+        <div class="flex items-center justify-center gap-1">
+          ${lbl}
+          ${scoreInput("h-score", "", false)}
+          <span class="text-slate-700 text-xs font-bold">:</span>
+          ${scoreInput("a-score", "", false)}
+        </div>
+      </td>`;
+
+      // ── Odds cell
+      const isNeg = betOdds < 0;
+      const decV  = toDecimal(betOdds);
+      const oddsCell = betOdds !== 0
+        ? `<td class="px-6 py-5 text-center">
+            <span class="mono font-black text-xs ${isNeg ? 'text-orange-400' : 'text-amber-400'}">${betOdds.toFixed(2)}</span>
+            ${isNeg ? `<div class="text-[8px] text-orange-800/80 mt-0.5 mono">favorit</div>
+                       <div class="text-[8px] text-orange-600/60 mono">≈ ${decV.toFixed(4)} dec</div>` : ''}
+           </td>`
+        : `<td class="px-6 py-5 text-center"><span class="text-slate-700 text-xs">—</span></td>`;
+
+      // ── Build row
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-800/20 transition-all";
+      tr.onclick = function(e){ toggleDetail(this, e); };
+      tr.innerHTML = `
+        <td class="px-6 py-5">
+          <div class="font-bold text-slate-200 text-sm tracking-tight">${homeTeam} <span class="font-black text-[10px] italic" style="color:#f59e0b">vs</span> ${awayTeam}</div>
+          <div class="flex items-center gap-1.5 mt-0.5">
+            <span class="text-[9px] text-slate-500 uppercase tracking-tighter">${league}</span>
+            <span class="badge b-ap">AP</span>
+          </div>
+          <a href="https://www.google.com/search?q=${encodeURIComponent(matchLine+' live score')}" target="_blank" onclick="event.stopPropagation()"
+             class="inline-flex items-center gap-1 mt-1 text-green-500/70 text-[9px] font-black hover:text-green-400 transition-all uppercase tracking-wider">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block"></span> Live Score
+          </a>
+        </td>
+        <td class="px-6 py-5 text-center">
+          <span class="bg-slate-800 border border-slate-700 text-green-400 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase max-w-[130px] inline-block truncate shadow-sm">${pick || '?'}</span>
+        </td>
+        <td class="px-6 py-5 text-[11px] text-slate-500 italic font-medium leading-relaxed">${ket}</td>
+        ${scoreCell}
+        ${oddsCell}
+        <td class="px-6 py-5 text-center">
+          <span class="status-pill text-[9px] font-black uppercase tracking-wide rounded-full px-2.5 py-1 pill-pending">—</span>
+        </td>
+        <input type="hidden" class="bet-type"  value="${type}">
+        <input type="hidden" class="bet-side"  value="${side}">
+        <input type="hidden" class="bet-val"   value="${betValue}">
+        <input type="hidden" class="ou-pick"   value="${pick}">
+        <input type="hidden" class="bet-odds"  value="${betOdds}">
+        <input type="hidden" class="bet-extra" value='${JSON.stringify(extra).replace(/'/g,"&#39;")}'>
+      `;
+
+      const detailTr = document.createElement("tr");
+      detailTr.className = "detail-row";
+      detailTr.innerHTML = `
+        <td colspan="6" style="padding:0">
+          <div class="detail-inner" style="display:none;overflow:hidden">
+            <div class="detail-content px-6 py-4 bg-[#050b14] border-b border-slate-800/60"></div>
+          </div>
+        </td>`;
+      list.appendChild(tr);
+      list.appendChild(detailTr);
+    }
+
+    /** Parse full AP bill text and build all rows */
+    function parseAPFormat(rawText, list) {
+      const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
+      for (let i = 0; i + 3 < lines.length; i += 4) {
+        buildAPRow(lines[i], lines[i+1], lines[i+2], lines[i+3], list);
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
     //  PROCESS
     // ═══════════════════════════════════════════════════════════════════
     function processData() {
       const rawText = document.getElementById("rawInput").value;
-      const blocks  = rawText.split(/(?:Soccer|Football)\s+/i).filter(b => b.trim());
       const list    = document.getElementById("matchList");
-      if (!blocks.length) return;
+      if (!rawText.trim()) return;
 
       list.innerHTML = "";
       document.getElementById("placeholder").classList.add("hidden");
       document.getElementById("resultArea").classList.remove("hidden");
       document.getElementById("calcPanel").classList.remove("hidden");
+
+      // ── Route: AP format (4-line blocks, no Soccer prefix)
+      if (detectAPFormat(rawText)) {
+        parseAPFormat(rawText, list);
+        calculate();
+        return;
+      }
+
+      // ── SBO / default format (Soccer/Football prefix blocks)
+      const blocks  = rawText.split(/(?:Soccer|Football)\s+/i).filter(b => b.trim());
+      if (!blocks.length) return;
 
       blocks.forEach(block => {
         const lines     = block.split("\n").map(l => l.trim()).filter(Boolean);

@@ -52,14 +52,6 @@
       .score-inp:focus { border-color: #22c55e; box-shadow: 0 0 0 2px rgba(34,197,94,.15); }
       .score-inp.auto  { border-color: rgba(34,197,94,.3) !important; background: rgba(34,197,94,.05) !important; }
 
-      /* ── Status text ── */
-      .win-text   { color: #22c55e; font-weight: 800; }
-      .lose-text  { color: #ef4444; font-weight: 800; }
-      .draw-text  { color: #94a3b8; font-weight: 800; }
-      .half-w-text{ color: #86efac; font-weight: 800; }
-      .half-l-text{ color: #fca5a5; font-weight: 800; }
-      .manual-text{ color: #f59e0b; font-weight: 800; }
-
       /* ── Badges ── */
       .badge { display: inline-flex; align-items: center; border-radius: 4px;
         font-size: 8px; font-weight: 900; padding: 1px 5px; letter-spacing: .05em; vertical-align: middle; }
@@ -67,11 +59,9 @@
       .b-2h  { background: #2d1f5e; color: #a78bfa; border: 1px solid #7c3aed44; }
       .b-ft  { background: #0f2e1a; color: #6ee7b7; border: 1px solid #059669; }
       .b-man { background: #2d1f08; color: #f59e0b; border: 1px solid #78350f; }
-      .b-neg { background: #2d1a08; color: #fb923c; border: 1px solid #c2410c44; }
-      /* ── AP provider badge ── */
       .b-ap  { background: #28100d; color: #f87171; border: 1px solid #b91c1c44; }
 
-      /* ── Result colors ── */
+      /* ── Result pill colors ── */
       .pill-win    { background: rgba(34,197,94,.15);  color: #22c55e;  border: 1px solid rgba(34,197,94,.3); }
       .pill-lose   { background: rgba(239,68,68,.15);  color: #ef4444;  border: 1px solid rgba(239,68,68,.3); }
       .pill-halfw  { background: rgba(134,239,172,.1); color: #86efac;  border: 1px solid rgba(134,239,172,.3); }
@@ -80,33 +70,23 @@
       .pill-pending{ background: rgba(255,255,255,.05); color: #475569; border: 1px solid #1e293b; }
       .pill-manual { background: rgba(245,158,11,.1);  color: #f59e0b;  border: 1px solid rgba(245,158,11,.3); }
 
-      /* ── Provider logos in header ── */
+      /* ── Provider logos ── */
       .prov-logo {
         height: 16px; width: auto; max-width: 54px;
-        object-fit: contain;
-        opacity: 0.45;
-        filter: grayscale(0.3) brightness(1.3);
-        transition: opacity .2s;
+        object-fit: contain; opacity: 0.45;
+        filter: grayscale(0.3) brightness(1.3); transition: opacity .2s;
       }
       .prov-logo:hover { opacity: 0.9; filter: grayscale(0) brightness(1.5); }
 
       /* ── Inline detail row ── */
-      .detail-inner {
-        transition: max-height 0.25s ease, opacity 0.2s ease;
-        max-height: 0; opacity: 0;
-      }
-      .detail-inner.open {
-        max-height: 800px; opacity: 1;
-        display: block !important;
-      }
+      .detail-inner { transition: max-height 0.25s ease, opacity 0.2s ease; max-height: 0; opacity: 0; }
+      .detail-inner.open { max-height: 800px; opacity: 1; display: block !important; }
       .active-detail-row { background: rgba(34,197,94,0.04) !important; outline: 1px solid rgba(34,197,94,0.15); outline-offset: -1px; }
+
       .calc-step {
-        background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06);
         border-radius: 8px; padding: 8px 12px;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 10px; color: #64748b;
-        margin-bottom: 4px;
+        font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b; margin-bottom: 4px;
       }
       .calc-step .label { color: #475569; font-size: 9px; text-transform: uppercase; letter-spacing: .05em; display: block; margin-bottom: 3px; }
       .calc-step .val   { color: #cbd5e1; font-weight: 700; }
@@ -117,12 +97,30 @@
       .calc-step .purple{ color: #a78bfa; font-weight: 800; }
       .calc-step .orange{ color: #fb923c; font-weight: 800; }
 
-      @keyframes glow-pulse {
-        0%,100% { text-shadow: 0 0 20px currentColor; }
-        50%      { text-shadow: 0 0 40px currentColor, 0 0 80px currentColor; }
+      /* ══════════════════════════════════════════════════
+         LIVE SCORE INLINE BUTTONS  (no modal, no iframe)
+         Semua dibuka di tab baru karena X-Frame-Options
+      ══════════════════════════════════════════════════ */
+      .ls-wrap {
+        display: flex; flex-wrap: wrap; gap: 4px;
+        margin-top: 6px;
       }
-      .glow-green { color: #22c55e; animation: glow-pulse 2s ease-in-out infinite; }
-      .glow-red   { color: #ef4444; animation: glow-pulse 2s ease-in-out infinite; }
+      .ls-btn {
+        display: inline-flex; align-items: center; gap: 3px;
+        padding: 2px 8px; border-radius: 5px;
+        background: rgba(255,255,255,.03);
+        border: 1px solid rgba(255,255,255,.07);
+        color: var(--lc, #475569);
+        font-size: 7.5px; font-weight: 900;
+        text-decoration: none; letter-spacing: .04em; text-transform: uppercase;
+        transition: all .15s; white-space: nowrap;
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .ls-btn:hover {
+        background: rgba(255,255,255,.07);
+        border-color: var(--lc);
+        transform: translateY(-1px);
+      }
     </style>
   </head>
   <body>
@@ -131,19 +129,17 @@
     <header class="shrink-0 border-b border-slate-800/50 bg-slate-900/60 backdrop-blur px-6 py-3 flex justify-between items-center">
       <div class="flex items-center gap-3">
         <div class="w-7 h-7 rounded-lg bg-green-500/10 border border-green-500/30 flex items-center justify-center">
-          <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+          <svg class="w-4 h-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
         </div>
         <div>
           <div class="text-sm font-extrabold tracking-tight text-white">ANALISIS PERTANDINGAN SEPAK BOLA</div>
-          <!-- subtitle + logos inline -->
           <div class="flex items-center gap-2 mt-0.5 flex-wrap">
             <span class="text-[9px] mono text-slate-500 uppercase tracking-widest">Auto Parlay Calculator support provider</span>
-            <img src="https://igamingz.com/wp-content/uploads/2022/05/SABA-Sports-Logo-02.png"
-                 class="prov-logo" alt="SABA" title="SABA Sports">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/SBOBET_New_Logo.png"
-                 class="prov-logo" alt="SBOBET" title="SBOBET">
-            <img src="https://images.0512664.com//TCG_PROD_IMAGES/RNG_LIST_VENDOR//PIN-COLOR2.png"
-                 class="prov-logo" alt="AP" title="AP Sports">
+            <img src="https://igamingz.com/wp-content/uploads/2022/05/SABA-Sports-Logo-02.png" class="prov-logo" alt="SABA">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/SBOBET_New_Logo.png" class="prov-logo" alt="SBOBET">
+            <img src="https://images.0512664.com//TCG_PROD_IMAGES/RNG_LIST_VENDOR//PIN-COLOR2.png" class="prov-logo" alt="AP">
           </div>
         </div>
       </div>
@@ -161,7 +157,8 @@
         <label class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Paste Bill Parlay</label>
         <textarea id="rawInput"
           class="flex-1 w-full border border-slate-800 rounded-xl p-4 text-[10.5px] mono outline-none focus:border-green-500/50 bg-slate-900/50 text-slate-300 resize-none scroll transition-all placeholder-slate-700"
-          placeholder="Tempel bill Soccer / Football di sini...&#10;&#10;Format SBO:&#10;Soccer&#10;Premier League&#10;Arsenal vs Chelsea&#10;Bet: Handicap Home -0.75 @1.92&#10;Full Time Result: 2:1&#10;Half Time Result: 1:0&#10;&#10;Format AP (4 baris per match):&#10;Chile -0.75 @ 1.52 (I)&#10;Chile -vs- Cape Verde&#10;Soccer / Match Handicap&#10;International Friendlies @ 2026-03-26&#10;&#10;Odds negatif (e.g. @-1.87) otomatis dikonversi"></textarea>
+          placeholder="Tempel bill Soccer / Football di sini...&#10;&#10;Format SBO:&#10;Soccer&#10;Tunisia U20 vs Mauritania U20&#10;INTERNATIONAL FRIENDLY U20&#10;Type: Europe&#10;Bet: Handicap home -0.75 @1.97&#10;&#10;Format AP (4 baris per match):&#10;Chile -0.75 @ 1.52 (I)&#10;Chile -vs- Cape Verde&#10;Soccer / Match Handicap&#10;International Friendlies @ 2026-03-26&#10;&#10;Odds negatif (e.g. @-1.87) otomatis dikonversi"
+          oninput="autoAnalyze()"></textarea>
 
         <!-- Nilai Bet -->
         <div class="bg-slate-900/60 rounded-xl border border-slate-800 p-3">
@@ -216,14 +213,10 @@
         <!-- ══ PARLAY CALCULATOR PANEL ══ -->
         <div id="calcPanel" class="hidden shrink-0 border-t border-slate-800/50 bg-[#060c18] p-4">
           <div class="flex items-start gap-6">
-
-            <!-- Parlay rows -->
             <div class="flex-1 min-w-0">
               <div class="text-[9px] font-black text-slate-600 uppercase tracking-widest mb-2">Auto Parlay Breakdown</div>
               <table id="parlayRows" class="w-full border-collapse"></table>
             </div>
-
-            <!-- Summary box -->
             <div class="shrink-0 w-52 bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3">
               <div>
                 <div class="text-[9px] text-slate-600 uppercase tracking-widest font-black mb-1">Total Odds</div>
@@ -247,33 +240,59 @@
 
     <script>
     // ═══════════════════════════════════════════════════════════════════
+    //  INLINE LIVE SCORE LINKS  (no modal, no iframe — opens new tab)
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * Returns a row of small inline link buttons for each live-score source.
+     * Each opens in a new tab. No iframe, no modal — avoids X-Frame-Options blocks.
+     */
+    function buildLiveLinks(homeTeam, awayTeam) {
+      const q  = encodeURIComponent(homeTeam + " " + awayTeam);
+      const qG = encodeURIComponent(homeTeam + " vs " + awayTeam + " live score");
+      const sources = [
+        ["⚡", "Flashscore", "https://www.flashscore.com/search/?q=" + q,         "#f59e0b"],
+        ["🎯", "SofaScore",  "https://www.sofascore.com/search#q=" + q,            "#a78bfa"],
+        ["📊", "Scores24",   "https://scores24.live/en/search?q=" + q,             "#60a5fa"],
+        ["🟢", "Livescore",  "https://www.livescore.com/en/search/?q=" + q,        "#22c55e"],
+        ["🔍", "Google",     "https://www.google.com/search?q=" + qG,              "#34d399"],
+      ];
+      const btns = sources.map(([icon, name, url, color]) =>
+        `<a href="${url}" target="_blank" onclick="event.stopPropagation()"
+           class="ls-btn" style="--lc:${color}">${icon} ${name}</a>`
+      ).join("");
+      return `<div class="ls-wrap">${btns}</div>`;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
     //  HELPERS
     // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Convert any odds format to decimal multiplier.
-     * - odds >= 1   → already decimal (e.g. 1.92 stays 1.92)
+     * - odds >= 1    → already decimal (e.g. 1.92 stays 1.92)
      * - 0 < odds < 1 → Malay positive (e.g. 0.92 → 1.92)
-     * - odds < 0    → Negative = sisi favorit; abs value IS the decimal multiplier
-     *                 e.g. @-1.87 → multiplier 1.87
-     *                 (verified: 1.87 × 1.6 = 2.99 sesuai bill)
+     * - odds < 0     → Negative Malay (SABA): -1.17 → 2.17
+     *   SABA formula: Actual Stake = Stake × |odds|
+     *                 WIN return   = Stake + Actual Stake = Stake × (1 + |odds|)
+     *                 → decimal multiplier = 1 + |odds|
+     *   e.g. Stake 100k, odds -1.17 → Actual Stake 117k → WIN = 217k → decimal 2.17
      */
     function toDecimal(odds) {
       if (!odds || odds === 0) return 0;
-      if (odds >= 1)  return odds;
-      if (odds > 0)   return 1 + odds;
-      return Math.abs(odds);   // negative: abs value IS the decimal
+      if (odds >= 1)  return odds;           // decimal biasa
+      if (odds > 0)   return 1 + odds;       // Malay positif
+      return 1 + Math.abs(odds);             // Malay negatif SABA: -1.17 → 2.17
     }
 
     function hdpThreshold(res) {
-      if (res >  0.25) return "WIN";
+      if (res >  0.25)  return "WIN";
       if (res === 0.25) return "WIN 1/2";
       if (res === 0)    return "DRAW";
       if (res === -0.25) return "LOSE 1/2";
       return "LOSE";
     }
     function resultOf(h, a) { return h > a ? "home" : h < a ? "away" : "draw"; }
-
     function pillClass(s) {
       if (s === "WIN")      return "pill-win";
       if (s === "WIN 1/2")  return "pill-halfw";
@@ -287,50 +306,49 @@
       return `<input type="number" placeholder="0" value="${val}" oninput="calculate()" onclick="event.stopPropagation()" onfocus="event.stopPropagation()"
         class="score-inp ${cls}${isAuto ? " auto" : ""}">`;
     }
-    function fmt(n) {
-      return new Intl.NumberFormat("id-ID").format(Math.round(n));
-    }
+    function fmt(n) { return new Intl.NumberFormat("id-ID").format(Math.round(n)); }
     function getNilaiBet() {
-      const raw = document.getElementById("nilaiBet").value.replace(/[^0-9]/g, "");
-      return parseFloat(raw) || 0;
+      return parseFloat(document.getElementById("nilaiBet").value.replace(/[^0-9]/g, "")) || 0;
     }
     function formatBetInput(el) {
-      const pos   = el.selectionStart;
-      const before = el.value.length;
+      const pos   = el.selectionStart, before = el.value.length;
       const digits = el.value.replace(/[^0-9]/g, "");
-      const formatted = digits ? new Intl.NumberFormat("id-ID").format(parseInt(digits)) : "";
-      el.value = formatted;
-      // keep cursor roughly in place
+      el.value = digits ? new Intl.NumberFormat("id-ID").format(parseInt(digits)) : "";
       const after = el.value.length;
       el.setSelectionRange(pos + (after - before), pos + (after - before));
       refreshCalc();
     }
 
+    /**
+     * Natural-language keterangan for HDP bets.
+     * Explains in plain Indonesian what condition must be met.
+     */
+    function ketHDP(pick, betValue, halfPfx) {
+      const abs = Math.abs(betValue);
+      if (betValue < 0) {
+        // Pick team gives handicap — must win by more than |betValue| goals
+        return `${halfPfx}<span class="text-green-400">${pick}</span> harus unggul lebih dari <span class="text-amber-300 font-black">${abs}</span> gol`;
+      } else {
+        // Pick team receives handicap — wins even if they lose by up to betValue goals
+        return `${halfPfx}<span class="text-green-400">${pick}</span> menerima voor <span class="text-amber-300 font-black">${abs}</span> gol`;
+      }
+    }
+
     // ═══════════════════════════════════════════════════════════════════
     //  AP FORMAT DETECTION & PARSER
-    //  Format: 4 lines per match
-    //   Line 1: pick + betValue + @ + odds + (I/D)
-    //   Line 2: Home -vs- Away
-    //   Line 3: [LIVE] Soccer/Sepak Bola / [1st Half/Pertengahan 1] BetType [score]
-    //   Line 4: League @ date
     // ═══════════════════════════════════════════════════════════════════
-
     function detectAPFormat(rawText) {
       const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
       if (lines.length < 4) return false;
-      // Line 1 must end with "(I)" or "(D)" and contain "@"
-      // Line 2 must contain "-vs-"
       return /^.+@\s*[-\d.]+\s*\([ID]\)\s*$/.test(lines[0]) && /-vs-/.test(lines[1]);
     }
 
-    /** Fuzzy match pick team name to home or away side */
     function fuzzyMatchSide(pickName, homeTeam, awayTeam) {
       const norm = s => s.toLowerCase().replace(/[^a-z0-9]/g, '');
       const p = norm(pickName), h = norm(homeTeam), a = norm(awayTeam);
       if (!p) return 'home';
       if (p === h || h.includes(p) || p.includes(h)) return 'home';
       if (p === a || a.includes(p) || p.includes(a)) return 'away';
-      // Prefix match ≥3 chars
       const pfx = Math.min(p.length, 4);
       if (pfx >= 3) {
         if (h.startsWith(p.slice(0, pfx)) || p.startsWith(h.slice(0, pfx))) return 'home';
@@ -339,15 +357,10 @@
       return 'home';
     }
 
-    /** Build one AP match row and append to list */
     function buildAPRow(line1, line2, line3, line4, list) {
-      // ── Line 2: teams
       const matchLine = line2.replace(/-vs-/gi, ' vs ');
       const [home0, away0] = matchLine.split(' vs ');
-      const homeTeam = home0.trim();
-      const awayTeam = (away0 || 'Away').trim();
-
-      // ── Line 3: bet type + half + live score
+      const homeTeam = home0.trim(), awayTeam = (away0 || 'Away').trim();
       const is1H = /1st Half|Pertengahan\s*1/i.test(line3);
       const liveM = line3.match(/\[(\d+)-(\d+)\]/);
 
@@ -357,57 +370,33 @@
       else if (/\b1x2\b|Garis Uang/i.test(line3))      betTypeLine = '1X2';
       else                                               betTypeLine = 'MANUAL';
 
-      // ── Line 4: league (strip date)
       const league = line4.replace(/@\s*\d{4}-\d{2}-\d{2}.*/, '').replace(/@.*/, '').trim() || 'Tournament';
-
-      // ── Line 1: parse pick / betValue / odds
       let pick = '', type = betTypeLine, side = 'home', betValue = 0, betOdds = 0, extra = {};
 
-      // OU: "Over/Under/Atas/Di Bawah X @ odds (I/D)"
       const ouM = line1.match(/^(Over|Under|Atas|Di\s+Bawah)\s+([\d.]+)\s+@\s+([-\d.]+)\s*\([ID]\)/i);
       if (ouM) {
-        type     = 'OU';
-        pick     = /^(over|atas)$/i.test(ouM[1].trim()) ? 'OVER' : 'UNDER';
-        betValue = parseFloat(ouM[2]);
-        betOdds  = parseFloat(ouM[3]);
-
-      // HDP: "TeamName ±X @ odds (I/D)"  — has explicit +/- before number
+        type = 'OU'; pick = /^(over|atas)$/i.test(ouM[1].trim()) ? 'OVER' : 'UNDER';
+        betValue = parseFloat(ouM[2]); betOdds = parseFloat(ouM[3]);
       } else if (/^.+?\s+[+-][\d.]+\s+@\s+[-\d.]+\s*\([ID]\)/.test(line1)) {
         const hdpM = line1.match(/^(.+?)\s+([+-][\d.]+)\s+@\s+([-\d.]+)\s*\([ID]\)/);
         if (hdpM) {
-          type     = 'HDP';
-          pick     = hdpM[1].trim();
-          betValue = parseFloat(hdpM[2]);
-          betOdds  = parseFloat(hdpM[3]);
-          side     = fuzzyMatchSide(pick, homeTeam, awayTeam);
+          type = 'HDP'; pick = hdpM[1].trim();
+          betValue = parseFloat(hdpM[2]); betOdds = parseFloat(hdpM[3]);
+          side = fuzzyMatchSide(pick, homeTeam, awayTeam);
         }
-
-      // 1X2: "Pick @ odds (D/I)"  — no number before @
       } else {
         const moneyM = line1.match(/^(.+?)\s+@\s+([\d.]+)\s*\([ID]\)/);
         if (moneyM) {
-          type    = '1X2';
-          const pickRaw = moneyM[1].trim();
-          betOdds = parseFloat(moneyM[2]);
-          if (/^(Draw|Seri)$/i.test(pickRaw)) {
-            pick = 'DRAW'; side = 'draw';
-          } else {
-            pick = pickRaw;
-            side = fuzzyMatchSide(pickRaw, homeTeam, awayTeam);
-          }
+          type = '1X2'; const pickRaw = moneyM[1].trim(); betOdds = parseFloat(moneyM[2]);
+          if (/^(Draw|Seri)$/i.test(pickRaw)) { pick = 'DRAW'; side = 'draw'; }
+          else { pick = pickRaw; side = fuzzyMatchSide(pickRaw, homeTeam, awayTeam); }
         }
       }
 
-      // ── Badge prefix for 1st half
-      const b1H   = `<span class="badge b-1h">1H</span> `;
-      const bHalf = is1H ? b1H : '';
-
-      // ── Keterangan
+      const b1H = `<span class="badge b-1h">1H</span> `, bHalf = is1H ? b1H : '';
       let ket;
       if (type === 'HDP') {
-        ket = betValue < 0
-          ? `${bHalf}<span class="text-green-400">${pick}</span> beri voor <span class="text-slate-300">${Math.abs(betValue)}</span>`
-          : `${bHalf}<span class="text-green-400">${pick}</span> terima voor <span class="text-slate-300">${betValue}</span>`;
+        ket = ketHDP(pick, betValue, bHalf);
       } else if (type === 'OU') {
         ket = `${bHalf}${pick} <span class="text-slate-300">${betValue}</span> gol`;
       } else if (type === '1X2') {
@@ -417,54 +406,33 @@
       } else {
         ket = `<span class="text-slate-600 italic text-[9px]">Tipe bet tidak dikenali</span>`;
       }
+      if (liveM) ket += ` <span class="text-[8px] text-slate-600 ml-1">[live ${liveM[1]}-${liveM[2]}]</span>`;
 
-      // Live score info (not FT — user must input manually)
-      if (liveM) {
-        ket += ` <span class="text-[8px] text-slate-600 ml-1">[live ${liveM[1]}-${liveM[2]}]</span>`;
-      }
-
-      // ── Score cell (always manual — AP bills don't contain FT result)
-      const lbl = is1H
-        ? `<span class="badge b-1h">1H</span>`
-        : `<span class="text-[8px] text-slate-600 font-black tracking-widest">FT</span>`;
+      const lbl = is1H ? `<span class="badge b-1h">1H</span>` : `<span class="text-[8px] text-slate-600 font-black tracking-widest">FT</span>`;
       const scoreCell = `<td class="px-4 py-3 text-center">
         <div class="flex items-center justify-center gap-1">
-          ${lbl}
-          ${scoreInput("h-score", "", false)}
-          <span class="text-slate-700 text-xs font-bold">:</span>
-          ${scoreInput("a-score", "", false)}
-        </div>
-      </td>`;
+          ${lbl}${scoreInput("h-score","",false)}<span class="text-slate-700 text-xs font-bold">:</span>${scoreInput("a-score","",false)}
+        </div></td>`;
 
-      // ── Odds cell
-      const isNeg = betOdds < 0;
-      const decV  = toDecimal(betOdds);
+      const isNeg = betOdds < 0, decV = toDecimal(betOdds);
       const oddsCell = betOdds !== 0
         ? `<td class="px-6 py-5 text-center">
-            <span class="mono font-black text-xs ${isNeg ? 'text-orange-400' : 'text-amber-400'}">${betOdds.toFixed(2)}</span>
-            ${isNeg ? `<div class="text-[8px] text-orange-800/80 mt-0.5 mono">favorit</div>
-                       <div class="text-[8px] text-orange-600/60 mono">≈ ${decV.toFixed(4)} dec</div>` : ''}
+            <span class="mono font-black text-xs ${isNeg?'text-orange-400':'text-amber-400'}">${betOdds.toFixed(2)}</span>
+            ${isNeg?`<div class="text-[8px] text-orange-800/80 mt-0.5 mono">favorit</div><div class="text-[8px] text-orange-600/60 mono">≈ ${decV.toFixed(4)} dec</div>`:''}
            </td>`
         : `<td class="px-6 py-5 text-center"><span class="text-slate-700 text-xs">—</span></td>`;
 
-      // ── Build row
       const tr = document.createElement("tr");
       tr.className = "hover:bg-slate-800/20 transition-all";
       tr.onclick = function(e){ toggleDetail(this, e); };
       tr.innerHTML = `
         <td class="px-6 py-5">
+          <div class="text-[9px] text-slate-500 uppercase tracking-widest font-black mb-1">${league} <span class="badge b-ap ml-1">AP</span></div>
           <div class="font-bold text-slate-200 text-sm tracking-tight">${homeTeam} <span class="font-black text-[10px] italic" style="color:#f59e0b">vs</span> ${awayTeam}</div>
-          <div class="flex items-center gap-1.5 mt-0.5">
-            <span class="text-[9px] text-slate-500 uppercase tracking-tighter">${league}</span>
-            <span class="badge b-ap">AP</span>
-          </div>
-          <a href="https://www.google.com/search?q=${encodeURIComponent(matchLine+' live score')}" target="_blank" onclick="event.stopPropagation()"
-             class="inline-flex items-center gap-1 mt-1 text-green-500/70 text-[9px] font-black hover:text-green-400 transition-all uppercase tracking-wider">
-            <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block"></span> Live Score
-          </a>
+          ${buildLiveLinks(homeTeam, awayTeam)}
         </td>
         <td class="px-6 py-5 text-center">
-          <span class="bg-slate-800 border border-slate-700 text-green-400 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase max-w-[130px] inline-block truncate shadow-sm">${pick || '?'}</span>
+          <span class="bg-slate-800 border border-slate-700 text-green-400 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase max-w-[130px] inline-block truncate shadow-sm">${pick||'?'}</span>
         </td>
         <td class="px-6 py-5 text-[11px] text-slate-500 italic font-medium leading-relaxed">${ket}</td>
         ${scoreCell}
@@ -482,26 +450,17 @@
 
       const detailTr = document.createElement("tr");
       detailTr.className = "detail-row";
-      detailTr.innerHTML = `
-        <td colspan="6" style="padding:0">
-          <div class="detail-inner" style="display:none;overflow:hidden">
-            <div class="detail-content px-6 py-4 bg-[#050b14] border-b border-slate-800/60"></div>
-          </div>
-        </td>`;
-      list.appendChild(tr);
-      list.appendChild(detailTr);
+      detailTr.innerHTML = `<td colspan="6" style="padding:0"><div class="detail-inner" style="display:none;overflow:hidden"><div class="detail-content px-6 py-4 bg-[#050b14] border-b border-slate-800/60"></div></div></td>`;
+      list.appendChild(tr); list.appendChild(detailTr);
     }
 
-    /** Parse full AP bill text and build all rows */
     function parseAPFormat(rawText, list) {
       const lines = rawText.split('\n').map(l => l.trim()).filter(Boolean);
-      for (let i = 0; i + 3 < lines.length; i += 4) {
-        buildAPRow(lines[i], lines[i+1], lines[i+2], lines[i+3], list);
-      }
+      for (let i = 0; i + 3 < lines.length; i += 4) buildAPRow(lines[i], lines[i+1], lines[i+2], lines[i+3], list);
     }
 
     // ═══════════════════════════════════════════════════════════════════
-    //  PROCESS
+    //  PROCESS (SBO/SABA format)
     // ═══════════════════════════════════════════════════════════════════
     function processData() {
       const rawText = document.getElementById("rawInput").value;
@@ -513,15 +472,9 @@
       document.getElementById("resultArea").classList.remove("hidden");
       document.getElementById("calcPanel").classList.remove("hidden");
 
-      // ── Route: AP format (4-line blocks, no Soccer prefix)
-      if (detectAPFormat(rawText)) {
-        parseAPFormat(rawText, list);
-        calculate();
-        return;
-      }
+      if (detectAPFormat(rawText)) { parseAPFormat(rawText, list); calculate(); return; }
 
-      // ── SBO / default format (Soccer/Football prefix blocks)
-      const blocks  = rawText.split(/(?:Soccer|Football)\s+/i).filter(b => b.trim());
+      const blocks = rawText.split(/(?:Soccer|Football)\s+/i).filter(b => b.trim());
       if (!blocks.length) return;
 
       blocks.forEach(block => {
@@ -529,49 +482,34 @@
         const normLines = lines.map(l => l.replace(/-vs-/gi, " vs "));
         const matchLine = normLines.find(l => l.includes(" vs ")) || "Home vs Away";
         const [home0, away0] = matchLine.split(" vs ");
-        const homeTeam = home0.trim();
-        const awayTeam = (away0 || "Away").trim();
+        const homeTeam = home0.trim(), awayTeam = (away0 || "Away").trim();
 
         const leagueRaw = normLines.find(l =>
           !l.includes(" vs ") && !/^\d{4}-\d{2}/.test(l) &&
           !/^Type:/i.test(l) && !/^Bet:/i.test(l) &&
           !/result:/i.test(l) && l.length > 2) || "Tournament";
-        // Strip glued datetime and Type: suffix (e.g. "Club Friendlies2026-03-27 06:00:00Type: -")
         const league = leagueRaw
-          .replace(/\d{4}-\d{2}-\d{2}.*$/i, '')
-          .replace(/Type:.*$/i, '')
-          .trim() || "Tournament";
+          .replace(/\d{4}-\d{2}-\d{2}.*$/i, '').replace(/Type:.*$/i, '').trim() || "Tournament";
 
         const betLine = normLines.find(l => /^Bet:/i.test(l)) || "";
 
-        // ── FIX: Handle duplicate "Half time result" lines
-        // Some bills paste HT twice; treat 2nd occurrence as FT
-        let ftLine  = normLines.find(l => /full.?time.?result/i.test(l)) || "";
-        let htLine  = normLines.find(l => /half.?time.?result/i.test(l)) || "";
+        let ftLine = normLines.find(l => /full.?time.?result/i.test(l)) || "";
+        let htLine = normLines.find(l => /half.?time.?result/i.test(l)) || "";
         if (!ftLine) {
-          const allHtLines = normLines.filter(l => /half.?time.?result/i.test(l));
-          if (allHtLines.length >= 2) {
-            ftLine = allHtLines[1];
-            htLine = allHtLines[0];
-          }
+          const allHt = normLines.filter(l => /half.?time.?result/i.test(l));
+          if (allHt.length >= 2) { ftLine = allHt[1]; htLine = allHt[0]; }
         }
 
-        // Extract odds from @ — allow negative e.g. @-1.87
         const oddsMatch = betLine.match(/@\s*(-?[\d.]+)/);
         const betOdds   = oddsMatch ? parseFloat(oddsMatch[1]) : 0;
-
-        const parseSc = ln => { const m = ln.match(/(\d+)\s*[:\-]\s*(\d+)(?:\s|$)/); return m ? [m[1],m[2]] : ["",""] };
-        const [ftH, ftA] = parseSc(ftLine);
-        const [htH, htA] = parseSc(htLine);
-
+        const parseSc = ln => { const m = ln.match(/(\d+)\s*[:\-]\s*(\d+)(?:\s|$)/); return m ? [m[1],m[2]] : ["",""]; };
+        const [ftH, ftA] = parseSc(ftLine), [htH, htA] = parseSc(htLine);
         const is1H = /\b1H\b|\bfirst.?half\b/i.test(betLine);
         const is2H = /\b2H\b|\bsecond.?half\b/i.test(betLine);
-
         const bl = betLine.replace(/(\d+):(\d+)/g, (m,a,b) =>
           /correct.?score|first.?half.?cs|2H.?cs/i.test(betLine) ? `${a}-${b}` : m);
 
-        // ── BET PARSING ───────────────────────────────────────────────
-        let type, pick, side="home", betValue=0, extra={};
+        let type, pick, side = "home", betValue = 0, extra = {};
 
         if (/over\/under|\bO\/U\b/i.test(bl)) {
           type = "OU";
@@ -579,123 +517,100 @@
           pick = ouPickM && /^under$/i.test(ouPickM[1]) ? "UNDER" : "OVER";
           const vm = bl.match(/(?:over|under)\s+([\d.]+)/i) || bl.match(/\bO\/U\b\s+(?:over|under)\s+([\d.]+)/i) || bl.match(/\bO\/U\b\s+([\d.]+)/i);
           betValue = vm ? parseFloat(vm[1]) : 0;
-
         } else if (/3.?way\s+(?:handicap|hdp)/i.test(bl)) {
           type = "HDP3W";
           const m = bl.match(/3.?way\s+(?:handicap|hdp)\s+([\w\s().-]+?)\s+([-\d.]+)\s*(?:@|$)/i);
           if (m) {
             const tok = m[1].trim().toLowerCase();
-            side = /^away$/i.test(tok) ? "away" : /^home$/i.test(tok) ? "home" :
-                   (awayTeam.toLowerCase().includes(tok)||tok.includes(awayTeam.toLowerCase())) ? "away" : "home";
-            pick = /^(home|away)$/i.test(tok) ? (side==="away"?awayTeam:homeTeam) : m[1].trim();
+            side = /^away$/i.test(tok)?"away":/^home$/i.test(tok)?"home":
+                   (awayTeam.toLowerCase().includes(tok)||tok.includes(awayTeam.toLowerCase()))?"away":"home";
+            pick = /^(home|away)$/i.test(tok)?(side==="away"?awayTeam:homeTeam):m[1].trim();
             betValue = parseFloat(m[2]);
           } else { pick = homeTeam; }
-
         } else if (/handicap|\bHdp\b/i.test(bl)) {
           type = "HDP";
           const m = bl.match(/\b(?:Handicap|Hdp)\s+([\w\s().-]+?)\s+([-\d.]+)\s*(?:@|$)/i);
           if (m) {
             const tok = m[1].trim().toLowerCase();
-            side = /^away$/i.test(tok) ? "away" : /^home$/i.test(tok) ? "home" :
-                   (awayTeam.toLowerCase().includes(tok)||tok.includes(awayTeam.toLowerCase())) ? "away" : "home";
-            pick = /^(home|away)$/i.test(tok) ? (side==="away"?awayTeam:homeTeam) : m[1].trim();
+            side = /^away$/i.test(tok)?"away":/^home$/i.test(tok)?"home":
+                   (awayTeam.toLowerCase().includes(tok)||tok.includes(awayTeam.toLowerCase()))?"away":"home";
+            pick = /^(home|away)$/i.test(tok)?(side==="away"?awayTeam:homeTeam):m[1].trim();
             betValue = parseFloat(m[2]);
-          } else { pick=homeTeam; betValue=0; }
-
+          } else { pick = homeTeam; betValue = 0; }
         } else if (/FT\.1[xX]2|(?<!\w)1[xX]2/i.test(bl)) {
-          // FIX: handle FT.1X2, 1H 1X2, and plain 1X2
           type = "1X2";
           const tm = bl.match(/(?:FT\.)?1[xX]2\s+(\S+)/i);
           const tok = tm ? tm[1].toUpperCase() : "1";
-          if      (["X","DRAW","EVEN","DRAW"].includes(tok)) { pick="DRAW"; side="draw"; }
-          else if (["2","AWAY"].includes(tok))                { pick=awayTeam; side="away"; }
-          else                                                { pick=homeTeam; side="home"; }
-
+          if      (["X","DRAW","EVEN"].includes(tok)) { pick="DRAW"; side="draw"; }
+          else if (["2","AWAY"].includes(tok))         { pick=awayTeam; side="away"; }
+          else                                         { pick=homeTeam; side="home"; }
         } else if (/ht\/ft.*odd\/even|odd\/even.*ht\/ft/i.test(bl)) {
           type = "HTFT_OE";
           const hOE = (bl.match(/half.?time\s+(odd|even)/i)||[])[1]||"odd";
           const fOE = (bl.match(/full.?time\s+(odd|even)/i)||[])[1]||"even";
           extra = { ht_oe:hOE.toUpperCase(), ft_oe:fOE.toUpperCase() };
           pick  = `${extra.ht_oe}/${extra.ft_oe}`;
-
         } else if (/ht\/ft/i.test(bl)) {
           type = "HTFT";
           const shortM = bl.match(/ht\/ft\s+([had]{2})\b/i);
           const longM  = bl.match(/ht\/ft\s+([\w]+)\s*[\/,]\s*([\w]+)/i);
           const toRes  = t => /^d/i.test(t)||t==="X"?"draw":/^a/i.test(t)||t==="2"?"away":"home";
-          if (shortM) { extra = { ht_result:toRes(shortM[1][0]), ft_result:toRes(shortM[1][1]) }; }
-          else if (longM) { extra = { ht_result:toRes(longM[1]), ft_result:toRes(longM[2]) }; }
-          else { extra = { ht_result:"home", ft_result:"draw" }; }
+          if (shortM)     extra = { ht_result:toRes(shortM[1][0]), ft_result:toRes(shortM[1][1]) };
+          else if (longM) extra = { ht_result:toRes(longM[1]),    ft_result:toRes(longM[2]) };
+          else            extra = { ht_result:"home", ft_result:"draw" };
           pick = `${extra.ht_result.toUpperCase()} / ${extra.ft_result.toUpperCase()}`;
-
         } else if (/odd\/even/i.test(bl)) {
           type = "OE";
           const oeM = bl.match(/odd\/even\s+(\S+)/i);
           pick = oeM && /even/i.test(oeM[1]) ? "EVEN" : "ODD";
-
         } else if (/total.?goal/i.test(bl)) {
           type = "TOTAL_GOAL";
           const m = bl.match(/total.?goal\s+(\d+)-(\d+)/i);
-          extra = { min: m?parseInt(m[1]):0, max: m?parseInt(m[2]):99 };
+          extra = { min:m?parseInt(m[1]):0, max:m?parseInt(m[2]):99 };
           pick  = `${extra.min}-${extra.max} GOALS`;
-
         } else if (/correct.?score|first.?half.?cs|\bcs\b/i.test(bl)) {
           type = "CORRECT_SCORE";
           const sm = bl.match(/(\d+)-(\d+)/);
           extra = { exp_h:sm?parseInt(sm[1]):0, exp_a:sm?parseInt(sm[2]):0, is1H, is2H };
           pick  = `${extra.exp_h}-${extra.exp_a}`;
-
         } else if (/both.*score|one.*score|neither.*score|team.?to.?score/i.test(bl)) {
           type = "BTTS";
           const btts = /one.?team/i.test(bl)?"ONE":/neither/i.test(bl)?"NEITHER":"BOTH";
           extra = { btts };
           pick  = btts==="BOTH"?"BOTH TEAMS":btts==="ONE"?"ONE TEAM":"NEITHER";
-
         } else if (/winning.?margin/i.test(bl)) {
           type = "WIN_MARGIN";
           const wmSide = /away/i.test(bl)?"away":"home";
           const wmM    = bl.match(/by\s+(\d+)/i);
           extra = { wm_side:wmSide, wm_margin:wmM?parseInt(wmM[1]):1 };
-          side = wmSide;
-          pick = `${wmSide.toUpperCase()} WIN BY ${extra.wm_margin}`;
-
+          side  = wmSide;
+          pick  = `${wmSide.toUpperCase()} WIN BY ${extra.wm_margin}`;
         } else if (/to.?win.?to.?nil/i.test(bl)) {
           type = "WIN_NIL";
           side = /away/i.test(bl)?"away":"home";
           pick = `${side.toUpperCase()} NIL`;
-
         } else if (/corner|alternative/i.test(bl)) {
           type = "MANUAL";
           const cM = bl.match(/(over|under)\s+(\d+)/i);
           pick = cM ? `${cM[1].toUpperCase()} ${cM[2]} CORNERS` : "CORNERS";
-
         } else if (/\bundefined\b/i.test(bl) || bl.replace(/^Bet:\s*/i,"").replace(/@-?.*/,"").trim()==="") {
           type = "MANUAL"; pick = "NO BET";
-
         } else {
           const bareHdp = bl.match(/^Bet:\s*([-]?[\d.]+)\s*@/i);
           if (bareHdp) {
             const bv = parseFloat(bareHdp[1]);
-            if (bv < 0) {
-              // Negative → almost certainly HDP
-              type = "HDP"; betValue = bv; side = "home"; pick = homeTeam;
-            } else {
-              // Positive bare number → ambiguous (HDP or OU), mark manual
-              type = "MANUAL"; pick = `HDP/OU ${bv}?`;
-            }
+            if (bv < 0) { type="HDP"; betValue=bv; side="home"; pick=homeTeam; }
+            else        { type="MANUAL"; pick=`HDP/OU ${bv}?`; }
           } else {
             type = "MANUAL";
             pick = bl.replace(/^Bet:\s*/i,"").replace(/@[\d.]+.*/,"").trim() || "?";
           }
         }
 
-        // ── SCORE AUTO-FILL ───────────────────────────────────────────
         const needsBoth = (type==="CORRECT_SCORE"&&is2H)||type==="HTFT"||type==="HTFT_OE";
         const uses1H    = is1H||(type==="CORRECT_SCORE"&&extra.is1H);
-        const dispH = uses1H ? htH : ftH;
-        const dispA = uses1H ? htA : ftA;
+        const dispH = uses1H ? htH : ftH, dispA = uses1H ? htA : ftA;
 
-        // ── DESCRIPTION ──────────────────────────────────────────────
         const b1H = `<span class="badge b-1h">1H</span> `;
         const b2H = `<span class="badge b-2h">2H</span> `;
         const halfPfx = is1H ? b1H : is2H ? b2H : "";
@@ -704,19 +619,17 @@
         switch(type) {
           case "OU":    ket = `${halfPfx}${pick} <span class="text-slate-300">${betValue}</span> gol`; break;
           case "HDP": case "HDP3W":
-            ket = betValue < 0
-              ? `${halfPfx}<span class="text-green-400">${pick}</span> beri voor <span class="text-slate-300">${Math.abs(betValue)}</span>`
-              : `${halfPfx}<span class="text-green-400">${pick}</span> terima voor <span class="text-slate-300">${betValue}</span>`; break;
+            ket = ketHDP(pick, betValue, halfPfx); break;
           case "1X2":
             ket = halfPfx + (side==="draw" ? `Bet <span class="text-amber-400">DRAW</span>` : `<span class="text-green-400">${pick}</span> menang`); break;
-          case "OE":   ket = `${halfPfx}Total gol <span class="text-purple-400">${pick}</span>`; break;
-          case "HTFT": ket = `HT <span class="text-blue-400">${extra.ht_result?.toUpperCase()}</span> → FT <span class="text-green-400">${extra.ft_result?.toUpperCase()}</span>`; break;
+          case "OE":    ket = `${halfPfx}Total gol <span class="text-purple-400">${pick}</span>`; break;
+          case "HTFT":  ket = `HT <span class="text-blue-400">${extra.ht_result?.toUpperCase()}</span> → FT <span class="text-green-400">${extra.ft_result?.toUpperCase()}</span>`; break;
           case "HTFT_OE": ket = `HT <span class="text-purple-400">${extra.ht_oe}</span> / FT <span class="text-purple-400">${extra.ft_oe}</span>`; break;
           case "TOTAL_GOAL": ket = `Total gol <span class="text-cyan-400">${extra.min}–${extra.max}</span>`; break;
           case "CORRECT_SCORE": ket = `${halfPfx}Skor tepat <span class="text-amber-400 font-black">${extra.exp_h}-${extra.exp_a}</span>`; break;
-          case "BTTS": ket = `<span class="text-pink-400">${pick}</span> cetak gol`; break;
+          case "BTTS":  ket = `<span class="text-pink-400">${pick}</span> cetak gol`; break;
           case "WIN_MARGIN": ket = `<span class="text-cyan-400">${extra.wm_side?.toUpperCase()}</span> menang selisih <span class="text-slate-300">${extra.wm_margin}</span>`; break;
-          case "WIN_NIL": ket = `<span class="text-green-400">${side.toUpperCase()}</span> menang clean sheet`; break;
+          case "WIN_NIL":    ket = `<span class="text-green-400">${side.toUpperCase()}</span> menang clean sheet`; break;
           case "MANUAL":
             ket = pick==="NO BET"
               ? `<span class="text-slate-600 italic text-[9px]">Tipe bet tidak tersedia di bill</span>`
@@ -726,26 +639,20 @@
           default: ket = bl.replace(/^Bet:\s*/i,"");
         }
 
-        // ── SCORE CELL ────────────────────────────────────────────────
         let scoreCell;
         if (type === "MANUAL") {
           scoreCell = `<td class="px-6 py-5 text-center"><span class="badge b-man">Manual</span></td>`;
         } else if (needsBoth) {
-          const htAuto = htH !== "";
-          const ftAuto = ftH !== "";
+          const htAuto = htH !== "", ftAuto = ftH !== "";
           scoreCell = `<td class="px-6 py-5 text-center">
             <div class="flex flex-col gap-1.5 items-center">
               <div class="flex items-center gap-1">
                 <span class="badge b-1h">1H</span>
-                ${scoreInput("ht-h-score", htH, htAuto)}
-                <span class="text-slate-700 text-xs font-bold">:</span>
-                ${scoreInput("ht-a-score", htA, htAuto)}
+                ${scoreInput("ht-h-score",htH,htAuto)}<span class="text-slate-700 text-xs font-bold">:</span>${scoreInput("ht-a-score",htA,htAuto)}
               </div>
               <div class="flex items-center gap-1">
                 <span class="badge b-ft">FT</span>
-                ${scoreInput("h-score", ftH, ftAuto)}
-                <span class="text-slate-700 text-xs font-bold">:</span>
-                ${scoreInput("a-score", ftA, ftAuto)}
+                ${scoreInput("h-score",ftH,ftAuto)}<span class="text-slate-700 text-xs font-bold">:</span>${scoreInput("a-score",ftA,ftAuto)}
               </div>
             </div></td>`;
         } else {
@@ -755,43 +662,31 @@
             : `<span class="text-[8px] text-slate-600 font-black tracking-widest">FT</span>`;
           scoreCell = `<td class="px-4 py-3 text-center">
             <div class="flex items-center justify-center gap-1">
-              ${lbl}
-              ${scoreInput("h-score", dispH, isAuto)}
-              <span class="text-slate-700 text-xs font-bold">:</span>
-              ${scoreInput("a-score", dispA, isAuto)}
+              ${lbl}${scoreInput("h-score",dispH,isAuto)}<span class="text-slate-700 text-xs font-bold">:</span>${scoreInput("a-score",dispA,isAuto)}
             </div>
             ${isAuto ? `<div class="text-[8px] text-green-700/60 mt-1 mono">auto</div>` : ""}
           </td>`;
         }
 
-        // ── ODDS CELL ─────────────────────────────────────────────────
         let oddsCell;
         if (betOdds !== 0) {
-          const isNeg = betOdds < 0;
-          const decV  = toDecimal(betOdds);
+          const isNeg = betOdds < 0, decV = toDecimal(betOdds);
           oddsCell = `<td class="px-6 py-5 text-center">
-            <span class="mono font-black text-xs ${isNeg ? 'text-orange-400' : 'text-amber-400'}">${betOdds.toFixed(2)}</span>
-            ${isNeg
-              ? `<div class="text-[8px] text-orange-800/80 mt-0.5 mono">favorit</div>
-                 <div class="text-[8px] text-orange-600/60 mono">≈ ${decV.toFixed(4)} dec</div>`
-              : ''}
+            <span class="mono font-black text-xs ${isNeg?'text-orange-400':'text-amber-400'}">${betOdds.toFixed(2)}</span>
+            ${isNeg?`<div class="text-[8px] text-orange-800/80 mt-0.5 mono">favorit</div><div class="text-[8px] text-orange-600/60 mono">≈ ${decV.toFixed(4)} dec</div>`:''}
           </td>`;
         } else {
           oddsCell = `<td class="px-6 py-5 text-center"><span class="text-slate-700 text-xs">—</span></td>`;
         }
 
-        // ── BUILD ROW ─────────────────────────────────────────────────
         const tr = document.createElement("tr");
         tr.className = "hover:bg-slate-800/20 transition-all";
         tr.onclick = function(e){ toggleDetail(this, e); };
         tr.innerHTML = `
           <td class="px-6 py-5">
+            <div class="text-[9px] text-slate-500 uppercase tracking-widest font-black mb-1">${league}</div>
             <div class="font-bold text-slate-200 text-sm tracking-tight">${homeTeam} <span class="font-black text-[10px] italic" style="color:#f59e0b">vs</span> ${awayTeam}</div>
-            <div class="text-[9px] text-slate-500 uppercase tracking-tighter mt-0.5">${league}</div>
-            <a href="https://www.google.com/search?q=${encodeURIComponent(matchLine+' live score')}" target="_blank" onclick="event.stopPropagation()"
-               class="inline-flex items-center gap-1 mt-1 text-green-500/70 text-[9px] font-black hover:text-green-400 transition-all uppercase tracking-wider">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse inline-block"></span> Live Score
-            </a>
+            ${buildLiveLinks(homeTeam, awayTeam)}
           </td>
           <td class="px-6 py-5 text-center">
             <span class="bg-slate-800 border border-slate-700 text-green-400 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase max-w-[130px] inline-block truncate shadow-sm">${pick}</span>
@@ -812,14 +707,8 @@
 
         const detailTr = document.createElement("tr");
         detailTr.className = "detail-row";
-        detailTr.innerHTML = `
-          <td colspan="6" style="padding:0">
-            <div class="detail-inner" style="display:none;overflow:hidden">
-              <div class="detail-content px-6 py-4 bg-[#050b14] border-b border-slate-800/60"></div>
-            </div>
-          </td>`;
-        list.appendChild(tr);
-        list.appendChild(detailTr);
+        detailTr.innerHTML = `<td colspan="6" style="padding:0"><div class="detail-inner" style="display:none;overflow:hidden"><div class="detail-content px-6 py-4 bg-[#050b14] border-b border-slate-800/60"></div></div></td>`;
+        list.appendChild(tr); list.appendChild(detailTr);
       });
 
       calculate();
@@ -851,20 +740,16 @@
       const isOpen = detailDiv.classList.toggle("open");
       tr.classList.toggle("active-detail-row", isOpen);
       _activeDetailRow = isOpen ? tr : null;
-
       if (!isOpen) return;
 
-      const pill    = tr.querySelector(".status-pill");
+      const pill = tr.querySelector(".status-pill");
       const pillTxt = pill?.textContent?.trim() || "—";
       const type    = tr.querySelector(".bet-type")?.value;
 
       if (!type || type === "MANUAL" || pillTxt === "—") {
-        dc.innerHTML = `<div class="flex items-center gap-2 py-1">
-          <span class="text-[10px] mono text-slate-600 italic">${
-            type === "MANUAL"
-              ? "Tipe bet ini tidak bisa dikalkulasi otomatis."
-              : "Isi skor terlebih dahulu untuk melihat detail perhitungan."
-          }</span></div>`;
+        dc.innerHTML = `<div class="flex items-center gap-2 py-1"><span class="text-[10px] mono text-slate-600 italic">${
+          type === "MANUAL" ? "Tipe bet ini tidak bisa dikalkulasi otomatis." : "Isi skor terlebih dahulu untuk melihat detail perhitungan."
+        }</span></div>`;
       } else {
         const h   = parseInt(tr.querySelector(".h-score")?.value)    || 0;
         const a   = parseInt(tr.querySelector(".a-score")?.value)    || 0;
@@ -884,109 +769,72 @@
     //  CALCULATE (status per row)
     // ═══════════════════════════════════════════════════════════════════
     function calculate() {
-      const rows = document.querySelectorAll("#matchList tr");
-
-      rows.forEach(row => {
-        const type  = row.querySelector(".bet-type")?.value;
-        const pill  = row.querySelector(".status-pill");
-        if (!type || !pill) return;
-        if (type === "MANUAL") return;
+      document.querySelectorAll("#matchList tr").forEach(row => {
+        const type = row.querySelector(".bet-type")?.value;
+        const pill = row.querySelector(".status-pill");
+        if (!type || !pill || type === "MANUAL") return;
 
         const hEl   = row.querySelector(".h-score");
         const aEl   = row.querySelector(".a-score");
         const htHEl = row.querySelector(".ht-h-score");
         const htAEl = row.querySelector(".ht-a-score");
+        const hV = hEl?.value??"", aV = aEl?.value??"";
+        const htHV = htHEl?.value??"", htAV = htAEl?.value??"";
 
-        const hV   = hEl?.value  ?? "";
-        const aV   = aEl?.value  ?? "";
-        const htHV = htHEl?.value ?? "";
-        const htAV = htAEl?.value ?? "";
-
-        const ftEmpty = hV === "" || aV === "";
-        const htEmpty = htHEl && (htHV === "" || htAV === "");
-        if (ftEmpty || (htHEl && htEmpty)) {
+        if (hV===""||aV===""|| (htHEl&&(htHV===""||htAV===""))) {
           pill.textContent = "—";
           pill.className = "status-pill text-[9px] font-black uppercase tracking-wide rounded-full px-2.5 py-1 pill-pending";
-          refreshCalc();
-          return;
+          refreshCalc(); return;
         }
 
-        const h   = parseInt(hV)   || 0;
-        const a   = parseInt(aV)   || 0;
-        const htH = parseInt(htHV) || 0;
-        const htA = parseInt(htAV) || 0;
-
+        const h=parseInt(hV)||0, a=parseInt(aV)||0;
+        const htH=parseInt(htHV)||0, htA=parseInt(htAV)||0;
         const side   = row.querySelector(".bet-side").value;
-        const bet    = parseFloat(row.querySelector(".bet-val").value)  || 0;
+        const bet    = parseFloat(row.querySelector(".bet-val").value) || 0;
         const ouPick = row.querySelector(".ou-pick").value;
         let extra = {};
         try { extra = JSON.parse(row.querySelector(".bet-extra").value || "{}"); } catch(e){}
 
         let stat;
         switch(type) {
-          case "OU": {
-            let res = h + a - bet;
-            if (ouPick === "UNDER") res = -res;
-            stat = hdpThreshold(res); break;
-          }
-          case "HDP": {
-            const diff = side==="away" ? a - h : h - a;
-            const res  = bet < 0 ? diff - Math.abs(bet) : diff + bet;
-            stat = hdpThreshold(res); break;
-          }
-          case "HDP3W": {
-            const diff = side==="away" ? a - h : h - a;
-            const adj  = bet < 0 ? diff - Math.abs(bet) : diff + bet;
-            stat = adj > 0 ? "WIN" : adj === 0 ? "DRAW" : "LOSE"; break;
-          }
-          case "1X2":  stat = resultOf(h,a)===side ? "WIN":"LOSE"; break;
-          case "OE":   stat = ((h+a)%2!==0?"ODD":"EVEN")===ouPick ? "WIN":"LOSE"; break;
-          case "TOTAL_GOAL": stat = (h+a>=extra.min&&h+a<=extra.max) ? "WIN":"LOSE"; break;
+          case "OU": { let r=h+a-bet; if(ouPick==="UNDER")r=-r; stat=hdpThreshold(r); break; }
+          case "HDP": { const d=side==="away"?a-h:h-a; stat=hdpThreshold(bet<0?d-Math.abs(bet):d+bet); break; }
+          case "HDP3W": { const d=side==="away"?a-h:h-a, adj=bet<0?d-Math.abs(bet):d+bet; stat=adj>0?"WIN":adj===0?"DRAW":"LOSE"; break; }
+          case "1X2":  stat=resultOf(h,a)===side?"WIN":"LOSE"; break;
+          case "OE":   stat=((h+a)%2!==0?"ODD":"EVEN")===ouPick?"WIN":"LOSE"; break;
+          case "TOTAL_GOAL": stat=(h+a>=extra.min&&h+a<=extra.max)?"WIN":"LOSE"; break;
           case "CORRECT_SCORE": {
-            if (extra.is2H) { stat = (h-htH===extra.exp_h&&a-htA===extra.exp_a)?"WIN":"LOSE"; }
-            else             { stat = (h===extra.exp_h&&a===extra.exp_a)?"WIN":"LOSE"; }
-            break;
+            if(extra.is2H) stat=(h-htH===extra.exp_h&&a-htA===extra.exp_a)?"WIN":"LOSE";
+            else           stat=(h===extra.exp_h&&a===extra.exp_a)?"WIN":"LOSE"; break;
           }
-          case "HTFT": stat = (resultOf(htH,htA)===extra.ht_result&&resultOf(h,a)===extra.ft_result)?"WIN":"LOSE"; break;
+          case "HTFT": stat=(resultOf(htH,htA)===extra.ht_result&&resultOf(h,a)===extra.ft_result)?"WIN":"LOSE"; break;
           case "HTFT_OE": {
-            const ht = (htH+htA)%2!==0?"ODD":"EVEN";
-            const ft = (h+a)%2!==0?"ODD":"EVEN";
-            stat = (ht===extra.ht_oe&&ft===extra.ft_oe)?"WIN":"LOSE"; break;
+            const ht=(htH+htA)%2!==0?"ODD":"EVEN", ft=(h+a)%2!==0?"ODD":"EVEN";
+            stat=(ht===extra.ht_oe&&ft===extra.ft_oe)?"WIN":"LOSE"; break;
           }
-          case "BTTS": {
-            const hs=h>0, as=a>0;
-            stat = extra.btts==="BOTH"?(hs&&as?"WIN":"LOSE"):
-                   extra.btts==="ONE"?(hs!==as?"WIN":"LOSE"):
-                   (!hs&&!as?"WIN":"LOSE"); break;
-          }
-          case "WIN_MARGIN": {
-            const mg = extra.wm_side==="away"?a-h:h-a;
-            stat = mg===extra.wm_margin?"WIN":"LOSE"; break;
-          }
-          case "WIN_NIL": {
-            stat = side==="home"?(h>a&&a===0?"WIN":"LOSE"):(a>h&&h===0?"WIN":"LOSE"); break;
-          }
-          default: stat = "LOSE";
+          case "BTTS": { const hs=h>0,as=a>0; stat=extra.btts==="BOTH"?(hs&&as?"WIN":"LOSE"):extra.btts==="ONE"?(hs!==as?"WIN":"LOSE"):(!hs&&!as?"WIN":"LOSE"); break; }
+          case "WIN_MARGIN": { const mg=extra.wm_side==="away"?a-h:h-a; stat=mg===extra.wm_margin?"WIN":"LOSE"; break; }
+          case "WIN_NIL": stat=side==="home"?(h>a&&a===0?"WIN":"LOSE"):(a>h&&h===0?"WIN":"LOSE"); break;
+          default: stat="LOSE";
         }
 
         pill.textContent = stat;
         pill.className = `status-pill text-[9px] font-black uppercase tracking-wide rounded-full px-2.5 py-1 ${pillClass(stat)}`;
 
         if (_activeDetailRow === row) {
-          const detailDiv = row.nextElementSibling?.querySelector(".detail-inner");
-          const dc        = row.nextElementSibling?.querySelector(".detail-content");
-          if (detailDiv && dc && detailDiv.classList.contains("open")) {
-            const betOdds2 = parseFloat(row.querySelector(".bet-odds")?.value) || 0;
-            dc.innerHTML = buildExplanation(type, stat, h, a, htH, htA, bet, side, ouPick, extra, betOdds2);
+          const dv = row.nextElementSibling?.querySelector(".detail-inner");
+          const dc = row.nextElementSibling?.querySelector(".detail-content");
+          if (dv && dc && dv.classList.contains("open")) {
+            const bo2 = parseFloat(row.querySelector(".bet-odds")?.value) || 0;
+            dc.innerHTML = buildExplanation(type, stat, h, a, htH, htA, bet, side, ouPick, extra, bo2);
           }
         }
       });
-
       refreshCalc();
     }
 
     // ═══════════════════════════════════════════════════════════════════
-    //  BUILD EXPLANATION HTML
+    //  BUILD EXPLANATION HTML  (detail per klik baris)
     // ═══════════════════════════════════════════════════════════════════
     function buildExplanation(type, stat, h, a, htH, htA, bet, side, ouPick, extra, betOdds) {
       const scoreStr = `<span class="val">${h}–${a}</span>`;
@@ -995,19 +843,25 @@
 
       switch(type) {
         case "HDP": {
-          const diff      = side==="away" ? a - h : h - a;
+          const diff      = side==="away" ? a-h : h-a;
           const res       = bet < 0 ? diff - Math.abs(bet) : diff + bet;
           const sideLabel = side==="home" ? "Home" : "Away";
           const opp       = side==="home" ? "Away" : "Home";
+          const abs       = Math.abs(bet);
+
+          // ── Natural language summary ──
+          if (bet < 0) {
+            steps.push(`<span class="label">Syarat Menang</span><span class="green">${sideLabel} harus unggul lebih dari ${abs} gol</span> dari ${opp}`);
+          } else {
+            steps.push(`<span class="label">Syarat Menang</span><span class="green">${sideLabel} menerima voor ${abs} gol</span> — kalah maksimal ${abs} masih bisa menang taruhan`);
+          }
           steps.push(`<span class="label">Jenis Bet</span>Handicap <span class="hi">${sideLabel}</span> ${bet>=0?"+":""}${bet}`);
           steps.push(`<span class="label">Skor</span>${sideLabel} <span class="val">${side==="home"?h:a}</span> – ${opp} <span class="val">${side==="home"?a:h}</span>`);
           steps.push(`<span class="label">Selisih (${sideLabel} – ${opp})</span>${side==="home"?h:a} – ${side==="home"?a:h} = <span class="hi">${diff}</span>`);
           if (bet < 0) {
-            steps.push(`<span class="label">Hasil setelah voor</span>${diff} – ${Math.abs(bet)} = <span class="hi">${res}</span>`);
-            steps.push(`<span class="label">Penjelasan voor</span><span class="blue">${sideLabel} memberi voor ${Math.abs(bet)}</span> ke lawan`);
+            steps.push(`<span class="label">Setelah voor (${diff} – ${abs})</span><span class="hi">${res}</span>`);
           } else {
-            steps.push(`<span class="label">Hasil setelah voor</span>${diff} + ${bet} = <span class="hi">${res}</span>`);
-            steps.push(`<span class="label">Penjelasan voor</span><span class="blue">${sideLabel} menerima voor ${bet}</span> dari lawan`);
+            steps.push(`<span class="label">Setelah voor (${diff} + ${bet})</span><span class="hi">${res}</span>`);
           }
           steps.push(`<span class="label">Threshold</span>Hasil <span class="hi">${res}</span> → ${thresholdExplain(res)}`);
           break;
@@ -1020,10 +874,10 @@
           steps.push(`<span class="label">Total Gol</span>${h} + ${a} = <span class="hi">${total}</span>`);
           if (ouPick === "OVER") {
             steps.push(`<span class="label">Selisih (total – batas)</span>${total} – ${bet} = <span class="hi">${total-bet}</span>`);
-            steps.push(`<span class="label">Penjelasan</span>Total gol <span class="hi">${total}</span> vs batas <span class="hi">${bet}</span> → ${total>bet?"lebih banyak (OVER mendukung)":total===bet?"tepat sama":"kurang (OVER tidak terpenuhi)"}`);
+            steps.push(`<span class="label">Penjelasan</span>Total gol <span class="hi">${total}</span> vs batas <span class="hi">${bet}</span> → ${total>bet?"lebih banyak":total===bet?"tepat sama":"kurang"}`);
           } else {
             steps.push(`<span class="label">Selisih (batas – total)</span>${bet} – ${total} = <span class="hi">${bet-total}</span>`);
-            steps.push(`<span class="label">Penjelasan</span>Total gol <span class="hi">${total}</span> vs batas <span class="hi">${bet}</span> → ${total<bet?"lebih sedikit (UNDER terpenuhi)":total===bet?"tepat sama":"terlalu banyak (UNDER tidak terpenuhi)"}`);
+            steps.push(`<span class="label">Penjelasan</span>Total gol <span class="hi">${total}</span> vs batas <span class="hi">${bet}</span> → ${total<bet?"lebih sedikit":total===bet?"tepat sama":"terlalu banyak"}`);
           }
           steps.push(`<span class="label">Threshold (res=${res})</span>${thresholdExplain(res)}`);
           break;
@@ -1037,8 +891,7 @@
           break;
         }
         case "HDP3W": {
-          const diff = side==="away" ? a-h : h-a;
-          const adj  = bet<0 ? diff-Math.abs(bet) : diff+bet;
+          const diff = side==="away"?a-h:h-a, adj=bet<0?diff-Math.abs(bet):diff+bet;
           steps.push(`<span class="label">Jenis Bet</span>3-Way Handicap <span class="hi">${side}</span> ${bet}`);
           steps.push(`<span class="label">Skor & Selisih</span>${scoreStr}, selisih = <span class="hi">${diff}</span>`);
           steps.push(`<span class="label">Hasil setelah voor</span>${diff} ${bet<0?"–":"+"}${Math.abs(bet)} = <span class="hi">${adj}</span>`);
@@ -1046,8 +899,7 @@
           break;
         }
         case "OE": {
-          const total  = h+a;
-          const actual = total%2!==0?"ODD":"EVEN";
+          const total=h+a, actual=total%2!==0?"ODD":"EVEN";
           steps.push(`<span class="label">Jenis Bet</span>Odd/Even → Bet <span class="hi">${ouPick}</span>`);
           steps.push(`<span class="label">Total Gol</span>${h} + ${a} = <span class="hi">${total}</span>`);
           steps.push(`<span class="label">Paritas</span>${total} ${total%2!==0?"tidak genap":"genap"} → <span class="hi">${actual}</span>`);
@@ -1055,16 +907,15 @@
           break;
         }
         case "TOTAL_GOAL": {
-          const total = h+a;
+          const total=h+a;
           steps.push(`<span class="label">Jenis Bet</span>Total Gol antara <span class="hi">${extra.min}–${extra.max}</span>`);
           steps.push(`<span class="label">Total Gol</span>${h} + ${a} = <span class="hi">${total}</span>`);
           steps.push(`<span class="label">Evaluasi</span>${total} ${total>=extra.min&&total<=extra.max?`dalam range ${extra.min}–${extra.max}`:`di luar range ${extra.min}–${extra.max}`} → ${total>=extra.min&&total<=extra.max?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
           break;
         }
         case "CORRECT_SCORE": {
-          const scoreH = extra.is2H ? h-htH : h;
-          const scoreA = extra.is2H ? a-htA : a;
-          const half   = extra.is1H ? "1H" : extra.is2H ? "2H" : "FT";
+          const scoreH=extra.is2H?h-htH:h, scoreA=extra.is2H?a-htA:a;
+          const half=extra.is1H?"1H":extra.is2H?"2H":"FT";
           steps.push(`<span class="label">Jenis Bet</span>Correct Score ${half} → <span class="hi">${extra.exp_h}–${extra.exp_a}</span>`);
           if (extra.is2H) steps.push(`<span class="label">Gol 2H</span>FT(${h}–${a}) – HT(${htH}–${htA}) = <span class="hi">${scoreH}–${scoreA}</span>`);
           else steps.push(`<span class="label">Skor ${half}</span><span class="hi">${scoreH}–${scoreA}</span>`);
@@ -1072,29 +923,36 @@
           break;
         }
         case "HTFT": {
-          const htActual = htH>htA?"HOME":htH<htA?"AWAY":"DRAW";
-          const ftActual = h>a?"HOME":h<a?"AWAY":"DRAW";
-          const htOk = htActual.toLowerCase()===extra.ht_result;
-          const ftOk = ftActual.toLowerCase()===extra.ft_result;
+          const htA2=htH>htA?"HOME":htH<htA?"AWAY":"DRAW";
+          const ftA2=h>a?"HOME":h<a?"AWAY":"DRAW";
+          const htOk=htA2.toLowerCase()===extra.ht_result, ftOk=ftA2.toLowerCase()===extra.ft_result;
           steps.push(`<span class="label">Jenis Bet</span>HT/FT → <span class="hi">${extra.ht_result?.toUpperCase()} / ${extra.ft_result?.toUpperCase()}</span>`);
-          steps.push(`<span class="label">Skor HT</span>${htStr} → <span class="hi">${htActual}</span>`);
-          steps.push(`<span class="label">Skor FT</span>${scoreStr} → <span class="hi">${ftActual}</span>`);
-          steps.push(`<span class="label">Evaluasi HT</span>Bet <span class="hi">${extra.ht_result?.toUpperCase()}</span>, terjadi <span class="hi">${htActual}</span> → ${htOk?'<span class="green">✓</span>':'<span class="red">✗</span>'}`);
-          steps.push(`<span class="label">Evaluasi FT</span>Bet <span class="hi">${extra.ft_result?.toUpperCase()}</span>, terjadi <span class="hi">${ftActual}</span> → ${ftOk?'<span class="green">✓</span>':'<span class="red">✗</span>'}`);
+          steps.push(`<span class="label">Skor HT</span>${htStr} → <span class="hi">${htA2}</span>`);
+          steps.push(`<span class="label">Skor FT</span>${scoreStr} → <span class="hi">${ftA2}</span>`);
+          steps.push(`<span class="label">Evaluasi HT</span>Bet <span class="hi">${extra.ht_result?.toUpperCase()}</span>, terjadi <span class="hi">${htA2}</span> → ${htOk?'<span class="green">✓</span>':'<span class="red">✗</span>'}`);
+          steps.push(`<span class="label">Evaluasi FT</span>Bet <span class="hi">${extra.ft_result?.toUpperCase()}</span>, terjadi <span class="hi">${ftA2}</span> → ${ftOk?'<span class="green">✓</span>':'<span class="red">✗</span>'}`);
           steps.push(`<span class="label">Hasil Akhir</span>${htOk&&ftOk?'<span class="green">Keduanya cocok → WIN</span>':'<span class="red">Salah satu tidak cocok → LOSE</span>'}`);
           break;
         }
+        case "HTFT_OE": {
+          const htP=(htH+htA)%2!==0?"ODD":"EVEN", ftP=(h+a)%2!==0?"ODD":"EVEN";
+          steps.push(`<span class="label">Jenis Bet</span>HT/FT OE → HT <span class="hi">${extra.ht_oe}</span> / FT <span class="hi">${extra.ft_oe}</span>`);
+          steps.push(`<span class="label">HT Score</span>${htStr} → total ${htH+htA} → <span class="hi">${htP}</span>`);
+          steps.push(`<span class="label">FT Score</span>${scoreStr} → total ${h+a} → <span class="hi">${ftP}</span>`);
+          steps.push(`<span class="label">Evaluasi</span>HT ${htP}${htP===extra.ht_oe?'✓':'✗'}, FT ${ftP}${ftP===extra.ft_oe?'✓':'✗'} → ${htP===extra.ht_oe&&ftP===extra.ft_oe?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
+          break;
+        }
         case "BTTS": {
-          const hs=h>0, as2=a>0;
+          const hs=h>0, as=a>0;
           steps.push(`<span class="label">Jenis Bet</span>BTTS → <span class="hi">${extra.btts}</span>`);
-          steps.push(`<span class="label">Skor</span>${scoreStr} → Home ${hs?'<span class="green">cetak gol</span>':'<span class="red">tidak cetak</span>'}, Away ${as2?'<span class="green">cetak gol</span>':'<span class="red">tidak cetak</span>'}`);
-          if (extra.btts==="BOTH") steps.push(`<span class="label">Evaluasi</span>Kedua tim harus cetak gol → ${hs&&as2?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
-          else if (extra.btts==="ONE") steps.push(`<span class="label">Evaluasi</span>Hanya satu tim cetak gol → ${hs!==as2?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
-          else steps.push(`<span class="label">Evaluasi</span>Tidak ada yang cetak gol → ${!hs&&!as2?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
+          steps.push(`<span class="label">Skor</span>${scoreStr} → Home ${hs?'<span class="green">cetak gol</span>':'<span class="red">tidak cetak</span>'}, Away ${as?'<span class="green">cetak gol</span>':'<span class="red">tidak cetak</span>'}`);
+          if (extra.btts==="BOTH") steps.push(`<span class="label">Evaluasi</span>Kedua tim harus cetak gol → ${hs&&as?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
+          else if (extra.btts==="ONE") steps.push(`<span class="label">Evaluasi</span>Hanya satu tim cetak gol → ${hs!==as?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
+          else steps.push(`<span class="label">Evaluasi</span>Tidak ada yang cetak gol → ${!hs&&!as?'<span class="green">WIN</span>':'<span class="red">LOSE</span>'}`);
           break;
         }
         case "WIN_MARGIN": {
-          const mg = extra.wm_side==="away"?a-h:h-a;
+          const mg=extra.wm_side==="away"?a-h:h-a;
           steps.push(`<span class="label">Jenis Bet</span>Win Margin → <span class="hi">${extra.wm_side?.toUpperCase()}</span> menang selisih tepat <span class="hi">${extra.wm_margin}</span>`);
           steps.push(`<span class="label">Skor</span>${scoreStr}, selisih = <span class="hi">${Math.abs(h-a)}</span>`);
           steps.push(`<span class="label">Evaluasi</span>Selisih ${mg} vs ekspektasi ${extra.wm_margin} → ${mg===extra.wm_margin?'<span class="green">TEPAT → WIN</span>':'<span class="red">TIDAK TEPAT → LOSE</span>'}`);
@@ -1107,8 +965,7 @@
           else               steps.push(`<span class="label">Syarat</span>Away > Home dan Home = 0 → ${a>h&&h===0?'<span class="green">TERPENUHI → WIN</span>':'<span class="red">TIDAK TERPENUHI → LOSE</span>'}`);
           break;
         }
-        default:
-          steps.push(`<span class="label">Info</span>Tidak ada detail tersedia untuk tipe bet ini`);
+        default: steps.push(`<span class="label">Info</span>Tidak ada detail tersedia untuk tipe bet ini`);
       }
 
       // ── Odds multiplier breakdown ──
@@ -1116,11 +973,13 @@
       if (betOdds !== 0) {
         const isNeg   = betOdds < 0;
         const decOdds = toDecimal(betOdds);
-
         if (isNeg) {
-          oddsSteps.push(`<span class="label">Format Odds</span>Odds negatif: <span class="orange">${betOdds.toFixed(2)}</span>`);
-          oddsSteps.push(`<span class="label">Cara Baca</span>Tanda minus = posisi <span class="orange">favorit</span> — nilai abs langsung dipakai sebagai decimal`);
-          oddsSteps.push(`<span class="label">Decimal Multiplier</span>|${betOdds.toFixed(2)}| = <span class="orange">${decOdds.toFixed(4)}</span>`);
+          const absO = Math.abs(betOdds);
+          const actStake = (betOdds !== 0) ? "nilaibet × " + absO.toFixed(2) : "";
+          oddsSteps.push(`<span class="label">Format Odds Negatif SABA</span>Odds <span class="orange">${betOdds.toFixed(2)}</span>`);
+          oddsSteps.push(`<span class="label">Rumus SABA</span>Actual Stake = Stake × <span class="orange">${absO.toFixed(2)}</span>`);
+          oddsSteps.push(`<span class="label">WIN return</span>Stake + Actual Stake = Stake × (1 + ${absO.toFixed(2)}) = Stake × <span class="orange">${decOdds.toFixed(4)}</span>`);
+          oddsSteps.push(`<span class="label">Decimal Multiplier</span>1 + |${betOdds.toFixed(2)}| = <span class="orange">${decOdds.toFixed(4)}</span>`);
         }
         if (stat === "WIN") {
           oddsSteps.push(`<span class="label">Rumus (Menang Full)</span>Multiplier = <span class="green">${decOdds.toFixed(4)}</span>`);
@@ -1154,9 +1013,9 @@
     }
 
     function thresholdExplain(res) {
-      if (res >  0.25) return '<span class="green">WIN penuh (res > +0.25)</span>';
+      if (res >  0.25)  return '<span class="green">WIN penuh (res > +0.25)</span>';
       if (res ===  0.25) return '<span class="green">WIN SETENGAH (res = +0.25)</span>';
-      if (res ===  0)   return '<span class="blue">DRAW / Void (res = 0)</span>';
+      if (res ===  0)    return '<span class="blue">DRAW / Void (res = 0)</span>';
       if (res === -0.25) return '<span class="red">LOSE SETENGAH (res = −0.25)</span>';
       return '<span class="red">LOSE penuh (res < −0.25)</span>';
     }
@@ -1172,7 +1031,6 @@
       if (stat === "LOSE")     return -1;
       return null;
     }
-
     function oddsX(decimalOdds, hasil) {
       if (hasil === 1)    return decimalOdds;
       if (hasil === 0.5)  return ((decimalOdds - 1) / 2) + 1;
@@ -1184,17 +1042,16 @@
     function refreshCalc() {
       const rows     = document.querySelectorAll("#matchList tr");
       const nilaibet = getNilaiBet();
-      const parlayRows = document.getElementById("parlayRows");
-      parlayRows.innerHTML = "";
+      const parlayTbl = document.getElementById("parlayRows");
+      parlayTbl.innerHTML = "";
 
-      let totalOdds = 1;
-      let hasLose   = false;
-      let hasPending= false;
+      let totalOdds = 1, hasLose = false, hasPending = false;
+      let negOddsProduct = 1; // track |odds| product for negative odds legs (for loss amount)
 
       rows.forEach((row, i) => {
         const type  = row.querySelector(".bet-type")?.value;
         const pill  = row.querySelector(".status-pill");
-        if (!type || !pill) return;
+        if (!type || !pill || type === "MANUAL") return;
 
         const rawOdds  = parseFloat(row.querySelector(".bet-odds")?.value) || 0;
         const decOdds  = toDecimal(rawOdds);
@@ -1202,18 +1059,15 @@
         const matchTd  = row.querySelector("td:first-child");
         const matchName= matchTd ? matchTd.querySelector(".font-bold")?.textContent || `Match ${i+1}` : `Match ${i+1}`;
 
-        if (type === "MANUAL") return;
-
         const hasil = statToHasil(statText);
-        let oxVal   = 1;
-        let dispOX  = "×1.00";
-        let rowPill = "pill-pending";
+        let oxVal = 1, dispOX = "×1.00", rowPill = "pill-pending";
         let statusTxt = statText === "—" ? "Pending" : statText;
 
         if (statText === "—" || statText === "") {
           hasPending = true; dispOX = "?";
         } else if (hasil === -1) {
           hasLose = true; oxVal = 0; dispOX = "×0 (LOSE)"; rowPill = "pill-lose";
+          if (rawOdds < 0) negOddsProduct *= Math.abs(rawOdds);
         } else if (hasil !== null && rawOdds !== 0) {
           oxVal  = oddsX(decOdds, hasil);
           dispOX = `×${oxVal.toFixed(4)}`;
@@ -1224,7 +1078,6 @@
         } else {
           hasPending = true; dispOX = "?";
         }
-
         if (hasil === -1) totalOdds = 0;
 
         const oddsDisp = rawOdds !== 0
@@ -1233,7 +1086,7 @@
               : `<span class="${oxVal>1?'text-green-400':oxVal<1?'text-red-400':'text-amber-400'}">${rawOdds.toFixed(2)}</span>`)
           : "—";
 
-        parlayRows.innerHTML += `
+        parlayTbl.innerHTML += `
           <tr class="text-[10px] border-b border-slate-800/30 hover:bg-slate-800/10">
             <td class="py-1.5 pr-2 align-middle">
               <span class="w-4 h-4 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-[8px] font-black text-slate-600">${i+1}</span>
@@ -1251,8 +1104,8 @@
           </tr>`;
       });
 
-      if (parlayRows.innerHTML) {
-        parlayRows.innerHTML = `
+      if (parlayTbl.innerHTML) {
+        parlayTbl.innerHTML = `
           <thead>
             <tr class="text-[8px] text-slate-700 font-black uppercase tracking-widest mono border-b border-slate-800/60">
               <td class="pb-1.5 pr-2 w-5">#</td>
@@ -1262,11 +1115,14 @@
               <td class="pb-1.5 text-right w-24">Multiplier</td>
             </tr>
           </thead>
-          <tbody>` + parlayRows.innerHTML + `</tbody>`;
+          <tbody>` + parlayTbl.innerHTML + `</tbody>`;
       }
 
-      const profit   = nilaibet * totalOdds - nilaibet;
       const totalRet = nilaibet * totalOdds;
+
+      // Untuk single bet dengan odds negatif, actual_stake = nilai_bet × |odds|.
+      // profit = totalRet - nilai_bet (dari perspektif nominal stake yang user input)
+      const profit = totalRet - nilaibet;
 
       document.getElementById("totalOddsDisp").textContent =
         hasLose ? "0.00" : hasPending ? "..." : totalOdds.toFixed(4);
@@ -1276,7 +1132,9 @@
       const badge  = document.getElementById("finalBadge");
 
       if (hasLose) {
-        profEl.textContent = `− Rp ${fmt(nilaibet)}`;
+        // Kalau ada negative odds leg yang kalah, actual loss = nilaibet × |odds|
+        const lossAmt = negOddsProduct > 1 ? nilaibet * negOddsProduct : nilaibet;
+        profEl.textContent = `− Rp ${fmt(lossAmt)}`;
         profEl.className   = "text-2xl font-black mono text-red-500";
         retEl.textContent  = "Rp 0";
         badge.textContent  = "❌ TICKET LOSE";
@@ -1302,57 +1160,44 @@
       }
     }
     </script>
+
     <script>
-// Blokir shortcut keyboard untuk inspect
-document.addEventListener('keydown', function(e) {
-// Ctrl+Shift+I
-if (e.ctrlKey && e.shiftKey && e.key === 'I') {
-e.preventDefault();
-return false;
-}
+    // ═══════════════════════════════════════════════════════════════════
+    //  AUTO ANALYZE — dipanggil setiap kali textarea berubah
+    // ═══════════════════════════════════════════════════════════════════
+    let _analyzeTimer = null;
 
-// Ctrl+Shift+J
-if (e.ctrlKey && e.shiftKey && e.key === 'J') {
-e.preventDefault();
-return false;
-}
+    function autoAnalyze() {
+      // Debounce 400ms — tunggu user selesai paste sebelum proses
+      clearTimeout(_analyzeTimer);
+      _analyzeTimer = setTimeout(() => {
+        const raw = document.getElementById("rawInput").value.trim();
+        if (!raw) {
+          // Kalau dikosongkan, reset tampilan
+          document.getElementById("matchList").innerHTML = "";
+          document.getElementById("placeholder").classList.remove("hidden");
+          document.getElementById("resultArea").classList.add("hidden");
+          document.getElementById("calcPanel").classList.add("hidden");
+          document.getElementById("parlayRows").innerHTML = "";
+          document.getElementById("totalOddsDisp").textContent = "—";
+          document.getElementById("totalProfitDisp").textContent = "—";
+          document.getElementById("totalReturnDisp").textContent = "—";
+          document.getElementById("finalBadge").textContent = "—";
+          return;
+        }
+        processData();
+      }, 400);
+    }
 
-// Ctrl+Shift+C
-if (e.ctrlKey && e.shiftKey && e.key === 'C') {
-e.preventDefault();
-return false;
-}
-
-// Ctrl+U
-if (e.ctrlKey && e.key === 'u') {
-e.preventDefault();
-return false;
-}
-
-// Ctrl+Shift+U
-if (e.ctrlKey && e.shiftKey && e.key === 'U') {
-e.preventDefault();
-return false;
-}
-
-// F12
-if (e.key === 'F12') {
-e.preventDefault();
-return false;
-}
-});
-
-// Blokir klik kanan (context menu)
-document.addEventListener('contextmenu', function(e) {
-e.preventDefault();
-return false;
-});
-
-// Cegah drag dan drop
-document.addEventListener('dragstart', function(e) {
-e.preventDefault();
-return false;
-});
-</script>
+    // Blokir DevTools shortcuts
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) { e.preventDefault(); return false; }
+      if (e.ctrlKey && e.key === 'u')                                { e.preventDefault(); return false; }
+      if (e.ctrlKey && e.shiftKey && e.key === 'U')                  { e.preventDefault(); return false; }
+      if (e.key === 'F12')                                            { e.preventDefault(); return false; }
+    });
+    document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+    document.addEventListener('dragstart',   function(e) { e.preventDefault(); return false; });
+    </script>
   </body>
 </html>

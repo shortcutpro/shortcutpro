@@ -123,7 +123,7 @@
         .league-select:focus, .league-select:hover { border-color: var(--primary); box-shadow: 0 0 14px var(--glow-soft); }
         .league-select option { background: #0a0a0f; color: #fff; font-weight: 700; }
 
-        /* ── CROWN TOP PREVIEW STYLES ── */
+        /* CROWN TOP PREVIEW STYLES */
         .prev-league-block { margin: 12px 0; border: 3px solid var(--primary); border-radius: 15px; padding: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px var(--glow-soft); transition: all 0.5s; }
         .prev-league-inner { border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,215,0,0.4); }
         .prev-league-crown { background: linear-gradient(180deg, #1a1200, #0d0d0d); padding: 8px 10px 6px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.13); transition: all 0.5s; }
@@ -242,11 +242,15 @@
 ENGLISH PREMIER LEAGUE
 08/02 21:00 WIB Brighton VS Crystal Palace 1 : 1
 08/02 23:30 WIB Liverpool VS Manchester City 2 - 2
-08/02 21:00 WIB Chelsea vs Arsenal 1-0
 
-ITALY SERIE A
-08/02 21:00 Bologna VS Parma 2 : 0
-08/02 Lecce vs Udinese 1 - 1"></textarea>
+GERMANY WOMEN BUNDESLIGA
+30/03 23:00 WIB Hamburger SV (W) vs Bayer Leverkusen (W) 1 : 1
+
+UEFA U21 CHAMPIONSHIP
+31/03 00:00 WIB France U21 vs Iceland U21 2 : 1
+
+INTERNATIONAL FRIENDLY U20
+30/03 22:00 WIB Czech Republic U20 vs Portugal U20 1 : 1"></textarea>
                 <div class="button-group">
                     <button class="btn-clear" onclick="clearInput()">🗑️ Clear Semua</button>
                 </div>
@@ -436,6 +440,41 @@ var SHORT_NAMES = {
 };
 function getShortName(n) { return SHORT_NAMES[n.toLowerCase()] || null; }
 
+/* ══════════════════════════════════════════════════════
+   cleanTeamNameForLogo()
+   Bersihkan suffix dari nama tim SEBELUM lookup logo.
+   Nama ASLI tetap ditampilkan di kartu — hanya proses
+   pencarian logo yang pakai nama bersih ini.
+
+   Yang di-strip:
+   • (W) / [W] / ( W ) / [ W ]          → tim wanita
+   • U20 / U 20 / U-20 / U20            → semua U + angka 2 digit ke atas
+     U21 / U 21 / U-21 / U21
+     U23 / U 23 / U-23 / U23
+     U17 / U 17 / U-17  (berlaku semua angka ≥10)
+   • (IN NEW ZEALAND) / [QUALIFIER] dsb  → apapun dalam kurung di akhir nama
+   • Spasi berlebih di awal/akhir
+══════════════════════════════════════════════════════ */
+function cleanTeamNameForLogo(name) {
+    var cleaned = name;
+
+    // 1. Hapus (W) atau [W] — case insensitive, spasi bebas di dalam
+    cleaned = cleaned.replace(/\s*[\(\[]\s*[Ww]\s*[\)\]]/g, '');
+
+    // 2. Hapus U + angka 2-digit ke atas (U15, U16, U17, U18, U19, U20, U21, U22, U23, U16 dll)
+    //    Format: "U20" / "U 20" / "U-20" — spasi atau dash opsional antara U dan angka
+    cleaned = cleaned.replace(/\s+U[-\s]?\d{2,}/gi, '');
+
+    // 3. Hapus apapun dalam kurung ( ) atau [ ] di akhir nama
+    //    Contoh: (IN NEW ZEALAND), [QUALIFIER], (B), dst
+    cleaned = cleaned.replace(/\s*[\(\[][^\)\]]{1,60}[\)\]]\s*$/g, '');
+
+    // 4. Bersihkan spasi berlebih
+    cleaned = cleaned.trim().replace(/\s{2,}/g, ' ');
+
+    return cleaned || name; // fallback ke nama asli jika hasil kosong
+}
+
 function generateSVGLogo(teamName) {
     var words = teamName.replace(/[^a-zA-Z\s]/g,' ').trim().split(/\s+/).filter(function(w){return w.length>0;});
     var initials = words.map(function(w){return w[0].toUpperCase();}).join('').substring(0,3) || 'TM';
@@ -460,26 +499,46 @@ function lookupSheetDb(name) {
     return null;
 }
 
+/* ── FETCH LOGO (pakai nama bersih untuk lookup, tampil nama asli) ── */
 async function fetchTeamLogo(teamName) {
     var key = teamName.toLowerCase().trim();
     if (key in teamLogoCache) return teamLogoCache[key];
     teamLogoCache[key] = { url: null, source: 'svg' };
+
+    // Bersihkan nama untuk proses lookup logo (strip U20, (W), dll)
+    var lookupName = cleanTeamNameForLogo(teamName);
+
     if (!sheetsDbLoaded) { try { await sheetsDbLoadPromise; } catch(e) {} }
-    var su = lookupSheetDb(teamName);
+
+    // 1. Coba nama BERSIH di sheet DB
+    var su = lookupSheetDb(lookupName);
     if (su) { teamLogoCache[key] = { url: su, source: 'sheet' }; return teamLogoCache[key]; }
+
+    // 2. Fallback: coba nama ASLI di sheet DB (jika tim wanita punya entri sendiri)
+    if (lookupName.toLowerCase() !== teamName.toLowerCase()) {
+        var su0 = lookupSheetDb(teamName);
+        if (su0) { teamLogoCache[key] = { url: su0, source: 'sheet' }; return teamLogoCache[key]; }
+    }
+
+    // 3. Coba TheSportsDB pakai nama BERSIH
     try {
-        var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t='+encodeURIComponent(teamName));
+        var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(lookupName));
         var data = await res.json();
         if (data && data.teams && data.teams.length > 0) {
-            var t = data.teams[0]; var lu = t.strTeamBadge || t.strBadge || null;
+            var t = data.teams[0];
+            var lu = t.strTeamBadge || t.strBadge || null;
             if (lu) { teamLogoCache[key] = { url: lu, source: 'api' }; return teamLogoCache[key]; }
         }
     } catch(e) {}
-    var sn = getShortName(teamName);
+
+    // 4. Short name dari nama BERSIH
+    var sn = getShortName(lookupName);
     if (sn) {
         var su2 = lookupSheetDb(sn);
         if (su2) { teamLogoCache[key] = { url: su2, source: 'sheet' }; return teamLogoCache[key]; }
     }
+
+    // 5. Tidak ketemu — pakai SVG fallback
     teamLogoCache[key] = { url: null, source: 'svg' };
     return teamLogoCache[key];
 }
@@ -568,8 +627,6 @@ function renderPreview(leagues) {
     if(!leagues.length){ tablesDiv.innerHTML=''; emptyDiv.style.display='block'; document.getElementById('leagueFilterWrap').style.display='none'; return; }
     emptyDiv.style.display='none';
     var c=getColors();
-    var lighter=adjustColor(c.bg,30);
-    var darker=adjustColor(c.bg,-20);
     var html='';
     leagues.forEach(function(league){
         html+='<div class="prev-league-block" data-league="'+league.name.replace(/"/g,'&quot;')+'">';
@@ -600,10 +657,6 @@ function buildOutputHTML(leagues) {
     var lighter=adjustColor(c.bg,30);
     var darker=adjustColor(c.bg,-20);
     var cfg=SITES[currentSite];
-
-    var selectHTML='<div class="filter-section">\n<div class="filter-label">🏆 Pilih Liga</div>\n<div class="filter-select-wrap">\n<select class="fselect" id="leagueFilterOut" onchange="filterOut(this.value)">\n<option value="all">Semua Liga</option>\n';
-    leagues.forEach(function(l){ selectHTML+='<option value="'+l.name.replace(/"/g,'&quot;')+'">🏆 '+l.name+'</option>\n'; });
-    selectHTML+='</select>\n</div>\n</div>\n\n';
 
     var blocks='';
     leagues.forEach(function(league){
@@ -795,8 +848,6 @@ function reRenderIfHasData(){
 
 function updatePreviewColors(){
     var c=getColors();
-    var lighter=adjustColor(c.bg,30);
-    var darker=adjustColor(c.bg,-20);
     var old=document.getElementById('preview-dynamic-style');
     if(old) old.remove();
     var style=document.createElement('style');

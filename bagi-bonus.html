@@ -1,663 +1,596 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Perhitungan Bonus</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOKBENTOTO — Bonus Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=DM+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4A843;
+    --gold-light: #F0C967;
+    --gold-dim: #8A6820;
+    --bg: #0A0804;
+    --bg2: #111008;
+    --card: #15120A;
+    --card2: #1E1A0F;
+    --border: #2A2210;
+    --border-gold: #3A2E12;
+    --text: #E8D9B0;
+    --text-dim: #7A6A45;
+    --text-muted: #4A3E25;
+    --red: #E05555;
+    --green: #4CAF7A;
+  }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            color: #ffffff;
-            height: 81vh;
-            padding: 10px;
-            overflow: hidden;
-        }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .container {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            max-width: 1920px;
-            margin: 0 auto;
-        }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+  }
 
-        .header {
-            text-align: center;
-            margin-bottom: 15px;
-            animation: fadeInDown 0.8s ease;
-        }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 20% 10%, rgba(212,168,67,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 90%, rgba(212,168,67,0.04) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .header h1 {
-            font-size: 2em;
-            background: linear-gradient(45deg, #00ff88, #00d4ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 80px;
+  }
 
-        .main-grid {
-            display: grid;
-            grid-template-columns: 1.2fr 2fr 1.2fr;
-            gap: 15px;
-            flex: 1;
-            min-height: 0;
-        }
+  header {
+    padding: 30px 0 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--border-gold);
+    margin-bottom: 28px;
+  }
 
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            animation: fadeInUp 0.8s ease;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-        }
+  .logo-main {
+    font-family: 'Cinzel', serif;
+    font-size: 19px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dim));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 
-        .card:hover {
-            box-shadow: 0 10px 40px rgba(0, 255, 136, 0.2);
-        }
+  .logo-sep { width: 1px; height: 26px; background: var(--border-gold); }
 
-        .card-title {
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            color: #00d4ff;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-align: center;
-            flex-shrink: 0;
-        }
+  .logo-sub {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
 
-        .clear-button {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            padding: 5px 10px;
-            background: rgba(255, 0, 68, 0.2);
-            border: 1px solid rgba(255, 0, 68, 0.5);
-            border-radius: 15px;
-            color: #ff0044;
-            font-size: 0.8em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+  /* PASTE */
+  .paste-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .paste-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
-        .clear-button:hover {
-            background: rgba(255, 0, 68, 0.3);
-            transform: scale(1.05);
-        }
+  .paste-hint {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    font-family: 'DM Mono', monospace;
+  }
 
-        .input-group {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 10px;
-            margin-bottom: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 8px;
-            border-left: 3px solid;
-            transition: all 0.3s ease;
-            gap: 10px;
-        }
+  textarea {
+    width: 100%;
+    height: 160px;
+    background: var(--card);
+    border: 1px solid var(--border-gold);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    outline: none;
+    resize: vertical;
+    line-height: 1.7;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  textarea:focus { border-color: var(--gold); color: var(--text); }
+  textarea::placeholder { color: var(--text-muted); }
 
-        .input-group:hover {
-            background: rgba(255, 255, 255, 0.08);
-            transform: translateX(3px);
-        }
+  .btn-clear {
+    margin-top: 8px;
+    padding: 8px 18px;
+    background: transparent;
+    border: 1px solid var(--border-gold);
+    border-radius: 7px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 11px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-clear:hover { border-color: var(--text-dim); color: var(--text); }
 
-        .category-ALL { border-left-color: #00ff88; }
-        .category-LIVEGAMES { border-left-color: #ff6b6b; }
-        .category-SPORT { border-left-color: #4ecdc4; }
-        .category-SLOT { border-left-color: #f7b731; }
-        .category-LOTTERY { border-left-color: #5f27cd; }
-        .category-FISHING { border-left-color: #00d2d3; }
-        .category-MULTIVERSE { border-left-color: #ff00ff; }
-        .day-item { border-left-color: #00d4ff; }
+  /* RESULT */
+  #result { display: none; margin-top: 24px; animation: fadeUp 0.35s ease; }
 
-        .input-label {
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.85em;
-            min-width: 100px;
-            flex-shrink: 0;
-        }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
-        input[type="text"] {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 6px;
-            padding: 8px 12px;
-            color: #00ff88;
-            font-size: 0.95em;
-            font-family: 'Courier New', monospace;
-            width: 100%;
-            min-width: 220px;
-            transition: all 0.3s ease;
-            text-align: right;
-            letter-spacing: 0.5px;
-        }
+  /* INFO BAR */
+  .info-bar {
+    background: var(--card);
+    border: 1px solid var(--border-gold);
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 
-        input[type="text"]:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            border-color: #00ff88;
-            box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
-        }
+  .info-perihal { font-size: 12px; color: var(--text); font-weight: 500; flex: 1; min-width: 160px; }
 
-        .calculation-card {
-            background: linear-gradient(135deg, rgba(0, 255, 136, 0.1), rgba(0, 212, 255, 0.1));
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            padding: 20px;
-            overflow-y: auto;
-        }
+  .info-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 3px 11px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .badge-winlose  { background: rgba(224,85,85,0.15);  color: #E08080; border: 1px solid rgba(224,85,85,0.35); }
+  .badge-turnover { background: rgba(76,175,122,0.15); color: #80CFA0; border: 1px solid rgba(76,175,122,0.35); }
 
-        .calc-section {
-            margin-bottom: 20px;
-        }
+  /* CAT CARDS */
+  .cat-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
 
-        .calc-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
+  .cat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .cat-card:hover { border-color: var(--border-gold); }
 
-        .calc-item {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            padding: 10px 15px;
-            text-align: center;
-            min-width: 160px;
-            flex: 1;
-        }
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+  .cat-card.live::before  { background: linear-gradient(180deg, #C0392B, #E05555); }
+  .cat-card.sport::before { background: linear-gradient(180deg, #2471A3, #5DADE2); }
+  .cat-card.slot::before  { background: linear-gradient(180deg, #8E44AD, #BE7EE8); }
 
-        .calc-label {
-            font-size: 0.75em;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
+  .cat-icon { font-size: 20px; width: 30px; text-align: center; flex-shrink: 0; }
 
-        .calc-value {
-            font-size: 1.1em;
-            font-weight: bold;
-            color: #00ff88;
-            font-family: 'Courier New', monospace;
-            word-break: break-all;
-            letter-spacing: 0.5px;
-        }
+  .cat-info { flex: 1; min-width: 0; }
 
-        .calc-value.negative {
-            color: #ff0044;
-        }
+  .cat-name { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
 
-        .operator {
-            font-size: 1.5em;
-            color: #00d4ff;
-            padding: 0 10px;
-            flex-shrink: 0;
-        }
+  .cat-meta { font-size: 11px; color: var(--text-muted); display: flex; gap: 12px; flex-wrap: wrap; }
+  .cat-meta-val       { color: var(--text-dim); }
+  .cat-meta-val.neg   { color: var(--red); }
+  .cat-meta-val.pos   { color: var(--green); }
+  .cat-meta-val.gold  { color: var(--gold); }
 
-        .validation-box {
-            padding: 15px;
-            background: rgba(0, 255, 136, 0.1);
-            border-radius: 10px;
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            text-align: center;
-            font-size: 1.1em;
-            font-weight: bold;
-            margin-top: 10px;
-            animation: pulse 2s infinite;
-        }
+  /* BAR */
+  .cat-bar-wrap { flex-shrink: 0; width: 64px; }
+  .bar-pct-txt { font-size: 9px; color: var(--text-muted); text-align: right; font-family: 'DM Mono', monospace; margin-bottom: 4px; }
+  .bar-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 2px; width: 0; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+  .cat-card.live  .bar-fill { background: linear-gradient(90deg, #C0392B, #E05555); }
+  .cat-card.sport .bar-fill { background: linear-gradient(90deg, #2471A3, #5DADE2); }
+  .cat-card.slot  .bar-fill { background: linear-gradient(90deg, #8E44AD, #BE7EE8); }
 
-        .validation-box.error {
-            background: rgba(255, 0, 0, 0.1);
-            border-color: rgba(255, 0, 0, 0.3);
-            color: #ff0044;
-        }
+  /* RIGHT: angka + copy */
+  .cat-right { text-align: right; flex-shrink: 0; }
+  .cat-bonus-lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 3px; }
+  .cat-bonus-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--gold-light);
+    line-height: 1;
+    letter-spacing: 0.01em;
+  }
+  .cat-bonus-idr { font-size: 9px; color: var(--text-muted); margin-top: 2px; font-family: 'DM Mono', monospace; }
 
-        .validation-box.success {
-            color: #00ff88;
-        }
+  /* COPY BUTTON per row */
+  .btn-copy-row {
+    margin-top: 6px;
+    padding: 4px 10px;
+    background: transparent;
+    border: 1px solid var(--border-gold);
+    border-radius: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .btn-copy-row:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-copy-row.copied { border-color: var(--green); color: var(--green); }
 
-        .divider {
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-            margin: 20px 0;
-        }
+  /* GRAND TOTAL */
+  .grand-total {
+    background: linear-gradient(135deg, #1A1508, #221C0A);
+    border: 1px solid var(--gold-dim);
+    border-radius: 13px;
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    gap: 16px;
+  }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+  .grand-total::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 5%, var(--gold) 30%, var(--gold-light) 50%, var(--gold) 70%, transparent 95%);
+  }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+  .gt-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(212,168,67,0.08) 0%, transparent 70%);
+  }
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.8;
-            }
-        }
+  .gt-left { position: relative; }
+  .gt-title {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-dim);
+    margin-bottom: 5px;
+  }
+  .gt-info { font-size: 12px; color: var(--text-dim); font-family: 'DM Mono', monospace; }
 
-        /* Scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+  .gt-right { position: relative; text-align: right; flex-shrink: 0; }
+  .gt-lbl { font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
+  .gt-val {
+    font-family: 'DM Mono', monospace;
+    font-size: 34px;
+    font-weight: 500;
+    color: var(--gold-light);
+    line-height: 1;
+  }
+  .gt-sub { font-size: 9px; color: var(--text-muted); margin-top: 4px; font-family: 'DM Mono', monospace; }
 
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 3px;
-        }
+  /* COPY ALL button */
+  .btn-copy-all {
+    margin-top: 8px;
+    padding: 7px 16px;
+    background: rgba(212,168,67,0.1);
+    border: 1px solid var(--gold-dim);
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    cursor: pointer;
+    transition: all 0.18s;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .btn-copy-all:hover { background: rgba(212,168,67,0.2); }
+  .btn-copy-all.copied { border-color: var(--green); color: var(--green); background: rgba(76,175,122,0.1); }
 
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 255, 136, 0.3);
-            border-radius: 3px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(0, 255, 136, 0.5);
-        }
-
-        /* Responsive adjustments for smaller screens */
-        @media (max-width: 1600px) {
-            .main-grid {
-                grid-template-columns: 1fr 1.8fr 1fr;
-            }
-            
-            input[type="text"] {
-                min-width: 200px;
-                font-size: 0.9em;
-            }
-        }
-
-        @media (max-width: 1400px) {
-            input[type="text"] {
-                min-width: 180px;
-                font-size: 0.85em;
-                padding: 6px 10px;
-            }
-            
-            .calc-item {
-                min-width: 140px;
-            }
-            
-            .calc-value {
-                font-size: 1em;
-            }
-        }
-    </style>
+  @media (max-width: 560px) {
+    .cat-bar-wrap { display: none; }
+    .cat-bonus-val { font-size: 17px; }
+    .gt-val { font-size: 26px; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Dashboard Perhitungan Bonus</h1>
-        </div>
+<div class="wrapper">
 
-        <div class="main-grid">
-            <!-- Transaksi Per Kategori -->
-            <div class="card">
-                <button class="clear-button" onclick="clearCategories()">🗑️ Hapus</button>
-                <h2 class="card-title">Transaksi Per Kategori</h2>
-                <div class="input-group category-ALL">
-                    <span class="input-label">ALL</span>
-                    <input type="text" id="cat-ALL" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group category-LIVEGAMES">
-                    <span class="input-label">LIVEGAMES</span>
-                    <input type="text" id="cat-LIVEGAMES" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group category-SPORT">
-                    <span class="input-label">SPORT</span>
-                    <input type="text" id="cat-SPORT" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group category-SLOT">
-                    <span class="input-label">SLOT</span>
-                    <input type="text" id="cat-SLOT" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group category-LOTTERY">
-                    <span class="input-label">LOTTERY</span>
-                    <input type="text" id="cat-LOTTERY" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group category-FISHING">
-                    <span class="input-label">FISHING</span>
-                    <input type="text" id="cat-FISHING" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group category-MULTIVERSE">
-                    <span class="input-label">MULTIVERSE</span>
-                    <input type="text" id="cat-MULTIVERSE" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-            </div>
+  <header>
+    <div class="logo-main">HOKBENTOTO</div>
+    <div class="logo-sep"></div>
+    <div class="logo-sub">Bonus Dashboard</div>
+  </header>
 
-            <!-- Kolom Kalkulasi Tengah -->
-            <div class="card calculation-card">
-                <h2 class="card-title">Kalkulasi</h2>
-                
-                <!-- Kalkulasi Kategori -->
-                <div class="calc-section">
-                    <div class="calc-row">
-                        <div class="calc-item">
-                            <div class="calc-label">Total ALL</div>
-                            <div class="calc-value" id="totalALL">0</div>
-                        </div>
-                        <div class="operator">➖</div>
-                        <div class="calc-item">
-                            <div class="calc-label">Total Kategori</div>
-                            <div class="calc-value" id="totalCategories">0</div>
-                        </div>
-                        <div class="operator">=</div>
-                        <div class="calc-item">
-                            <div class="calc-label">Selisih Kategori</div>
-                            <div class="calc-value" id="categoryDiff">0</div>
-                        </div>
-                    </div>
-                    <div class="validation-box" id="categoryValidation">
-                        Masukkan data untuk validasi
-                    </div>
-                </div>
+  <div class="paste-label">Tempel Data Bonus</div>
+  <div class="paste-hint">↓ Langsung tempel — otomatis dihitung</div>
+  <textarea id="pasteArea" placeholder="Tempel data di sini...
 
-                <div class="divider"></div>
+Info : HOKBENTOTO
+Perihal : Pembagian Bonus Winlose / Turnover ...
+Provider : ...
+Win/lose : ...
+Bonus : ..."></textarea>
+  <button class="btn-clear" onclick="clearAll()">✕ Reset</button>
 
-                <!-- Kalkulasi ALL -->
-                <div class="calc-section">
-                    <div class="calc-row">
-                        <div class="calc-item">
-                            <div class="calc-label">ALL Kategori</div>
-                            <div class="calc-value" id="catAllDisplay">0</div>
-                        </div>
-                        <div class="operator">➖</div>
-                        <div class="calc-item">
-                            <div class="calc-label">ALL Harian</div>
-                            <div class="calc-value" id="dailyAllDisplay">0</div>
-                        </div>
-                        <div class="operator">=</div>
-                        <div class="calc-item">
-                            <div class="calc-label">Selisih ALL</div>
-                            <div class="calc-value" id="allDiff">0</div>
-                        </div>
-                    </div>
-                    <div class="validation-box" id="allValidation">
-                        Masukkan data untuk validasi
-                    </div>
-                </div>
-
-                <div class="divider"></div>
-
-                <!-- Kalkulasi Harian -->
-                <div class="calc-section">
-                    <div class="calc-row">
-                        <div class="calc-item">
-                            <div class="calc-label">Total Harian ALL</div>
-                            <div class="calc-value" id="totalDailyAll">0</div>
-                        </div>
-                        <div class="operator">➖</div>
-                        <div class="calc-item">
-                            <div class="calc-label">Total 7 Hari</div>
-                            <div class="calc-value" id="totalDays">0</div>
-                        </div>
-                        <div class="operator">=</div>
-                        <div class="calc-item">
-                            <div class="calc-label">Selisih Harian</div>
-                            <div class="calc-value" id="dailyDiff">0</div>
-                        </div>
-                    </div>
-                    <div class="validation-box" id="dailyValidation">
-                        Masukkan data untuk validasi
-                    </div>
-                </div>
-            </div>
-
-            <!-- Transaksi Harian -->
-            <div class="card">
-                <button class="clear-button" onclick="clearDaily()">🗑️ Hapus</button>
-                <h2 class="card-title">Transaksi Harian</h2>
-                <div class="input-group category-ALL">
-                    <span class="input-label">ALL</span>
-                    <input type="text" id="daily-ALL" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 1</span>
-                    <input type="text" id="day-1" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 2</span>
-                    <input type="text" id="day-2" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 3</span>
-                    <input type="text" id="day-3" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 4</span>
-                    <input type="text" id="day-4" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 5</span>
-                    <input type="text" id="day-5" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 6</span>
-                    <input type="text" id="day-6" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-                <div class="input-group day-item">
-                    <span class="input-label">HARI 7</span>
-                    <input type="text" id="day-7" placeholder="0" oninput="formatInput(this); calculate()">
-                </div>
-            </div>
-        </div>
+  <div id="result">
+    <div class="info-bar">
+      <div class="info-perihal" id="infoPerihal">—</div>
+      <div class="info-badge" id="infoBadge">—</div>
     </div>
 
-    <script>
-        // Store raw values
-        const rawValues = {};
+    <div class="cat-list" id="catList"></div>
 
-        function formatInput(input) {
-            // Get cursor position
-            const cursorPos = input.selectionStart;
-            
-            // Get the raw value (remove all formatting except decimal point)
-            let value = input.value.replace(/[^\d.-]/g, '');
-            
-            // Store raw value
-            rawValues[input.id] = value;
-            
-            // Format for display
-            if (value !== '' && !isNaN(parseFloat(value))) {
-                const num = parseFloat(value);
-                // Keep decimal part if exists
-                const parts = value.split('.');
-                if (parts.length > 1) {
-                    // User is typing decimal part - preserve the exact decimal digits
-                    input.value = formatNumberForDisplay(num, parts[1].length);
-                } else {
-                    input.value = formatNumberForDisplay(num, 0);
-                }
-                
-                // Try to maintain cursor position
-                setTimeout(() => {
-                    const newLength = input.value.length;
-                    const diff = newLength - value.length;
-                    input.setSelectionRange(cursorPos + diff, cursorPos + diff);
-                }, 0);
-            }
-        }
+    <div class="grand-total">
+      <div class="gt-glow"></div>
+      <div class="gt-left">
+        <div class="gt-title">Grand Total Bonus</div>
+        <div class="gt-info" id="gtInfo">—</div>
+        <button class="btn-copy-all" id="btnCopyAll" onclick="copyAll()">⎘ Copy Semua Angka</button>
+      </div>
+      <div class="gt-right">
+        <div class="gt-lbl">Total Semua Kategori</div>
+        <div class="gt-val" id="gtVal">—</div>
+        <div class="gt-sub" id="gtSub">—</div>
+      </div>
+    </div>
+  </div>
 
-        function formatNumberForDisplay(num, decimalPlaces = 2) {
-            // Format with thousand separators using comma
-            if (decimalPlaces === 0) {
-                // No decimal places
-                return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-            } else {
-                // With decimal places
-                const parts = num.toFixed(decimalPlaces).split('.');
-                parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-                return parts.join('.');
-            }
-        }
+</div>
 
-        function getNumericValue(inputId) {
-            const value = rawValues[inputId] || document.getElementById(inputId).value;
-            // Remove all commas (thousand separators) and keep dots for decimals
-            const cleanValue = value.replace(/,/g, '');
-            return parseFloat(cleanValue) || 0;
-        }
+<script>
+// Urutan tampil: Slot → Live → Sport
+const CAT_ORDER = ['slot', 'live', 'sport'];
 
-        function calculate() {
-            // Get category values
-            const catAll = getNumericValue('cat-ALL');
-            const catLiveGames = getNumericValue('cat-LIVEGAMES');
-            const catSport = getNumericValue('cat-SPORT');
-            const catSlot = getNumericValue('cat-SLOT');
-            const catLottery = getNumericValue('cat-LOTTERY');
-            const catFishing = getNumericValue('cat-FISHING');
-            const catMultiverse = getNumericValue('cat-MULTIVERSE');
+const CAT_DEFS = {
+  live:  { key: 'live',  label: 'Live Game',  icon: '🎰', patterns: [/live[\s_-]*game/i, /livegame/i, /live[\s_-]*casino/i] },
+  sport: { key: 'sport', label: 'Sportsbook', icon: '⚽', patterns: [/sportsbook/i, /sport[\s_-]*book/i] },
+  slot:  { key: 'slot',  label: 'Slot Game',  icon: '🎮', patterns: [/slot[\s_-]*game/i, /slot\b/i] }
+};
 
-            // Get daily values
-            const dailyAll = getNumericValue('daily-ALL');
-            const days = [];
-            for (let i = 1; i <= 7; i++) {
-                days.push(getNumericValue(`day-${i}`));
-            }
+// Format angka pakai koma sebagai pemisah ribuan
+function fmt(n) {
+  return Math.abs(n).toLocaleString('en-US').replace(/\./g, '@').replace(/,/g, '.').replace(/@/g, ',');
+  // Result: 1,234,567 → 1.234.567... wait, user wants comma
+  // User: "pakek , tidak mau ." → pakai koma sebagai separator ribuan
+  // Jadi 1234567 → 1,234,567
+}
 
-            // Calculate category totals (excluding ALL)
-            const totalCategories = catLiveGames + catSport + catSlot + catLottery + catFishing + catMultiverse;
-            
-            // Calculate category difference (ALL minus all categories)
-            const categoryDiff = catAll - totalCategories;
-            
-            // Display category calculations
-            document.getElementById('totalALL').textContent = formatNumberForDisplay(catAll);
-            document.getElementById('totalCategories').textContent = formatNumberForDisplay(totalCategories);
-            document.getElementById('categoryDiff').textContent = formatNumberForDisplay(categoryDiff);
-            
-            // Category validation
-            const catValidation = document.getElementById('categoryValidation');
-            if (catAll === 0 && totalCategories === 0) {
-                catValidation.textContent = 'Masukkan data untuk validasi';
-                catValidation.className = 'validation-box';
-                document.getElementById('categoryDiff').className = 'calc-value';
-            } else if (Math.abs(categoryDiff) < 1) {
-                catValidation.textContent = '✅ SILAHKAN BAGI';
-                catValidation.className = 'validation-box success';
-                document.getElementById('categoryDiff').className = 'calc-value';
-            } else {
-                catValidation.textContent = '❌ ADA YANG ERROR NI';
-                catValidation.className = 'validation-box error';
-                document.getElementById('categoryDiff').className = 'calc-value negative';
-            }
+// Versi sederhana: pakai koma
+function fmtComma(n) {
+  return Math.abs(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
 
-            // Calculate ALL difference (Category ALL minus Daily ALL)
-            const allDiff = catAll - dailyAll;
-            
-            // Display ALL calculations
-            document.getElementById('catAllDisplay').textContent = formatNumberForDisplay(catAll);
-            document.getElementById('dailyAllDisplay').textContent = formatNumberForDisplay(dailyAll);
-            document.getElementById('allDiff').textContent = formatNumberForDisplay(allDiff);
-            
-            // ALL validation
-            const allValidation = document.getElementById('allValidation');
-            if (catAll === 0 && dailyAll === 0) {
-                allValidation.textContent = 'Masukkan data untuk validasi';
-                allValidation.className = 'validation-box';
-                document.getElementById('allDiff').className = 'calc-value';
-            } else if (Math.abs(allDiff) < 1) {
-                allValidation.textContent = '✅ MATCH';
-                allValidation.className = 'validation-box success';
-                document.getElementById('allDiff').className = 'calc-value';
-            } else {
-                allValidation.textContent = '⚠️ TIDAK MATCH';
-                allValidation.className = 'validation-box error';
-                document.getElementById('allDiff').className = 'calc-value negative';
-            }
+function parseNum(s) {
+  const neg = s.trim().startsWith('-');
+  const digits = s.replace(/[^0-9]/g, '');
+  if (!digits) return 0;
+  return neg ? -parseInt(digits, 10) : parseInt(digits, 10);
+}
 
-            // Calculate daily totals
-            const totalDays = days.reduce((sum, day) => sum + day, 0);
-            const dailyDiff = dailyAll - totalDays;
-            
-            // Display daily calculations
-            document.getElementById('totalDailyAll').textContent = formatNumberForDisplay(dailyAll);
-            document.getElementById('totalDays').textContent = formatNumberForDisplay(totalDays);
-            document.getElementById('dailyDiff').textContent = formatNumberForDisplay(dailyDiff);
-            
-            // Daily validation
-            const dailyValidation = document.getElementById('dailyValidation');
-            if (dailyAll === 0 && totalDays === 0) {
-                dailyValidation.textContent = 'Masukkan data untuk validasi';
-                dailyValidation.className = 'validation-box';
-                document.getElementById('dailyDiff').className = 'calc-value';
-            } else if (Math.abs(dailyDiff) < 1) {
-                dailyValidation.textContent = '✅ BALANCE';
-                dailyValidation.className = 'validation-box success';
-                document.getElementById('dailyDiff').className = 'calc-value';
-            } else {
-                dailyValidation.textContent = '⚠️ TIDAK BALANCE';
-                dailyValidation.className = 'validation-box error';
-                document.getElementById('dailyDiff').className = 'calc-value negative';
-            }
-        }
+function detectCat(line) {
+  for (const [key, cd] of Object.entries(CAT_DEFS)) {
+    if (cd.patterns.some(p => p.test(line))) return key;
+  }
+  return null;
+}
 
-        function clearCategories() {
-            // Clear all category inputs
-            const categoryInputs = ['cat-ALL', 'cat-LIVEGAMES', 'cat-SPORT', 'cat-SLOT', 'cat-LOTTERY', 'cat-FISHING', 'cat-MULTIVERSE'];
-            categoryInputs.forEach(id => {
-                document.getElementById(id).value = '';
-                delete rawValues[id];
-            });
-            
-            // Recalculate
-            calculate();
-        }
+let lastResult = null; // simpan hasil untuk copy
 
-        function clearDaily() {
-            // Clear all daily inputs
-            document.getElementById('daily-ALL').value = '';
-            delete rawValues['daily-ALL'];
-            
-            for (let i = 1; i <= 7; i++) {
-                document.getElementById(`day-${i}`).value = '';
-                delete rawValues[`day-${i}`];
-            }
-            
-            // Recalculate
-            calculate();
-        }
+function parseData(raw) {
+  if (!raw.trim()) {
+    document.getElementById('result').style.display = 'none';
+    return;
+  }
 
-        // Initialize
-        window.onload = () => {
-            calculate();
-        };
-    </script>
+  const isTurnover = /turnover/i.test(raw);
+
+  // Perihal
+  let perihal = '';
+  const pm = raw.match(/Perihal\s*:\s*(.+)/i);
+  if (pm) perihal = pm[1].trim();
+
+  // Init
+  const cats = {};
+  Object.values(CAT_DEFS).forEach(cd => {
+    cats[cd.key] = { ...cd, providers: [], rate: '' };
+  });
+
+  const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
+  let curCat = null;
+  let curProv = null;
+
+  for (const line of lines) {
+    if (/^[-=*]{3,}$/.test(line)) continue;
+
+    // Category header
+    const foundCat = detectCat(line);
+    if (foundCat && !/^provider\s*:/i.test(line)) {
+      curCat = foundCat;
+      curProv = null;
+      const rm = line.match(/([\d,]+\s*%\s*[-–]\s*[\d,]+\s*%|[\d,]+\s*%)/);
+      if (rm && !cats[curCat].rate) cats[curCat].rate = rm[0].trim();
+      continue;
+    }
+
+    if (/^provider\s*:/i.test(line)) {
+      const name = line.replace(/^provider\s*:\s*/i, '').trim();
+      curProv = { name, winlose: 0, bonus: 0 };
+      if (curCat) cats[curCat].providers.push(curProv);
+      continue;
+    }
+
+    if (/^win[\s/\\]?lose\s*:/i.test(line) && curProv) {
+      curProv.winlose = parseNum(line.replace(/^win[\s/\\]?lose\s*:\s*/i, ''));
+      continue;
+    }
+
+    if (/^bonus\s*:/i.test(line) && curProv) {
+      curProv.bonus = parseNum(line.replace(/^bonus\s*:\s*/i, ''));
+      continue;
+    }
+  }
+
+  const usedCats = CAT_ORDER.filter(k => cats[k].providers.length > 0);
+  if (usedCats.length === 0) return;
+
+  let grandTotal = 0, totalProviders = 0;
+  usedCats.forEach(k => {
+    const c = cats[k];
+    c.subBonus = c.providers.reduce((s, p) => s + p.bonus, 0);
+    c.subWL    = c.providers.reduce((s, p) => s + p.winlose, 0);
+    grandTotal    += c.subBonus;
+    totalProviders += c.providers.length;
+  });
+
+  const maxBonus = Math.max(...usedCats.map(k => cats[k].subBonus));
+  const wlLabel  = isTurnover ? 'Turnover' : 'Win/Lose';
+
+  // Simpan untuk copy
+  lastResult = { usedCats, cats, grandTotal, isTurnover };
+
+  // Info bar
+  document.getElementById('infoPerihal').textContent = perihal || 'Data Bonus';
+  const badge = document.getElementById('infoBadge');
+  badge.textContent = isTurnover ? '🔄 Bonus Turnover' : '📉 Bonus Winlose';
+  badge.className = 'info-badge ' + (isTurnover ? 'badge-turnover' : 'badge-winlose');
+
+  // Cards
+  document.getElementById('catList').innerHTML = usedCats.map(k => {
+    const c    = cats[k];
+    const pct  = Math.round(c.subBonus / maxBonus * 100);
+    const pctG = grandTotal > 0 ? Math.round(c.subBonus / grandTotal * 100) : 0;
+    const neg  = c.subWL < 0;
+
+    return `
+    <div class="cat-card ${k}">
+      <div class="cat-icon">${c.icon}</div>
+      <div class="cat-info">
+        <div class="cat-name">${c.label}</div>
+        <div class="cat-meta">
+          <span><span class="cat-meta-val gold">${c.providers.length}</span> provider</span>
+          ${c.rate ? `<span>Rate <span class="cat-meta-val gold">${c.rate}</span></span>` : ''}
+          <span>${wlLabel} <span class="cat-meta-val ${neg ? 'neg' : 'pos'}">${neg ? '-' : ''}${fmtComma(c.subWL)}</span></span>
+        </div>
+      </div>
+      <div class="cat-bar-wrap">
+        <div class="bar-pct-txt">${pctG}%</div>
+        <div class="bar-track"><div class="bar-fill" data-w="${pct}"></div></div>
+      </div>
+      <div class="cat-right">
+        <div class="cat-bonus-lbl">Subtotal Bonus</div>
+        <div class="cat-bonus-val">${fmtComma(c.subBonus)}</div>
+        <div class="cat-bonus-idr">IDR</div>
+        <button class="btn-copy-row" onclick="copyRow('${k}')">⎘ Copy</button>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Grand total
+  document.getElementById('gtInfo').textContent =
+    `${totalProviders} provider · ${usedCats.length} kategori`;
+  document.getElementById('gtVal').textContent = fmtComma(grandTotal);
+  document.getElementById('gtSub').textContent = `IDR · ${isTurnover ? 'Turnover' : 'Winlose'} Bonus`;
+
+  // Show
+  const res = document.getElementById('result');
+  res.style.display = 'block';
+
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    document.querySelectorAll('.bar-fill[data-w]').forEach(el => {
+      el.style.width = el.dataset.w + '%';
+    });
+  }));
+}
+
+function copyRow(catKey) {
+  if (!lastResult) return;
+  const c = lastResult.cats[catKey];
+  const text = fmtComma(c.subBonus);
+  copyToClipboard(text, `btn-copy-${catKey}`);
+}
+
+function copyAll() {
+  if (!lastResult) return;
+  const { usedCats, cats } = lastResult;
+  // horizontal: pisah pakai tab → di doc jadi kolom sejajar
+  const text = usedCats.map(k => fmtComma(cats[k].subBonus)).join('\t');
+  copyToClipboard(text, 'btnCopyAll');
+}
+
+function copyToClipboard(text, btnId) {
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById(btnId) || document.querySelector(`[onclick*="${btnId}"]`);
+    // cari tombol copy yang tepat
+    const allBtns = document.querySelectorAll('.btn-copy-row, .btn-copy-all');
+    allBtns.forEach(b => {
+      if (b.id === btnId || b.getAttribute('onclick')?.includes(btnId.replace('btn-copy-',''))) {
+        const orig = b.textContent;
+        b.textContent = '✓ Copied!';
+        b.classList.add('copied');
+        setTimeout(() => { b.textContent = orig; b.classList.remove('copied'); }, 1800);
+      }
+    });
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+  });
+}
+
+function clearAll() {
+  document.getElementById('pasteArea').value = '';
+  document.getElementById('result').style.display = 'none';
+  lastResult = null;
+}
+
+// AUTO PARSE on paste & input
+const area = document.getElementById('pasteArea');
+
+area.addEventListener('paste', e => {
+  setTimeout(() => parseData(area.value), 0);
+});
+
+area.addEventListener('input', () => {
+  parseData(area.value);
+});
+</script>
 </body>
 </html>

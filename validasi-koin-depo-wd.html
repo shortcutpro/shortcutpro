@@ -7,11 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary: #FFD700;
@@ -31,7 +27,7 @@
             --neon-gold: #FFD700;
             --neon-gold-glow: rgba(255, 215, 0, 0.5);
         }
-        
+
         body {
             font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
             background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
@@ -44,25 +40,18 @@
         body::before {
             content: '';
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(218, 165, 32, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(255, 165, 0, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 50% 50%, rgba(255, 0, 64, 0.08) 0%, transparent 60%);
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(218,165,32,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255,165,0,0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255,0,64,0.08) 0%, transparent 60%);
             pointer-events: none;
             z-index: 0;
         }
-        
-        .container {
-            max-width: 1800px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-        
+
+        .container { max-width: 1800px; margin: 0 auto; position: relative; z-index: 1; }
+
         .header {
             text-align: center;
             margin-bottom: 40px;
@@ -72,7 +61,7 @@
             box-shadow: 0 20px 60px var(--neon-gold-glow), 0 0 40px var(--neon-gold-glow);
             border: 1px solid var(--neon-gold);
         }
-        
+
         .header h1 {
             font-size: 2.5rem;
             font-weight: 700;
@@ -81,35 +70,25 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
-            text-shadow: 0 0 20px var(--neon-gold-glow);
-        }
-        
-        .header p {
-            font-size: 1.1rem;
-            opacity: 0.9;
+            color: #000;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
-        .main-content {
-            display: flex;
-            gap: 30px;
-            margin-bottom: 30px;
-        }
+        .header p { font-size: 1.1rem; color: #1a1000; opacity: 0.85; }
 
-        .left-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-        }
-        
+        .main-content { display: flex; gap: 30px; margin-bottom: 30px; }
+
+        .left-section { flex: 1; display: flex; flex-direction: column; gap: 30px; }
+
         .input-section, .result-section {
             background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(218, 165, 32, 0.3), 0 0 20px rgba(255, 0, 64, 0.1);
+            box-shadow: 0 10px 40px rgba(218,165,32,0.3), 0 0 20px rgba(255,0,64,0.1);
             border: 1px solid var(--border);
+            animation: fadeIn 0.6s ease-out;
         }
-        
+
         .section-title {
             font-size: 1.5rem;
             font-weight: 600;
@@ -120,47 +99,28 @@
             gap: 10px;
             text-shadow: 0 0 10px var(--neon-gold-glow);
         }
-        
+
         .format-info {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
+            background: linear-gradient(135deg, rgba(218,165,32,0.1) 0%, rgba(255,215,0,0.1) 100%);
             padding: 25px;
             border-radius: 12px;
             margin-bottom: 25px;
-            border: 1px solid rgba(218, 165, 32, 0.3);
+            border: 1px solid rgba(218,165,32,0.3);
         }
-        
-        .format-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        
-        .format-header i {
-            font-size: 24px;
-            color: var(--accent);
-        }
-        
-        .format-header h3 {
-            margin: 0;
-            color: var(--accent);
-            font-size: 1.3rem;
-            font-weight: 600;
-        }
-        
-        .format-description {
-            color: var(--text-muted);
-            margin: 0 0 20px 36px;
-            font-size: 0.95rem;
-        }
-        
+
+        .format-header { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+        .format-header i { font-size: 24px; color: var(--accent); }
+        .format-header h3 { margin: 0; color: var(--accent); font-size: 1.3rem; font-weight: 600; }
+
+        .format-description { color: var(--text-muted); margin: 0 0 20px 36px; font-size: 0.95rem; }
+
         .format-cards {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 20px;
             margin-bottom: 20px;
         }
-        
+
         .format-card {
             background: var(--darker-bg);
             border-radius: 12px;
@@ -168,70 +128,57 @@
             border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
-        
+
         .format-card:hover {
             transform: translateY(-5px);
             border-color: var(--primary);
-            box-shadow: 0 10px 30px rgba(218, 165, 32, 0.4), 0 0 20px var(--neon-gold-glow);
+            box-shadow: 0 10px 30px rgba(218,165,32,0.4), 0 0 20px var(--neon-gold-glow);
         }
-        
+
         .format-card-header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             padding: 15px 20px;
             display: flex;
             align-items: center;
             gap: 12px;
+            color: #000;
         }
-        
-        .format-card-header i {
-            font-size: 22px;
-        }
-        
-        .format-card-header span:first-of-type {
-            flex: 1;
-            font-weight: 600;
-            font-size: 1.05rem;
-        }
-        
+
+        .format-card-header span:first-of-type { flex: 1; font-weight: 600; font-size: 1.05rem; }
+
         .format-badge {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255,255,255,0.25);
             padding: 5px 14px;
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
-        
-        .format-card-content {
-            padding: 20px;
-        }
-        
-        .format-fields {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-        
+
+        .format-card-content { padding: 20px; }
+
+        .format-fields { display: flex; flex-wrap: wrap; gap: 8px; }
+
         .field-tag {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.2) 0%, rgba(255, 215, 0, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(218,165,32,0.2) 0%, rgba(255,215,0,0.2) 100%);
             color: var(--text);
             padding: 7px 14px;
             border-radius: 8px;
             font-size: 0.8rem;
-            border: 1px solid rgba(218, 165, 32, 0.4);
+            border: 1px solid rgba(218,165,32,0.4);
             transition: all 0.2s ease;
             font-weight: 500;
         }
-        
+
         .field-tag:hover {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.35) 0%, rgba(255, 215, 0, 0.35) 100%);
+            background: linear-gradient(135deg, rgba(218,165,32,0.35) 0%, rgba(255,215,0,0.35) 100%);
             border-color: var(--primary);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(218, 165, 32, 0.3);
+            box-shadow: 0 4px 12px rgba(218,165,32,0.3);
         }
-        
+
         .format-note {
-            background: rgba(218, 165, 32, 0.1);
+            background: rgba(218,165,32,0.1);
             border-left: 4px solid var(--accent);
             padding: 14px 18px;
             border-radius: 8px;
@@ -240,27 +187,22 @@
             gap: 12px;
             font-size: 0.9rem;
         }
-        
-        .format-note i {
-            color: var(--warning);
-            font-size: 20px;
-        }
 
-        /* File Upload Styles */
-        .file-upload-container {
-            position: relative;
-            margin-bottom: 20px;
-        }
+        .format-note i { color: var(--warning); font-size: 20px; }
+
+        /* File Upload */
+        .file-upload-container { position: relative; margin-bottom: 20px; }
 
         .file-upload-label {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.2), rgba(255, 215, 0, 0.2));
-            border: 2px dashed rgba(218, 165, 32, 0.5);
+            background: linear-gradient(135deg, rgba(218,165,32,0.2), rgba(255,215,0,0.2));
+            border: 2px dashed rgba(218,165,32,0.5);
             border-radius: 15px;
             padding: 20px;
+            padding-bottom: 28px;
             cursor: pointer;
             transition: all 0.3s ease;
             color: var(--accent);
@@ -272,16 +214,17 @@
         .file-upload-label::after {
             content: '(Shift+Click untuk pilih banyak file)';
             position: absolute;
-            bottom: 5px;
+            bottom: 6px;
             font-size: 11px;
             color: var(--text-muted);
             font-weight: 400;
+            letter-spacing: 0;
         }
 
         .file-upload-label:hover {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.3), rgba(255, 215, 0, 0.3));
+            background: linear-gradient(135deg, rgba(218,165,32,0.3), rgba(255,215,0,0.3));
             border-color: var(--accent);
-            box-shadow: 0 5px 15px rgba(218, 165, 32, 0.3);
+            box-shadow: 0 5px 15px rgba(218,165,32,0.3);
         }
 
         .file-upload-input {
@@ -289,16 +232,12 @@
             opacity: 0;
             width: 100%;
             height: 100%;
+            top: 0; left: 0;
             cursor: pointer;
         }
 
-        .file-info {
-            margin-top: 10px;
-            font-size: 14px;
-            color: rgba(255, 0, 64, 0.8);
-            text-align: center;
-        }
-        
+        .file-info { margin-top: 10px; font-size: 14px; color: rgba(255,165,0,0.9); text-align: center; }
+
         textarea {
             width: 100%;
             min-height: 180px;
@@ -313,24 +252,17 @@
             transition: all 0.3s ease;
             margin-bottom: 20px;
         }
-        
+
         textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.1), 0 0 20px var(--neon-gold-glow);
+            box-shadow: 0 0 0 3px rgba(218,165,32,0.1), 0 0 20px var(--neon-gold-glow);
         }
 
-        textarea::placeholder {
-            color: var(--text-muted);
-        }
-        
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-        
+        textarea::placeholder { color: var(--text-muted); }
+
+        .button-group { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+
         button {
             padding: 12px 24px;
             border: none;
@@ -342,75 +274,26 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-        }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: white;
-        }
-        
-        .btn-danger {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-            color: white;
-            box-shadow: 0 4px 12px var(--neon-gold-glow);
-        }
-        
-        .btn-danger:hover {
-            box-shadow: 0 6px 20px var(--neon-gold-glow);
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            box-shadow: 0 4px 12px var(--neon-gold-glow);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        .btn-secondary:hover {
-            box-shadow: 0 6px 20px var(--neon-gold-glow);
-        }
+        button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+        button:active { transform: translateY(0); }
 
-        .btn-accent {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            color: white;
-            box-shadow: 0 4px 12px var(--neon-gold-glow);
-        }
+        .btn-primary { background: linear-gradient(135deg, var(--success) 0%, #059669 100%); color: white; }
+        .btn-danger { background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%); color: white; }
+        .btn-secondary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #000; font-weight: 700; }
 
-        .btn-accent:hover {
-            box-shadow: 0 6px 20px var(--neon-gold-glow);
-        }
-        
-        .table-wrapper {
-            overflow-x: auto;
-            border-radius: 12px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--darker-bg);
-        }
-        
-        th, td {
-            padding: 14px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-        
+        .table-wrapper { overflow-x: auto; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
+
+        table { width: 100%; border-collapse: collapse; background: var(--darker-bg); }
+
+        th, td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--border); }
+
         th {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            font-weight: 600;
+            color: #000;
+            font-weight: 700;
             text-transform: uppercase;
             font-size: 0.8rem;
             letter-spacing: 0.5px;
@@ -418,199 +301,136 @@
             top: 0;
             z-index: 10;
         }
-        
-        tbody tr {
-            transition: background-color 0.2s ease;
-        }
-        
-        tbody tr:hover {
-            background: var(--card-hover);
-        }
-        
-        .copy-btn-container {
+
+        tbody tr { transition: background-color 0.2s ease; }
+        tbody tr:hover { background: var(--card-hover); }
+
+        /* Copy Button Row */
+        .copy-row {
             display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        
+
+        .copy-row h3 { margin: 0; }
+
         .copy-btn {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);
-            padding: 12px 24px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--primary-dark) 100%);
+            color: #000;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
             box-shadow: 0 4px 12px var(--neon-gold-glow);
         }
-        
-        .copy-btn:hover {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            box-shadow: 0 6px 20px var(--neon-gold-glow);
-        }
-        
-        .status-badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .status-pass {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-            border: 1px solid rgba(16, 185, 129, 0.4);
-        }
-        
-        .status-fail {
-            background: rgba(255, 165, 0, 0.2);
-            color: var(--danger);
-            border: 1px solid rgba(255, 165, 0, 0.4);
-        }
-        
+
+        .copy-btn:hover { box-shadow: 0 6px 20px var(--neon-gold-glow); transform: translateY(-2px); }
+
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
             padding: 16px 24px;
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transform: translateX(400px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            transform: translateX(450px);
             transition: transform 0.3s ease;
-            z-index: 1000;
+            z-index: 9999;
             display: flex;
             align-items: center;
             gap: 12px;
             font-weight: 500;
             min-width: 300px;
         }
-        
-        .notification.show {
-            transform: translateX(0);
-        }
-        
-        .notification.success {
-            background: linear-gradient(135deg, var(--success) 0%, #059669 100%);
-            color: white;
-        }
-        
-        .notification.error {
-            background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%);
-            color: white;
-            box-shadow: 0 10px 30px var(--neon-gold-glow);
-        }
-        
+
+        .notification.show { transform: translateX(0); }
+        .notification.success { background: linear-gradient(135deg, var(--success) 0%, #059669 100%); color: white; }
+        .notification.error { background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%); color: white; }
+
         .summary-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            padding: 20px;
+            padding: 18px 22px;
             border-radius: 12px;
-            margin-top: 20px;
-            box-shadow: 0 8px 24px var(--neon-gold-glow);
-            border: 1px solid var(--neon-gold);
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1rem;
         }
-        
-        .summary-card strong {
-            font-size: 1.1rem;
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
-            color: var(--text-muted);
-        }
-        
-        .empty-state i {
-            font-size: 64px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
+
+        .summary-deposit { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white; }
+        .summary-withdraw { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+        .summary-grand { background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: #000; font-weight: 700; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+        .empty-state i { font-size: 64px; margin-bottom: 20px; opacity: 0.3; display: block; }
 
         .data-summary {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.1) 0%, rgba(255, 215, 0, 0.1) 100%);
-            padding: 20px;
+            background: linear-gradient(135deg, rgba(218,165,32,0.1) 0%, rgba(255,215,0,0.1) 100%);
+            padding: 18px 20px;
             border-radius: 12px;
-            margin-bottom: 20px;
-            border: 1px solid rgba(218, 165, 32, 0.3);
+            margin-bottom: 0;
+            border: 1px solid rgba(218,165,32,0.3);
             text-align: center;
         }
 
-        .data-summary h3 {
-            color: var(--accent);
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            text-shadow: 0 0 10px var(--neon-gold-glow);
-        }
+        .data-summary h3 { color: var(--accent); margin-bottom: 8px; font-size: 1.1rem; text-shadow: 0 0 10px var(--neon-gold-glow); }
+        .data-summary p { font-size: 1.6rem; font-weight: 700; color: var(--text); }
 
-        .data-summary p {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text);
-        }
-
-        /* Sidebar Styles */
+        /* Sidebar */
         .sidebar {
-            width: 450px;
+            width: 440px;
             background: var(--card-bg);
             border: 1px solid var(--border);
-            padding: 30px;
+            padding: 28px;
             border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(218, 165, 32, 0.3), 0 0 20px rgba(255, 0, 64, 0.1);
+            box-shadow: 0 10px 40px rgba(218,165,32,0.3), 0 0 20px rgba(255,0,64,0.1);
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
         }
 
         .sidebar h3 {
             color: var(--accent);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             letter-spacing: 1px;
-            margin: 0 0 15px 0;
+            margin: 0 0 10px 0;
             text-align: center;
             text-shadow: 0 0 10px var(--neon-gold-glow);
         }
 
-        .sidebar textarea {
-            min-height: 120px;
-        }
+        .sidebar textarea { min-height: 110px; }
 
         .info-box {
-            background: rgba(218, 165, 32, 0.1);
+            background: rgba(218,165,32,0.1);
             border-left: 4px solid var(--accent);
-            padding: 14px 18px;
+            padding: 12px 16px;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
         }
 
-        .info-box strong {
-            color: var(--accent);
-        }
+        .info-box strong { color: var(--accent); }
 
-        .dropdown-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
+        .dropdown-container { display: flex; flex-direction: column; gap: 8px; }
+        .dropdown-label { font-size: 13px; color: var(--accent); font-weight: 600; text-align: center; }
 
-        .dropdown-label {
-            font-size: 14px;
-            color: var(--accent);
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-align: center;
-        }
-
-        .custom-dropdown {
-            position: relative;
-            width: 100%;
-        }
+        .custom-dropdown { position: relative; width: 100%; }
 
         .dropdown-selected {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.15), rgba(255, 215, 0, 0.15));
-            backdrop-filter: blur(10px);
+            background: linear-gradient(135deg, rgba(218,165,32,0.15), rgba(255,215,0,0.15));
             border: 2px solid var(--border);
             border-radius: 12px;
-            padding: 15px 20px;
+            padding: 13px 18px;
             color: var(--text);
             font-weight: 600;
             cursor: pointer;
@@ -622,47 +442,38 @@
 
         .dropdown-selected:hover {
             border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.2), 0 0 15px var(--neon-gold-glow);
-            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(218,165,32,0.2);
         }
 
         .dropdown-arrow {
-            width: 0;
-            height: 0;
+            width: 0; height: 0;
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
             border-top: 6px solid var(--accent);
             transition: transform 0.3s ease;
         }
 
-        .dropdown-selected.active .dropdown-arrow {
-            transform: rotate(180deg);
-        }
+        .dropdown-selected.active .dropdown-arrow { transform: rotate(180deg); }
 
         .dropdown-options {
             position: absolute;
-            top: calc(100% + 10px);
-            left: 0;
-            right: 0;
+            top: calc(100% + 8px);
+            left: 0; right: 0;
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
             border: 2px solid var(--border);
             border-radius: 12px;
             overflow: hidden;
             max-height: 0;
             opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             z-index: 100;
         }
 
-        .dropdown-options.show {
-            max-height: 300px;
-            opacity: 1;
-        }
+        .dropdown-options.show { max-height: 300px; opacity: 1; }
 
         .dropdown-option {
-            padding: 15px 20px;
+            padding: 13px 18px;
             color: var(--text);
             cursor: pointer;
             transition: all 0.2s ease;
@@ -670,87 +481,54 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .dropdown-option:last-child {
-            border-bottom: none;
-        }
-
-        .dropdown-option:hover {
-            background: rgba(218, 165, 32, 0.2);
-            padding-left: 30px;
-        }
-
-        .dropdown-option.selected {
-            background: rgba(218, 165, 32, 0.15);
-            font-weight: 700;
-            color: var(--accent);
-        }
+        .dropdown-option:last-child { border-bottom: none; }
+        .dropdown-option:hover { background: rgba(218,165,32,0.2); padding-left: 28px; }
+        .dropdown-option.selected { background: rgba(218,165,32,0.15); font-weight: 700; color: var(--accent); }
 
         .search-box {
             width: 100%;
-            padding: 12px 16px;
+            padding: 11px 15px;
             border-radius: 12px;
             border: 2px solid var(--border);
             background: var(--darker-bg);
             color: var(--text);
             font-size: 14px;
-            font-weight: 500;
             transition: all 0.3s ease;
         }
 
-        .search-box:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.1), 0 0 15px var(--neon-gold-glow);
-        }
-
-        .search-box::placeholder {
-            color: var(--text-muted);
-        }
+        .search-box:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(218,165,32,0.1); }
+        .search-box::placeholder { color: var(--text-muted); }
 
         .operator-list {
             list-style: none;
-            padding: 0;
-            margin: 0;
+            padding: 0; margin: 0;
             max-height: 450px;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .operator-list::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .operator-list::-webkit-scrollbar-track {
-            background: rgba(218, 165, 32, 0.05);
-            border-radius: 10px;
-        }
-
-        .operator-list::-webkit-scrollbar-thumb {
-            background: rgba(218, 165, 32, 0.3);
-            border-radius: 10px;
-        }
-
-        .operator-list::-webkit-scrollbar-thumb:hover {
-            background: rgba(218, 165, 32, 0.5);
-        }
+        .operator-list::-webkit-scrollbar { width: 8px; }
+        .operator-list::-webkit-scrollbar-track { background: rgba(218,165,32,0.05); border-radius: 10px; }
+        .operator-list::-webkit-scrollbar-thumb { background: rgba(218,165,32,0.3); border-radius: 10px; }
+        .operator-list::-webkit-scrollbar-thumb:hover { background: rgba(218,165,32,0.5); }
 
         .operator-list li {
-            padding: 14px 18px;
+            padding: 13px 16px;
             border-radius: 10px;
             text-align: left;
             font-weight: 600;
             font-size: 14px;
             letter-spacing: 0.5px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
             cursor: pointer;
             position: relative;
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
             user-select: none;
         }
 
@@ -760,1211 +538,960 @@
             font-weight: 900;
             opacity: 0;
             transition: opacity 0.3s ease;
-            margin-left: 10px;
             font-size: 12px;
         }
 
-        .operator-list li:hover::after {
-            opacity: 0.6;
-        }
+        .operator-list li:hover::after { opacity: 0.6; }
 
         .operator-list li[data-copied="true"] {
-            border: 3px solid #00ff15;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 30px rgba(16, 185, 129, 0.3);
+            border: 2px solid #00ff15;
+            box-shadow: 0 0 16px rgba(16,185,129,0.5);
         }
 
         .operator-list li[data-copied="true"]::after {
             content: '\f00c';
             opacity: 1;
             color: #10b981;
-            font-weight: 900;
         }
 
-        .operator-list li[data-copied="true"].clicked::after {
-            animation: checkmarkBounce 0.5s ease;
-        }
-
-        @keyframes checkmarkBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-        }
-
-        .operator-list li::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 4px;
-            height: 100%;
-            transition: width 0.3s ease;
-        }
-
-        .operator-list li:hover::before {
-            width: 100%;
-            opacity: 0.1;
-        }
-
-        .operator-list li.clicked {
-            animation: clickPulse 0.5s ease;
-        }
+        .operator-list li.clicked { animation: clickPulse 0.4s ease; }
 
         @keyframes clickPulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0%,100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
         }
 
-        /* DEPOSIT = BIRU */
         .operator-deposit {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(8, 145, 178, 0.3) 100%);
-            border: 2px solid rgba(6, 182, 212, 0.5);
+            background: linear-gradient(135deg, rgba(6,182,212,0.25) 0%, rgba(8,145,178,0.25) 100%);
+            border: 2px solid rgba(6,182,212,0.45);
             color: #67e8f9;
         }
 
-        .operator-deposit::before {
-            background: #06b6d4;
-        }
+        .operator-deposit:hover { box-shadow: 0 4px 15px rgba(6,182,212,0.5); }
 
-        .operator-deposit:hover {
-            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.5);
-        }
-
-        /* WITHDRAW = MERAH */
         .operator-withdraw {
-            background: linear-gradient(135deg, rgba(255, 165, 0, 0.3) 0%, rgba(218, 165, 32, 0.3) 100%);
-            border: 2px solid rgba(255, 165, 0, 0.5);
+            background: linear-gradient(135deg, rgba(255,107,107,0.25) 0%, rgba(220,38,38,0.25) 100%);
+            border: 2px solid rgba(255,107,107,0.45);
             color: #fca5a5;
         }
 
-        .operator-withdraw::before {
-            background: var(--danger);
-        }
+        .operator-withdraw:hover { box-shadow: 0 4px 15px rgba(255,107,107,0.5); }
 
-        .operator-withdraw:hover {
-            box-shadow: 0 4px 15px rgba(255, 165, 0, 0.5);
-        }
-
-        /* BELUM ADA DATA = ABU-ABU */
         .operator-belum {
-            background: linear-gradient(135deg, rgba(148, 163, 184, 0.2) 0%, rgba(100, 116, 139, 0.2) 100%);
-            border: 2px solid rgba(148, 163, 184, 0.4);
+            background: linear-gradient(135deg, rgba(148,163,184,0.15) 0%, rgba(100,116,139,0.15) 100%);
+            border: 2px solid rgba(148,163,184,0.3);
             color: var(--text-muted);
         }
 
-        .operator-belum::before {
-            background: var(--text-muted);
-        }
+        .operator-belum.empty-state { cursor: default; opacity: 0.7; }
+        .operator-belum.empty-state:hover { transform: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .operator-belum.empty-state::after { display: none; }
 
-        .operator-belum:hover {
-            box-shadow: 0 4px 15px rgba(148, 163, 184, 0.3);
-        }
-
-        .operator-belum.empty-state {
-            cursor: default;
-            opacity: 0.7;
-        }
-
-        .operator-belum.empty-state:hover {
-            transform: none;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .operator-belum.empty-state::after {
-            display: none;
-        }
-
-        @media (max-width: 1400px) {
-            .main-content {
-                flex-direction: column;
-            }
-
-            .sidebar {
-                width: 100%;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8rem;
-                flex-direction: column;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .format-cards {
-                grid-template-columns: 1fr;
-            }
-            
-            .format-description {
-                margin-left: 0;
-            }
-            
-            .input-section, .result-section {
-                padding: 20px;
-            }
-            
-            .table-wrapper {
-                margin: 0 -20px;
-                border-radius: 0;
-            }
-
-            .sidebar {
-                padding: 20px;
-            }
+        /* Section divider */
+        .section-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 10px 0;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .input-section, .result-section {
-            animation: fadeIn 0.6s ease-out;
+        @media (max-width: 1400px) {
+            .main-content { flex-direction: column; }
+            .sidebar { width: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 1.7rem; flex-direction: column; }
+            .button-group { flex-direction: column; }
+            button { width: 100%; justify-content: center; }
+            .format-cards { grid-template-columns: 1fr; }
+            .format-description { margin-left: 0; }
+            .input-section, .result-section { padding: 18px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>
-                <i class="fas fa-chart-line"></i>
-                Sistem Pengolahan Data Transaksi
-            </h1>
-            <p>Analisis dan kelola data transaksi dengan mudah dan efisien</p>
-        </div>
-        
-        <div class="main-content">
-            <div class="left-section">
-                <div class="input-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-upload"></i>
-                        Input Data Transaksi
-                    </h2>
-                    
-                    <div class="format-info">
-                        <div class="format-header">
-                            <i class="fas fa-info-circle"></i>
-                            <h3>Panduan Format Data</h3>
-                        </div>
-                        <p class="format-description">Sistem mendukung deteksi otomatis untuk 2 format data transaksi</p>
-                        
-                        <div class="format-cards">
-                            <div class="format-card">
-                                <div class="format-card-header">
-                                    <i class="fas fa-file-invoice"></i>
-                                    <span>Format Transaksi Lengkap</span>
-                                    <span class="format-badge">12 Kolom</span>
-                                </div>
-                                <div class="format-card-content">
-                                    <div class="format-fields">
-                                        <span class="field-tag">Akun Pemain</span>
-                                        <span class="field-tag">Tanggal</span>
-                                        <span class="field-tag">Jumlah</span>
-                                        <span class="field-tag">Bank Pembayaran</span>
-                                        <span class="field-tag">No. Rek Pembayar</span>
-                                        <span class="field-tag">Nama Pembayar</span>
-                                        <span class="field-tag">Bank Penerima</span>
-                                        <span class="field-tag">No. Rek Penerima</span>
-                                        <span class="field-tag">Nama Penerima</span>
-                                        <span class="field-tag">Operator</span>
-                                        <span class="field-tag">Jenis Operasi</span>
-                                        <span class="field-tag">Status</span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <div class="format-card">
-                                <div class="format-card-header">
-                                    <i class="fas fa-coins"></i>
-                                    <span>Format Withdraw Koin</span>
-                                    <span class="format-badge">9 Kolom</span>
-                                </div>
-                                <div class="format-card-content">
-                                    <div class="format-fields">
-                                        <span class="field-tag">Username</span>
-                                        <span class="field-tag">Tanggal & Waktu</span>
-                                        <span class="field-tag">Jumlah</span>
-                                        <span class="field-tag">Bank</span>
-                                        <span class="field-tag">No. Rekening</span>
-                                        <span class="field-tag">Nama Rekening</span>
-                                        <span class="field-tag">Akun Operator</span>
-                                        <span class="field-tag">Jenis Operasi</span>
-                                        <span class="field-tag">Status</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="format-note">
-                            <i class="fas fa-lightbulb"></i>
-                            <span>Format data menggunakan <strong>TAB</strong> sebagai pemisah kolom</span>
-                        </div>
-                    </div>
+<div class="container">
 
-                    <!-- File Upload untuk Data Transaksi -->
-                    <div class="file-upload-container">
-                        <label for="fileInput" class="file-upload-label">
-                            <i class="fas fa-file-excel"></i>
-                            <span>📁 Unggah File Excel (Bisa Multiple)</span>
-                        </label>
-                        <input type="file" id="fileInput" class="file-upload-input" accept=".xlsx,.xls,.csv" multiple onchange="handleFileUpload(event)">
-                        <div id="fileInfo" class="file-info"></div>
-                    </div>
-                    
-                    <textarea id="dataInput" placeholder="Paste data transaksi di sini (gunakan TAB sebagai pemisah)...&#10;&#10;atau unggah file Excel/CSV di atas"></textarea>
-                    
-                    <div class="button-group">
-                        <button onclick="tambahData()" class="btn-primary">
-                            <i class="fas fa-plus-circle"></i> Tambah Data
-                        </button>
-                        <button onclick="hapusData()" class="btn-danger">
-                            <i class="fas fa-trash-alt"></i> Hapus Semua Data
-                        </button>
-                        <button onclick="hitungJumlahDanTotalTransaksi()" class="btn-secondary">
-                            <i class="fas fa-calculator"></i> Hitung Per Bank
-                        </button>
-                    </div>
-                    
-                    <div class="data-summary">
-                        <h3><i class="fas fa-database"></i> Data Tersimpan</h3>
-                        <p><span id="dataCount">0</span> Transaksi</p>
-                    </div>
-                </div>
-                
-                <div class="result-section">
-                    <h2 class="section-title">
-                        <i class="fas fa-chart-bar"></i>
-                        Hasil Perhitungan Per Bank
-                    </h2>
-                    <div id="hasil">
-                        <div class="empty-state">
-                            <i class="fas fa-chart-pie"></i>
-                            <p>Klik tombol "Hitung Per Bank" untuk melihat hasil analisis</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="sidebar">
-                <h3><i class="fas fa-users"></i> Referensi Operator</h3>
-
-                <!-- File Upload untuk Referensi Operator -->
-                <div class="file-upload-container">
-                    <label for="refFileInput" class="file-upload-label">
-                        <i class="fas fa-file-excel"></i>
-                        <span>📁 Unggah File Referensi Operator (Bisa Multiple)</span>
-                    </label>
-                    <input type="file" id="refFileInput" class="file-upload-input" accept=".xlsx,.xls,.csv" multiple onchange="handleRefFileUpload(event)">
-                    <div id="refFileInfo" class="file-info"></div>
-                </div>
-
-                <textarea id="refInput" placeholder="Paste data referensi operator di sini...&#10;Format: Nama Operator [TAB] Deposit [TAB] Withdraw&#10;&#10;Data akan otomatis tersimpan saat Anda paste!&#10;atau unggah file Excel/CSV di atas"></textarea>
-
-                <div class="info-box">
-                    <i class="fas fa-info-circle"></i>
-                    <strong>💡 Tip:</strong> Paste data referensi operator di atas, daftar akan otomatis muncul di bawah. <strong>Klik nama operator untuk menyalin.</strong>
-                </div>
-
-                <div class="dropdown-container">
-                    <div class="dropdown-label">🔍 Filter Operator Berdasarkan Tipe:</div>
-                    <div class="custom-dropdown">
-                        <div class="dropdown-selected" onclick="toggleDropdown()">
-                            <span id="selectedFilter">Semua Operator</span>
-                            <div class="dropdown-arrow"></div>
-                        </div>
-                        <div class="dropdown-options" id="dropdownOptions">
-                            <div class="dropdown-option selected" onclick="selectFilter('all')">Semua Operator</div>
-                            <div class="dropdown-option" onclick="selectFilter('deposit')">Hanya Deposit</div>
-                            <div class="dropdown-option" onclick="selectFilter('withdraw')">Hanya Withdraw</div>
-                        </div>
-                    </div>
-                </div>
-
-                <input id="operatorSearch" class="search-box" placeholder="🔎 Cari nama operator..." oninput="filterOperatorList()">
-
-                <h3><i class="fas fa-list"></i> Daftar Operator</h3>
-                <ul id="operatorList" class="operator-list">
-                    <li class="operator-belum">— Belum ada referensi operator —</li>
-                </ul>
-            </div>
-        </div>
+    <div class="header">
+        <h1>
+            <i class="fas fa-chart-line"></i>
+            Sistem Pengolahan Data Transaksi
+        </h1>
+        <p>Analisis dan kelola data transaksi dengan mudah dan efisien</p>
     </div>
-    
-    <div id="notification" class="notification"></div>
 
-    <script>
-        let transactionData = [];
-        let operatorReferensi = {};
-        let currentFilter = 'all';
-        
-        function showNotification(message, isSuccess = true) {
-            const notification = document.getElementById('notification');
-            notification.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
-            notification.className = `notification ${isSuccess ? 'success' : 'error'}`;
-            notification.classList.add('show');
-            
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
+    <div class="main-content">
+        <!-- LEFT SECTION -->
+        <div class="left-section">
+            <div class="input-section">
+                <h2 class="section-title">
+                    <i class="fas fa-upload"></i>
+                    Input Data Transaksi
+                </h2>
 
-        function updateDataCount() {
-            document.getElementById('dataCount').textContent = transactionData.length;
-        }
+                <div class="format-info">
+                    <div class="format-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h3>Panduan Format Data</h3>
+                    </div>
+                    <p class="format-description">Sistem mendukung deteksi otomatis untuk 2 format data transaksi</p>
 
-        function tokenizeLine(line) {
-            line = line.replace(/\u00A0/g, ' ').trim();
-            if (!line) return [];
-            
-            let tokens = line.split('\t');
-            if (tokens.length === 1) {
-                tokens = line.split(',');
-            }
-            if (tokens.length === 1) {
-                tokens = line.split(/\s{2,}/);
-            }
-            
-            tokens = tokens.map(t => t.replace(/^"|"$/g, '').trim());
-            return tokens;
-        }
+                    <div class="format-cards">
+                        <div class="format-card">
+                            <div class="format-card-header">
+                                <i class="fas fa-file-invoice"></i>
+                                <span>Format Transaksi Lengkap</span>
+                                <span class="format-badge">12 Kolom</span>
+                            </div>
+                            <div class="format-card-content">
+                                <div class="format-fields">
+                                    <span class="field-tag">Akun Pemain</span>
+                                    <span class="field-tag">Tanggal</span>
+                                    <span class="field-tag">Jumlah</span>
+                                    <span class="field-tag">Bank Pembayaran</span>
+                                    <span class="field-tag">No. Rek Pembayar</span>
+                                    <span class="field-tag">Nama Pembayar</span>
+                                    <span class="field-tag">Bank Penerima</span>
+                                    <span class="field-tag">No. Rek Penerima</span>
+                                    <span class="field-tag">Nama Penerima</span>
+                                    <span class="field-tag">Operator</span>
+                                    <span class="field-tag">Jenis Operasi</span>
+                                    <span class="field-tag">Status</span>
+                                </div>
+                            </div>
+                        </div>
 
-        // Fungsi untuk mendeteksi apakah baris adalah header
-        function isHeaderLine(line) {
-            const lowerLine = line.toLowerCase();
-            
-            // Daftar keyword header yang sangat spesifik (multi-word)
-            const specificHeaderKeywords = [
-                'akun pemain',
-                'jumlah operator',
-                'bank pembayaran',
-                'nomor rekening pembayar',
-                'nama rekening pembayar',
-                'bank penerima',
-                'nomor rekening penerima',
-                'nama rekening penerima',
-                'akun operator',
-                'jenis operasi',
-                'status pemesanan'
-            ];
-            
-            // Hitung berapa banyak keyword spesifik yang ditemukan
-            let specificKeywordCount = 0;
-            for (const keyword of specificHeaderKeywords) {
-                if (lowerLine.includes(keyword)) {
-                    specificKeywordCount++;
-                }
-            }
-            
-            // Jika lebih dari 4 keyword spesifik ditemukan, ini pasti header
-            if (specificKeywordCount >= 4) {
-                return true;
-            }
-            
-            // Cek kombinasi keyword yang sangat umum di header
-            const hasAkunPemain = lowerLine.includes('akun pemain') || lowerLine.includes('akun player');
-            const hasTanggal = lowerLine.includes('tanggal') && !lowerLine.match(/\d{4}-\d{2}-\d{2}/); // Tanggal tapi bukan format date
-            const hasJumlahOperator = lowerLine.includes('jumlah operator') || lowerLine.includes('jumlah') && lowerLine.includes('operator');
-            const hasBankPembayaran = lowerLine.includes('bank pembayaran');
-            const hasStatusPemesanan = lowerLine.includes('status pemesanan') || lowerLine.includes('order status');
-            const hasJenisOperasi = lowerLine.includes('jenis operasi') || lowerLine.includes('operation type');
-            
-            // Jika memiliki 3 dari keyword kunci ini, kemungkinan besar header
-            const keyIndicators = [hasAkunPemain, hasTanggal, hasJumlahOperator, hasBankPembayaran, hasStatusPemesanan, hasJenisOperasi];
-            const trueCount = keyIndicators.filter(Boolean).length;
-            
-            return trueCount >= 3;
-        }
+                        <div class="format-card">
+                            <div class="format-card-header">
+                                <i class="fas fa-coins"></i>
+                                <span>Format Withdraw Koin</span>
+                                <span class="format-badge">9 Kolom</span>
+                            </div>
+                            <div class="format-card-content">
+                                <div class="format-fields">
+                                    <span class="field-tag">Username</span>
+                                    <span class="field-tag">Tanggal & Waktu</span>
+                                    <span class="field-tag">Jumlah</span>
+                                    <span class="field-tag">Bank</span>
+                                    <span class="field-tag">No. Rekening</span>
+                                    <span class="field-tag">Nama Rekening</span>
+                                    <span class="field-tag">Akun Operator</span>
+                                    <span class="field-tag">Jenis Operasi</span>
+                                    <span class="field-tag">Status</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        // Handle Excel/CSV file upload untuk data transaksi (Multiple Files)
-        function handleFileUpload(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-            
-            const fileInfo = document.getElementById('fileInfo');
-            fileInfo.textContent = `Memproses ${files.length} file...`;
-            
-            let allTextData = '';
-            let processedCount = 0;
-            let errorCount = 0;
-            
-            // Process each file
-            Array.from(files).forEach((file, index) => {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, {type: 'array'});
-                        
-                        let fileData = [];
-                        workbook.SheetNames.forEach(sheetName => {
-                            const worksheet = workbook.Sheets[sheetName];
-                            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-                            fileData = fileData.concat(jsonData);
-                        });
-                        
-                        fileData.forEach(row => {
-                            if (row.length > 0) {
-                                allTextData += row.join('\t') + '\n';
-                            }
-                        });
-                        
-                        processedCount++;
-                        
-                        // Check if all files processed
-                        if (processedCount + errorCount === files.length) {
-                            document.getElementById('dataInput').value = allTextData;
-                            
-                            if (errorCount === 0) {
-                                fileInfo.textContent = `✅ ${processedCount} file berhasil dimuat!`;
-                                showNotification(`✅ ${processedCount} file berhasil dimuat! Klik "Tambah Data" untuk memproses.`);
-                            } else {
-                                fileInfo.textContent = `⚠️ ${processedCount} file berhasil, ${errorCount} gagal`;
-                                showNotification(`⚠️ ${processedCount} file berhasil dimuat, ${errorCount} file gagal.`, false);
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error reading file:', file.name, error);
-                        errorCount++;
-                        
-                        // Check if all files processed
-                        if (processedCount + errorCount === files.length) {
-                            document.getElementById('dataInput').value = allTextData;
-                            
-                            if (processedCount > 0) {
-                                fileInfo.textContent = `⚠️ ${processedCount} file berhasil, ${errorCount} gagal`;
-                                showNotification(`⚠️ ${processedCount} file berhasil dimuat, ${errorCount} file gagal.`, false);
-                            } else {
-                                fileInfo.textContent = `❌ Gagal membaca semua file`;
-                                showNotification('❌ Gagal membaca file. Pastikan format Excel valid.', false);
-                            }
-                        }
-                    }
-                };
-                
-                reader.onerror = function() {
-                    errorCount++;
-                    if (processedCount + errorCount === files.length) {
-                        fileInfo.textContent = `⚠️ ${processedCount} file berhasil, ${errorCount} gagal`;
-                    }
-                };
-                
-                reader.readAsArrayBuffer(file);
-            });
-        }
+                    <div class="format-note">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Format data menggunakan <strong>TAB</strong> sebagai pemisah kolom</span>
+                    </div>
+                </div>
 
-        // Handle Excel/CSV file upload untuk referensi operator (Multiple Files)
-        function handleRefFileUpload(event) {
-            const files = event.target.files;
-            if (!files || files.length === 0) return;
-            
-            const refFileInfo = document.getElementById('refFileInfo');
-            refFileInfo.textContent = `Memproses ${files.length} file...`;
-            
-            let allTextData = '';
-            let processedCount = 0;
-            let errorCount = 0;
-            
-            // Process each file
-            Array.from(files).forEach((file, index) => {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, {type: 'array'});
-                        
-                        let fileData = [];
-                        workbook.SheetNames.forEach(sheetName => {
-                            const worksheet = workbook.Sheets[sheetName];
-                            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-                            fileData = fileData.concat(jsonData);
-                        });
-                        
-                        fileData.forEach(row => {
-                            if (row.length > 0) {
-                                allTextData += row.join('\t') + '\n';
-                            }
-                        });
-                        
-                        processedCount++;
-                        
-                        // Check if all files processed
-                        if (processedCount + errorCount === files.length) {
-                            document.getElementById('refInput').value = allTextData;
-                            
-                            // Auto-process referensi operator
-                            setTimeout(() => {
-                                setReferensi();
-                                refFileInfo.textContent = '';
-                            }, 100);
-                            
-                            if (errorCount === 0) {
-                                showNotification(`✅ ${processedCount} file referensi berhasil dimuat dan diproses!`);
-                            } else {
-                                showNotification(`⚠️ ${processedCount} file berhasil, ${errorCount} file gagal.`, false);
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error reading reference file:', file.name, error);
-                        errorCount++;
-                        
-                        // Check if all files processed
-                        if (processedCount + errorCount === files.length) {
-                            if (processedCount > 0) {
-                                document.getElementById('refInput').value = allTextData;
-                                
-                                // Auto-process referensi operator
-                                setTimeout(() => {
-                                    setReferensi();
-                                    refFileInfo.textContent = '';
-                                }, 100);
-                                
-                                showNotification(`⚠️ ${processedCount} file berhasil, ${errorCount} file gagal.`, false);
-                            } else {
-                                refFileInfo.textContent = `❌ Gagal membaca semua file`;
-                                showNotification('❌ Gagal membaca file referensi. Pastikan format Excel valid.', false);
-                            }
-                        }
-                    }
-                };
-                
-                reader.onerror = function() {
-                    errorCount++;
-                    if (processedCount + errorCount === files.length) {
-                        refFileInfo.textContent = `⚠️ ${processedCount} file berhasil, ${errorCount} gagal`;
-                    }
-                };
-                
-                reader.readAsArrayBuffer(file);
-            });
-        }
+                <!-- File Upload Transaksi -->
+                <div class="file-upload-container">
+                    <label for="fileInput" class="file-upload-label">
+                        <i class="fas fa-file-excel"></i>
+                        <span>📁 Unggah File Excel (Bisa Multiple)</span>
+                    </label>
+                    <input type="file" id="fileInput" class="file-upload-input" accept=".xlsx,.xls,.csv" multiple onchange="handleFileUpload(event)">
+                    <div id="fileInfo" class="file-info"></div>
+                </div>
 
-        function tambahData() {
-            const dataInput = document.getElementById('dataInput').value.trim();
-            if (!dataInput) {
-                showNotification('Masukkan data terlebih dahulu!', false);
-                return;
-            }
+                <textarea id="dataInput" placeholder="Paste data transaksi di sini (gunakan TAB sebagai pemisah)...&#10;&#10;atau unggah file Excel/CSV di atas"></textarea>
 
-            const dataLines = dataInput.split('\n');
-            let successCount = 0;
-            let errorCount = 0;
-            let skippedHeaders = 0;
+                <div class="button-group">
+                    <button onclick="tambahData()" class="btn-primary">
+                        <i class="fas fa-plus-circle"></i> Tambah Data
+                    </button>
+                    <button onclick="hapusData()" class="btn-danger">
+                        <i class="fas fa-trash-alt"></i> Hapus Semua Data
+                    </button>
+                    <button onclick="hitungJumlahDanTotalTransaksi()" class="btn-secondary">
+                        <i class="fas fa-calculator"></i> Hitung Per Bank
+                    </button>
+                </div>
 
-            dataLines.forEach(line => {
-                if (!line.trim()) return;
-                
-                // Skip jika baris adalah header
-                if (isHeaderLine(line)) {
-                    skippedHeaders++;
-                    return;
-                }
-                
-                try {
-                    const dataArray = line.match(/(?:[^\t"]+|"[^"]*")+/g)?.map(item => item.replace(/^"|"$/g, '').trim()) || [];
-                    
-                    if (dataArray.length === 12) {
-                        transactionData.push({
-                            type: 'format1',
-                            data: {
-                                accountPlayer: dataArray[0],
-                                date: dataArray[1],
-                                amount: parseInt(dataArray[2].replace(/,/g, '')),
-                                paymentBank: dataArray[3],
-                                payerAccountNumber: dataArray[4],
-                                payerAccountName: dataArray[5],
-                                recipientBank: dataArray[6],
-                                recipientAccountNumber: dataArray[7],
-                                recipientAccountName: dataArray[8],
-                                operatorAccount: dataArray[9],
-                                operationType: dataArray[10],
-                                orderStatus: dataArray[11]
-                            }
-                        });
-                        
-                        const operatorName = dataArray[9].trim();
-                        if (operatorName && operatorReferensi[operatorName]) {
-                            const isWithdraw = /withdraw/i.test(dataArray[10]);
-                            if (isWithdraw) {
-                                operatorReferensi[operatorName].withdrawStatus = true;
-                            } else {
-                                operatorReferensi[operatorName].depositStatus = true;
-                            }
-                        }
-                        
-                        successCount++;
-                    } else if (dataArray.length === 9) {
-                        transactionData.push({
-                            type: 'format2',
-                            data: {
-                                username: dataArray[0],
-                                date: dataArray[1],
-                                amount: parseFloat(dataArray[2].replace(/,/g, '')),
-                                bank: dataArray[3],
-                                accountNumber: dataArray[4],
-                                accountName: dataArray[5],
-                                operatorAccount: dataArray[6],
-                                operationType: dataArray[7],
-                                status: dataArray[8]
-                            }
-                        });
-                        
-                        const operatorName = dataArray[6].trim();
-                        if (operatorName && operatorReferensi[operatorName]) {
-                            const isWithdraw = /withdraw/i.test(dataArray[7]);
-                            if (isWithdraw) {
-                                operatorReferensi[operatorName].withdrawStatus = true;
-                            } else {
-                                operatorReferensi[operatorName].depositStatus = true;
-                            }
-                        }
-                        
-                        successCount++;
-                    } else {
-                        console.error('Baris tidak valid:', line);
-                        errorCount++;
-                    }
-                } catch (e) {
-                    console.error('Error processing line:', line, e);
-                    errorCount++;
-                }
-            });
+                <div class="data-summary">
+                    <h3><i class="fas fa-database"></i> Data Tersimpan</h3>
+                    <p><span id="dataCount">0</span> Transaksi</p>
+                </div>
+            </div>
 
-            document.getElementById('dataInput').value = '';
-            document.getElementById('fileInfo').textContent = '';
-            document.getElementById('fileInput').value = '';
-            updateDataCount();
-            updateOperatorList();
-            filterOperatorList();
-            
-            if (successCount > 0 && errorCount === 0) {
-                let message = `Berhasil menambahkan ${successCount} data transaksi!`;
-                if (skippedHeaders > 0) {
-                    message += ` (${skippedHeaders} baris header di-skip)`;
-                }
-                showNotification(message);
-            } else if (successCount > 0 && errorCount > 0) {
-                let message = `Berhasil menambahkan ${successCount} data, gagal ${errorCount} data.`;
-                if (skippedHeaders > 0) {
-                    message += ` (${skippedHeaders} baris header di-skip)`;
-                }
-                showNotification(message, false);
-            } else if (successCount === 0 && skippedHeaders > 0) {
-                showNotification(`Tidak ada data valid. ${skippedHeaders} baris header di-skip.`, false);
-            } else {
-                showNotification('Gagal menambahkan data. Pastikan format data benar!', false);
-            }
-        }
-
-        function hapusData() {
-            if (transactionData.length === 0) {
-                showNotification('Tidak ada data untuk dihapus!', false);
-                return;
-            }
-            
-            if (confirm('Apakah Anda yakin ingin menghapus semua data transaksi?')) {
-                transactionData = [];
-                
-                for (const op in operatorReferensi) {
-                    operatorReferensi[op].depositStatus = false;
-                    operatorReferensi[op].withdrawStatus = false;
-                    operatorReferensi[op].isCopied = false;
-                }
-                
-                updateDataCount();
-                updateOperatorList();
-                filterOperatorList();
-                
-                document.getElementById('hasil').innerHTML = `
+            <div class="result-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-bar"></i>
+                    Hasil Perhitungan Per Bank
+                </h2>
+                <div id="hasil">
                     <div class="empty-state">
                         <i class="fas fa-chart-pie"></i>
                         <p>Klik tombol "Hitung Per Bank" untuk melihat hasil analisis</p>
                     </div>
-                `;
-                showNotification('Semua data telah dihapus!');
-            }
-        }
+                </div>
+            </div>
+        </div>
 
-        function hitungJumlahDanTotalTransaksi() {
-            if (transactionData.length === 0) {
-                showNotification('Tidak ada data untuk dihitung!', false);
-                return;
-            }
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <h3><i class="fas fa-users"></i> Referensi Operator</h3>
 
-            const hasilDeposit = {};
-            const hasilWithdraw = {};
+            <!-- File Upload Referensi -->
+            <div class="file-upload-container">
+                <label for="refFileInput" class="file-upload-label">
+                    <i class="fas fa-file-excel"></i>
+                    <span>📁 Unggah File Referensi Operator</span>
+                </label>
+                <input type="file" id="refFileInput" class="file-upload-input" accept=".xlsx,.xls,.csv" multiple onchange="handleRefFileUpload(event)">
+                <div id="refFileInfo" class="file-info"></div>
+            </div>
 
-            transactionData.forEach(item => {
-                let bankPenerima, jumlah, isWithdraw;
-                
-                if (item.type === 'format1') {
-                    bankPenerima = item.data.recipientBank;
-                    jumlah = item.data.amount;
-                    isWithdraw = /withdraw/i.test(item.data.operationType);
-                } else {
-                    bankPenerima = item.data.bank;
-                    jumlah = item.data.amount;
-                    isWithdraw = /withdraw/i.test(item.data.operationType);
-                }
+            <textarea id="refInput" placeholder="Paste data referensi operator di sini...&#10;Format: Nama Operator [TAB] Deposit [TAB] Withdraw&#10;&#10;Data akan otomatis diproses saat paste!&#10;atau unggah file Excel/CSV di atas"></textarea>
 
-                if (isWithdraw) {
-                    if (!hasilWithdraw[bankPenerima]) {
-                        hasilWithdraw[bankPenerima] = { total: 0, count: 0 };
-                    }
-                    hasilWithdraw[bankPenerima].total += jumlah;
-                    hasilWithdraw[bankPenerima].count++;
-                } else {
-                    if (!hasilDeposit[bankPenerima]) {
-                        hasilDeposit[bankPenerima] = { total: 0, count: 0 };
-                    }
-                    hasilDeposit[bankPenerima].total += jumlah;
-                    hasilDeposit[bankPenerima].count++;
-                }
-            });
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <strong>💡 Tip:</strong> Paste data referensi operator di atas, daftar akan otomatis muncul. <strong>Klik nama operator untuk menyalin.</strong>
+            </div>
 
-            const sortedDeposit = Object.entries(hasilDeposit).sort((a, b) => b[1].total - a[1].total);
-            const sortedWithdraw = Object.entries(hasilWithdraw).sort((a, b) => b[1].total - a[1].total);
-            
-            let hasilOutput = '';
-
-            if (sortedDeposit.length > 0) {
-                hasilOutput += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="color: var(--accent); margin: 0; text-shadow: 0 0 10px var(--neon-gold-glow);"><i class="fas fa-arrow-down"></i> Rekap Deposit (Bank Penerima)</h3>
-                        <button id="copyDepositBtn" class="copy-btn" onclick="copyDepositData()" style="margin: 0;">
-                            <i class="fas fa-copy"></i>
-                            Salin Data Deposit
-                        </button>
+            <div class="dropdown-container">
+                <div class="dropdown-label">🔍 Filter Operator Berdasarkan Tipe:</div>
+                <div class="custom-dropdown">
+                    <div class="dropdown-selected" onclick="toggleDropdown()">
+                        <span id="selectedFilter">Semua Operator</span>
+                        <div class="dropdown-arrow"></div>
                     </div>
-                    <div class="table-wrapper">
-                        <table id="bank-table-deposit">
-                            <thead>
-                                <tr>
-                                    <th>Bank Penerima</th>
-                                    <th>Jumlah Transaksi</th>
-                                    <th>Total Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>`;
-
-                sortedDeposit.forEach(([bank, data]) => {
-                    hasilOutput += `
-                        <tr>
-                            <td><strong>${bank}</strong></td>
-                            <td>${data.count}</td>
-                            <td>${data.total.toLocaleString()}</td>
-                        </tr>`;
-                });
-
-                const totalDepositTransaksi = sortedDeposit.reduce((sum, [, data]) => sum + data.count, 0);
-                const totalDepositJumlah = sortedDeposit.reduce((sum, [, data]) => sum + data.total, 0);
-
-                hasilOutput += `</tbody></table></div>`;
-                hasilOutput += `
-                    <div class="summary-card" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); margin-top: 15px;">
-                        <i class="fas fa-chart-line"></i>
-                        <strong>Total Deposit:</strong> ${totalDepositTransaksi} transaksi dengan jumlah <strong>${totalDepositJumlah.toLocaleString()}</strong>
-                    </div>`;
-            }
-
-            if (sortedWithdraw.length > 0) {
-                hasilOutput += `
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 15px;">
-                        <h3 style="color: var(--danger); margin: 0; text-shadow: 0 0 10px var(--neon-gold-glow);"><i class="fas fa-arrow-up"></i> Rekap Withdraw (Bank Penerima)</h3>
-                        <button id="copyWithdrawBtn" class="copy-btn" onclick="copyWithdrawData()" style="margin: 0;">
-                            <i class="fas fa-copy"></i>
-                            Salin Data Withdraw
-                        </button>
+                    <div class="dropdown-options" id="dropdownOptions">
+                        <div class="dropdown-option selected" onclick="selectFilter('all')">Semua Operator</div>
+                        <div class="dropdown-option" onclick="selectFilter('deposit')">Hanya Deposit</div>
+                        <div class="dropdown-option" onclick="selectFilter('withdraw')">Hanya Withdraw</div>
                     </div>
-                    <div class="table-wrapper">
-                        <table id="bank-table-withdraw">
-                            <thead>
-                                <tr>
-                                    <th>Bank Penerima</th>
-                                    <th>Jumlah Transaksi</th>
-                                    <th>Total Jumlah</th>
-                                </tr>
-                            </thead>
-                            <tbody>`;
+                </div>
+            </div>
 
-                sortedWithdraw.forEach(([bank, data]) => {
-                    hasilOutput += `
-                        <tr>
-                            <td><strong>${bank}</strong></td>
-                            <td>${data.count}</td>
-                            <td>${data.total.toLocaleString()}</td>
-                        </tr>`;
+            <input id="operatorSearch" class="search-box" placeholder="🔎 Cari nama operator..." oninput="filterOperatorList()">
+
+            <h3><i class="fas fa-list"></i> Daftar Operator</h3>
+            <ul id="operatorList" class="operator-list">
+                <li class="operator-belum empty-state">— Belum ada referensi operator —</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div id="notification" class="notification"></div>
+
+<script>
+/* ============================================================
+   STATE
+============================================================ */
+let transactionData    = [];
+let operatorReferensi  = {};
+let currentFilter      = 'all';
+
+/* ============================================================
+   BANK DEFINITIONS
+============================================================ */
+const DEPOSIT_BANKS = [
+    { label: 'BCA',       keys: ['BCA'] },
+    { label: 'MANDIRI',   keys: ['MANDIRI'] },
+    { label: 'BNI',       keys: ['BNI'] },
+    { label: 'BRI',       keys: ['BRI'] },
+    { label: 'Danamon',   keys: ['DANAMON'] },
+    { label: 'CIMB',      keys: ['CIMB'] },
+    { label: 'BSI',       keys: ['BSI','BANK SYARIAH INDONESIA'] },
+    { label: 'MAYBANK',   keys: ['MAYBANK'] },
+    { label: 'DANA',      keys: ['DANA'] },
+    { label: 'OVO',       keys: ['OVO'] },
+    { label: 'GOPAY',     keys: ['GOPAY'] },
+    { label: 'LINK AJA',  keys: ['LINKAJA','LINK AJA','LINK_AJA'] },
+    { label: 'BANK JAGO', keys: ['JAGO'] },
+    { label: 'SEABANK',   keys: ['SEABANK','SEA BANK'] },
+    { label: 'PERMATA',   keys: ['PERMATA'] },
+    { label: 'USDT',      keys: ['USDT','__OTHERS__'] },   // __OTHERS__ = catch-all
+];
+
+const WITHDRAW_BANKS = [
+    { label: 'BCA',       keys: ['BCA'] },
+    { label: 'MANDIRI',   keys: ['MANDIRI'] },
+    { label: 'BNI',       keys: ['BNI'] },
+    { label: 'BRI',       keys: ['BRI'] },
+    { label: 'Danamon',   keys: ['DANAMON'] },
+    { label: 'CIMB',      keys: ['CIMB'] },
+    { label: 'BSI',       keys: ['BSI','BANK SYARIAH INDONESIA'] },
+    { label: 'MAYBANK',   keys: ['MAYBANK'] },
+    { label: 'DANA',      keys: ['DANA'] },
+    { label: 'OVO',       keys: ['OVO'] },
+    { label: 'GOPAY',     keys: ['GOPAY'] },
+    { label: 'LINK AJA',  keys: ['LINKAJA','LINK AJA','LINK_AJA'] },
+    { label: 'BANK JAGO', keys: ['JAGO'] },
+    { label: 'SEABANK',   keys: ['SEABANK','SEA BANK'] },
+    { label: 'USDT',      keys: ['USDT','__OTHERS__'] },
+];
+
+/* ============================================================
+   HELPER UTILITIES
+============================================================ */
+function fmtNum(n) {
+    return Number(n).toLocaleString('en-US');
+}
+
+function showNotification(message, isSuccess = true) {
+    const el = document.getElementById('notification');
+    el.innerHTML = `<i class="fas ${isSuccess ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+    el.className = `notification ${isSuccess ? 'success' : 'error'}`;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+function updateDataCount() {
+    document.getElementById('dataCount').textContent = transactionData.length;
+}
+
+function tokenizeLine(line) {
+    line = line.replace(/\u00A0/g, ' ').trim();
+    if (!line) return [];
+    let tokens = line.split('\t');
+    if (tokens.length === 1) tokens = line.split(',');
+    if (tokens.length === 1) tokens = line.split(/\s{2,}/);
+    return tokens.map(t => t.replace(/^"|"$/g, '').trim());
+}
+
+function isHeaderLine(line) {
+    const lo = line.toLowerCase();
+    const specific = [
+        'akun pemain','jumlah operator','bank pembayaran',
+        'nomor rekening pembayar','nama rekening pembayar',
+        'bank penerima','nomor rekening penerima',
+        'nama rekening penerima','akun operator',
+        'jenis operasi','status pemesanan'
+    ];
+    let cnt = specific.filter(k => lo.includes(k)).length;
+    if (cnt >= 4) return true;
+
+    const flags = [
+        lo.includes('akun pemain') || lo.includes('akun player'),
+        lo.includes('tanggal') && !lo.match(/\d{4}-\d{2}-\d{2}/),
+        lo.includes('jumlah') && lo.includes('operator'),
+        lo.includes('bank pembayaran'),
+        lo.includes('status pemesanan') || lo.includes('order status'),
+        lo.includes('jenis operasi') || lo.includes('operation type'),
+    ];
+    return flags.filter(Boolean).length >= 3;
+}
+
+/* ============================================================
+   FILE UPLOAD — TRANSAKSI
+============================================================ */
+function handleFileUpload(event) {
+    const files = event.target.files;
+    if (!files || !files.length) return;
+    const info = document.getElementById('fileInfo');
+    info.textContent = `Memproses ${files.length} file...`;
+
+    let allText = '', done = 0, errs = 0;
+
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            try {
+                const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                wb.SheetNames.forEach(sn => {
+                    XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1 })
+                       .forEach(row => { if (row.length) allText += row.join('\t') + '\n'; });
                 });
+                done++;
+            } catch { errs++; }
+            if (done + errs === files.length) finishUpload();
+        };
+        reader.onerror = () => { errs++; if (done + errs === files.length) finishUpload(); };
+        reader.readAsArrayBuffer(file);
+    });
 
-                const totalWithdrawTransaksi = sortedWithdraw.reduce((sum, [, data]) => sum + data.count, 0);
-                const totalWithdrawJumlah = sortedWithdraw.reduce((sum, [, data]) => sum + data.total, 0);
-
-                hasilOutput += `</tbody></table></div>`;
-                hasilOutput += `
-                    <div class="summary-card" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); margin-top: 15px;">
-                        <i class="fas fa-chart-line"></i>
-                        <strong>Total Withdraw:</strong> ${totalWithdrawTransaksi} transaksi dengan jumlah <strong>${totalWithdrawJumlah.toLocaleString()}</strong>
-                    </div>`;
-            }
-
-            const grandTotalTransaksi = transactionData.length;
-            const grandTotalJumlah = transactionData.reduce((sum, item) => {
-                if (item.type === 'format1') {
-                    return sum + item.data.amount;
-                } else {
-                    return sum + item.data.amount;
-                }
-            }, 0);
-
-            hasilOutput += `
-                <div class="summary-card" style="margin-top: 20px;">
-                    <i class="fas fa-chart-pie"></i>
-                    <strong>Grand Total:</strong> ${grandTotalTransaksi} transaksi dengan jumlah <strong>${grandTotalJumlah.toLocaleString()}</strong>
-                </div>`;
-            
-            document.getElementById('hasil').innerHTML = hasilOutput;
-            showNotification('Perhitungan transaksi berhasil!');
+    function finishUpload() {
+        document.getElementById('dataInput').value = allText;
+        if (errs === 0) {
+            info.textContent = `✅ ${done} file berhasil dimuat!`;
+            showNotification(`✅ ${done} file dimuat! Klik "Tambah Data" untuk memproses.`);
+        } else {
+            info.textContent = `⚠️ ${done} berhasil, ${errs} gagal`;
+            showNotification(`⚠️ ${done} file berhasil, ${errs} gagal.`, false);
         }
+    }
+}
 
-        function copyDepositData() {
-            const depositTable = document.querySelector('#bank-table-deposit tbody');
-            
-            if (!depositTable) {
-                showNotification('Tidak ada data deposit untuk disalin!', false);
-                return;
-            }
+/* ============================================================
+   FILE UPLOAD — REFERENSI OPERATOR
+============================================================ */
+function handleRefFileUpload(event) {
+    const files = event.target.files;
+    if (!files || !files.length) return;
+    const info = document.getElementById('refFileInfo');
+    info.textContent = `Memproses ${files.length} file...`;
 
-            let textToCopy = '';
-            const depositRows = depositTable.querySelectorAll('tr');
-            depositRows.forEach(row => {
-                const cells = row.cells;
-                const bank = cells[0].innerText;
-                const count = cells[1].innerText;
-                const total = cells[2].innerText;
-                textToCopy += `${bank}\t${count}\t${total}\n`;
-            });
+    let allText = '', done = 0, errs = 0;
 
-            const copyBtn = document.getElementById('copyDepositBtn');
-            const originalHTML = copyBtn.innerHTML;
-            
-            copyBtn.innerHTML = `
-                <i class="fas fa-check"></i>
-                Tersalin!
-            `;
-            copyBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
-
-            navigator.clipboard.writeText(textToCopy.trim())
-                .then(() => {
-                    showNotification('Data deposit berhasil disalin!');
-                })
-                .catch(err => {
-                    console.error('Gagal menyalin: ', err);
-                    showNotification('Gagal menyalin data!', false);
+    Array.from(files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = e => {
+            try {
+                const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+                wb.SheetNames.forEach(sn => {
+                    XLSX.utils.sheet_to_json(wb.Sheets[sn], { header: 1 })
+                       .forEach(row => { if (row.length) allText += row.join('\t') + '\n'; });
                 });
+                done++;
+            } catch { errs++; }
+            if (done + errs === files.length) finishRefUpload();
+        };
+        reader.onerror = () => { errs++; if (done + errs === files.length) finishRefUpload(); };
+        reader.readAsArrayBuffer(file);
+    });
 
-            setTimeout(() => {
-                copyBtn.innerHTML = originalHTML;
-                copyBtn.style.background = 'linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%)';
-            }, 2000);
-        }
+    function finishRefUpload() {
+        document.getElementById('refInput').value = allText;
+        setTimeout(() => { setReferensi(); info.textContent = ''; }, 120);
+        showNotification(errs === 0
+            ? `✅ ${done} file referensi berhasil dimuat!`
+            : `⚠️ ${done} berhasil, ${errs} gagal.`, errs === 0);
+    }
+}
 
-        function copyWithdrawData() {
-            const withdrawTable = document.querySelector('#bank-table-withdraw tbody');
-            
-            if (!withdrawTable) {
-                showNotification('Tidak ada data withdraw untuk disalin!', false);
-                return;
-            }
+/* ============================================================
+   TAMBAH DATA
+============================================================ */
+function tambahData() {
+    const raw = document.getElementById('dataInput').value.trim();
+    if (!raw) { showNotification('Masukkan data terlebih dahulu!', false); return; }
 
-            let textToCopy = '';
-            const withdrawRows = withdrawTable.querySelectorAll('tr');
-            withdrawRows.forEach(row => {
-                const cells = row.cells;
-                const bank = cells[0].innerText;
-                const count = cells[1].innerText;
-                const total = cells[2].innerText;
-                textToCopy += `${bank}\t${count}\t${total}\n`;
-            });
+    let ok = 0, fail = 0, skip = 0;
 
-            const copyBtn = document.getElementById('copyWithdrawBtn');
-            const originalHTML = copyBtn.innerHTML;
-            
-            copyBtn.innerHTML = `
-                <i class="fas fa-check"></i>
-                Tersalin!
-            `;
-            copyBtn.style.background = 'linear-gradient(135deg, var(--success) 0%, #059669 100%)';
+    raw.split('\n').forEach(line => {
+        if (!line.trim()) return;
+        if (isHeaderLine(line)) { skip++; return; }
 
-            navigator.clipboard.writeText(textToCopy.trim())
-                .then(() => {
-                    showNotification('Data withdraw berhasil disalin!');
-                })
-                .catch(err => {
-                    console.error('Gagal menyalin: ', err);
-                    showNotification('Gagal menyalin data!', false);
-                });
+        try {
+            const arr = line.match(/(?:[^\t"]+|"[^"]*")+/g)
+                            ?.map(x => x.replace(/^"|"$/g, '').trim()) || [];
 
-            setTimeout(() => {
-                copyBtn.innerHTML = originalHTML;
-                copyBtn.style.background = 'linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%)';
-            }, 2000);
-        }
-
-        function setReferensi() {
-            const text = document.getElementById('refInput').value.trim();
-            if (!text) {
-                return;
-            }
-
-            const lines = text.split('\n');
-            operatorReferensi = {};
-            let count = 0;
-            let skippedHeaders = 0;
-
-            lines.forEach((rawLine, idx) => {
-                let line = rawLine.replace(/\u00A0/g, ' ').trim();
-                if (!line) return;
-                
-                // Skip baris header
-                if (isHeaderLine(line)) {
-                    skippedHeaders++;
-                    return;
-                }
-                
-                // Skip baris pertama jika mengandung keyword header umum
-                if (idx === 0 && /operator|deposit|withdraw|no/i.test(line)) {
-                    skippedHeaders++;
-                    return;
-                }
-
-                const tokens = tokenizeLine(line);
-                if (tokens.length === 0) return;
-
-                let opIdx = tokens.findIndex(t => /[A-Za-z]/.test(t));
-                if (opIdx === -1) opIdx = 0;
-
-                let nameParts = [];
-                for (let j = opIdx; j < tokens.length; j++) {
-                    if (/^[0-9\-,.]+$/.test(tokens[j])) break;
-                    nameParts.push(tokens[j]);
-                }
-
-                const nama = nameParts.join(' ').replace(/[^A-Za-z0-9_\- ]/g, '').trim();
-                if (!nama) return;
-
-                const numeric = tokens.slice(opIdx + nameParts.length).map(t => parseInt(t.replace(/[^0-9\-]/g, ''), 10) || 0);
-                let depositVal = numeric[0] || 0;
-                let withdrawVal = numeric[1] || 0;
-
-                operatorReferensi[nama] = {
-                    depositStatus: false,
-                    withdrawStatus: false,
-                    hasDeposit: depositVal > 0,
-                    hasWithdraw: withdrawVal > 0,
-                    isCopied: false
-                };
-                count++;
-            });
-
-            if (count > 0) {
-                updateOperatorList();
-                filterOperatorList();
-                let message = `✓ ${count} operator berhasil dimuat!`;
-                if (skippedHeaders > 0) {
-                    message += ` (${skippedHeaders} baris header di-skip)`;
-                }
-                showNotification(message);
-                
-                document.getElementById('refInput').value = '';
-            }
-        }
-
-        function copyOperatorName(operatorName, element) {
-            navigator.clipboard.writeText(operatorName)
-                .then(() => {
-                    showNotification(`✓ "${operatorName}" berhasil disalin!`);
-                    
-                    if (operatorReferensi[operatorName]) {
-                        operatorReferensi[operatorName].isCopied = true;
+            if (arr.length === 12) {
+                transactionData.push({
+                    type: 'format1',
+                    data: {
+                        accountPlayer:          arr[0],
+                        date:                   arr[1],
+                        amount:                 parseInt(arr[2].replace(/,/g, '')) || 0,
+                        paymentBank:            arr[3],
+                        payerAccountNumber:     arr[4],
+                        payerAccountName:       arr[5],
+                        recipientBank:          arr[6],
+                        recipientAccountNumber: arr[7],
+                        recipientAccountName:   arr[8],
+                        operatorAccount:        arr[9],
+                        operationType:          arr[10],
+                        orderStatus:            arr[11],
                     }
-                    
-                    element.classList.add('clicked');
-                    element.setAttribute('data-copied', 'true');
-                    
-                    setTimeout(() => {
-                        element.classList.remove('clicked');
-                    }, 500);
-                })
-                .catch(err => {
-                    console.error('Gagal menyalin:', err);
-                    showNotification('Gagal menyalin nama operator!', false);
                 });
-        }
-
-        function updateOperatorList() {
-            const list = document.getElementById('operatorList');
-            list.innerHTML = '';
-
-            const keys = Object.keys(operatorReferensi).sort((a, b) => a.localeCompare(b));
-
-            if (keys.length === 0) {
-                const li = document.createElement('li');
-                li.textContent = '— Belum ada referensi operator —';
-                li.className = 'operator-belum empty-state';
-                li.style.cursor = 'default';
-                list.appendChild(li);
-                return;
-            }
-
-            keys.forEach(op => {
-                const li = document.createElement('li');
-                li.textContent = op;
-                li.dataset.operatorName = op;
-                
-                li.onclick = function() {
-                    copyOperatorName(op, this);
-                };
-
-                const info = operatorReferensi[op];
-                
-                if (info.isCopied) {
-                    li.setAttribute('data-copied', 'true');
-                    li.title = '✓ Sudah disalin - Klik untuk menyalin lagi';
-                } else {
-                    li.title = 'Klik untuk menyalin nama operator';
-                }
-
-                let shouldFilter = false;
-
-                if (currentFilter === 'deposit' && !info.hasDeposit) {
-                    shouldFilter = true;
-                } else if (currentFilter === 'withdraw' && !info.hasWithdraw) {
-                    shouldFilter = true;
-                }
-
-                li.dataset.filtered = shouldFilter ? 'true' : 'false';
-                if (shouldFilter) li.style.display = 'none';
-
-                if (info.hasDeposit && !info.hasWithdraw) {
-                    li.className = 'operator-deposit';
-                } else if (!info.hasDeposit && info.hasWithdraw) {
-                    li.className = 'operator-withdraw';
-                } else if (info.hasDeposit && info.hasWithdraw) {
-                    if (info.depositStatus && !info.withdrawStatus) {
-                        li.className = 'operator-deposit';
-                    } else if (!info.depositStatus && info.withdrawStatus) {
-                        li.className = 'operator-withdraw';
-                    } else if (info.depositStatus && info.withdrawStatus) {
-                        li.className = 'operator-deposit';
-                    } else {
-                        li.className = 'operator-deposit';
+                ok++;
+            } else if (arr.length === 9) {
+                transactionData.push({
+                    type: 'format2',
+                    data: {
+                        username:       arr[0],
+                        date:           arr[1],
+                        amount:         parseFloat(arr[2].replace(/,/g, '')) || 0,
+                        bank:           arr[3],
+                        accountNumber:  arr[4],
+                        accountName:    arr[5],
+                        operatorAccount:arr[6],
+                        operationType:  arr[7],
+                        status:         arr[8],
                     }
-                }
-
-                list.appendChild(li);
-            });
-        }
-
-        function filterOperatorList() {
-            const q = (document.getElementById('operatorSearch').value || '').toLowerCase().trim();
-            const list = document.getElementById('operatorList');
-            
-            Array.from(list.children).forEach(li => {
-                const txt = li.textContent.toLowerCase();
-                const isFiltered = li.dataset.filtered === 'true';
-                
-                if (q && !txt.includes(q)) {
-                    li.style.display = 'none';
-                } else if (isFiltered) {
-                    li.style.display = 'none';
-                } else {
-                    li.style.display = '';
-                }
-            });
-        }
-
-        function toggleDropdown() {
-            const dropdown = document.getElementById('dropdownOptions');
-            const selected = document.querySelector('.dropdown-selected');
-            dropdown.classList.toggle('show');
-            selected.classList.toggle('active');
-        }
-
-        function selectFilter(filter) {
-            currentFilter = filter;
-            const options = document.querySelectorAll('.dropdown-option');
-            options.forEach(opt => opt.classList.remove('selected'));
-
-            let selectedText = '';
-            if (filter === 'all') {
-                selectedText = 'Semua Operator';
-                options[0].classList.add('selected');
-            } else if (filter === 'deposit') {
-                selectedText = 'Hanya Deposit';
-                options[1].classList.add('selected');
-            } else if (filter === 'withdraw') {
-                selectedText = 'Hanya Withdraw';
-                options[2].classList.add('selected');
+                });
+                ok++;
+            } else {
+                fail++;
             }
+        } catch { fail++; }
+    });
 
-            document.getElementById('selectedFilter').textContent = selectedText;
-            toggleDropdown();
-            updateOperatorList();
-        }
+    document.getElementById('dataInput').value   = '';
+    document.getElementById('fileInfo').textContent = '';
+    document.getElementById('fileInput').value   = '';
+    updateDataCount();
+    updateOperatorList();
+    filterOperatorList();
 
-        document.addEventListener('click', function(e) {
-            const dropdown = document.querySelector('.custom-dropdown');
-            if (dropdown && !dropdown.contains(e.target)) {
-                document.getElementById('dropdownOptions').classList.remove('show');
-                document.querySelector('.dropdown-selected').classList.remove('active');
-            }
+    if (ok > 0 && fail === 0) {
+        showNotification(`Berhasil menambahkan ${ok} data transaksi!${skip ? ` (${skip} header di-skip)` : ''}`);
+    } else if (ok > 0) {
+        showNotification(`${ok} data ditambahkan, ${fail} gagal.${skip ? ` (${skip} header di-skip)` : ''}`, false);
+    } else if (skip > 0) {
+        showNotification(`Tidak ada data valid. ${skip} baris header di-skip.`, false);
+    } else {
+        showNotification('Gagal menambahkan data. Pastikan format data benar!', false);
+    }
+}
+
+/* ============================================================
+   HAPUS DATA
+============================================================ */
+function hapusData() {
+    if (!transactionData.length) { showNotification('Tidak ada data untuk dihapus!', false); return; }
+    if (!confirm('Apakah Anda yakin ingin menghapus semua data transaksi?')) return;
+
+    transactionData = [];
+    for (const op in operatorReferensi) {
+        operatorReferensi[op].depositStatus  = false;
+        operatorReferensi[op].withdrawStatus = false;
+        operatorReferensi[op].isCopied       = false;
+    }
+    updateDataCount();
+    updateOperatorList();
+    filterOperatorList();
+    document.getElementById('hasil').innerHTML = `
+        <div class="empty-state">
+            <i class="fas fa-chart-pie"></i>
+            <p>Klik tombol "Hitung Per Bank" untuk melihat hasil analisis</p>
+        </div>`;
+    showNotification('Semua data telah dihapus!');
+}
+
+/* ============================================================
+   HITUNG PER BANK — tampilan tabel
+============================================================ */
+function hitungJumlahDanTotalTransaksi() {
+    if (!transactionData.length) { showNotification('Tidak ada data untuk dihitung!', false); return; }
+
+    const hDeposit = {}, hWithdraw = {};
+
+    transactionData.forEach(item => {
+        const isWD    = /withdraw/i.test(item.type === 'format1' ? item.data.operationType : item.data.operationType);
+        const bank    = (item.type === 'format1' ? item.data.recipientBank : item.data.bank || '').trim();
+        const amount  = item.type === 'format1' ? item.data.amount : item.data.amount;
+        const target  = isWD ? hWithdraw : hDeposit;
+        if (!target[bank]) target[bank] = { total: 0, count: 0 };
+        target[bank].total  += amount;
+        target[bank].count++;
+    });
+
+    const sortedDep = Object.entries(hDeposit).sort((a,b) => b[1].total - a[1].total);
+    const sortedWD  = Object.entries(hWithdraw).sort((a,b) => b[1].total - a[1].total);
+
+    let html = '';
+
+    /* --- DEPOSIT TABLE --- */
+    if (sortedDep.length) {
+        const totCount = sortedDep.reduce((s,[,d]) => s + d.count, 0);
+        const totAmt   = sortedDep.reduce((s,[,d]) => s + d.total, 0);
+
+        html += `
+        <div class="copy-row">
+            <h3 style="color:#67e8f9;text-shadow:0 0 10px rgba(6,182,212,0.5);">
+                <i class="fas fa-arrow-down"></i> Rekap Deposit
+            </h3>
+            <button class="copy-btn" id="copyDepositBtn" onclick="copyDepositData()">
+                <i class="fas fa-copy"></i> Salin Format Horizontal
+            </button>
+        </div>
+        <div class="table-wrapper">
+            <table id="bank-table-deposit">
+                <thead>
+                    <tr><th>Bank Penerima</th><th>Jumlah Transaksi</th><th>Total Jumlah</th></tr>
+                </thead>
+                <tbody>`;
+
+        sortedDep.forEach(([bank, d]) => {
+            html += `<tr>
+                <td><strong>${bank}</strong></td>
+                <td>${d.count}</td>
+                <td>${fmtNum(d.total)}</td>
+            </tr>`;
         });
 
-        updateDataCount();
+        html += `</tbody></table></div>
+        <div class="summary-card summary-deposit">
+            <i class="fas fa-chart-line"></i>
+            <span><strong>Total Deposit:</strong> ${totCount} transaksi — <strong>${fmtNum(totAmt)}</strong></span>
+        </div>`;
+    }
+
+    /* --- WITHDRAW TABLE --- */
+    if (sortedWD.length) {
+        const totCount = sortedWD.reduce((s,[,d]) => s + d.count, 0);
+        const totAmt   = sortedWD.reduce((s,[,d]) => s + d.total, 0);
+
+        html += `
+        <div class="copy-row" style="margin-top:30px;">
+            <h3 style="color:#fca5a5;text-shadow:0 0 10px rgba(255,107,107,0.5);">
+                <i class="fas fa-arrow-up"></i> Rekap Withdraw
+            </h3>
+            <button class="copy-btn" id="copyWithdrawBtn" onclick="copyWithdrawData()">
+                <i class="fas fa-copy"></i> Salin Format Horizontal
+            </button>
+        </div>
+        <div class="table-wrapper">
+            <table id="bank-table-withdraw">
+                <thead>
+                    <tr><th>Bank Penerima</th><th>Jumlah Transaksi</th><th>Total Jumlah</th></tr>
+                </thead>
+                <tbody>`;
+
+        sortedWD.forEach(([bank, d]) => {
+            html += `<tr>
+                <td><strong>${bank}</strong></td>
+                <td>${d.count}</td>
+                <td>${fmtNum(d.total)}</td>
+            </tr>`;
+        });
+
+        html += `</tbody></table></div>
+        <div class="summary-card summary-withdraw">
+            <i class="fas fa-chart-line"></i>
+            <span><strong>Total Withdraw:</strong> ${totCount} transaksi — <strong>${fmtNum(totAmt)}</strong></span>
+        </div>`;
+    }
+
+    /* --- GRAND TOTAL --- */
+    const grandCount = transactionData.length;
+    const grandAmt   = transactionData.reduce((s, i) => s + i.data.amount, 0);
+
+    html += `
+    <div class="summary-card summary-grand" style="margin-top:20px;">
+        <i class="fas fa-chart-pie"></i>
+        <span><strong>Grand Total:</strong> ${grandCount} transaksi — <strong>${fmtNum(grandAmt)}</strong></span>
+    </div>`;
+
+    document.getElementById('hasil').innerHTML = html;
+    showNotification('Perhitungan transaksi berhasil!');
+}
+
+/* ============================================================
+   COPY HORIZONTAL — DEPOSIT
+   Format: FORM\tKOIN per bank sesuai urutan DEPOSIT_BANKS
+   Bank tidak ada data = 0\t0
+============================================================ */
+function copyDepositData() {
+    if (!transactionData.length) {
+        showNotification('Tidak ada data untuk disalin!', false); return;
+    }
+
+    // Kumpulkan data deposit berdasarkan nama bank (UPPERCASE)
+    const raw = {};
+    transactionData.forEach(item => {
+        const isWD = /withdraw/i.test(item.type === 'format1' ? item.data.operationType : item.data.operationType);
+        if (isWD) return;
+        const bank   = (item.type === 'format1' ? item.data.recipientBank : item.data.bank || '').trim().toUpperCase();
+        const amount = item.data.amount;
+        if (!raw[bank]) raw[bank] = { count: 0, total: 0 };
+        raw[bank].count++;
+        raw[bank].total += amount;
+    });
+
+    // Set untuk menandai bank yang sudah di-match oleh kolom tertentu
+    const matched = new Set();
+
+    // Hitung nilai tiap kolom (kecuali kolom terakhir yang punya __OTHERS__)
+    const values = DEPOSIT_BANKS.map((bankDef, idx) => {
+        const isLast    = bankDef.keys.includes('__OTHERS__');
+        let count = 0, total = 0;
+
+        if (!isLast) {
+            // Match normal
+            Object.entries(raw).forEach(([bankName, data]) => {
+                const hit = bankDef.keys.some(k => bankName.includes(k.toUpperCase()));
+                if (hit) {
+                    count += data.count;
+                    total += data.total;
+                    matched.add(bankName);
+                }
+            });
+        }
+        return { count, total, isLast };
+    });
+
+    // Kolom terakhir (__OTHERS__): semua bank yang belum ter-match
+    const lastIdx = DEPOSIT_BANKS.findIndex(b => b.keys.includes('__OTHERS__'));
+    if (lastIdx !== -1) {
+        // Tambahkan USDT yang sudah matched via key 'USDT' dari bankDef sebelum last
+        // Lalu tambahkan semua yang belum ter-match sama sekali
+        Object.entries(raw).forEach(([bankName, data]) => {
+            if (!matched.has(bankName)) {
+                values[lastIdx].count += data.count;
+                values[lastIdx].total += data.total;
+            }
+        });
+    }
+
+    // Susun string tab-separated: FORM\tKOIN\t untuk setiap kolom bank
+    const parts = values.map(v => `${v.count}\t${fmtNum(v.total)}`);
+    const textToCopy = parts.join('\t');
+
+    // Animasi tombol
+    animateCopyBtn('copyDepositBtn');
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => showNotification('✅ Data deposit disalin (format horizontal)!'))
+        .catch(() => showNotification('Gagal menyalin data!', false));
+}
+
+/* ============================================================
+   COPY HORIZONTAL — WITHDRAW
+   Format: FORM\tKOIN per bank sesuai urutan WITHDRAW_BANKS
+============================================================ */
+function copyWithdrawData() {
+    if (!transactionData.length) {
+        showNotification('Tidak ada data untuk disalin!', false); return;
+    }
+
+    // Kumpulkan data withdraw
+    const raw = {};
+    transactionData.forEach(item => {
+        const isWD = /withdraw/i.test(item.type === 'format1' ? item.data.operationType : item.data.operationType);
+        if (!isWD) return;
+        const bank   = (item.type === 'format1' ? item.data.recipientBank : item.data.bank || '').trim().toUpperCase();
+        const amount = item.data.amount;
+        if (!raw[bank]) raw[bank] = { count: 0, total: 0 };
+        raw[bank].count++;
+        raw[bank].total += amount;
+    });
+
+    const matched = new Set();
+
+    const values = WITHDRAW_BANKS.map((bankDef) => {
+        const isLast = bankDef.keys.includes('__OTHERS__');
+        let count = 0, total = 0;
+
+        if (!isLast) {
+            Object.entries(raw).forEach(([bankName, data]) => {
+                const hit = bankDef.keys.some(k => bankName.includes(k.toUpperCase()));
+                if (hit) {
+                    count += data.count;
+                    total += data.total;
+                    matched.add(bankName);
+                }
+            });
+        }
+        return { count, total, isLast };
+    });
+
+    // Kolom USDT/others
+    const lastIdx = WITHDRAW_BANKS.findIndex(b => b.keys.includes('__OTHERS__'));
+    if (lastIdx !== -1) {
+        Object.entries(raw).forEach(([bankName, data]) => {
+            if (!matched.has(bankName)) {
+                values[lastIdx].count += data.count;
+                values[lastIdx].total += data.total;
+            }
+        });
+    }
+
+    const parts = values.map(v => `${v.count}\t${fmtNum(v.total)}`);
+    const textToCopy = parts.join('\t');
+
+    animateCopyBtn('copyWithdrawBtn');
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => showNotification('✅ Data withdraw disalin (format horizontal)!'))
+        .catch(() => showNotification('Gagal menyalin data!', false));
+}
+
+/* ============================================================
+   ANIMATE COPY BUTTON
+============================================================ */
+function animateCopyBtn(id) {
+    const btn = document.getElementById(id);
+    if (!btn) return;
+    const orig = btn.innerHTML;
+    btn.innerHTML = `<i class="fas fa-check"></i> Tersalin!`;
+    btn.style.background = 'linear-gradient(135deg,#10b935 0%,#059669 100%)';
+    btn.disabled = true;
+    setTimeout(() => {
+        btn.innerHTML = orig;
+        btn.style.background = '';
+        btn.disabled = false;
+    }, 2200);
+}
+
+/* ============================================================
+   SET REFERENSI OPERATOR
+============================================================ */
+function setReferensi() {
+    const text = document.getElementById('refInput').value.trim();
+    if (!text) return;
+
+    const lines = text.split('\n');
+    operatorReferensi = {};
+    let count = 0, skip = 0;
+
+    lines.forEach((rawLine, idx) => {
+        let line = rawLine.replace(/\u00A0/g, ' ').trim();
+        if (!line) return;
+        if (isHeaderLine(line)) { skip++; return; }
+        if (idx === 0 && /operator|deposit|withdraw|no\./i.test(line)) { skip++; return; }
+
+        const tokens = tokenizeLine(line);
+        if (!tokens.length) return;
+
+        let opIdx = tokens.findIndex(t => /[A-Za-z]/.test(t));
+        if (opIdx === -1) opIdx = 0;
+
+        let nameParts = [];
+        for (let j = opIdx; j < tokens.length; j++) {
+            if (/^[0-9\-,.]+$/.test(tokens[j])) break;
+            nameParts.push(tokens[j]);
+        }
+
+        const nama = nameParts.join(' ').replace(/[^A-Za-z0-9_\- ]/g, '').trim();
+        if (!nama) return;
+
+        const numeric = tokens.slice(opIdx + nameParts.length)
+                               .map(t => parseInt(t.replace(/[^0-9\-]/g, ''), 10) || 0);
+
+        operatorReferensi[nama] = {
+            depositStatus:  false,
+            withdrawStatus: false,
+            hasDeposit:     (numeric[0] || 0) > 0,
+            hasWithdraw:    (numeric[1] || 0) > 0,
+            isCopied:       false,
+        };
+        count++;
+    });
+
+    if (count > 0) {
         updateOperatorList();
         filterOperatorList();
+        showNotification(`✓ ${count} operator berhasil dimuat!${skip ? ` (${skip} header di-skip)` : ''}`);
+        document.getElementById('refInput').value = '';
+    }
+}
 
-        const refInput = document.getElementById('refInput');
-        let refInputTimeout;
-        
-        refInput.addEventListener('paste', function(e) {
-            refInput.style.borderColor = 'var(--warning)';
-            refInput.style.boxShadow = '0 0 0 3px rgba(245, 158, 11, 0.1)';
-            
-            setTimeout(() => {
-                if (refInput.value.trim()) {
-                    setReferensi();
-                    refInput.style.borderColor = '';
-                    refInput.style.boxShadow = '';
-                }
-            }, 100);
-        });
+/* ============================================================
+   COPY OPERATOR NAME
+============================================================ */
+function copyOperatorName(name, el) {
+    navigator.clipboard.writeText(name)
+        .then(() => {
+            showNotification(`✓ "${name}" berhasil disalin!`);
+            if (operatorReferensi[name]) operatorReferensi[name].isCopied = true;
+            el.classList.add('clicked');
+            el.setAttribute('data-copied', 'true');
+            setTimeout(() => el.classList.remove('clicked'), 500);
+        })
+        .catch(() => showNotification('Gagal menyalin nama operator!', false));
+}
 
-        refInput.addEventListener('input', function(e) {
-            refInput.style.borderColor = 'var(--accent)';
-            
-            clearTimeout(refInputTimeout);
-            refInputTimeout = setTimeout(() => {
-                if (refInput.value.trim()) {
-                    setReferensi();
-                }
-                refInput.style.borderColor = '';
-            }, 1000);
-        });
-    </script>
+/* ============================================================
+   UPDATE OPERATOR LIST
+============================================================ */
+function updateOperatorList() {
+    const list = document.getElementById('operatorList');
+    list.innerHTML = '';
+
+    const keys = Object.keys(operatorReferensi).sort((a,b) => a.localeCompare(b));
+
+    if (!keys.length) {
+        const li = document.createElement('li');
+        li.textContent = '— Belum ada referensi operator —';
+        li.className = 'operator-belum empty-state';
+        list.appendChild(li);
+        return;
+    }
+
+    keys.forEach(op => {
+        const li  = document.createElement('li');
+        const info = operatorReferensi[op];
+
+        li.textContent            = op;
+        li.dataset.operatorName   = op;
+        li.title                  = info.isCopied ? '✓ Sudah disalin — Klik untuk menyalin lagi' : 'Klik untuk menyalin nama operator';
+        li.onclick                = function() { copyOperatorName(op, this); };
+
+        if (info.isCopied) li.setAttribute('data-copied', 'true');
+
+        // Filter
+        let hidden = false;
+        if (currentFilter === 'deposit'  && !info.hasDeposit)  hidden = true;
+        if (currentFilter === 'withdraw' && !info.hasWithdraw) hidden = true;
+        li.dataset.filtered = hidden ? 'true' : 'false';
+        if (hidden) li.style.display = 'none';
+
+        // Warna kelas
+        if (info.hasDeposit && !info.hasWithdraw)  li.className = 'operator-deposit';
+        else if (!info.hasDeposit && info.hasWithdraw) li.className = 'operator-withdraw';
+        else li.className = 'operator-deposit'; // both or unknown
+
+        list.appendChild(li);
+    });
+}
+
+/* ============================================================
+   FILTER OPERATOR LIST
+============================================================ */
+function filterOperatorList() {
+    const q = (document.getElementById('operatorSearch').value || '').toLowerCase().trim();
+    Array.from(document.getElementById('operatorList').children).forEach(li => {
+        const txt      = li.textContent.toLowerCase();
+        const filtered = li.dataset.filtered === 'true';
+        li.style.display = (filtered || (q && !txt.includes(q))) ? 'none' : '';
+    });
+}
+
+/* ============================================================
+   DROPDOWN
+============================================================ */
+function toggleDropdown() {
+    const dd  = document.getElementById('dropdownOptions');
+    const sel = document.querySelector('.dropdown-selected');
+    dd.classList.toggle('show');
+    sel.classList.toggle('active');
+}
+
+function selectFilter(filter) {
+    currentFilter = filter;
+    document.querySelectorAll('.dropdown-option').forEach(o => o.classList.remove('selected'));
+    const labels = { all: 'Semua Operator', deposit: 'Hanya Deposit', withdraw: 'Hanya Withdraw' };
+    const idxMap = { all: 0, deposit: 1, withdraw: 2 };
+    document.querySelectorAll('.dropdown-option')[idxMap[filter]].classList.add('selected');
+    document.getElementById('selectedFilter').textContent = labels[filter];
+    toggleDropdown();
+    updateOperatorList();
+}
+
+document.addEventListener('click', e => {
+    const dd = document.querySelector('.custom-dropdown');
+    if (dd && !dd.contains(e.target)) {
+        document.getElementById('dropdownOptions').classList.remove('show');
+        document.querySelector('.dropdown-selected').classList.remove('active');
+    }
+});
+
+/* ============================================================
+   AUTO-PROCESS REF INPUT ON PASTE / INPUT
+============================================================ */
+const refInput = document.getElementById('refInput');
+let refTimer;
+
+refInput.addEventListener('paste', () => {
+    setTimeout(() => { if (refInput.value.trim()) setReferensi(); }, 120);
+});
+
+refInput.addEventListener('input', () => {
+    clearTimeout(refTimer);
+    refTimer = setTimeout(() => { if (refInput.value.trim()) setReferensi(); }, 1000);
+});
+
+/* ============================================================
+   INIT
+============================================================ */
+updateDataCount();
+updateOperatorList();
+filterOperatorList();
+</script>
 </body>
 </html>

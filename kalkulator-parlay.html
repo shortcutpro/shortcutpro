@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Gunakan kalkulator parlay untuk menghitung hasil taruhan mix parlay Anda secara otomatis dan akurat.">
   <meta name="keywords" content="Kalkulator Parlay, Rumus Mix Parlay, Hitung Parlay, Mix Parlay Otomatis">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <!-- Bootstrap 5 CSS & JS (konsisten satu versi) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
   <link rel="icon" type="image/x-icon" href="https://hokben84059.com/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -17,10 +18,9 @@
       --dark-color: #1a1a1a;
       --darker-color: #0d0d0d;
       --light-color: #f5f0e0;
-      --success-color: #c9a227;
       --danger-color: #b22222;
-      --info-color: #b8860b;
-      --warning-color: #f0c040;
+      --win-color: #2ecc71;
+      --lose-color: #e74c3c;
     }
 
     body {
@@ -44,10 +44,7 @@
       pointer-events: none;
     }
 
-    main, footer {
-      position: relative;
-      z-index: 1;
-    }
+    main, footer { position: relative; z-index: 1; }
 
     .card {
       background-color: rgba(20, 16, 5, 0.88);
@@ -93,38 +90,26 @@
       color: #fff;
     }
 
+    .btn-secondary {
+      background: rgba(80, 80, 80, 0.7);
+      border: 1px solid rgba(200, 200, 200, 0.3);
+      color: #ddd;
+    }
+
     .btn-dark {
       background: rgba(30, 25, 5, 0.9);
       border: 1px solid rgba(201, 162, 39, 0.4);
       color: var(--secondary-color);
     }
 
-    .btn-dark:hover {
-      background: rgba(201, 162, 39, 0.2);
-      color: #f0c040;
-    }
+    .btn-dark:hover { background: rgba(201, 162, 39, 0.2); color: #f0c040; }
+    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
 
-    .btn:hover {
-      opacity: 0.92;
-      transform: translateY(-1px);
-    }
+    hr { border-color: rgba(201, 162, 39, 0.25); }
 
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    hr {
-      border-color: rgba(201, 162, 39, 0.25);
-    }
-
-    label {
-      font-weight: 500;
-      color: var(--secondary-color);
-    }
-
-    small {
-      color: rgba(240, 192, 64, 0.75);
-    }
+    label { font-weight: 500; color: var(--secondary-color); }
+    small { color: rgba(240, 192, 64, 0.75); }
 
     h1 {
       color: var(--secondary-color);
@@ -133,9 +118,7 @@
       margin: 20px 0;
     }
 
-    .vertical-divider {
-      border-right: 1px solid rgba(201, 162, 39, 0.2);
-    }
+    .vertical-divider { border-right: 1px solid rgba(201, 162, 39, 0.2); }
 
     footer.footer-dark {
       background: rgba(10, 8, 0, 0.92);
@@ -149,15 +132,10 @@
       z-index: 10;
     }
 
-    footer.footer-dark a {
-      color: var(--secondary-color);
-      text-decoration: none;
-    }
+    footer.footer-dark a { color: var(--secondary-color); text-decoration: none; }
+    footer.footer-dark a:hover { color: var(--primary-color); }
 
-    footer.footer-dark a:hover {
-      color: var(--primary-color);
-    }
-
+    /* ── Result Cards ── */
     .result-card {
       background: linear-gradient(135deg, #1a1200, #2e2000);
       border: 1px solid rgba(201, 162, 39, 0.5);
@@ -165,39 +143,44 @@
       padding: 12px 20px;
       box-shadow: 0 0 15px rgba(201, 162, 39, 0.25), inset 0 1px 0 rgba(240,192,64,0.1);
       transition: all 0.3s ease;
-      min-width: 140px;
+      min-width: 160px;
     }
 
-    .result-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4);
-    }
+    .result-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4); }
+    .result-card strong { color: var(--secondary-color); font-size: 1.15rem; }
 
-    .result-card strong {
-      color: var(--secondary-color);
-      font-size: 1.25rem;
-    }
+    /* Warna hasil akhir */
+    .result-card.win { border-color: var(--win-color); box-shadow: 0 0 15px rgba(46,204,113,0.3); }
+    .result-card.win strong { color: var(--win-color); }
+    .result-card.lose { border-color: var(--lose-color); box-shadow: 0 0 15px rgba(231,76,60,0.3); }
+    .result-card.lose strong { color: var(--lose-color); }
+    .result-card.bust { border-color: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.5); }
+    .result-card.bust strong { color: #ff4444; }
 
     .radio-label {
       display: inline-flex;
       align-items: center;
-      margin-right: 10px;
+      margin-right: 8px;
+      margin-bottom: 4px;
       cursor: pointer;
-      padding: 5px 10px;
+      padding: 4px 10px;
       border-radius: 20px;
       transition: all 0.2s ease;
       color: rgba(240,192,64,0.9);
-      font-size: 0.875rem;
+      font-size: 0.82rem;
+      border: 1px solid transparent;
     }
 
-    .radio-label:hover {
-      background-color: rgba(201, 162, 39, 0.15);
-    }
+    .radio-label:hover { background-color: rgba(201, 162, 39, 0.15); }
 
-    input[type="radio"] {
-      margin-right: 5px;
-      accent-color: var(--primary-color);
-    }
+    /* Highlight radio yang dipilih */
+    .radio-label.win-full   { border-color: rgba(46,204,113,0.3); }
+    .radio-label.win-half   { border-color: rgba(46,204,113,0.15); }
+    .radio-label.lose-half  { border-color: rgba(231,76,60,0.2); }
+    .radio-label.draw       { border-color: rgba(200,200,200,0.2); }
+    .radio-label.lose-full  { border-color: rgba(231,76,60,0.4); background: rgba(180,0,0,0.12); }
+
+    input[type="radio"] { margin-right: 5px; accent-color: var(--primary-color); }
 
     .collapse-content {
       background-color: rgba(201, 162, 39, 0.05);
@@ -225,6 +208,17 @@
       margin-right: 5px;
     }
 
+    /* Badge kalah full */
+    .badge-kalah-full {
+      background: rgba(231,76,60,0.25);
+      border: 1px solid rgba(231,76,60,0.5);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      color: #ff6b6b;
+      margin-left: 6px;
+    }
+
     @media (max-width: 768px) {
       .vertical-divider {
         border-right: none;
@@ -244,10 +238,15 @@
     <hr>
     <div class="card mb-5 shadow-lg">
       <div class="card-header">
+
+        <!-- Toolbar -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
+          <div class="d-flex gap-2">
             <button type="button" class="btn btn-success btn-sm" @click="addNewParlay">
               <i class="fas fa-plus"></i> Tambah Team
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" @click="resetAll">
+              <i class="fas fa-redo"></i> Reset
             </button>
           </div>
           <div class="glow-text">
@@ -255,24 +254,39 @@
           </div>
         </div>
 
+        <!-- Nilai Bet -->
         <div class="row">
           <div class="col-md-6">
             <label><i class="fas fa-money-bill-wave"></i> Nilai Bet</label>
-            <input type="number" class="form-control" v-model.number="nilaibet" min="1" max="10000000" @change="oddstotal">
+            <input
+              type="number"
+              class="form-control"
+              v-model.number="nilaibet"
+              min="1"
+              max="100000000"
+              @input="recalc"
+            />
+            <small>{{ formatRupiah(nilaibet) }}</small>
           </div>
         </div>
 
+        <!-- Hasil -->
         <div class="d-flex align-items-end flex-wrap mt-4" style="gap:16px;">
           <div class="text-center">
-            <label class="form-label d-block"><strong><i class="fas fa-percentage"></i> Hasil Odds</strong></label>
+            <label class="form-label d-block"><strong><i class="fas fa-percentage"></i> Total Odds</strong></label>
             <div class="result-card">
-              <strong>{{ totalodds }}</strong>
+              <strong>{{ computedOdds.toFixed(4) }}</strong>
             </div>
           </div>
           <div class="text-center">
             <label class="form-label d-block"><strong><i class="fas fa-trophy"></i> Hasil Akhir</strong></label>
-            <div class="result-card">
-              <strong>{{ totalc }}</strong>
+            <div class="result-card" :class="hasilClass">
+              <strong>{{ hasilDisplay }}</strong>
+            </div>
+          </div>
+          <div class="text-center" v-if="adaKalahFull">
+            <div class="result-card bust">
+              <strong><i class="fas fa-skull-crossbones"></i> BET HANGUS</strong>
             </div>
           </div>
         </div>
@@ -284,14 +298,16 @@
           :key="index"
           class="row align-items-start mb-4"
         >
+          <!-- Hapus -->
           <div class="col-auto vertical-divider pr-3">
             <label>&nbsp;</label>
             <button type="button" class="btn btn-danger btn-block" @click="removeParlay(index)">
-              <i class="fas fa-trash"></i> Hapus
+              <i class="fas fa-trash"></i>
             </button>
           </div>
 
-          <div class="col-xs-3 vertical-divider px-3">
+          <!-- Odds Input -->
+          <div class="col-xs-3 vertical-divider px-3" style="min-width:160px; max-width:200px;">
             <label>
               <span class="parlay-index-badge">{{ index + 1 }}</span>
               <i class="fas fa-chart-line"></i> Odds
@@ -300,40 +316,48 @@
               type="number"
               class="form-control"
               v-model.number="parlay.odds"
-              @change="oddstotal"
+              @input="recalc"
               step="0.01"
+              min="1"
+              :disabled="parlay.hasil === '-1'"
             />
           </div>
 
-          <div class="col-xs-6 pl-3">
+          <!-- Radio Hasil -->
+          <div class="col pl-3">
             <label><i class="fas fa-flag-checkered"></i> Hasil Partai {{ index + 1 }}</label>
             <div class="mt-2">
-              <label class="radio-label">
-                <input type="radio" v-model="parlay.hasil" value="1"    @change="oddstotal" /> Menang Full
+              <label class="radio-label win-full">
+                <input type="radio" v-model="parlay.hasil" value="1"    @change="recalc" /> Menang Full
               </label>
-              <label class="radio-label">
-                <input type="radio" v-model="parlay.hasil" value="0.5"  @change="oddstotal" /> Menang Setengah
+              <label class="radio-label win-half">
+                <input type="radio" v-model="parlay.hasil" value="0.5"  @change="recalc" /> Menang Setengah
               </label>
-              <label class="radio-label">
-                <input type="radio" v-model="parlay.hasil" value="-0.5" @change="oddstotal" /> Kalah Setengah
+              <label class="radio-label lose-half">
+                <input type="radio" v-model="parlay.hasil" value="-0.5" @change="recalc" /> Kalah Setengah
               </label>
-              <label class="radio-label">
-                <input type="radio" v-model="parlay.hasil" value="0"    @change="oddstotal" /> Seri
+              <label class="radio-label draw">
+                <input type="radio" v-model="parlay.hasil" value="0"    @change="recalc" /> Seri
               </label>
-              <div class="mt-2">
-                <small><i class="fas fa-info-circle"></i> Hasil Odds: {{ parlay.oddsx }}</small>
-              </div>
+              <label class="radio-label lose-full">
+                <input type="radio" v-model="parlay.hasil" value="-1"   @change="recalc" />
+                <i class="fas fa-skull-crossbones me-1" style="color:#e74c3c;font-size:0.75rem;"></i> Kalah Full
+              </label>
+            </div>
+            <div class="mt-2">
+              <small><i class="fas fa-info-circle"></i> Hasil Odds: {{ parlay.oddsx }}</small>
             </div>
           </div>
         </div>
 
         <hr class="my-4">
 
+        <!-- Collapse buttons - Bootstrap 5 attributes -->
         <div class="mb-3">
-          <button class="btn btn-dark mr-2" type="button" data-bs-toggle="collapse" data-bs-target="#catatanCollapse" aria-expanded="true">
+          <button class="btn btn-dark me-2" type="button" data-bs-toggle="collapse" data-bs-target="#catatanCollapse">
             <i class="fas fa-sticky-note"></i> Catatan
           </button>
-          <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rumusCollapse" aria-expanded="true">
+          <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#rumusCollapse">
             <i class="fas fa-square-root-alt"></i> Rumus Mix Parlay
           </button>
         </div>
@@ -341,17 +365,21 @@
         <div class="collapse show" id="catatanCollapse">
           <div class="p-3 rounded collapse-content small mb-2">
             <strong><i class="fas fa-info-circle"></i> Catatan:</strong><br>
-            - Menang Full = Odds<br>
-            - Menang Setengah = ((Odds - 1) / 2) + 1<br>
-            - Kalah Setengah = 0.5<br>
-            - Seri = 1
+            - Menang Full &nbsp;&nbsp;= Odds<br>
+            - Menang ½ &nbsp;&nbsp;&nbsp;&nbsp;= ((Odds − 1) / 2) + 1<br>
+            - Kalah ½ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 0.5<br>
+            - Seri &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 1<br>
+            - <strong style="color:#ff6b6b">Kalah Full &nbsp;&nbsp;= 0 (Bet Hangus)</strong>
           </div>
         </div>
 
         <div class="collapse show mt-2" id="rumusCollapse">
           <div class="p-3 rounded collapse-content small">
             <strong><i class="fas fa-calculator"></i> Rumus Mix Parlay:</strong><br>
-            (Hasil Perkalian Odds × Jumlah Bet) - Jumlah Bet<br>
+            <strong>Hasil Akhir</strong> = Perkalian Semua Odds × Jumlah Bet<br>
+            <strong>Profit/Loss</strong> = Hasil Akhir − Jumlah Bet<br>
+            <i>*Jika ada satu partai Kalah Full, seluruh bet hangus (hasil = 0).</i>
+            <br><i>(Hasil Perkalian Odds × Jumlah Bet) - Jumlah Bet</i></br>
             <i>*Jika hasil minus, Anda kalah sebesar hasil tersebut. Jika plus, itu adalah keuntungan Anda.</i>
           </div>
         </div>
@@ -361,13 +389,13 @@
 
   <footer class="footer-dark">
     <div class="container">
-      <p>&copy; 2025 <i class="fas fa-calculator"></i> Kalkulator Parlay. Semua Hak Dilindungi.</p>
+      <p class="mb-0">&copy; 2025 <i class="fas fa-calculator"></i> Kalkulator Parlay. Semua Hak Dilindungi.</p>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js" integrity="sha384-VQqxDN0EQCkWoxt/0vsQvZswzTHUVOImccYmSyhJTp7kGtPed0Qcx8rK9h9YEgx+" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js"></script>
   <script>
     new Vue({
       el: '#app',
@@ -384,34 +412,76 @@
         totalbet() {
           return this.parlays.length;
         },
-        totalodds() {
-          return this.parlays.reduce((acc, parlay) => acc * (parlay.oddsx || 1), 1).toFixed(2);
+
+        // Perkalian total odds efektif dari semua partai
+        computedOdds() {
+          return this.parlays.reduce((acc, p) => acc * (parseFloat(p.oddsx) || 1), 1);
         },
-        totalc() {
-          return (this.nilaibet * this.totalodds - this.nilaibet).toFixed(2);
+
+        // True jika ada minimal 1 partai Kalah Full
+        adaKalahFull() {
+          return this.parlays.some(p => p.hasil === '-1');
+        },
+
+        // Hasil akhir = total odds × bet (termasuk modal kembali)
+        hasilAkhir() {
+          if (this.adaKalahFull) return 0;
+          return this.computedOdds * this.nilaibet;
+        },
+
+        // Display hasil akhir dalam format Rupiah
+        hasilDisplay() {
+          if (this.adaKalahFull) return 'Rp 0 (Hangus)';
+          return this.formatRupiah(this.hasilAkhir);
+        },
+
+        // Class warna kartu hasil
+        hasilClass() {
+          if (this.adaKalahFull) return 'bust';
+          if (this.computedOdds > 1) return 'win';
+          if (this.computedOdds < 1) return 'lose';
+          return '';
         }
       },
       methods: {
-        addNewParlay() {
-          this.parlays.push({ odds: 1.0, hasil: '1', oddsx: 1.0 });
+        formatRupiah(val) {
+          const num = parseFloat(val) || 0;
+          return 'Rp ' + num.toLocaleString('id-ID', { maximumFractionDigits: 0 });
         },
+
+        addNewParlay() {
+          this.parlays.push({ odds: 1.50, hasil: '1', oddsx: 1.50 });
+        },
+
         removeParlay(index) {
           if (this.parlays.length > 1) {
             this.parlays.splice(index, 1);
           }
         },
-        oddstotal() {
-          this.parlays = this.parlays.map(p => {
+
+        resetAll() {
+          this.nilaibet = 10000;
+          this.parlays = [];
+          this.addNewParlay();
+          this.addNewParlay();
+          this.addNewParlay();
+        },
+
+        // Hitung oddsx tiap partai, lalu trigger reaktivitas dengan Vue.set
+        recalc() {
+          this.parlays.forEach((p, i) => {
             const o = parseFloat(p.odds) || 1;
-            let ox = 1;
-            switch (parseFloat(p.hasil)) {
-              case 1:    ox = o; break;
-              case 0.5:  ox = ((o - 1) / 2) + 1; break;
-              case -0.5: ox = 0.5; break;
-              case 0:    ox = 1; break;
-              default:   ox = 1;
+            let ox;
+            switch (p.hasil) {
+              case '1':    ox = o; break;
+              case '0.5':  ox = ((o - 1) / 2) + 1; break;
+              case '-0.5': ox = 0.5; break;
+              case '0':    ox = 1; break;
+              case '-1':   ox = 0; break;   // Kalah Full — bet hangus
+              default:     ox = 1;
             }
-            return { ...p, oddsx: parseFloat(ox.toFixed(4)) };
+            // Gunakan Vue.set agar perubahan property nested terdeteksi Vue 2
+            this.$set(this.parlays[i], 'oddsx', parseFloat(ox.toFixed(4)));
           });
         }
       }

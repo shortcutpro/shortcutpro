@@ -502,12 +502,15 @@ function parseMatchLine(line) {
     var vsRx = /^(.+?)\s+v\.?s\.?\s+(.+)$/i;
     var vm = tmp.match(vsRx);
     if (!vm) return null;
-    // Strip [angka] ranking di depan nama tim, cth: [18] West Ham → West Ham
-    team1 = vm[1].trim().replace(/^\[\d+\]\s*/, '');
-    team2 = vm[2].trim().replace(/^\[\d+\]\s*/, '');
+    // Nama asli untuk tampilan (tetap ada [2])
+    team1 = vm[1].trim();
+    team2 = vm[2].trim();
+    // Nama bersih untuk cari logo (strip [angka])
+    var team1Clean = team1.replace(/^\[\d+\]\s*/, '');
+    var team2Clean = team2.replace(/^\[\d+\]\s*/, '');
     if (!team1||!team2) return null;
     if (score1==='') { score1='-'; score2='-'; }
-    return { date:date||'-', time:time||'-', team1:team1, team2:team2, score1:score1, score2:score2 };
+    return { date:date||'-', time:time||'-', team1:team1, team2:team2, team1Clean:team1Clean, team2Clean:team2Clean, score1:score1, score2:score2 };
 }
 
 function parseAll(input) {
@@ -525,7 +528,10 @@ function parseAll(input) {
 
 function getAllTeams(leagues) {
     var set={};
-    leagues.forEach(function(l){ l.matches.forEach(function(m){ set[m.team1]=true; set[m.team2]=true; }); });
+    leagues.forEach(function(l){ l.matches.forEach(function(m){
+        set[m.team1Clean]=true;
+        set[m.team2Clean]=true;
+    }); });
     return Object.keys(set);
 }
 
@@ -580,11 +586,11 @@ function renderPreview(leagues) {
         html+='</div>';
         league.matches.forEach(function(m,mi){
             var cls=mi%2===0?'even':'odd';
-            var l1=getTeamLogoUrl(m.team1), l2=getTeamLogoUrl(m.team2);
+            var l1=getTeamLogoUrl(m.team1Clean), l2=getTeamLogoUrl(m.team2Clean);
             html+='<div class="prev-match-card '+cls+'">';
-            html+='<div class="prev-team-side"><img class="prev-team-logo" data-team="'+m.team1.replace(/"/g,'&quot;')+'" src="'+l1+'" alt="'+m.team1+'"/><span class="prev-team-name">'+m.team1+'</span></div>';
+            html+='<div class="prev-team-side"><img class="prev-team-logo" data-team="'+m.team1Clean.replace(/"/g,'&quot;')+'" src="'+l1+'" alt="'+m.team1+'"/><span class="prev-team-name">'+m.team1+'</span></div>';
             html+='<div class="prev-score-center"><div class="prev-score-num" style="color:'+c.bg+';text-shadow:0 0 8px '+c.bg+';">'+m.score1+' : '+m.score2+'</div><div class="prev-match-dt">'+m.date+'<br/>'+m.time+'</div></div>';
-            html+='<div class="prev-team-side right"><img class="prev-team-logo" data-team="'+m.team2.replace(/"/g,'&quot;')+'" src="'+l2+'" alt="'+m.team2+'"/><span class="prev-team-name">'+m.team2+'</span></div>';
+            html+='<div class="prev-team-side right"><img class="prev-team-logo" data-team="'+m.team2Clean.replace(/"/g,'&quot;')+'" src="'+l2+'" alt="'+m.team2+'"/><span class="prev-team-name">'+m.team2+'</span></div>';
             html+='</div>';
         });
         html+='</div></div>';
@@ -615,8 +621,8 @@ function buildOutputHTML(leagues) {
         blocks+='    </div>\n';
         league.matches.forEach(function(m,mi){
             var cls=mi%2===0?'even':'odd';
-            var logo1=getTeamLogoUrl(m.team1);
-            var logo2=getTeamLogoUrl(m.team2);
+            var logo1=getTeamLogoUrl(m.team1Clean);
+            var logo2=getTeamLogoUrl(m.team2Clean);
             blocks+='  <div class="match-card '+cls+'">\n';
             blocks+='    <div class="team-side left">\n';
             blocks+='      <img class="team-logo" src="'+logo1+'" alt="'+m.team1+'"/>\n';
@@ -757,7 +763,7 @@ async function handleInput() {
     document.getElementById('fetchIndicator').classList.add('active');
     document.getElementById('fetchStatus').textContent='Mencari logo '+newTeams.length+' tim...';
     var fetched=0;
-    var promises=newTeams.map(async function(name){
+        var promises=newTeams.map(async function(name){
         var result=await fetchTeamLogo(name); fetched++;
         if(result&&result.url){
             var key=name.toLowerCase().trim();

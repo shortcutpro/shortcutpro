@@ -1,1144 +1,957 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shortcut Cari Selisih QRIS</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <title>Cari Selisih QRIS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-light: #818cf8;
-            --primary-dark: #4f46e5;
-            --secondary: #10b981;
-            --secondary-light: #34d399;
-            --danger: #ef4444;
-            --danger-light: #f87171;
-            --warning: #f59e0b;
-            --warning-light: #fbbf24;
-            --info: #3b82f6;
-            --dark: #1e293b;
-            --darker: #0f172a;
-            --darkest: #020617;
-            --light: #f1f5f9;
-            --lighter: #f8fafc;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --border: #334155;
-            --success-gradient: linear-gradient(135deg, #10b981 0%, #34d399 100%);
-            --primary-gradient: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
-            --danger-gradient: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            --bg: #08090d;
+            --surface: #0f111a;
+            --surface2: #161927;
+            --surface3: #1e2235;
+            --border: #252b42;
+            --border2: #2e3553;
+            --gold: #f5c542;
+            --gold-dim: #c49a28;
+            --gold-glow: rgba(245,197,66,0.18);
+            --red: #ff4a4a;
+            --red-dim: rgba(255,74,74,0.12);
+            --amber: #f59e0b;
+            --amber-dim: rgba(245,158,11,0.12);
+            --green: #22c55e;
+            --green-dim: rgba(34,197,94,0.12);
+            --blue: #60a5fa;
+            --blue-dim: rgba(96,165,250,0.12);
+            --text: #e8eaf2;
+            --text2: #8b92ad;
+            --text3: #4f5670;
+            --mono: 'IBM Plex Mono', monospace;
+            --sans: 'IBM Plex Sans', sans-serif;
         }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--text-primary);
-            background-color: var(--darkest);
-            padding: 0;
-            margin: 0;
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
-        
-        .container {
-            max-width: 1800px;
+
+        /* Grid background */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(245,197,66,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(245,197,66,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
             margin: 0 auto;
             padding: 2rem;
         }
-        
-        h1, h2, h3 {
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            background: var(--primary-gradient);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 2rem;
-            letter-spacing: -0.025em;
-        }
-        
-        .glass-card {
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .glass-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-        
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+        /* HEADER */
+        .header {
+            display: flex;
+            align-items: center;
             gap: 1.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
         }
-        
-        .summary-item {
-            background: linear-gradient(145deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
-            padding: 1.5rem;
+
+        .header-icon {
+            width: 52px; height: 52px;
+            background: var(--gold-glow);
+            border: 1px solid var(--gold-dim);
             border-radius: 12px;
-            text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            position: relative;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+            color: var(--gold);
+            flex-shrink: 0;
         }
-        
-        .summary-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
-            background: var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .summary-item:hover::before {
-            width: 100%;
-            opacity: 0.1;
-        }
-        
-        .summary-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(2, 6, 23, 0.4);
-        }
-        
-        .summary-item h3 {
-            margin-top: 0;
-            color: var(--text-secondary);
-            font-size: 1rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-        
-        .summary-item .value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            color: var(--text-primary);
-            margin: 0.5rem 0;
-            background: linear-gradient(90deg, var(--text-primary), var(--text-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .discrepancy-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(90deg, var(--danger), var(--warning-light));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .comparison-container {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .table-container {
-            flex: 1;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .table-container:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        
-        th, td {
-            padding: 1rem 1.25rem;
-            text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        th {
-            background-color: rgba(30, 41, 59, 0.9);
-            color: var(--text-primary);
-            position: sticky;
-            top: 0;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-            letter-spacing: 0.05em;
-            backdrop-filter: blur(16px);
-        }
-        
-        tr {
-            background-color: transparent;
-            transition: all 0.2s ease;
-        }
-        
-        tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.02);
-        }
-        
-        tr:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-        }
-        
-        .discrepancy-row {
-            background-color: rgba(245, 158, 11, 0.08) !important;
-            border-left: 4px solid var(--warning);
-        }
-        
-        .missing-row {
-            background-color: rgba(239, 68, 68, 0.08) !important;
-            border-left: 4px solid var(--danger);
-        }
-        
-        .input-section {
-            display: flex;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        
-        .input-box {
-            flex: 1;
-            background: rgba(15, 23, 42, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(2, 6, 23, 0.5);
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .input-box:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px rgba(2, 6, 23, 0.6);
-            border-color: rgba(255, 255, 255, 0.12);
-        }
-        
-        .input-box h2 {
-            margin-top: 0;
+
+        .header h1 {
+            font-family: var(--mono);
             font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--text-primary);
+            font-weight: 700;
+            color: var(--gold);
+            letter-spacing: -0.02em;
         }
-        
-        .input-box p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+
+        .header p {
+            font-size: 0.82rem;
+            color: var(--text3);
+            margin-top: 2px;
+            font-family: var(--mono);
         }
-        
-        textarea {
-            width: 100%;
-            height: 250px;
-            padding: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            resize: vertical;
-            font-family: 'Fira Code', monospace;
-            background-color: rgba(2, 6, 23, 0.5);
-            color: var(--text-primary);
-            font-size: 0.95rem;
-            line-height: 1.6;
-            transition: all 0.3s ease;
+
+        /* UPLOAD SECTION */
+        .upload-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+            margin-bottom: 1.5rem;
         }
-        
-        textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+
+        .upload-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: border-color 0.2s;
         }
-        
-        button {
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
+
+        .upload-card:hover { border-color: var(--border2); }
+
+        .upload-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--mono);
+            font-size: 0.78rem;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 1rem;
+        }
+
+        .upload-label .dot {
+            width: 8px; height: 8px;
+            border-radius: 50%;
+        }
+
+        .dot-admin { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+        .dot-qris  { background: var(--gold); box-shadow: 0 0 6px var(--gold); }
+
+        .dropzone {
+            border: 1.5px dashed var(--border2);
+            border-radius: 10px;
+            padding: 2rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--surface2);
+            position: relative;
+        }
+
+        .dropzone:hover, .dropzone.dragover {
+            border-color: var(--gold);
+            background: rgba(245,197,66,0.04);
+        }
+
+        .dropzone input[type=file] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .dropzone-icon {
+            font-size: 1.8rem;
+            color: var(--text3);
+            margin-bottom: 0.6rem;
+            transition: color 0.2s;
+        }
+
+        .dropzone:hover .dropzone-icon { color: var(--gold); }
+
+        .dropzone-title {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text2);
+            margin-bottom: 0.3rem;
+        }
+
+        .dropzone-hint {
+            font-size: 0.75rem;
+            color: var(--text3);
+            font-family: var(--mono);
+        }
+
+        .file-preview {
+            margin-top: 0.9rem;
+            padding: 0.7rem 1rem;
+            background: var(--surface3);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+        }
+
+        .file-preview.show { display: flex; }
+
+        .file-preview .fname {
+            flex: 1;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-preview .frows {
+            color: var(--green);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .remove-file {
+            color: var(--text3);
+            cursor: pointer;
+            padding: 2px 4px;
+            border-radius: 4px;
+            transition: color 0.2s;
+            background: none;
+            border: none;
+            font-size: 0.85rem;
+        }
+
+        .remove-file:hover { color: var(--red); }
+
+        /* FORMAT HINT */
+        .format-hint {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            margin-top: 0.9rem;
+            font-family: var(--mono);
+            font-size: 0.74rem;
+            color: var(--text3);
+            line-height: 1.8;
+        }
+
+        .format-hint .col-label { color: var(--text2); font-weight: 600; }
+
+        /* ACTIONS */
+        .action-row {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 8px;
+            border: none;
+            font-family: var(--mono);
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.02em;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: #08090d;
+        }
+
+        .btn-primary:hover {
+            background: #fdd05a;
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text3);
+            color: var(--surface);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .btn-ghost {
+            background: var(--surface2);
+            color: var(--text2);
+            border: 1px solid var(--border);
+        }
+
+        .btn-ghost:hover {
+            background: var(--surface3);
+            color: var(--text);
+        }
+
+        .btn-copy {
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid rgba(34,197,94,0.25);
+            padding: 0.5rem 0.9rem;
+            font-size: 0.78rem;
+        }
+
+        .btn-copy:hover {
+            background: rgba(34,197,94,0.2);
+        }
+
+        /* SUMMARY */
+        .summary-bar {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-family: var(--mono);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text3);
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-val {
+            font-family: var(--mono);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .stat-val.danger { color: var(--red); }
+        .stat-val.warning { color: var(--amber); }
+        .stat-val.success { color: var(--green); }
+
+        /* RESULT SECTION */
+        #resultSection { display: none; }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .result-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .result-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.25rem;
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .result-card-title {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .count-badge {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 11px;
+            font-family: var(--mono);
+            font-size: 0.72rem;
+            font-weight: 700;
         }
-        
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+
+        .badge-red { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,74,74,0.3); }
+        .badge-amber { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+        .badge-green { background: var(--green-dim); color: var(--green); border: 1px solid rgba(34,197,94,0.3); }
+
+        .table-wrapper { max-height: 420px; overflow-y: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
         }
-        
-        button:active {
-            transform: translateY(0);
-        }
-        
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-        
-        .legend {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
-        }
-        
-        .legend-color {
-            width: 16px;
-            height: 16px;
-            border-radius: 4px;
-        }
-        
-        .discrepancy-color {
-            background-color: var(--warning);
-        }
-        
-        .missing-color {
-            background-color: var(--danger);
-        }
-        
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary);
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-        
-        .table-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-            padding: 1.5rem 1.5rem 0;
-        }
-        
-        .table-actions {
-            display: flex;
-            gap: 0.75rem;
-        }
-        
-        .table-actions button {
-            padding: 0.5rem 1rem;
-            font-size: 0.9rem;
-        }
-        
-        .btn-success {
-            background: var(--success-gradient);
-        }
-        
-        .btn-success:hover {
-            background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
-            box-shadow: 0 10px 15px rgba(16, 185, 129, 0.3);
-        }
-        
-        .btn-danger {
-            background: var(--danger-gradient);
-        }
-        
-        .btn-danger:hover {
-            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
-            box-shadow: 0 10px 15px rgba(239, 68, 68, 0.3);
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--success-gradient);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
-            z-index: 1000;
-            opacity: 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(-10px);
-        }
-        
-        .copy-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: var(--primary-light);
-            cursor: pointer;
-            padding: 0.375rem 0.75rem;
-            font-weight: 600;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-        
-        .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--text-primary);
-        }
-        
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.5rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background: var(--surface3);
+            padding: 0.6rem 1rem;
+            text-align: left;
+            font-family: var(--mono);
+            font-size: 0.7rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.07em;
+            color: var(--text3);
+            border-bottom: 1px solid var(--border);
+            z-index: 1;
         }
-        
-        .badge-warning {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning-light);
-            border: 1px solid var(--warning);
+
+        tbody td {
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-family: var(--mono);
+            font-size: 0.8rem;
         }
-        
-        .badge-danger {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger-light);
-            border: 1px solid var(--danger);
+
+        tbody tr { transition: background 0.15s; }
+        tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+        .row-missing {
+            background: rgba(255,74,74,0.05) !important;
+            border-left: 3px solid var(--red);
         }
-        
-        .badge-success {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--secondary-light);
-            border: 1px solid var(--secondary);
+
+        .row-mismatch {
+            background: rgba(245,158,11,0.05) !important;
+            border-left: 3px solid var(--amber);
         }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+
+        .row-missing td:first-child,
+        .row-mismatch td:first-child { padding-left: 0.7rem; }
+
+        .tag {
+            display: inline-block;
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .tag-missing { background: var(--red-dim); color: var(--red); border: 1px solid rgba(255,74,74,0.25); }
+        .tag-mismatch { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+
+        .nominal { color: var(--gold); font-weight: 600; }
+        .nominal-diff { color: var(--red); font-weight: 600; }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text3);
+            font-family: var(--mono);
+            font-size: 0.8rem;
         }
-        
-        @media (max-width: 1200px) {
-            .comparison-container, .input-section {
-                flex-direction: column;
-            }
-            
-            .table-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            
-            .table-actions {
-                width: 100%;
-                justify-content: flex-end;
-            }
-        }
-        
-        /* Modern scrollbar styling */
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: var(--primary);
-            border-radius: 10px;
-        }
-        
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-light);
-        }
-        
-        /* Floating action button */
-        .fab {
+
+        .empty-state i { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; color: var(--green); }
+
+        /* TOAST */
+        .toast {
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--primary-gradient);
-            color: white;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--surface3);
+            border: 1px solid var(--border2);
+            color: var(--text);
+            padding: 0.65rem 1.2rem;
+            border-radius: 8px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            z-index: 999;
+            transition: transform 0.3s cubic-bezier(.4,0,.2,1);
             display: flex;
             align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
-            cursor: pointer;
-            z-index: 100;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 0.5rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
-        
-        .fab:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-        }
-        
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            width: 120px;
-            background-color: var(--darker);
-            color: var(--text-primary);
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.8rem;
-            border: 1px solid var(--border);
-        }
-        
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            .input-box, .glass-card {
-                padding: 1.5rem;
-            }
-            
-            .summary-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .button-container {
-                flex-direction: column;
-            }
-            
-            button {
-                width: 100%;
-            }
+
+        .toast.show { transform: translateX(-50%) translateY(0); }
+        .toast.ok { border-color: rgba(34,197,94,0.4); }
+        .toast.ok i { color: var(--green); }
+        .toast.err { border-color: rgba(255,74,74,0.4); }
+        .toast.err i { color: var(--red); }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold-dim); }
+
+        @media (max-width: 900px) {
+            .upload-grid, .result-grid, .summary-bar { grid-template-columns: 1fr; }
+            .summary-bar { grid-template-columns: repeat(3,1fr); }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <h1 class="animate__animated animate__fadeInDown">Shortcut Cari Selisih QRIS</h1>
-        
-        <div class="input-section animate__animated animate__fadeIn">
-            <div class="input-box">
-                <h2><i class="fas fa-user-shield" style="margin-right: 10px;"></i>Admin Data</h2>
-                <p>Format: UserID [tab] Nominal [tab] KodeQRIS</p>
-                <textarea id="adminData" placeholder="Tempel data Admin di sini
-apabila Qris VIP
-azis999	25,122	Vip90435631751820770035	
-apabila Qris Minera	
-auliza111	100000	Minera480758017541540194837	
-apabila Qris P2MIH	
-gembil01	20000	12582623_1754143637521"></textarea>
+<div class="page">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="header-icon"><i class="fas fa-code-compare"></i></div>
+        <div>
+            <h1>QRIS Selisih Checker</h1>
+            <p>Upload Excel Admin &amp; QRIS → Tampil hanya data selisih</p>
+        </div>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="upload-grid">
+
+        <!-- Admin -->
+        <div class="upload-card">
+            <div class="upload-label">
+                <span class="dot dot-admin"></span>
+                Data Admin
             </div>
-            
-            <div class="input-box">
-                <h2><i class="fas fa-qrcode" style="margin-right: 10px;"></i>QRIS Data</h2>
-                <p>Format: KodeQRIS [tab] Nominal [tab] OptionalInfo</p>
-                <textarea id="qrisData" placeholder="Tempel data QRIS di sini
-apabila Qris VIP
-Vip90435631751820770035	25122	10013_azis999
-apabila Qris Minera	
-Minera480758017541540194837	100000
-apabila Qris P2MIH	
-12582623_1754143637521	20000"></textarea>
+            <div class="dropzone" id="dropAdmin">
+                <input type="file" id="fileAdmin" accept=".xlsx,.xls,.csv">
+                <div class="dropzone-icon"><i class="fas fa-file-excel"></i></div>
+                <div class="dropzone-title">Drop file Excel di sini</div>
+                <div class="dropzone-hint">atau klik untuk pilih file</div>
+            </div>
+            <div class="file-preview" id="previewAdmin">
+                <i class="fas fa-file-spreadsheet" style="color:var(--blue)"></i>
+                <span class="fname" id="fnameAdmin">—</span>
+                <span class="frows" id="frowsAdmin"></span>
+                <button class="remove-file" id="removeAdmin" title="Hapus"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="format-hint">
+                <span class="col-label">Kolom yang dipakai:</span>
+                A = Akun Pemain &nbsp;|&nbsp; C = Jumlah Operator &nbsp;|&nbsp; E = No. Rek Pembayar (KEY)<br>
+                Baris 1 = header (otomatis di-skip)
             </div>
         </div>
-        
-        <div class="button-container animate__animated animate__fadeIn">
-            <button id="compareBtn" class="animate__animated animate__pulse animate__infinite">
-                <i class="fas fa-exchange-alt"></i>
-                Compare Data
-            </button>
-            <button id="clearBtn" class="btn-danger">
-                <i class="fas fa-trash-alt"></i>
-                Clear Input Data
-            </button>
-        </div>
-        
-        <div class="loading" id="loadingIndicator">
-            <div class="spinner"></div>
-            <p>Processing data...</p>
-            <div class="progress-bar" style="width: 100%; height: 4px; background: rgba(255,255,255,0.1); margin-top: 1rem; border-radius: 2px;">
-                <div class="progress" style="height: 100%; width: 0%; background: var(--primary-gradient); border-radius: 2px; transition: width 0.3s ease;"></div>
+
+        <!-- QRIS -->
+        <div class="upload-card">
+            <div class="upload-label">
+                <span class="dot dot-qris"></span>
+                Data QRIS
+            </div>
+            <div class="dropzone" id="dropQris">
+                <input type="file" id="fileQris" accept=".xlsx,.xls,.csv">
+                <div class="dropzone-icon"><i class="fas fa-qrcode"></i></div>
+                <div class="dropzone-title">Drop file Excel di sini</div>
+                <div class="dropzone-hint">atau klik untuk pilih file</div>
+            </div>
+            <div class="file-preview" id="previewQris">
+                <i class="fas fa-file-spreadsheet" style="color:var(--gold)"></i>
+                <span class="fname" id="fnameQris">—</span>
+                <span class="frows" id="frowsQris"></span>
+                <button class="remove-file" id="removeQris" title="Hapus"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="format-hint" id="qrisFormatHint">
+                <span class="col-label">Kolom yang dipakai:</span><br>
+                <span style="color:var(--blue);font-weight:600">Minera</span> → B = reference_no (KEY) &nbsp;|&nbsp; C = amount<br>
+                <span style="color:var(--gold);font-weight:600">VIP</span> &nbsp;&nbsp;&nbsp;→ B = Id Transaction Client (KEY) &nbsp;|&nbsp; G = amount<br>
+                Baris 1 = header (otomatis di-skip)
             </div>
         </div>
-        
-        <div class="glass-card animate__animated animate__fadeIn" id="summarySection" style="display: none;">
-            <h2><i class="fas fa-chart-pie" style="margin-right: 10px;"></i>Comparison Summary</h2>
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <h3>Total Admin Records</h3>
-                    <div class="value" id="totalAdmin">0</div>
-                </div>
-                <div class="summary-item">
-                    <h3>Total QRIS Records</h3>
-                    <div class="value" id="totalQris">0</div>
-                </div>
-                <div class="summary-item">
-                    <h3>Total Discrepancy</h3>
-                    <div class="discrepancy-value" id="totalDiscrepancy">0</div>
-                </div>
+
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="action-row">
+        <button class="btn btn-primary" id="btnCompare" disabled>
+            <i class="fas fa-bolt"></i> Proses Selisih
+        </button>
+        <button class="btn btn-ghost" id="btnClear">
+            <i class="fas fa-rotate-left"></i> Reset
+        </button>
+    </div>
+
+    <!-- RESULT -->
+    <div id="resultSection">
+
+        <!-- SUMMARY -->
+        <div class="summary-bar" id="summaryBar">
+            <div class="stat-card">
+                <div class="stat-label">Admin Records</div>
+                <div class="stat-val" id="sAdminTotal">—</div>
             </div>
-            
-            <div class="summary-grid">
-                <div class="summary-item">
-                    <h3>Total Admin Amount</h3>
-                    <div class="value" id="totalAdminAmount">0</div>
-                </div>
-                <div class="summary-item">
-                    <h3>Total QRIS Amount</h3>
-                    <div class="value" id="totalQrisAmount">0</div>
-                </div>
-                <div class="summary-item">
-                    <h3>Amount Discrepancy</h3>
-                    <div class="discrepancy-value" id="amountDiscrepancy">0</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-label">QRIS Records</div>
+                <div class="stat-val" id="sQrisTotal">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Cocok (OK)</div>
+                <div class="stat-val success" id="sMatched">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Total Selisih</div>
+                <div class="stat-val danger" id="sDiscrepancy">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Σ Nominal Admin</div>
+                <div class="stat-val" id="sAdminAmt">—</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Selisih Nominal</div>
+                <div class="stat-val warning" id="sAmtDiff">—</div>
             </div>
         </div>
-        
-        <div class="legend animate__animated animate__fadeIn">
-            <div class="legend-item">
-                <div class="legend-color discrepancy-color"></div>
-                <span>Data discrepancy</span>
-            </div>
-            <div class="legend-item">
-                <div class="legend-color missing-color"></div>
-                <span>Missing data</span>
-            </div>
-        </div>
-        
-        <div class="comparison-container animate__animated animate__fadeIn">
-            <div class="table-container">
-                <div class="table-header">
-                    <h2><i class="fas fa-user-cog" style="margin-right: 10px;"></i>Data tidak ada di QRIS</h2>
-                    <div class="table-actions">
-                        <button class="btn-success" id="copyAdminTableBtn">
-                            <i class="fas fa-copy"></i>
-                            Copy All Data
-                        </button>
+
+        <!-- TABLES -->
+        <div class="result-grid">
+
+            <!-- Not in QRIS -->
+            <div class="result-card">
+                <div class="result-card-header">
+                    <div class="result-card-title">
+                        <i class="fas fa-circle-xmark" style="color:var(--red)"></i>
+                        Tidak Ada di QRIS
+                        <span class="count-badge badge-red" id="cntAdminOnly">0</span>
                     </div>
+                    <button class="btn btn-copy" id="btnCopyAdmin">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
                 </div>
-                <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
-                    <table id="adminTable">
+                <div class="table-wrapper">
+                    <table>
                         <thead>
                             <tr>
-                                <th>User ID</th>
-                                <th>Admin Nominal</th>
-                                <th>Kode QRIS</th>
+                                <th>Akun Pemain</th>
+                                <th>Jumlah Operator (Admin)</th>
+                                <th>No. Rek Pembayar</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="adminTableBody">
-                            <!-- Data will be inserted here -->
-                        </tbody>
+                        <tbody id="tbodyAdmin"></tbody>
                     </table>
                 </div>
             </div>
-            
-            <div class="table-container">
-                <div class="table-header">
-                    <h2><i class="fas fa-qrcode" style="margin-right: 10px;"></i>Data tidak ada di Admin</h2>
-                    <div class="table-actions">
-                        <button class="btn-success" id="copyQrisTableBtn">
-                            <i class="fas fa-copy"></i>
-                            Copy All Data
-                        </button>
+
+            <!-- Not in Admin -->
+            <div class="result-card">
+                <div class="result-card-header">
+                    <div class="result-card-title">
+                        <i class="fas fa-circle-xmark" style="color:var(--amber)"></i>
+                        Tidak Ada di Admin
+                        <span class="count-badge badge-amber" id="cntQrisOnly">0</span>
                     </div>
+                    <button class="btn btn-copy" id="btnCopyQris">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
                 </div>
-                <div class="table-wrapper" style="max-height: 500px; overflow-y: auto;">
-                    <table id="qrisTable">
+                <div class="table-wrapper">
+                    <table>
                         <thead>
                             <tr>
-                                <th>Kode QRIS</th>
-                                <th>QRIS Nominal</th>
-                                <th>Info</th>
+                                <th>Reference No (QRIS)</th>
+                                <th>Amount (QRIS)</th>
+                                <th>Akun Pemain</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody id="qrisTableBody">
-                            <!-- Data will be inserted here -->
-                        </tbody>
+                        <tbody id="tbodyQris"></tbody>
                     </table>
                 </div>
             </div>
+
         </div>
-    </div>
 
-    <div class="toast" id="toast">
-        <i class="fas fa-check-circle"></i>
-        <span>Data berhasil di copy!</span>
-    </div>
+    </div><!-- /resultSection -->
 
-    <div class="fab tooltip" id="scrollToTop" style="display: none;">
-        <i class="fas fa-arrow-up"></i>
-        <span class="tooltip-text">Scroll to top</span>
-    </div>
+</div>
 
-    <script>
-        // Global variables to store the comparison results
-        let currentMatchedRecords = [];
-        let currentAdminOnlyRecords = [];
-        let currentQrisOnlyRecords = [];
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize animations
-            initAnimations();
-            
-            // Set up event listeners
-            document.getElementById('compareBtn').addEventListener('click', compareDataHandler);
-            document.getElementById('clearBtn').addEventListener('click', clearData);
-            document.getElementById('copyAdminTableBtn').addEventListener('click', () => copyTableToClipboard('adminTable'));
-            document.getElementById('copyQrisTableBtn').addEventListener('click', () => copyTableToClipboard('qrisTable'));
-            document.getElementById('scrollToTop').addEventListener('click', scrollToTop);
-            
-            // Scroll event for floating action button
-            window.addEventListener('scroll', toggleScrollToTopButton);
-        });
-        
-        function initAnimations() {
-            // Add intersection observer for scroll animations
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate__fadeIn');
-                        observer.unobserve(entry.target);
-                    }
-                });
-            }, { threshold: 0.1 });
-            
-            document.querySelectorAll('.glass-card, .comparison-container, .legend').forEach(el => {
-                observer.observe(el);
-            });
+<div class="toast" id="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMsg"></span>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────────────────────
+let adminRows  = [];
+let qrisRows   = [];
+let qrisAmtCol = 2; // auto-detected from header
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+function parseNum(v) {
+    if (v == null) return 0;
+    return parseInt(String(v).replace(/[^\d-]/g, ''), 10) || 0;
+}
+
+function fmt(n) {
+    return new Intl.NumberFormat('en-US').format(n);
+}
+
+function showToast(msg, type = 'ok') {
+    const t = document.getElementById('toast');
+    t.className = 'toast ' + type;
+    t.querySelector('i').className = type === 'ok'
+        ? 'fas fa-check-circle'
+        : 'fas fa-triangle-exclamation';
+    document.getElementById('toastMsg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function updateCompareBtn() {
+    document.getElementById('btnCompare').disabled = !(adminRows.length && qrisRows.length);
+}
+
+// ─── Excel parser ─────────────────────────────────────────────────────────────
+function parseExcel(file, cb) {
+    const reader = new FileReader();
+    reader.onload = e => {
+        try {
+            const wb = XLSX.read(e.target.result, { type: 'array' });
+            const ws = wb.Sheets[wb.SheetNames[0]];
+            const raw = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
+            const header = raw[0] ? raw[0].map(h => String(h).toLowerCase().trim()) : [];
+            const data   = raw.slice(1).filter(r => r[0] && String(r[0]).trim() !== '');
+            cb(null, data, header);
+        } catch(err) {
+            cb(err);
         }
-        
-        function toggleScrollToTopButton() {
-            const scrollToTopBtn = document.getElementById('scrollToTop');
-            if (window.pageYOffset > 300) {
-                scrollToTopBtn.style.display = 'flex';
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+// ─── File upload handling ─────────────────────────────────────────────────────
+function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, target) {
+    const input  = document.getElementById(inputId);
+    const drop   = document.getElementById(dropId);
+    const prev   = document.getElementById(previewId);
+    const fname  = document.getElementById(fnameId);
+    const frows  = document.getElementById(frowsId);
+    const remove = document.getElementById(removeId);
+
+    function loadFile(file) {
+        if (!file) return;
+        parseExcel(file, (err, data, header) => {
+            if (err) { showToast('Gagal baca file: ' + file.name, 'err'); return; }
+            if (target === 'admin') {
+                adminRows = data;
             } else {
-                scrollToTopBtn.style.display = 'none';
+                qrisRows = data;
+                // Auto-detect amount column: find header named 'amount'
+                const amtIdx = header.findIndex(h => h === 'amount');
+                qrisAmtCol = amtIdx >= 0 ? amtIdx : 2; // fallback col C
             }
+            fname.textContent = file.name;
+            frows.textContent = data.length + ' baris';
+            prev.classList.add('show');
+            updateCompareBtn();
+        });
+    }
+
+    input.addEventListener('change', e => { if (e.target.files[0]) loadFile(e.target.files[0]); });
+
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('dragover'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('dragover'));
+    drop.addEventListener('drop', e => {
+        e.preventDefault();
+        drop.classList.remove('dragover');
+        const file = e.dataTransfer.files[0];
+        if (file) loadFile(file);
+    });
+
+    remove.addEventListener('click', e => {
+        e.stopPropagation();
+        if (target === 'admin') adminRows = [];
+        else { qrisRows = []; qrisAmtCol = 2; }
+        input.value = '';
+        prev.classList.remove('show');
+        updateCompareBtn();
+        document.getElementById('resultSection').style.display = 'none';
+    });
+}
+
+setupUpload('fileAdmin', 'dropAdmin', 'previewAdmin', 'fnameAdmin', 'frowsAdmin', 'removeAdmin', 'admin');
+setupUpload('fileQris',  'dropQris',  'previewQris',  'fnameQris',  'frowsQris',  'removeQris',  'qris');
+
+// ─── Compare ──────────────────────────────────────────────────────────────────
+document.getElementById('btnCompare').addEventListener('click', () => {
+    // Build maps
+    // Admin:  col0=Akun Pemain(A)  col2=Jumlah Operator(C)  col4=No.Rek Pembayar(E) ← KEY
+    // QRIS:   col1=KEY(B),  amount=auto-detected column (Standard=C, VIP=G)
+
+    const adminMap = new Map(); // noRek(E) → {akunPemain, nominal, noRek}
+    adminRows.forEach(r => {
+        const noRek = String(r[4] ?? '').trim();
+        if (!noRek) return;
+        adminMap.set(noRek, {
+            akunPemain: String(r[0] ?? '').trim(),
+            nominal:    parseNum(r[2]),
+            noRek
+        });
+    });
+
+    const qrisMap = new Map(); // key(B) → {refNo, nominal}
+    qrisRows.forEach(r => {
+        const refNo = String(r[1] ?? '').trim();
+        if (!refNo) return;
+        qrisMap.set(refNo, {
+            refNo,
+            nominal: parseNum(r[qrisAmtCol])
+        });
+    });
+
+    const adminOnlyRows   = []; // ada di Admin, tidak ada di QRIS
+    const qrisOnlyRows    = []; // ada di QRIS, tidak ada di Admin
+    const mismatchAdmin   = []; // ada di keduanya, tapi nominal beda (dari sisi Admin)
+    const mismatchQris    = []; // ada di keduanya, tapi nominal beda (dari sisi QRIS)
+
+    let matchedOK = 0;
+    const seen = new Set();
+
+    adminMap.forEach((a, noRek) => {
+        seen.add(noRek);
+        const q = qrisMap.get(noRek);
+        if (!q) {
+            adminOnlyRows.push({ ...a, status: 'missing' });
+        } else if (a.nominal !== q.nominal) {
+            mismatchAdmin.push({ ...a, qrisNominal: q.nominal, status: 'mismatch' });
+            mismatchQris.push({ ...q, adminNominal: a.nominal, akunPemain: a.akunPemain, status: 'mismatch' });
+        } else {
+            matchedOK++;
         }
-        
-        function scrollToTop() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+    });
+
+    qrisMap.forEach((q, refNo) => {
+        if (!seen.has(refNo)) {
+            qrisOnlyRows.push({ ...q, akunPemain: '—', status: 'missing' });
         }
-        
-        function compareDataHandler() {
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const summarySection = document.getElementById('summarySection');
-            
-            // Show loading indicator with animation
-            loadingIndicator.style.display = 'block';
-            summarySection.style.display = 'none';
-            
-            // Animate progress bar
-            const progressBar = document.querySelector('.progress');
-            progressBar.style.width = '0%';
-            setTimeout(() => { progressBar.style.width = '100%' }, 10);
-            
-            // Use setTimeout to allow UI to update before heavy processing
-            setTimeout(() => {
-                compareData();
-                loadingIndicator.style.display = 'none';
-                summarySection.style.display = 'block';
-                
-                // Add animation to summary section
-                summarySection.classList.add('animate__fadeIn');
-            }, 500);
-        }
-        
-        function compareData() {
-            // Get input data
-            const adminDataText = document.getElementById('adminData').value.trim();
-            const qrisDataText = document.getElementById('qrisData').value.trim();
-            
-            if (!adminDataText || !qrisDataText) {
-                showToast('Please enter data in both fields', 'danger');
-                return;
-            }
-            
-            // Parse data
-            const adminData = parseAdminData(adminDataText);
-            const qrisData = parseQrisData(qrisDataText);
-            
-            if (adminData.length === 0 || qrisData.length === 0) {
-                showToast('No valid data found to compare', 'warning');
-                return;
-            }
-            
-            // Process comparison
-            const { matchedRecords, adminOnlyRecords, qrisOnlyRecords } = matchRecords(adminData, qrisData);
-            
-            // Store results globally
-            currentMatchedRecords = matchedRecords;
-            currentAdminOnlyRecords = adminOnlyRecords;
-            currentQrisOnlyRecords = qrisOnlyRecords;
-            
-            // Calculate totals
-            const totalAdmin = adminData.length;
-            const totalQris = qrisData.length;
-            const totalDiscrepancy = adminOnlyRecords.length + qrisOnlyRecords.length;
-            
-            const totalAdminAmount = calculateTotalAmount(adminData);
-            const totalQrisAmount = calculateTotalAmount(qrisData);
-            const amountDiscrepancy = totalAdminAmount - totalQrisAmount;
-            
-            // Update summary
-            document.getElementById('totalAdmin').textContent = totalAdmin.toLocaleString();
-            document.getElementById('totalQris').textContent = totalQris.toLocaleString();
-            document.getElementById('totalDiscrepancy').textContent = totalDiscrepancy.toLocaleString();
-            
-            document.getElementById('totalAdminAmount').textContent = formatCurrency(totalAdminAmount);
-            document.getElementById('totalQrisAmount').textContent = formatCurrency(totalQrisAmount);
-            document.getElementById('amountDiscrepancy').textContent = formatCurrency(amountDiscrepancy);
-            
-            // Populate tables
-            populateAdminTable(matchedRecords, adminOnlyRecords);
-            populateQrisTable(matchedRecords, qrisOnlyRecords);
-            
-            // Show success toast
-            showToast('Data comparison completed successfully!', 'success');
-        }
-        
-        function parseAdminData(text) {
-            if (!text) return [];
-            
-            return text.split('\n').map(line => {
-                const parts = line.split('\t');
-                if (parts.length < 3) return null;
-                
-                return {
-                    userId: parts[0].trim(),
-                    nominal: parseNumber(parts[1].trim()),
-                    qrisCode: parts[2].trim(),
-                    matched: false,
-                    rawData: line.trim()
-                };
-            }).filter(item => item !== null);
-        }
-        
-        function parseQrisData(text) {
-            if (!text) return [];
-            
-            return text.split('\n').map(line => {
-                const parts = line.split('\t');
-                if (parts.length < 2) return null;
-                
-                return {
-                    qrisCode: parts[0].trim(),
-                    nominal: parseNumber(parts[1].trim()),
-                    info: parts.length > 2 ? parts[2].trim() : '',
-                    matched: false,
-                    rawData: line.trim()
-                };
-            }).filter(item => item !== null);
-        }
-        
-        function parseNumber(numStr) {
-            // Remove commas and any non-digit characters except minus
-            const cleaned = numStr.replace(/[^\d-]/g, '');
-            return parseInt(cleaned, 10) || 0;
-        }
-        
-        function matchRecords(adminData, qrisData) {
-            const matchedRecords = [];
-            const adminOnlyRecords = [];
-            const qrisOnlyRecords = [...qrisData];
-            
-            // Create a map for QRIS data for faster lookup
-            const qrisMap = new Map();
-            qrisData.forEach(item => {
-                qrisMap.set(item.qrisCode, item);
-            });
-            
-            // Find matches
-            adminData.forEach(adminItem => {
-                const qrisItem = qrisMap.get(adminItem.qrisCode);
-                
-                if (qrisItem) {
-                    // Found a match
-                    adminItem.matched = true;
-                    qrisItem.matched = true;
-                    
-                    matchedRecords.push({
-                        adminItem,
-                        qrisItem,
-                        difference: adminItem.nominal - qrisItem.nominal
-                    });
-                    
-                    // Remove from qrisOnlyRecords
-                    const index = qrisOnlyRecords.findIndex(item => item.qrisCode === qrisItem.qrisCode);
-                    if (index !== -1) {
-                        qrisOnlyRecords.splice(index, 1);
-                    }
-                } else {
-                    // No match found
-                    adminOnlyRecords.push(adminItem);
-                }
-            });
-            
-            return {
-                matchedRecords,
-                adminOnlyRecords,
-                qrisOnlyRecords
-            };
-        }
-        
-        function calculateTotalAmount(data) {
-            return data.reduce((sum, item) => sum + item.nominal, 0);
-        }
-        
-        function populateAdminTable(matchedRecords, adminOnlyRecords) {
-            const tbody = document.getElementById('adminTableBody');
-            tbody.innerHTML = '';
-            
-            // Add matched records with discrepancies
-            matchedRecords.forEach(record => {
-                if (record.difference !== 0) {
-                    const row = document.createElement('tr');
-                    row.className = 'discrepancy-row animate__animated animate__fadeIn';
-                    
-                    row.innerHTML = `
-                        <td>${record.adminItem.userId}</td>
-                        <td>${formatCurrency(record.adminItem.nominal)}</td>
-                        <td>${record.adminItem.qrisCode}</td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                }
-            });
-            
-            // Add admin-only records
-            adminOnlyRecords.forEach(item => {
-                const row = document.createElement('tr');
-                row.className = 'missing-row animate__animated animate__fadeIn';
-                
-                row.innerHTML = `
-                    <td>${item.userId}</td>
-                    <td>${formatCurrency(item.nominal)}</td>
-                    <td>${item.qrisCode}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-            
-            // Add empty state if no discrepancies
-            if (tbody.children.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                        <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
-                        <p>No discrepancies found in Admin data</p>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            }
-        }
-        
-        function populateQrisTable(matchedRecords, qrisOnlyRecords) {
-            const tbody = document.getElementById('qrisTableBody');
-            tbody.innerHTML = '';
-            
-            // Add matched records with discrepancies
-            matchedRecords.forEach(record => {
-                if (record.difference !== 0) {
-                    const row = document.createElement('tr');
-                    row.className = 'discrepancy-row animate__animated animate__fadeIn';
-                    
-                    row.innerHTML = `
-                        <td>${record.qrisItem.qrisCode}</td>
-                        <td>${formatCurrency(record.qrisItem.nominal)}</td>
-                        <td>${record.qrisItem.info}</td>
-                    `;
-                    
-                    tbody.appendChild(row);
-                }
-            });
-            
-            // Add qris-only records
-            qrisOnlyRecords.forEach(item => {
-                const row = document.createElement('tr');
-                row.className = 'missing-row animate__animated animate__fadeIn';
-                
-                row.innerHTML = `
-                    <td>${item.qrisCode}</td>
-                    <td>${formatCurrency(item.nominal)}</td>
-                    <td>${item.info}</td>
-                `;
-                
-                tbody.appendChild(row);
-            });
-            
-            // Add empty state if no discrepancies
-            if (tbody.children.length === 0) {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td colspan="3" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-                        <i class="fas fa-check-circle" style="font-size: 2rem; color: var(--secondary); margin-bottom: 1rem;"></i>
-                        <p>No discrepancies found in QRIS data</p>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            }
-        }
-        
-        function formatCurrency(amount) {
-            return new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(amount).replace('Rp', '').trim();
-        }
-        
-        function clearData() {
-            document.getElementById('adminData').value = '';
-            document.getElementById('qrisData').value = '';
-            document.getElementById('adminTableBody').innerHTML = '';
-            document.getElementById('qrisTableBody').innerHTML = '';
-            document.getElementById('summarySection').style.display = 'none';
-            
-            showToast('Input data cleared', 'info');
-        }
-        
-        function copyTableToClipboard(tableId) {
-            const table = document.getElementById(tableId);
-            const rows = table.querySelectorAll('tbody tr');
-            let textToCopy = '';
-            
-            // Only add data rows (exclude headers and empty states)
-            rows.forEach(row => {
-                // Skip the empty state row if it exists
-                if (row.querySelector('td[colspan]')) return;
-                
-                const cells = Array.from(row.querySelectorAll('td'));
-                textToCopy += cells.map(cell => cell.textContent.replace(/^\s+|\s+$/g, '')).join('\t') + '\n';
-            });
-            
-            copyToClipboard(textToCopy.trim());
-        }
-        
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('Data copied to clipboard!', 'success');
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                showToast('Failed to copy data', 'danger');
-            });
-        }
-        
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            
-            // Update toast content and style
-            toast.innerHTML = `
-                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'danger' ? 'exclamation-circle' : 'info-circle'}"></i>
-                <span>${message}</span>
-            `;
-            
-            // Set background based on type
-            toast.style.background = type === 'success' ? 'var(--success-gradient)' : 
-                                   type === 'danger' ? 'var(--danger-gradient)' : 
-                                   type === 'warning' ? 'var(--warning)' : 'var(--primary-gradient)';
-            
-            // Show toast
-            toast.classList.add('show');
-            
-            // Hide after delay
-            setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3000);
-        }
-    </script>
+    });
+
+    // Combine for display
+    const adminDiscrepancy = [...mismatchAdmin, ...adminOnlyRows];
+    const qrisDiscrepancy  = [...mismatchQris, ...qrisOnlyRows];
+
+    const totalAdmin = adminMap.size;
+    const totalQris  = qrisMap.size;
+    const totalSelisih = adminOnlyRows.length + qrisOnlyRows.length + mismatchAdmin.length;
+
+    let sumAdmin = 0; adminMap.forEach(a => sumAdmin += a.nominal);
+    let sumQris  = 0; qrisMap.forEach(q => sumQris  += q.nominal);
+
+    // Summary
+    document.getElementById('sAdminTotal').textContent = fmt(totalAdmin);
+    document.getElementById('sQrisTotal').textContent  = fmt(totalQris);
+    document.getElementById('sMatched').textContent    = fmt(matchedOK);
+    document.getElementById('sDiscrepancy').textContent = fmt(totalSelisih);
+    document.getElementById('sAdminAmt').textContent   = fmt(sumAdmin);
+    document.getElementById('sAmtDiff').textContent    = fmt(Math.abs(sumAdmin - sumQris));
+
+    // Tables
+    renderAdminTable(adminDiscrepancy);
+    renderQrisTable(qrisDiscrepancy);
+
+    document.getElementById('cntAdminOnly').textContent = adminDiscrepancy.length;
+    document.getElementById('cntQrisOnly').textContent  = qrisDiscrepancy.length;
+
+    document.getElementById('resultSection').style.display = 'block';
+    document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    showToast(`Selesai — ${totalSelisih} selisih ditemukan`);
+});
+
+// ─── Render tables ────────────────────────────────────────────────────────────
+function renderAdminTable(rows) {
+    const tbody = document.getElementById('tbodyAdmin');
+    if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-check-circle"></i>Semua data cocok</div></td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map(r => {
+        const cls  = r.status === 'missing' ? 'row-missing' : 'row-mismatch';
+        const tag  = r.status === 'missing'
+            ? '<span class="tag tag-missing">Tidak Ada di QRIS</span>'
+            : '<span class="tag tag-mismatch">Beda Nominal</span>';
+        const nomDisplay = r.status === 'mismatch'
+            ? `<span class="nominal">${fmt(r.nominal)}</span> <span style="color:var(--text3);font-size:0.72rem">↔ QRIS: ${fmt(r.qrisNominal)}</span>`
+            : `<span class="nominal">${fmt(r.nominal)}</span>`;
+        return `<tr class="${cls}">
+            <td>${esc(r.akunPemain)}</td>
+            <td>${nomDisplay}</td>
+            <td style="color:var(--text2);font-size:0.76rem">${esc(r.noRek)}</td>
+            <td>${tag}</td>
+        </tr>`;
+    }).join('');
+}
+
+function renderQrisTable(rows) {
+    const tbody = document.getElementById('tbodyQris');
+    if (!rows.length) {
+        tbody.innerHTML = `<tr><td colspan="4"><div class="empty-state"><i class="fas fa-check-circle"></i>Semua data cocok</div></td></tr>`;
+        return;
+    }
+    tbody.innerHTML = rows.map(r => {
+        const cls  = r.status === 'missing' ? 'row-missing' : 'row-mismatch';
+        const tag  = r.status === 'missing'
+            ? '<span class="tag tag-missing">Tidak Ada di Admin</span>'
+            : '<span class="tag tag-mismatch">Beda Nominal</span>';
+        const nomDisplay = r.status === 'mismatch'
+            ? `<span class="nominal">${fmt(r.nominal)}</span> <span style="color:var(--text3);font-size:0.72rem">↔ Admin: ${fmt(r.adminNominal)}</span>`
+            : `<span class="nominal">${fmt(r.nominal)}</span>`;
+        return `<tr class="${cls}">
+            <td style="color:var(--text2);font-size:0.76rem">${esc(r.refNo)}</td>
+            <td>${nomDisplay}</td>
+            <td style="color:var(--text3);font-size:0.76rem">${esc(r.akunPemain)}</td>
+            <td>${tag}</td>
+        </tr>`;
+    }).join('');
+}
+
+function esc(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ─── Copy buttons ─────────────────────────────────────────────────────────────
+function copyTable(tbodyId, skipLast) {
+    const tbody = document.getElementById(tbodyId);
+    const rows  = tbody.querySelectorAll('tr');
+    const lines = [];
+    rows.forEach(tr => {
+        if (tr.querySelector('.empty-state')) return;
+        const cells = [...tr.querySelectorAll('td')];
+        const data = cells.slice(0, cells.length - skipLast).map(td => td.innerText.trim().replace(/\s+/g,' '));
+        if (data.length) lines.push(data.join('\t'));
+    });
+    if (!lines.length) { showToast('Tidak ada data untuk dicopy', 'err'); return; }
+    navigator.clipboard.writeText(lines.join('\n'))
+        .then(() => showToast('Data berhasil dicopy!'))
+        .catch(() => showToast('Gagal copy', 'err'));
+}
+
+document.getElementById('btnCopyAdmin').addEventListener('click', () => copyTable('tbodyAdmin', 1));
+document.getElementById('btnCopyQris').addEventListener('click',  () => copyTable('tbodyQris',  2));
+
+// ─── Reset ────────────────────────────────────────────────────────────────────
+document.getElementById('btnClear').addEventListener('click', () => {
+    adminRows = []; qrisRows = [];
+    ['fileAdmin','fileQris'].forEach(id => document.getElementById(id).value = '');
+    ['previewAdmin','previewQris'].forEach(id => document.getElementById(id).classList.remove('show'));
+    document.getElementById('resultSection').style.display = 'none';
+    document.getElementById('btnCompare').disabled = true;
+    showToast('Reset selesai');
+});
+</script>
 </body>
 </html>

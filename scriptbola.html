@@ -24,7 +24,7 @@
             font-family: 'Rajdhani', sans-serif;
             background:
                 linear-gradient(135deg, rgba(10,10,15,0.9), rgba(21,21,32,0.9)),
-                url('https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/997f37bf3bc90016a5e32ae52406c5c4/background-web-hokbentoto-1.jpg');
+                url('https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
             color: #ffffff; min-height: 100vh; transition: background 0.6s ease;
         }
@@ -123,7 +123,7 @@
         .league-select:focus, .league-select:hover { border-color: var(--primary); box-shadow: 0 0 14px var(--glow-soft); }
         .league-select option { background: #0a0a0f; color: #fff; font-weight: 700; }
 
-        /* CROWN TOP PREVIEW STYLES */
+        /* ── CROWN TOP PREVIEW STYLES ── */
         .prev-league-block { margin: 12px 0; border: 3px solid var(--primary); border-radius: 15px; padding: 5px; background: rgba(0,0,0,0.5); box-shadow: 0 0 20px var(--glow-soft); transition: all 0.5s; }
         .prev-league-inner { border-radius: 10px; overflow: hidden; border: 1px solid rgba(255,215,0,0.4); }
         .prev-league-crown { background: linear-gradient(180deg, #1a1200, #0d0d0d); padding: 8px 10px 6px; text-align: center; border-bottom: 1px solid rgba(212,175,55,0.13); transition: all 0.5s; }
@@ -242,15 +242,11 @@
 ENGLISH PREMIER LEAGUE
 08/02 21:00 WIB Brighton VS Crystal Palace 1 : 1
 08/02 23:30 WIB Liverpool VS Manchester City 2 - 2
+08/02 21:00 WIB Chelsea vs Arsenal 1-0
 
-GERMANY WOMEN BUNDESLIGA
-30/03 23:00 WIB Hamburger SV (W) vs Bayer Leverkusen (W) 1 : 1
-
-UEFA U21 CHAMPIONSHIP
-31/03 00:00 WIB France U21 vs Iceland U21 2 : 1
-
-INTERNATIONAL FRIENDLY U20
-30/03 22:00 WIB Czech Republic U20 vs Portugal U20 1 : 1"></textarea>
+ITALY SERIE A
+08/02 21:00 Bologna VS Parma 2 : 0
+08/02 Lecce vs Udinese 1 - 1"></textarea>
                 <div class="button-group">
                     <button class="btn-clear" onclick="clearInput()">🗑️ Clear Semua</button>
                 </div>
@@ -308,7 +304,7 @@ var SITES = {
         sub: 'Crown Top Edition — Auto Team Logo',
         logo: 'https://hokben38422.com/resources/images/logo.png',
         favicon: 'https://hokben84059.com/favicon.ico',
-        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/997f37bf3bc90016a5e32ae52406c5c4/background-web-hokbentoto-1.jpg',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg',
         bgOverlay: 'rgba(10,10,15,0.9), rgba(21,21,32,0.9)',
         marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥',
         defaultColors: { bg: '#d4af37', txt: '#fff1c4', hd: '#000000', mq: '#d4af37' },
@@ -324,7 +320,7 @@ var SITES = {
         sub: 'Crown Top Edition — Auto Team Logo',
         logo: 'https://bandar80.com/resources/images/logo.png',
         favicon: 'https://bandar81209.com/favicon.ico',
-        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/20e8efc43cfbf551408b31932d699826/background-web-bandar80.jpg',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/02/02/20260202/3e6aabe1cc793a0589e3568b5c34ffed/bandar80-background-cny2026.jpg',
         bgOverlay: 'rgba(0,8,32,0.92), rgba(0,17,51,0.92)',
         marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di BANDAR80 dan nikmati pengalaman Casino Online terbaik dengan peluang besar! ♠',
         defaultColors: { bg: '#0088CC', txt: '#c4e8ff', hd: '#000033', mq: '#00BFFF' },
@@ -382,9 +378,8 @@ function setColorValues(bg, txt, hd, mq) {
 var SHEET_CONFIG = {
     SHEET_ID: '1n8DjRyyLgXgVi5Wu2OHSdh9TfONpcBAdYliKqeXyhlM',
     SHEETS: [
-        { name: 'bendera dunia',    gid: '1069663409' },
-        { name: 'media.api-sports', gid: '1366835347' },
         { name: 'thesportsdb',      gid: '0' },
+        { name: 'media.api-sports', gid: '1366835347' },
         { name: 'football-logos',   gid: '272853337' },
         { name: 'football-data',    gid: '1674425739' },
         { name: 'footylogos',       gid: '555289227' },
@@ -440,41 +435,6 @@ var SHORT_NAMES = {
 };
 function getShortName(n) { return SHORT_NAMES[n.toLowerCase()] || null; }
 
-/* ══════════════════════════════════════════════════════
-   cleanTeamNameForLogo()
-   Bersihkan suffix dari nama tim SEBELUM lookup logo.
-   Nama ASLI tetap ditampilkan di kartu — hanya proses
-   pencarian logo yang pakai nama bersih ini.
-
-   Yang di-strip:
-   • (W) / [W] / ( W ) / [ W ]          → tim wanita
-   • U20 / U 20 / U-20 / U20            → semua U + angka 2 digit ke atas
-     U21 / U 21 / U-21 / U21
-     U23 / U 23 / U-23 / U23
-     U17 / U 17 / U-17  (berlaku semua angka ≥10)
-   • (IN NEW ZEALAND) / [QUALIFIER] dsb  → apapun dalam kurung di akhir nama
-   • Spasi berlebih di awal/akhir
-══════════════════════════════════════════════════════ */
-function cleanTeamNameForLogo(name) {
-    var cleaned = name;
-
-    // 1. Hapus (W) atau [W] — case insensitive, spasi bebas di dalam
-    cleaned = cleaned.replace(/\s*[\(\[]\s*[Ww]\s*[\)\]]/g, '');
-
-    // 2. Hapus U + angka 2-digit ke atas (U15, U16, U17, U18, U19, U20, U21, U22, U23, U16 dll)
-    //    Format: "U20" / "U 20" / "U-20" — spasi atau dash opsional antara U dan angka
-    cleaned = cleaned.replace(/\s+U[-\s]?\d{2,}/gi, '');
-
-    // 3. Hapus apapun dalam kurung ( ) atau [ ] di akhir nama
-    //    Contoh: (IN NEW ZEALAND), [QUALIFIER], (B), dst
-    cleaned = cleaned.replace(/\s*[\(\[][^\)\]]{1,60}[\)\]]\s*$/g, '');
-
-    // 4. Bersihkan spasi berlebih
-    cleaned = cleaned.trim().replace(/\s{2,}/g, ' ');
-
-    return cleaned || name; // fallback ke nama asli jika hasil kosong
-}
-
 function generateSVGLogo(teamName) {
     var words = teamName.replace(/[^a-zA-Z\s]/g,' ').trim().split(/\s+/).filter(function(w){return w.length>0;});
     var initials = words.map(function(w){return w[0].toUpperCase();}).join('').substring(0,3) || 'TM';
@@ -499,46 +459,26 @@ function lookupSheetDb(name) {
     return null;
 }
 
-/* ── FETCH LOGO (pakai nama bersih untuk lookup, tampil nama asli) ── */
 async function fetchTeamLogo(teamName) {
     var key = teamName.toLowerCase().trim();
     if (key in teamLogoCache) return teamLogoCache[key];
     teamLogoCache[key] = { url: null, source: 'svg' };
-
-    // Bersihkan nama untuk proses lookup logo (strip U20, (W), dll)
-    var lookupName = cleanTeamNameForLogo(teamName);
-
     if (!sheetsDbLoaded) { try { await sheetsDbLoadPromise; } catch(e) {} }
-
-    // 1. Coba nama BERSIH di sheet DB
-    var su = lookupSheetDb(lookupName);
+    var su = lookupSheetDb(teamName);
     if (su) { teamLogoCache[key] = { url: su, source: 'sheet' }; return teamLogoCache[key]; }
-
-    // 2. Fallback: coba nama ASLI di sheet DB (jika tim wanita punya entri sendiri)
-    if (lookupName.toLowerCase() !== teamName.toLowerCase()) {
-        var su0 = lookupSheetDb(teamName);
-        if (su0) { teamLogoCache[key] = { url: su0, source: 'sheet' }; return teamLogoCache[key]; }
-    }
-
-    // 3. Coba TheSportsDB pakai nama BERSIH
     try {
-        var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t=' + encodeURIComponent(lookupName));
+        var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t='+encodeURIComponent(teamName));
         var data = await res.json();
         if (data && data.teams && data.teams.length > 0) {
-            var t = data.teams[0];
-            var lu = t.strTeamBadge || t.strBadge || null;
+            var t = data.teams[0]; var lu = t.strTeamBadge || t.strBadge || null;
             if (lu) { teamLogoCache[key] = { url: lu, source: 'api' }; return teamLogoCache[key]; }
         }
     } catch(e) {}
-
-    // 4. Short name dari nama BERSIH
-    var sn = getShortName(lookupName);
+    var sn = getShortName(teamName);
     if (sn) {
         var su2 = lookupSheetDb(sn);
         if (su2) { teamLogoCache[key] = { url: su2, source: 'sheet' }; return teamLogoCache[key]; }
     }
-
-    // 5. Tidak ketemu — pakai SVG fallback
     teamLogoCache[key] = { url: null, source: 'svg' };
     return teamLogoCache[key];
 }
@@ -562,7 +502,9 @@ function parseMatchLine(line) {
     var vsRx = /^(.+?)\s+v\.?s\.?\s+(.+)$/i;
     var vm = tmp.match(vsRx);
     if (!vm) return null;
-    team1=vm[1].trim(); team2=vm[2].trim();
+    // Strip [angka] ranking di depan nama tim, cth: [18] West Ham → West Ham
+    team1 = vm[1].trim().replace(/^\[\d+\]\s*/, '');
+    team2 = vm[2].trim().replace(/^\[\d+\]\s*/, '');
     if (!team1||!team2) return null;
     if (score1==='') { score1='-'; score2='-'; }
     return { date:date||'-', time:time||'-', team1:team1, team2:team2, score1:score1, score2:score2 };
@@ -627,6 +569,8 @@ function renderPreview(leagues) {
     if(!leagues.length){ tablesDiv.innerHTML=''; emptyDiv.style.display='block'; document.getElementById('leagueFilterWrap').style.display='none'; return; }
     emptyDiv.style.display='none';
     var c=getColors();
+    var lighter=adjustColor(c.bg,30);
+    var darker=adjustColor(c.bg,-20);
     var html='';
     leagues.forEach(function(league){
         html+='<div class="prev-league-block" data-league="'+league.name.replace(/"/g,'&quot;')+'">';
@@ -657,6 +601,10 @@ function buildOutputHTML(leagues) {
     var lighter=adjustColor(c.bg,30);
     var darker=adjustColor(c.bg,-20);
     var cfg=SITES[currentSite];
+
+    var selectHTML='<div class="filter-section">\n<div class="filter-label">🏆 Pilih Liga</div>\n<div class="filter-select-wrap">\n<select class="fselect" id="leagueFilterOut" onchange="filterOut(this.value)">\n<option value="all">Semua Liga</option>\n';
+    leagues.forEach(function(l){ selectHTML+='<option value="'+l.name.replace(/"/g,'&quot;')+'">🏆 '+l.name+'</option>\n'; });
+    selectHTML+='</select>\n</div>\n</div>\n\n';
 
     var blocks='';
     leagues.forEach(function(league){
@@ -848,6 +796,8 @@ function reRenderIfHasData(){
 
 function updatePreviewColors(){
     var c=getColors();
+    var lighter=adjustColor(c.bg,30);
+    var darker=adjustColor(c.bg,-20);
     var old=document.getElementById('preview-dynamic-style');
     if(old) old.remove();
     var style=document.createElement('style');

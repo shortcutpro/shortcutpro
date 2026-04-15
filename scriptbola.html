@@ -9,7 +9,6 @@
     <!-- ══ LAYER 2: CEK DOMAIN SEBELUM APA PUN DI-RENDER ══ -->
     <script>
     (function(){
-        
         var _hc=[108,101,111,48,55,46,118,101,114,99,101,108,46,97,112,112];
         var _ah=[_hc.map(function(c){return String.fromCharCode(c);}).join('')];
         var _hn=(window.location.hostname||'').toLowerCase();
@@ -19,7 +18,6 @@
             var _b=document.getElementById('_bg');
             if(_b)_b.parentNode.removeChild(_b);
         } else {
-            // Domain TIDAK sah — inject CSS sync: body visible, overlay tampil, mainContent hidden
             var _s=document.createElement('style');
             _s.textContent=
                 'body,html{display:block!important;visibility:visible!important;overflow:hidden!important;}'+
@@ -87,17 +85,27 @@
         /* SITE SWITCHER */
         .site-switcher { display:flex; gap:0; margin-bottom:25px; border-radius:20px; overflow:hidden; border:3px solid var(--primary); box-shadow:0 0 40px var(--glow-alpha); transition:all 0.5s ease; }
         .site-tab { flex:1; padding:20px 15px; text-align:center; cursor:pointer; font-family:'Orbitron',sans-serif; font-weight:900; font-size:17px; letter-spacing:2px; text-transform:uppercase; transition:all 0.4s ease; position:relative; overflow:hidden; border:none; outline:none; background:linear-gradient(135deg,rgba(26,26,46,0.5),rgba(21,21,32,0.8)); }
+
+        /* HOKBENTOTO TAB */
         .site-tab.hokben { color:rgba(255,215,0,0.45); border-right:2px solid rgba(255,215,0,0.2); }
         .site-tab.hokben.active { background:linear-gradient(135deg,#1a1a00,#3a3000,#1a1a00); color:#FFD700; text-shadow:0 0 20px rgba(255,215,0,0.9),0 0 40px rgba(255,215,0,0.5); box-shadow:inset 0 0 40px rgba(255,215,0,0.12); }
-        .site-tab.bandar { color:rgba(0,191,255,0.4); }
+        .site-tab.hokben .active-bar { background:linear-gradient(90deg,transparent,#FFD700,transparent); }
+
+        /* BANDAR80 TAB */
+        .site-tab.bandar { color:rgba(0,191,255,0.4); border-right:2px solid rgba(0,191,255,0.2); }
         .site-tab.bandar.active { background:linear-gradient(135deg,#000020,#000050,#000020); color:#00BFFF; text-shadow:0 0 20px rgba(0,191,255,0.9),0 0 40px rgba(0,191,255,0.5); box-shadow:inset 0 0 40px rgba(0,191,255,0.12); }
+        .site-tab.bandar .active-bar { background:linear-gradient(90deg,transparent,#00BFFF,transparent); }
+
+        /* TVTOTO TAB */
+        .site-tab.tvtoto { color:rgba(255,40,40,0.45); }
+        .site-tab.tvtoto.active { background:linear-gradient(135deg,#1a0000,#3a0000,#1a0000); color:#FF2222; text-shadow:0 0 20px rgba(255,34,34,0.9),0 0 40px rgba(255,34,34,0.5); box-shadow:inset 0 0 40px rgba(255,34,34,0.12); }
+        .site-tab.tvtoto .active-bar { background:linear-gradient(90deg,transparent,#FF2222,transparent); }
+
         .site-tab .tab-logo { width:120px; max-width:32%; object-fit:contain; display:block; margin:0 auto 10px; filter:drop-shadow(0 0 8px currentColor); transition:filter 0.4s,transform 0.3s; }
         .site-tab.active .tab-logo { transform:scale(1.05); filter:drop-shadow(0 0 14px currentColor); }
         .site-tab .tab-sub { font-size:11px; letter-spacing:1.5px; opacity:0.6; margin-top:4px; font-family:'Rajdhani',sans-serif; font-weight:600; }
         .site-tab.active .tab-sub { opacity:1; }
         .active-bar { position:absolute; bottom:0; left:0; right:0; height:4px; border-radius:2px 2px 0 0; transform:scaleX(0); transition:transform 0.4s ease; }
-        .site-tab.hokben .active-bar { background:linear-gradient(90deg,transparent,#FFD700,transparent); }
-        .site-tab.bandar .active-bar { background:linear-gradient(90deg,transparent,#00BFFF,transparent); }
         .site-tab.active .active-bar { transform:scaleX(1); }
 
         /* HEADER */
@@ -228,22 +236,14 @@
 <!-- ══ LAYER 3: ENFORCEMENT SETELAH DOM SIAP ══ -->
 <script>
 (function(){
-    if(window._AUTHORIZED) return; // domain OK, skip
-
-    // Domain tidak dikenal — aktifkan semua lapisan pengamanan
+    if(window._AUTHORIZED) return;
     document.addEventListener('DOMContentLoaded', function(){
-
-        // 1. Tampilkan overlay & sembunyikan body (override inline)
         document.body.style.cssText = 'display:block!important;visibility:visible!important;';
         document.body.classList.add('locked');
         var ov = document.getElementById('lockOverlay');
         if(ov){ ov.classList.add('show'); ov.style.cssText='display:flex!important;'; }
-
-        // 2. Hapus semua konten kecuali overlay
         var toKill = ['mainContent','notification'];
         toKill.forEach(function(id){ var el=document.getElementById(id); if(el) el.remove(); });
-
-        // 3. MutationObserver — kalau overlay di-hide atau di-remove via DevTools, balikkan
         var obs = new MutationObserver(function(muts){
             muts.forEach(function(m){
                 if(m.type==='attributes' && m.target===ov){
@@ -257,28 +257,22 @@
         });
         obs.observe(ov,{attributes:true,attributeFilter:['style','class']});
         obs.observe(document.body,{childList:true});
-
-        // 4. Block semua event
         function de(e){ e.stopImmediatePropagation(); e.preventDefault(); return false; }
         ['click','mousedown','mouseup','mousemove','keydown','keyup','keypress',
          'input','change','focus','blur','contextmenu','selectstart','dragstart',
          'drop','wheel','touchstart','touchmove','touchend','copy','cut','paste'
         ].forEach(function(ev){ document.addEventListener(ev,de,true); });
     });
-
-    // 6. Inject lock CSS extra (backup)
     var s=document.createElement('style');
     s.textContent='#lockOverlay{display:flex!important;}#mainContent,#notification{display:none!important;}';
     document.head.appendChild(s);
-
-    // 7. Stop eksekusi script lain
     throw new Error('🔒 DOMAIN LOCK ACTIVE');
 })();
 </script>
 
 <div class="container" id="mainContent">
 
-    <!-- SITE SWITCHER -->
+    <!-- SITE SWITCHER — 3 TABS -->
     <div class="site-switcher" id="siteSwitcher">
         <button class="site-tab hokben active" id="tabHokben" onclick="switchSite('hokben')">
             <div class="active-bar"></div>
@@ -291,6 +285,12 @@
             <img class="tab-logo" src="https://bandar80.com/resources/images/logo.png" alt="BANDAR80">
             <div>BANDAR80</div>
             <div class="tab-sub">Casino Online ♠</div>
+        </button>
+        <button class="site-tab tvtoto" id="tabTvtoto" onclick="switchSite('tvtoto')">
+            <div class="active-bar"></div>
+            <img class="tab-logo" src="https://tvtoto32264.com/resources/images/logo.png" alt="TVTOTO">
+            <div>TVTOTO</div>
+            <div class="tab-sub">Togel Online 🎯</div>
         </button>
     </div>
 
@@ -454,29 +454,35 @@ var SITES = {
             '--text-color': '#c4e8ff', '--marquee-color': '#00BFFF',
             '--glow-alpha': 'rgba(0,191,255,0.4)', '--glow-soft': 'rgba(0,191,255,0.2)'
         }
+    },
+    tvtoto: {
+        name: 'TVTOTO',
+        sub: 'Crown Top Edition — Auto Team Logo',
+        logo: 'https://tvtoto32264.com/resources/images/logo.png',
+        favicon: 'https://tvtoto80546.com/favicon.ico',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az1/2026/04/03/20260403/a303c746fd0aa7ab97095a9bf285beae/background-web-tvtoto.jpg',
+        bgOverlay: 'rgba(15,0,0,0.88), rgba(30,5,5,0.88)',
+        marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di TVTOTO dan nikmati pengalaman taruhan terbaik dengan peluang besar! 🎯',
+        defaultColors: { bg: '#CC0000', txt: '#ffd0d0', hd: '#1a0000', mq: '#FF2222' },
+        cssVars: {
+            '--primary': '#FF2222', '--primary-light': '#FF5555', '--primary-dark': '#CC0000',
+            '--bg-deep': '#1a0000', '--bg-main': '#0f0000', '--bg-surface': '#1a0505',
+            '--text-color': '#ffd0d0', '--marquee-color': '#FF2222',
+            '--glow-alpha': 'rgba(255,34,34,0.4)', '--glow-soft': 'rgba(255,34,34,0.2)'
+        }
     }
 };
 var currentSite = 'hokben';
 
 // ── OBFUSCATED SHEET DATA SOURCE ──────────────────────────────────────────────
-// Tidak ada string Sheet ID atau nama source yang bisa dibaca langsung
 var _x = (function(){
-    // Fragments ID diassemble di runtime
     var _f = ['1n8Dj','RyyLg','XgVi5','Wu2OH','Sdh9T','fONpc','BAdYl','iKqeX','yhlM'];
-    // Sheet entries: [encoded_name, gid]
-    // nama diencode sbg array char code agar tidak terbaca
     var _e = [
-        // logo 1 → gid 0
         [[108,111,103,111,32,49], [48]],
-        // logo 2 → gid 1366835347
         [[108,111,103,111,32,50], [49,51,54,54,56,51,53,51,52,55]],
-        // logo 3 → gid 272853337
         [[108,111,103,111,32,51], [50,55,50,56,53,51,51,51,55]],
-        // logo 4 → gid 1674425739
         [[108,111,103,111,32,52], [49,54,55,52,52,50,53,55,51,57]],
-        // logo 5 → gid 555289227
         [[108,111,103,111,32,53], [53,53,53,50,56,57,50,50,55]],
-        // logo 6 → gid 320860716
         [[108,111,103,111,32,54], [51,50,48,56,54,48,55,49,54]]
     ];
     var dec = function(arr){ return arr.map(function(c){ return String.fromCharCode(c); }).join(''); };
@@ -486,17 +492,14 @@ var _x = (function(){
     };
 })();
 
-// ── LOGO DB (Google Sheets — source tersembunyi) ──────────────────────────────
+// ── LOGO DB ────────────────────────────────────────────────────────────────────
 var _ldb = {};
 var _ldbReady = false;
 var _ldbPromise = null;
 
 function _loadOneSheet(sheet) {
     return new Promise(function(resolve) {
-        // Callback name diencode agar tidak obvious
         var _cb = '_cb_' + Math.random().toString(36).substr(2,8);
-        // URL diassemble dari bagian-bagian
-        var _base = ['https://docs','google','com/spreadsheets/d'].join('.');
         var _url  = 'https://docs.google.com/spreadsheets/d/' + _x.id +
                     '/gviz/tq?tqx=out:json;responseHandler:' + _cb +
                     '&sheet=' + encodeURIComponent(sheet.name);
@@ -533,7 +536,7 @@ async function _loadAllSheets() {
 }
 _ldbPromise = _loadAllSheets();
 
-// ── TEAM LOGO ─────────────────────────────────────────────────────────────────
+// ── TEAM LOGO ──────────────────────────────────────────────────────────────────
 var teamLogoCache = {};
 var SHORT_NAMES = {
     'manchester city':'Man City','manchester united':'Man United','atletico madrid':'Atletico Madrid',
@@ -576,7 +579,6 @@ async function fetchTeamLogo(teamName) {
     if(!_ldbReady){ try{ await _ldbPromise; }catch(e){} }
     var su = _lookupDb(teamName);
     if(su){ teamLogoCache[key]={url:su,source:'db'}; return teamLogoCache[key]; }
-    // Fallback TheSportsDB (public API, tidak mengungkap source utama)
     try {
         var res = await fetch('https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t='+encodeURIComponent(teamName));
         var data = await res.json();
@@ -585,7 +587,6 @@ async function fetchTeamLogo(teamName) {
             if(lu){ teamLogoCache[key]={url:lu,source:'fb'}; return teamLogoCache[key]; }
         }
     }catch(e){}
-    // Coba short name di DB
     var sn2 = SHORT_NAMES[teamName.toLowerCase()];
     if(sn2){ var su2=_lookupDb(sn2); if(su2){ teamLogoCache[key]={url:su2,source:'db'}; return teamLogoCache[key]; } }
     teamLogoCache[key]={url:null,source:'svg'};
@@ -597,7 +598,7 @@ function getTeamLogoUrl(name) {
     return (c && c.url) ? c.url : generateSVGLogo(name);
 }
 
-// ── SITE SWITCHER ─────────────────────────────────────────────────────────────
+// ── SITE SWITCHER ──────────────────────────────────────────────────────────────
 function switchSite(site) {
     currentSite = site;
     var cfg = SITES[site];
@@ -607,8 +608,12 @@ function switchSite(site) {
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
+
+    // Update active tab — semua 3 tab
     document.getElementById('tabHokben').classList.toggle('active', site==='hokben');
     document.getElementById('tabBandar').classList.toggle('active', site==='bandar80');
+    document.getElementById('tabTvtoto').classList.toggle('active', site==='tvtoto');
+
     document.getElementById('headerLogo').src = cfg.logo;
     document.getElementById('headerTitle').textContent = cfg.name+' GENERATOR';
     document.getElementById('headerSub').textContent = cfg.sub;
@@ -617,8 +622,17 @@ function switchSite(site) {
     document.getElementById('previewLogo').src = cfg.logo;
     document.getElementById('previewSiteName').textContent = cfg.name;
     document.getElementById('previewMarqueeText').textContent = cfg.marquee;
+
+    // Preview header background per site
     var ph = document.querySelector('.preview-header');
-    ph.style.background = site==='bandar80' ? 'linear-gradient(180deg,#001133,#000020)' : 'linear-gradient(180deg,#1a1a1a,#000)';
+    if(site === 'bandar80') {
+        ph.style.background = 'linear-gradient(180deg,#001133,#000020)';
+    } else if(site === 'tvtoto') {
+        ph.style.background = 'linear-gradient(180deg,#1a0000,#0a0000)';
+    } else {
+        ph.style.background = 'linear-gradient(180deg,#1a1a1a,#000)';
+    }
+
     var d = cfg.defaultColors;
     setColorValues(d.bg, d.txt, d.hd, d.mq);
     updatePreviewColors();
@@ -637,7 +651,7 @@ function setColorValues(bg, txt, hd, mq) {
     document.getElementById('colorMarqueeBgText').value = mq;
 }
 
-// ── PARSE ─────────────────────────────────────────────────────────────────────
+// ── PARSE ──────────────────────────────────────────────────────────────────────
 function parseMatchLine(line) {
     var tmp = line.trim().replace(/\r/g,'');
     if(!/\bv\.?s\.?\b/i.test(tmp)) return null;
@@ -677,7 +691,7 @@ function getAllTeams(leagues) {
     return Object.keys(set);
 }
 
-// ── COLOR ─────────────────────────────────────────────────────────────────────
+// ── COLOR ──────────────────────────────────────────────────────────────────────
 function adjustColor(color, amount) {
     var num=parseInt(color.replace('#',''),16);
     var r=Math.min(255,Math.max(0,(num>>16)+amount));
@@ -694,7 +708,7 @@ function getColors() {
     };
 }
 
-// ── FILTER LIGA ───────────────────────────────────────────────────────────────
+// ── FILTER LIGA ────────────────────────────────────────────────────────────────
 function buildLeagueDropdown(leagues) {
     var wrap=document.getElementById('leagueFilterWrap');
     var sel=document.getElementById('leagueSelect');
@@ -710,7 +724,7 @@ function filterLeague(name) {
     });
 }
 
-// ── RENDER PREVIEW ────────────────────────────────────────────────────────────
+// ── RENDER PREVIEW ─────────────────────────────────────────────────────────────
 function renderPreview(leagues) {
     var tablesDiv=document.getElementById('previewTables');
     var emptyDiv=document.getElementById('previewEmpty');
@@ -739,7 +753,7 @@ function renderPreview(leagues) {
     filterLeague('all');
 }
 
-// ── BUILD OUTPUT HTML ─────────────────────────────────────────────────────────
+// ── BUILD OUTPUT HTML ──────────────────────────────────────────────────────────
 function buildOutputHTML(leagues) {
     var autoDate=document.getElementById('autoDate').textContent;
     var c=getColors();
@@ -815,7 +829,7 @@ blocks+
 '<\/script>\n';
 }
 
-// ── DEBOUNCE INPUT ────────────────────────────────────────────────────────────
+// ── DEBOUNCE INPUT ─────────────────────────────────────────────────────────────
 var debounceTimer = null;
 document.getElementById('inputText').addEventListener('input', function(){
     clearTimeout(debounceTimer);
@@ -867,7 +881,7 @@ async function handleInput() {
     document.getElementById('outputCode').textContent = buildOutputHTML(leagues);
 }
 
-// ── COLOR PICKERS ─────────────────────────────────────────────────────────────
+// ── COLOR PICKERS ──────────────────────────────────────────────────────────────
 function initColorPickers() {
     ['Background','Text','HeaderBg','MarqueeBg'].forEach(function(name){
         var picker=document.getElementById('color'+name);
@@ -916,7 +930,7 @@ function resetColors(){
     showNotification('✓ Warna direset ke default '+SITES[currentSite].name+'!');
 }
 
-// ── AUTO DATE ─────────────────────────────────────────────────────────────────
+// ── AUTO DATE ──────────────────────────────────────────────────────────────────
 function generateAutoDate(){
     var today=new Date(),tomorrow=new Date(today);
     tomorrow.setDate(today.getDate()+1);
@@ -927,7 +941,7 @@ function generateAutoDate(){
     document.getElementById('previewDate').textContent=str;
 }
 
-// ── UTILS ─────────────────────────────────────────────────────────────────────
+// ── UTILS ──────────────────────────────────────────────────────────────────────
 function copyToClipboard(){
     var output=document.getElementById('outputCode').textContent;
     if(output.startsWith('Script HTML')){ showNotification('⚠️ Belum ada script yang di-generate!'); return; }
@@ -955,7 +969,7 @@ function showNotification(msg){
     setTimeout(function(){n.style.display='none';},3000);
 }
 
-// ── INIT ──────────────────────────────────────────────────────────────────────
+// ── INIT ───────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',function(){
     generateAutoDate();
     initColorPickers();
@@ -963,7 +977,7 @@ window.addEventListener('DOMContentLoaded',function(){
 });
 </script>
 
-<!-- Anti inspect (hanya noise, lapisan utama ada di atas) -->
+<!-- Anti inspect -->
 <script>
 document.addEventListener('keydown',function(e){
     if(e.ctrlKey&&e.shiftKey&&(e.key==='I'||e.key==='J'||e.key==='C')){e.preventDefault();return false;}

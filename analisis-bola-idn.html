@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PARLAY ANALYZER</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#08090f;--bg2:#0f1118;--bg3:#161922;
+  --border:#1e2332;--border2:#2a3148;
+  --text:#c8cfe0;--muted:#4a5470;--bright:#e8ecf5;
+  --green:#22c97a;--red:#e85555;--amber:#f0a030;--blue:#5aabf0;--orange:#f07844;
+  --green-dim:rgba(34,201,122,.12);--red-dim:rgba(232,85,85,.12);
+}
+*{scrollbar-width:thin;scrollbar-color:#1e2332 transparent}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#1e2332;border-radius:4px}
+body{
+  background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;
+  height:100vh;display:flex;flex-direction:column;overflow:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%,rgba(34,201,122,.04) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%,rgba(90,171,240,.04) 0%,transparent 60%);
+}
+
+/* HEADER */
+header{
+  background:rgba(15,17,24,.9);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  padding:10px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{
+  width:34px;height:34px;border-radius:9px;
+  background:linear-gradient(135deg,rgba(34,201,122,.15),rgba(90,171,240,.1));
+  border:1px solid rgba(34,201,122,.25);display:flex;align-items:center;justify-content:center;
+}
+.logo-title{font-size:11px;font-weight:700;color:var(--bright);letter-spacing:.14em;text-transform:uppercase}
+.logo-sub{font-size:9px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:1px}
+.header-right{display:flex;align-items:center;gap:10px}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.status-txt{font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-family:'IBM Plex Mono',monospace}
+#matchCounter{
+  display:none;align-items:center;gap:5px;
+  background:rgba(34,201,122,.08);border:1px solid rgba(34,201,122,.2);
+  border-radius:6px;padding:3px 8px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;color:var(--green);
+}
+
+/* LAYOUT */
+main{display:flex;flex:1;overflow:hidden}
+
+/* LEFT */
+.left{
+  width:260px;flex-shrink:0;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;padding:14px;gap:10px;
+}
+.panel-label{font-size:9px;font-weight:700;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.header-row{display:flex;align-items:center;justify-content:space-between}
+textarea{
+  flex:1;width:100%;
+  background:var(--bg3);border:1px solid var(--border);border-radius:9px;
+  padding:12px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+  color:var(--text);resize:none;outline:none;line-height:1.65;transition:border-color .2s;
+}
+textarea:focus{border-color:rgba(34,201,122,.4);box-shadow:0 0 0 3px rgba(34,201,122,.06)}
+textarea::placeholder{color:#252d42}
+.btn-analyze{
+  width:100%;background:var(--green);color:#001a0c;border:none;
+  border-radius:9px;padding:11px;font-size:10px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer;
+  transition:all .15s;box-shadow:0 4px 20px rgba(34,201,122,.15);
+}
+.btn-analyze:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-analyze:active{transform:scale(.97)}
+.btn-clear{
+  background:var(--red-dim);border:1px solid rgba(232,85,85,.25);
+  color:var(--red);border-radius:6px;padding:4px 10px;
+  font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  cursor:pointer;transition:all .15s;font-family:'IBM Plex Mono',monospace;
+}
+.btn-clear:hover{background:rgba(232,85,85,.2)}
+
+/* RIGHT */
+.right{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.table-wrap{flex:1;overflow-y:auto;padding:14px}
+
+/* PLACEHOLDER */
+.placeholder{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;gap:10px;color:var(--muted);text-align:center;
+}
+.placeholder svg{opacity:.15}
+.placeholder p{font-size:11px;line-height:1.7}
+
+/* TABLE */
+.table-container{border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 4px 30px rgba(0,0,0,.3)}
+table{width:100%;border-collapse:collapse}
+thead th{
+  padding:10px 14px;text-align:left;
+  font-size:8px;font-weight:700;color:var(--muted);
+  letter-spacing:.12em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);background:var(--bg2);
+  position:sticky;top:0;z-index:5;
+}
+thead th.c{text-align:center}
+tbody tr{border-bottom:1px solid rgba(30,35,50,.8);transition:background .15s;cursor:pointer}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:rgba(255,255,255,.02)}
+tbody tr.active-row{background:rgba(34,201,122,.04);outline:1px solid rgba(34,201,122,.12);outline-offset:-1px}
+td{padding:11px 14px;vertical-align:middle}
+td.c{text-align:center}
+
+/* MATCH CELL */
+.match-league{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.match-teams{font-size:12px;font-weight:700;color:var(--bright);line-height:1.3}
+.match-vs{color:var(--amber);font-weight:700;margin:0 5px;font-size:10px;font-style:italic}
+
+/* PICK BADGE */
+.pick-badge{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--green);
+  font-size:9px;font-weight:700;padding:4px 9px;border-radius:6px;
+  font-family:'IBM Plex Mono',monospace;text-transform:uppercase;
+  max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:inline-block;
+}
+
+/* SCORE CELL */
+.score-wrap{display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:4px}
+.score-period{font-size:7px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0;font-family:'IBM Plex Mono',monospace}
+.score-ht{background:#1a2a40;color:#5aabf0;border:1px solid rgba(90,171,240,.2)}
+.score-ft{background:#0f2a1a;color:#22c97a;border:1px solid rgba(34,201,122,.2)}
+.score-val{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--bright)}
+.score-sep{color:var(--muted);font-weight:700;font-size:11px}
+.score-empty{font-size:8px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+
+/* ODDS CELL */
+.odds-val{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--amber)}
+.odds-neg{color:var(--orange);font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700}
+.odds-dec{font-size:8px;color:var(--muted);margin-top:2px;font-family:'IBM Plex Mono',monospace}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;border-radius:4px;font-size:7px;font-weight:700;padding:1px 5px;letter-spacing:.05em;vertical-align:middle;font-family:'IBM Plex Mono',monospace}
+.b-live{background:rgba(90,171,240,.15);color:#5aabf0;border:1px solid rgba(90,171,240,.3)}
+.b-esport{background:rgba(157,127,234,.12);color:#9d7fea;border:1px solid rgba(157,127,234,.25)}
+
+/* STATUS PILLS */
+.status-pill{font-size:8px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;font-family:'IBM Plex Mono',monospace;display:inline-block;white-space:nowrap}
+.p-win   {background:var(--green-dim);color:var(--green);border:1px solid rgba(34,201,122,.3)}
+.p-halfw {background:rgba(34,201,122,.07);color:#6edba4;border:1px solid rgba(34,201,122,.2)}
+.p-lose  {background:var(--red-dim);color:var(--red);border:1px solid rgba(232,85,85,.3)}
+.p-halfl {background:rgba(232,85,85,.07);color:#e89090;border:1px solid rgba(232,85,85,.2)}
+.p-draw  {background:rgba(90,171,240,.1);color:var(--blue);border:1px solid rgba(90,171,240,.25)}
+.p-pending{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+
+/* DETAIL ROW */
+.detail-inner{max-height:0;overflow:hidden;transition:max-height .25s ease,opacity .2s;opacity:0}
+.detail-inner.open{max-height:600px;opacity:1}
+.detail-content{padding:14px 16px;background:#0d1220;border-bottom:1px solid var(--border)}
+.calc-step{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);
+  border-radius:7px;padding:10px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:13px;color:#a0aec0;margin-bottom:6px;
+}
+.lbl{color:#6b7fa3;font-size:11px;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:4px}
+.hi    {color:var(--amber);font-weight:700}
+.c-green{color:var(--green);font-weight:700}
+.c-red  {color:var(--red);font-weight:700}
+.c-blue {color:var(--blue);font-weight:700}
+.c-orange{color:var(--orange);font-weight:700}
+
+/* TOAST */
+#toast{
+  position:fixed;bottom:20px;right:20px;z-index:9999;
+  background:#0f1118;border:1px solid rgba(34,201,122,.3);border-left:3px solid var(--green);
+  color:var(--bright);padding:10px 16px;border-radius:10px;
+  font-size:11px;font-weight:700;font-family:'IBM Plex Mono',monospace;
+  opacity:0;transform:translateY(10px);transition:all .3s ease;pointer-events:none;
+  box-shadow:0 4px 24px rgba(0,0,0,.5);
+}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.err{border-color:rgba(232,85,85,.3);border-left-color:var(--red)}
+
+@keyframes rowIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.match-row{animation:rowIn .2s ease both}
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">
+      <svg fill="none" viewBox="0 0 24 24" stroke="#22c97a" stroke-width="2" width="17" height="17">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-title">Parlay Analyzer</div>
+      <div class="logo-sub">Auto Calc &middot; E-Sports &amp; Football</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div id="matchCounter">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span>
+      <span id="matchCountText">0 match</span>
+    </div>
+    <div class="pulse-dot"></div>
+    <span class="status-txt">Live Engine</span>
+  </div>
+</header>
+
+<main>
+  <section class="left">
+    <div class="header-row">
+      <span class="panel-label">Paste Bill Parlay</span>
+      <button class="btn-clear" id="clearBtn" style="display:none" onclick="clearAll()">&#x2715; Clear</button>
+    </div>
+    <textarea id="rawInput"
+      placeholder="Format 2 baris per match:&#10;&#10;pick hdp @odds @skor-awal&#10;home vs away HT [h-a] FT [h-a]&#10;&#10;Contoh:&#10;e-ecuador 0 @25.276 @0-0&#10;e-ecuador vs e-saudi arabia HT [1-2] FT [2-5]&#10;&#10;under 3.5 @25.276 @0-0&#10;e-austria vs e-haiti HT [1-0] FT [1-0]"
+      oninput="autoAnalyze()"></textarea>
+    <button class="btn-analyze" onclick="processData()">&#9654; Analyze &amp; Calculate</button>
+  </section>
+
+  <section class="right">
+    <div class="table-wrap">
+      <div id="placeholder" class="placeholder">
+        <svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+        </svg>
+        <p>Paste bill parlay lalu klik Analyze<br>
+        <span style="font-size:10px;color:#252d42">Format 2 baris per match otomatis dideteksi</span></p>
+      </div>
+      <div id="resultArea" style="display:none">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Match</th>
+                <th class="c">Pick</th>
+                <th class="c">Keterangan</th>
+                <th class="c">HT / FT Score</th>
+                <th class="c">Odds</th>
+                <th class="c">Status</th>
+              </tr>
+            </thead>
+            <tbody id="matchList"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+// ── TOAST ──
+var _toastTimer = null;
+function showToast(msg, isErr) {
+  var t = document.getElementById('toast');
+  clearTimeout(_toastTimer);
+  t.textContent = msg;
+  t.className = 'show' + (isErr ? ' err' : '');
+  _toastTimer = setTimeout(function(){ t.className = ''; }, 2800);
+}
+
+// ── HELPERS ──
+function toDecimal(odds) {
+  if (!odds || odds === 0) return 0;
+  if (odds >= 1) return odds;
+  if (odds > 0) return 1 + odds;
+  return 1 + Math.abs(odds);
+}
+
+function hdpThreshold(res) {
+  if (res > 0.25)    return 'WIN';
+  if (res === 0.25)  return 'WIN 1/2';
+  if (res === 0)     return 'DRAW';
+  if (res === -0.25) return 'LOSE 1/2';
+  return 'LOSE';
+}
+
+function pillClass(s) {
+  if (s === 'WIN')      return 'p-win';
+  if (s === 'WIN 1/2')  return 'p-halfw';
+  if (s === 'LOSE 1/2') return 'p-halfl';
+  if (s === 'LOSE')     return 'p-lose';
+  if (s === 'DRAW')     return 'p-draw';
+  return 'p-pending';
+}
+
+function threshExp(res) {
+  if (res > 0.25)    return '<span class="c-green">WIN penuh</span>';
+  if (res === 0.25)  return '<span class="c-green">WIN SETENGAH (res = +0.25)</span>';
+  if (res === 0)     return '<span class="c-blue">DRAW / Void (res = 0)</span>';
+  if (res === -0.25) return '<span class="c-red">LOSE SETENGAH (res = -0.25)</span>';
+  return '<span class="c-red">LOSE penuh</span>';
+}
+
+// ── REGEX SCORE PARSER (FIX: no range in character class) ──
+// Matches: [1-2], [1:2], [1 2]
+var RE_HT = /HT\s*\[(\d+)[:\-\s](\d+)\]/i;
+var RE_FT = /FT\s*\[(\d+)[:\-\s](\d+)\]/i;
+
+// ── PARSER ──
+function parseLines(raw) {
+  var lines = raw.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var matches = [];
+  var i = 0;
+  while (i < lines.length) {
+    var l1 = lines[i];
+    var l2 = lines[i + 1] || '';
+    var l2norm = l2.replace(/-vs-/gi, ' vs ');
+    if (!l2 || !/\bvs\b/i.test(l2norm)) { i++; continue; }
+    matches.push(parsePair(l1, l2));
+    i += 2;
+  }
+  return matches;
+}
+
+function parsePair(line1, line2) {
+  // ── line2: "home vs away HT [h-a] FT [h-a]" ──
+  var l2 = line2.replace(/-vs-/gi, ' vs ');
+  var homeTeam = 'Home', awayTeam = 'Away';
+  var htH = '', htA = '', ftH = '', ftA = '';
+
+  var vsIdx = l2.search(/\svs\s/i);
+  if (vsIdx >= 0) {
+    homeTeam = l2.slice(0, vsIdx).trim();
+    var rest = l2.slice(vsIdx + 4).trim();
+    var htM = RE_HT.exec(rest);
+    var ftM = RE_FT.exec(rest);
+    if (htM) { htH = htM[1]; htA = htM[2]; }
+    if (ftM) { ftH = ftM[1]; ftA = ftM[2]; }
+    awayTeam = rest
+      .replace(/HT\s*\[.*?\]/gi, '')
+      .replace(/FT\s*\[.*?\]/gi, '')
+      .trim();
+  }
+
+  // ── line1: "pick hdp @odds @opening" ──
+  var l1 = line1.trim();
+  var isLive = /@Live/i.test(l1);
+  var cleanL1 = l1.replace(/@Live/gi, '').replace(/\s+/g, ' ').trim();
+
+  // split on @ to get parts
+  var parts = cleanL1.split('@');
+  var pickHdpPart = parts[0].trim();
+  var betOdds = parts[1] ? parseFloat(parts[1].trim()) : 0;
+
+  var type = 'HDP', pick = '', side = 'home', betValue = 0, ouPick = 'OVER';
+
+  // OU check: starts with "over X" or "under X"
+  var ouM = /^(over|under)\s+([\d.]+)$/i.exec(pickHdpPart);
+  if (ouM) {
+    type     = 'OU';
+    ouPick   = ouM[1].toUpperCase();
+    pick     = ouPick;
+    betValue = parseFloat(ouM[2]);
+  } else {
+    // HDP: last token is numeric = handicap value
+    var tokens = pickHdpPart.split(/\s+/);
+    var lastTok = tokens[tokens.length - 1];
+    if (/^-?[\d.]+$/.test(lastTok)) {
+      betValue = parseFloat(lastTok);
+      pick     = tokens.slice(0, tokens.length - 1).join(' ');
+    } else {
+      pick     = pickHdpPart;
+      betValue = 0;
+    }
+    type = 'HDP';
+    // side detection
+    var norm = function(s){ return s.toLowerCase().replace(/[\s\-_]/g, ''); };
+    var pn = norm(pick), an = norm(awayTeam);
+    side = (pn === an || an.indexOf(pn) >= 0 || pn.indexOf(an) >= 0) ? 'away' : 'home';
+  }
+
+  var isEsport = /^e-/i.test(homeTeam) || /^e-/i.test(awayTeam) || /^e-/i.test(pick);
+
+  return {
+    type: type, pick: pick, side: side, betValue: betValue,
+    ouPick: ouPick, betOdds: betOdds,
+    homeTeam: homeTeam, awayTeam: awayTeam,
+    htH: htH, htA: htA, ftH: ftH, ftA: ftA,
+    isLive: isLive, isEsport: isEsport,
+    ftHN: ftH !== '' ? parseInt(ftH, 10) : null,
+    ftAN: ftA !== '' ? parseInt(ftA, 10) : null
+  };
+}
+
+// ── CALC STATUS ──
+function calcStatus(m) {
+  if (m.ftHN === null || m.ftAN === null) return '—';
+  var h = m.ftHN, a = m.ftAN;
+  if (m.type === 'OU') {
+    var res = h + a - m.betValue;
+    if (m.ouPick === 'UNDER') res = -res;
+    return hdpThreshold(res);
+  }
+  if (m.type === 'HDP') {
+    var diff = m.side === 'away' ? a - h : h - a;
+    var res2 = m.betValue < 0 ? diff - Math.abs(m.betValue) : diff + m.betValue;
+    return hdpThreshold(res2);
+  }
+  return '—';
+}
+
+// ── BUILD EXPLANATION ──
+function buildExplanation(m, stat) {
+  var h = m.ftHN || 0, a = m.ftAN || 0;
+  var betSteps = [];
+
+  if (m.type === 'HDP') {
+    var diff = m.side === 'away' ? a - h : h - a;
+    var abs  = Math.abs(m.betValue);
+    var res  = m.betValue < 0 ? diff - abs : diff + m.betValue;
+    var sL   = m.side === 'home' ? 'Home' : 'Away';
+    var oL   = m.side === 'home' ? 'Away' : 'Home';
+    var myH  = m.side === 'home' ? h : a;
+    var myA  = m.side === 'home' ? a : h;
+    betSteps.push('<span class="lbl">Pick & Handicap</span>' + sL + ' ' + (m.betValue >= 0 ? '+' : '') + m.betValue);
+    betSteps.push('<span class="lbl">Skor FT</span>' + sL + ' <span class="hi">' + myH + '</span> vs ' + oL + ' <span class="hi">' + myA + '</span>');
+    betSteps.push('<span class="lbl">Selisih (' + sL + ' - ' + oL + ')</span>' + myH + ' - ' + myA + ' = <span class="hi">' + diff + '</span>');
+    betSteps.push('<span class="lbl">Setelah voor</span>' + diff + (m.betValue < 0 ? ' - ' + abs : ' + ' + m.betValue) + ' = <span class="hi">' + res + '</span>');
+    betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res));
+  }
+
+  if (m.type === 'OU') {
+    var total = h + a;
+    var res3  = total - m.betValue;
+    if (m.ouPick === 'UNDER') res3 = -res3;
+    betSteps.push('<span class="lbl">Bet</span>' + m.ouPick + ' <span class="hi">' + m.betValue + '</span>');
+    betSteps.push('<span class="lbl">Total Gol FT</span>' + h + ' + ' + a + ' = <span class="hi">' + total + '</span>');
+    betSteps.push('<span class="lbl">Selisih vs batas</span>' + Math.abs(total - m.betValue) + ' gol ' + (total >= m.betValue ? 'lebih' : 'kurang'));
+    betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res3));
+  }
+
+  function rs(arr, bc) {
+    return arr.map(function(s){
+      return '<div class="calc-step" style="border-left:3px solid ' + bc + '">' + s + '</div>';
+    }).join('');
+  }
+
+  return '<div>'
+    + '<div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2a3148;margin-bottom:6px">Analisa Bet</div>'
+    + rs(betSteps, '#1e40af')
+    + '</div>';
+}
+
+// ── RENDER TABLE ──
+var _matches = [];
+var _activeDetailRow = null;
+
+function renderTable() {
+  var list = document.getElementById('matchList');
+  list.innerHTML = '';
+
+  _matches.forEach(function(m) {
+    var stat  = calcStatus(m);
+    var isNeg = m.betOdds < 0;
+    var dec   = toDecimal(m.betOdds);
+    var hasHT = m.htH !== '' && m.htA !== '';
+    var hasFT = m.ftH !== '' && m.ftA !== '';
+
+    var scoreCell = '<td class="c"><div style="display:flex;flex-direction:column;gap:5px;align-items:center">'
+      + (hasHT ? '<div class="score-wrap"><span class="score-period score-ht">HT</span><span class="score-val">' + m.htH + '</span><span class="score-sep">:</span><span class="score-val">' + m.htA + '</span></div>' : '')
+      + (hasFT  ? '<div class="score-wrap"><span class="score-period score-ft">FT</span><span class="score-val">' + m.ftH + '</span><span class="score-sep">:</span><span class="score-val">' + m.ftA + '</span></div>'
+                : '<span class="score-empty">—</span>')
+      + '</div></td>';
+
+    var oddsCell = '<td class="c">'
+      + '<div class="' + (isNeg ? 'odds-neg' : 'odds-val') + '">' + m.betOdds.toFixed(3) + '</div>'
+      + (isNeg ? '<div class="odds-dec" style="color:var(--orange)">dec ' + dec.toFixed(3) + '</div>' : '')
+      + '</td>';
+
+    var ket = '';
+    if (m.type === 'OU') {
+      ket = m.ouPick === 'OVER'
+        ? 'Total gol <span style="color:var(--blue)">lebih dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>'
+        : 'Total gol <span style="color:var(--blue)">kurang dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>';
+    } else {
+      var abs = Math.abs(m.betValue);
+      if (m.betValue < 0)
+        ket = '<span style="color:var(--green)">' + m.pick + '</span> harus unggul &gt; <b style="color:var(--amber)">' + abs + '</b> gol';
+      else if (m.betValue > 0)
+        ket = '<span style="color:var(--green)">' + m.pick + '</span> menerima voor <b style="color:var(--amber)">' + abs + '</b> gol';
+      else
+        ket = '<span style="color:var(--green)">' + m.pick + '</span> bet <b style="color:var(--amber)">level</b>';
+    }
+
+    var pickLabel = m.type === 'OU'
+      ? m.ouPick + ' ' + m.betValue
+      : m.pick + ' ' + (m.betValue === 0 ? '0' : m.betValue > 0 ? '+' + m.betValue : m.betValue);
+
+    var leagueLabel = m.isEsport ? 'E-SPORTS' : 'FOOTBALL';
+
+    var tr = document.createElement('tr');
+    tr.className = 'match-row';
+    tr.innerHTML =
+      '<td>'
+      + '<div class="match-league">' + leagueLabel
+        + (m.isLive   ? '<span class="badge b-live" style="margin-left:5px">LIVE</span>'   : '')
+        + (m.isEsport ? '<span class="badge b-esport" style="margin-left:2px">E-SPORTS</span>' : '')
+      + '</div>'
+      + '<div class="match-teams">' + m.homeTeam + '<span class="match-vs">vs</span>' + m.awayTeam + '</div>'
+      + '</td>'
+      + '<td class="c"><span class="pick-badge">' + pickLabel + '</span></td>'
+      + '<td class="c" style="font-size:11px;color:#8a93b0;line-height:1.5">' + ket + '</td>'
+      + scoreCell
+      + oddsCell
+      + '<td class="c"><span class="status-pill ' + pillClass(stat) + '">' + stat + '</span></td>';
+
+    (function(row, matchData, matchStat) {
+      row.onclick = function() { toggleDetail(row, matchData, matchStat); };
+    })(tr, m, stat);
+
+    var detailTr = document.createElement('tr');
+    detailTr.className = 'detail-row';
+    detailTr.innerHTML = '<td colspan="6" style="padding:0"><div class="detail-inner"><div class="detail-content"></div></div></td>';
+
+    list.appendChild(tr);
+    list.appendChild(detailTr);
+  });
+}
+
+// ── TOGGLE DETAIL ──
+function toggleDetail(el, m, stat) {
+  if (_activeDetailRow && _activeDetailRow !== el) {
+    _activeDetailRow.classList.remove('active-row');
+    var prev = _activeDetailRow.nextElementSibling && _activeDetailRow.nextElementSibling.querySelector('.detail-inner');
+    if (prev) prev.classList.remove('open');
+  }
+  var detailDiv = el.nextElementSibling && el.nextElementSibling.querySelector('.detail-inner');
+  var dc        = el.nextElementSibling && el.nextElementSibling.querySelector('.detail-content');
+  if (!detailDiv || !dc) return;
+  var isOpen = detailDiv.classList.toggle('open');
+  el.classList.toggle('active-row', isOpen);
+  _activeDetailRow = isOpen ? el : null;
+  if (isOpen) {
+    dc.innerHTML = stat === '—'
+      ? '<div style="font-size:10px;color:var(--muted);font-family:\'IBM Plex Mono\',monospace;padding:4px 0">Isi skor dulu untuk melihat detail perhitungan.</div>'
+      : buildExplanation(m, stat);
+  }
+}
+
+// ── PROCESS ──
+function processData() {
+  var raw = document.getElementById('rawInput').value;
+  if (!raw.trim()) { showToast('Paste bill dulu', true); return; }
+  _matches = parseLines(raw);
+  _activeDetailRow = null;
+  if (_matches.length === 0) { showToast('Tidak ada match terdeteksi', true); return; }
+  document.getElementById('placeholder').style.display = 'none';
+  document.getElementById('resultArea').style.display  = 'block';
+  document.getElementById('clearBtn').style.display    = 'block';
+  var mc = document.getElementById('matchCounter');
+  mc.style.display = 'flex';
+  document.getElementById('matchCountText').textContent = _matches.length + ' match';
+  renderTable();
+  showToast(_matches.length + ' pertandingan berhasil diparse');
+}
+
+// ── CLEAR ──
+function clearAll() {
+  document.getElementById('rawInput').value = '';
+  _matches = []; _activeDetailRow = null;
+  document.getElementById('placeholder').style.display  = 'flex';
+  document.getElementById('resultArea').style.display   = 'none';
+  document.getElementById('clearBtn').style.display     = 'none';
+  document.getElementById('matchCounter').style.display = 'none';
+  document.getElementById('matchList').innerHTML = '';
+  showToast('Bill dibersihkan');
+}
+
+// ── AUTO ANALYZE ──
+var _analyzeTimer = null;
+function autoAnalyze() {
+  clearTimeout(_analyzeTimer);
+  _analyzeTimer = setTimeout(function() {
+    var raw = document.getElementById('rawInput').value.trim();
+    if (!raw) { clearAll(); return; }
+    processData();
+  }, 500);
+}
+</script>
+</body>
+</html>

@@ -147,6 +147,7 @@ td.c{text-align:center}
 .badge{display:inline-flex;align-items:center;border-radius:4px;font-size:7px;font-weight:700;padding:1px 5px;letter-spacing:.05em;vertical-align:middle;font-family:'IBM Plex Mono',monospace}
 .b-live{background:rgba(90,171,240,.15);color:#5aabf0;border:1px solid rgba(90,171,240,.3)}
 .b-esport{background:rgba(157,127,234,.12);color:#9d7fea;border:1px solid rgba(157,127,234,.25)}
+.b-1h{background:#1e2d4a;color:#5aabf0;border:1px solid rgba(90,171,240,.3)}
 
 /* STATUS PILLS */
 .status-pill{font-size:8px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;font-family:'IBM Plex Mono',monospace;display:inline-block;white-space:nowrap}
@@ -314,7 +315,20 @@ function parseLines(raw) {
   while (i < lines.length) {
     var l1 = lines[i];
     var l2 = lines[i + 1] || '';
+    var l3 = lines[i + 2] || '';
     var l2norm = l2.replace(/-vs-/gi, ' vs ');
+    var l3norm = l3.replace(/-vs-/gi, ' vs ');
+
+    // cek apakah l2 adalah baris info ekstra (bukan match line), dan l3 adalah match line
+    var l2isInfo = !!/first\s*half|1st\s*half|over\/under|handicap|\bOU\b/i.test(l2) && !/\bvs\b/i.test(l2norm);
+    var l3isMatch = /\bvs\b/i.test(l3norm);
+
+    if (l2isInfo && l3isMatch) {
+      // gabungkan l1 + l2 sebagai line1 (info is1H ada di l2)
+      matches.push(parsePair(l1 + ' ' + l2, l3));
+      i += 3;
+      continue;
+    }
     if (!l2 || !/\bvs\b/i.test(l2norm)) { i++; continue; }
     matches.push(parsePair(l1, l2));
     i += 2;
@@ -342,20 +356,22 @@ function parsePair(line1, line2) {
       .trim();
   }
 
-  // ── line1: "pick hdp @odds @opening" ──
+  // ── line1: "pick hdp @odds @opening" (kadang ada baris ke-2 spt "First Half Over/Under") ──
   var l1 = line1.trim();
   var isLive = /@Live/i.test(l1);
+  var is1H   = /first\s*half|1st\s*half|\b1H\b/i.test(l1);
   var cleanL1 = l1.replace(/@Live/gi, '').replace(/\s+/g, ' ').trim();
 
-  // split on @ to get parts
-  var parts = cleanL1.split('@');
+  // ambil hanya baris pertama untuk parsing pick+odds (buang baris "First Half Over/Under" dll)
+  var firstLine = cleanL1.split('\n')[0].trim();
+  var parts = firstLine.split('@');
   var pickHdpPart = parts[0].trim();
   var betOdds = parts[1] ? parseFloat(parts[1].trim()) : 0;
 
   var type = 'HDP', pick = '', side = 'home', betValue = 0, ouPick = 'OVER';
 
   // OU check: starts with "over X" or "under X"
-  var ouM = /^(over|under)\s+([\d.]+)$/i.exec(pickHdpPart);
+  var ouM = /^(over|under)\s+([\d.]+)/i.exec(pickHdpPart);
   if (ouM) {
     type     = 'OU';
     ouPick   = ouM[1].toUpperCase();
@@ -386,7 +402,9 @@ function parsePair(line1, line2) {
     ouPick: ouPick, betOdds: betOdds,
     homeTeam: homeTeam, awayTeam: awayTeam,
     htH: htH, htA: htA, ftH: ftH, ftA: ftA,
-    isLive: isLive, isEsport: isEsport,
+    isLive: isLive, isEsport: isEsport, is1H: is1H,
+    htHN: htH !== '' ? parseInt(htH, 10) : null,
+    htAN: htA !== '' ? parseInt(htA, 10) : null,
     ftHN: ftH !== '' ? parseInt(ftH, 10) : null,
     ftAN: ftA !== '' ? parseInt(ftA, 10) : null
   };
@@ -394,8 +412,16 @@ function parsePair(line1, line2) {
 
 // ── CALC STATUS ──
 function calcStatus(m) {
-  if (m.ftHN === null || m.ftAN === null) return '—';
-  var h = m.ftHN, a = m.ftAN;
+  // 1H bet pakai skor HT, FT bet pakai skor FT
+  var useHT = m.is1H;
+  var h, a;
+  if (useHT) {
+    if (m.htHN === null || m.htAN === null) return '—';
+    h = m.htHN; a = m.htAN;
+  } else {
+    if (m.ftHN === null || m.ftAN === null) return '—';
+    h = m.ftHN; a = m.ftAN;
+  }
   if (m.type === 'OU') {
     var res = h + a - m.betValue;
     if (m.ouPick === 'UNDER') res = -res;
@@ -411,7 +437,9 @@ function calcStatus(m) {
 
 // ── BUILD EXPLANATION ──
 function buildExplanation(m, stat) {
-  var h = m.ftHN || 0, a = m.ftAN || 0;
+  var h = m.is1H ? (m.htHN || 0) : (m.ftHN || 0);
+  var a = m.is1H ? (m.htAN || 0) : (m.ftAN || 0);
+  var skorLabel = m.is1H ? 'HT' : 'FT';
   var betSteps = [];
 
   if (m.type === 'HDP') {
@@ -423,7 +451,7 @@ function buildExplanation(m, stat) {
     var myH  = m.side === 'home' ? h : a;
     var myA  = m.side === 'home' ? a : h;
     betSteps.push('<span class="lbl">Pick & Handicap</span>' + sL + ' ' + (m.betValue >= 0 ? '+' : '') + m.betValue);
-    betSteps.push('<span class="lbl">Skor FT</span>' + sL + ' <span class="hi">' + myH + '</span> vs ' + oL + ' <span class="hi">' + myA + '</span>');
+    betSteps.push('<span class="lbl">Skor ' + skorLabel + '</span>' + sL + ' <span class="hi">' + myH + '</span> vs ' + oL + ' <span class="hi">' + myA + '</span>');
     betSteps.push('<span class="lbl">Selisih (' + sL + ' - ' + oL + ')</span>' + myH + ' - ' + myA + ' = <span class="hi">' + diff + '</span>');
     betSteps.push('<span class="lbl">Setelah voor</span>' + diff + (m.betValue < 0 ? ' - ' + abs : ' + ' + m.betValue) + ' = <span class="hi">' + res + '</span>');
     betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res));
@@ -434,7 +462,7 @@ function buildExplanation(m, stat) {
     var res3  = total - m.betValue;
     if (m.ouPick === 'UNDER') res3 = -res3;
     betSteps.push('<span class="lbl">Bet</span>' + m.ouPick + ' <span class="hi">' + m.betValue + '</span>');
-    betSteps.push('<span class="lbl">Total Gol FT</span>' + h + ' + ' + a + ' = <span class="hi">' + total + '</span>');
+    betSteps.push('<span class="lbl">Total Gol ' + skorLabel + '</span>' + h + ' + ' + a + ' = <span class="hi">' + total + '</span>');
     betSteps.push('<span class="lbl">Selisih vs batas</span>' + Math.abs(total - m.betValue) + ' gol ' + (total >= m.betValue ? 'lebih' : 'kurang'));
     betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res3));
   }
@@ -477,19 +505,20 @@ function renderTable() {
       + (isNeg ? '<div class="odds-dec" style="color:var(--orange)">dec ' + dec.toFixed(3) + '</div>' : '')
       + '</td>';
 
+    var b1H = m.is1H ? '<span class="badge b-1h" style="margin-right:4px">1H</span>' : '';
     var ket = '';
     if (m.type === 'OU') {
       ket = m.ouPick === 'OVER'
-        ? 'Total gol <span style="color:var(--blue)">lebih dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>'
-        : 'Total gol <span style="color:var(--blue)">kurang dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>';
+        ? b1H + 'Total gol <span style="color:var(--blue)">lebih dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>'
+        : b1H + 'Total gol <span style="color:var(--blue)">kurang dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>';
     } else {
       var abs = Math.abs(m.betValue);
       if (m.betValue < 0)
-        ket = '<span style="color:var(--green)">' + m.pick + '</span> harus unggul &gt; <b style="color:var(--amber)">' + abs + '</b> gol';
+        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> harus unggul &gt; <b style="color:var(--amber)">' + abs + '</b> gol';
       else if (m.betValue > 0)
-        ket = '<span style="color:var(--green)">' + m.pick + '</span> menerima voor <b style="color:var(--amber)">' + abs + '</b> gol';
+        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> menerima voor <b style="color:var(--amber)">' + abs + '</b> gol';
       else
-        ket = '<span style="color:var(--green)">' + m.pick + '</span> bet <b style="color:var(--amber)">level</b>';
+        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> bet <b style="color:var(--amber)">level</b>';
     }
 
     var pickLabel = m.type === 'OU'

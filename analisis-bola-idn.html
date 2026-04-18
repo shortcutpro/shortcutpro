@@ -470,6 +470,12 @@ function parsePair(line1, line2) {
   var parts = firstLine.split('@');
   var pickHdpPart = parts[0].trim();
   var betOdds = parts[1] ? parseFloat(parts[1].trim()) : 0;
+  // opening score: bagian @X-Y setelah odds (misal @0-1 = live score saat bet dipasang)
+  var openRaw = parts[2] ? parts[2].trim() : '0-0';
+  var openM   = openRaw.match(/(\d+)[:\-](\d+)/);
+  var openH   = openM ? parseInt(openM[1], 10) : 0;
+  var openA   = openM ? parseInt(openM[2], 10) : 0;
+  var hasLiveOffset = isLive && (openH !== 0 || openA !== 0);
 
   var type = 'HDP', pick = '', side = 'home', betValue = 0, ouPick = 'OVER';
 
@@ -534,6 +540,7 @@ function parsePair(line1, line2) {
     homeTeam: homeTeam, awayTeam: awayTeam,
     htH: htH, htA: htA, ftH: ftH, ftA: ftA,
     isLive: isLive, isEsport: isEsport, is1H: is1H,
+    openH: openH, openA: openA, hasLiveOffset: hasLiveOffset,
     htHN: htH !== '' ? parseInt(htH, 10) : null,
     htAN: htA !== '' ? parseInt(htA, 10) : null,
     ftHN: ftH !== '' ? parseInt(ftH, 10) : null,
@@ -550,6 +557,11 @@ function calcStatus(m) {
   } else {
     if (m.ftHN === null || m.ftAN === null) return '—';
     h = m.ftHN; a = m.ftAN;
+  }
+  // Live bet dengan opening score bukan 0-0: hitung dari gol setelah bet masuk
+  if (m.hasLiveOffset) {
+    h = h - m.openH;
+    a = a - m.openA;
   }
   if (m.type === 'OU') {
     var res = h + a - m.betValue;
@@ -578,6 +590,8 @@ function calcStatus(m) {
 function buildExplanation(m, stat) {
   var h = m.is1H ? (m.htHN || 0) : (m.ftHN || 0);
   var a = m.is1H ? (m.htAN || 0) : (m.ftAN || 0);
+  // Live bet: kurangi opening score
+  if (m.hasLiveOffset) { h = h - m.openH; a = a - m.openA; }
   var skorLabel = m.is1H ? 'HT' : 'FT';
   var betSteps = [];
 
@@ -590,7 +604,13 @@ function buildExplanation(m, stat) {
     var myH  = m.side === 'home' ? h : a;
     var myA  = m.side === 'home' ? a : h;
     betSteps.push('<span class="lbl">Pick & Handicap</span>' + sL + ' ' + (m.betValue >= 0 ? '+' : '') + m.betValue);
-    betSteps.push('<span class="lbl">Skor ' + skorLabel + '</span>' + sL + ' <span class="hi">' + myH + '</span> vs ' + oL + ' <span class="hi">' + myA + '</span>');
+    if (m.hasLiveOffset) {
+      betSteps.push('<span class="lbl">Live Skor Saat Bet</span>Home <span class="hi">' + m.openH + '</span> – Away <span class="hi">' + m.openA + '</span>');
+      betSteps.push('<span class="lbl">Skor ' + skorLabel + ' (total)</span>' + (m.ftHN||0) + ' – ' + (m.ftAN||0));
+      betSteps.push('<span class="lbl">Gol Setelah Bet (' + sL + ' – ' + oL + ')</span>' + myH + ' – ' + myA + ' <span style="color:var(--muted);font-size:10px">(FT minus live offset)</span>');
+    } else {
+      betSteps.push('<span class="lbl">Skor ' + skorLabel + '</span>' + sL + ' <span class="hi">' + myH + '</span> vs ' + oL + ' <span class="hi">' + myA + '</span>');
+    }
     betSteps.push('<span class="lbl">Selisih (' + sL + ' - ' + oL + ')</span>' + myH + ' - ' + myA + ' = <span class="hi">' + diff + '</span>');
     betSteps.push('<span class="lbl">Setelah voor</span>' + diff + (m.betValue < 0 ? ' - ' + abs : ' + ' + m.betValue) + ' = <span class="hi">' + res + '</span>');
     betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res));
@@ -828,6 +848,7 @@ function renderTable() {
     var hasFT = m.ftH !== '' && m.ftA !== '';
 
     var scoreCell = '<td class="c"><div style="display:flex;flex-direction:column;gap:5px;align-items:center">'
+      + (m.hasLiveOffset ? '<div class="score-wrap"><span class="score-period" style="background:#2a1a00;color:#f07844;border:1px solid rgba(240,120,68,.3)">@BET</span><span class="score-val">' + m.openH + '</span><span class="score-sep">:</span><span class="score-val">' + m.openA + '</span></div>' : '')
       + (hasHT ? '<div class="score-wrap"><span class="score-period score-ht">HT</span><span class="score-val">' + m.htH + '</span><span class="score-sep">:</span><span class="score-val">' + m.htA + '</span></div>' : '')
       + (hasFT  ? '<div class="score-wrap"><span class="score-period score-ft">FT</span><span class="score-val">' + m.ftH + '</span><span class="score-sep">:</span><span class="score-val">' + m.ftA + '</span></div>'
                 : '<span class="score-empty">—</span>')

@@ -444,7 +444,7 @@
         </div>
 
     </div>
-    <div class="drawer-footer">Site Generator</div>
+    <div class="drawer-footer">v4.0 · Site Generator</div>
 </div>
 
 <!-- ══ MAIN CONTENT ══ -->
@@ -838,9 +838,10 @@ function parseMatchLine(line){
     if(dtm){date=dtm[1].replace('-','/');if(dtm[2]){time=dtm[2].replace('.',':');if(dtm[3])time+=' '+dtm[3].toUpperCase();}tmp=tmp.substring(dtm[0].length).trim();}
     var vm=tmp.match(/^(.+?)\s+v\.?s\.?\s+(.+)$/i);
     if(!vm)return null;
-    var team1=vm[1].trim(),team2=vm[2].trim();
-    var team1Clean=team1.replace(/^\[\d+\]\s*/,'');
-    var team2Clean=team2.replace(/^\[\d+\]\s*/,'');
+    var team1=vm[1].trim().replace(/^\[\d+\]\s*/,'').replace(/\s*\[\d+\]$/,'').replace(/^\[n\]\s*/i,'').replace(/\s*\[n\]$/i,'').trim();
+    var team2=vm[2].trim().replace(/^\[\d+\]\s*/,'').replace(/\s*\[\d+\]$/,'').replace(/^\[n\]\s*/i,'').replace(/\s*\[n\]$/i,'').trim();
+    var team1Clean=team1.replace(/\s*\[[\w]+\]\s*/g,' ').trim();
+    var team2Clean=team2.replace(/\s*\[[\w]+\]\s*/g,' ').trim();
     if(!team1||!team2)return null;
     if(score1===''){score1='-';score2='-';}
     return{date:date||'-',time:time||'-',team1,team2,team1Clean,team2Clean,score1,score2};

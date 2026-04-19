@@ -449,7 +449,7 @@ function switchTab(name) {
   document.querySelectorAll('.tab-btn').forEach(function(b,i){
     b.classList.toggle('active', (i===0&&name==='matches')||(i===1&&name==='summary'));
   });
-  document.getElementById('matchesTab').style.display  = name === 'matches'  ? 'flex' : 'none';
+  document.getElementById('matchesTab').style.display  = name === 'matches'  ? 'block' : 'none';
   document.getElementById('summaryTab').style.display  = name === 'summary'  ? 'block' : 'none';
   document.getElementById('calcPanel').style.display   = name === 'matches'  ? '' : 'none';
   if (name === 'summary') renderSummary();

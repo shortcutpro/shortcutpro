@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PARLAY ANALYZER</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<title>PARLAY ANALYZER v2 — FIXED</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -50,13 +50,19 @@ header{
   border-radius:6px;padding:3px 8px;
   font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;color:var(--green);
 }
+#dupBadge{
+  display:none;align-items:center;gap:5px;
+  background:rgba(240,160,48,.08);border:1px solid rgba(240,160,48,.25);
+  border-radius:6px;padding:3px 8px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;color:var(--amber);
+}
 
 /* LAYOUT */
 main{display:flex;flex:1;overflow:hidden}
 
 /* LEFT */
 .left{
-  width:260px;flex-shrink:0;
+  width:270px;flex-shrink:0;
   background:var(--bg2);border-right:1px solid var(--border);
   display:flex;flex-direction:column;padding:14px;gap:10px;
 }
@@ -86,6 +92,14 @@ textarea::placeholder{color:#252d42}
 }
 .btn-clear:hover{background:rgba(232,85,85,.2)}
 
+/* FORMAT HINT */
+.fmt-hint{
+  background:rgba(90,171,240,.05);border:1px solid rgba(90,171,240,.15);
+  border-radius:8px;padding:9px 11px;font-size:9px;line-height:1.7;color:var(--muted);
+  font-family:'IBM Plex Mono',monospace;
+}
+.fmt-hint b{color:var(--blue)}
+
 /* NILAI BET */
 .bet-box{background:var(--bg3);border:1px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;flex-direction:column;gap:6px}
 .bet-row{display:flex;align-items:center;gap:6px}
@@ -104,6 +118,16 @@ textarea::placeholder{color:#252d42}
 .final-badge{text-align:center;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-family:'IBM Plex Mono',monospace}
 .leg-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--border);font-size:10px}
 .leg-num{width:18px;height:18px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:700;color:var(--muted);flex-shrink:0}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg2);flex-shrink:0}
+.tab-btn{
+  padding:10px 16px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);border:none;background:transparent;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s;font-family:'IBM Plex Mono',monospace;
+}
+.tab-btn.active{color:var(--green);border-bottom-color:var(--green)}
+.tab-btn:hover:not(.active){color:var(--text)}
 
 /* RIGHT */
 .right{flex:1;display:flex;flex-direction:column;overflow:hidden}
@@ -132,6 +156,8 @@ tbody tr{border-bottom:1px solid rgba(30,35,50,.8);transition:background .15s;cu
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:rgba(255,255,255,.02)}
 tbody tr.active-row{background:rgba(34,201,122,.04);outline:1px solid rgba(34,201,122,.12);outline-offset:-1px}
+tbody tr.dup-row{opacity:.45}
+tbody tr.dup-row:hover{opacity:.7}
 td{padding:11px 14px;vertical-align:middle}
 td.c{text-align:center}
 
@@ -153,6 +179,7 @@ td.c{text-align:center}
 .score-period{font-size:7px;font-weight:700;padding:1px 5px;border-radius:3px;flex-shrink:0;font-family:'IBM Plex Mono',monospace}
 .score-ht{background:#1a2a40;color:#5aabf0;border:1px solid rgba(90,171,240,.2)}
 .score-ft{background:#0f2a1a;color:#22c97a;border:1px solid rgba(34,201,122,.2)}
+.score-live{background:#2a1a00;color:#f07844;border:1px solid rgba(240,120,68,.3)}
 .score-val{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;color:var(--bright)}
 .score-sep{color:var(--muted);font-weight:700;font-size:11px}
 .score-empty{font-size:8px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
@@ -167,6 +194,7 @@ td.c{text-align:center}
 .b-live{background:rgba(90,171,240,.15);color:#5aabf0;border:1px solid rgba(90,171,240,.3)}
 .b-esport{background:rgba(157,127,234,.12);color:#9d7fea;border:1px solid rgba(157,127,234,.25)}
 .b-1h{background:#1e2d4a;color:#5aabf0;border:1px solid rgba(90,171,240,.3)}
+.b-dup{background:rgba(240,160,48,.1);color:var(--amber);border:1px solid rgba(240,160,48,.2)}
 
 /* STATUS PILLS */
 .status-pill{font-size:8px;font-weight:700;padding:3px 9px;border-radius:20px;text-transform:uppercase;letter-spacing:.06em;font-family:'IBM Plex Mono',monospace;display:inline-block;white-space:nowrap}
@@ -192,6 +220,55 @@ td.c{text-align:center}
 .c-red  {color:var(--red);font-weight:700}
 .c-blue {color:var(--blue);font-weight:700}
 .c-orange{color:var(--orange);font-weight:700}
+
+/* SUMMARY TABLE (tab) */
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:14px}
+.stat-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:10px;
+  padding:12px 14px;display:flex;flex-direction:column;gap:4px;
+}
+.stat-card-label{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.stat-card-val{font-size:22px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+.stat-card-sub{font-size:10px;color:var(--muted);font-family:'IBM Plex Mono',monospace}
+.profit-row{
+  margin:0 14px 14px;background:var(--bg2);border:1px solid var(--border);
+  border-radius:10px;padding:14px 18px;display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+}
+.profit-item{display:flex;flex-direction:column;gap:3px}
+.profit-item label{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.profit-item span{font-size:16px;font-weight:700;font-family:'IBM Plex Mono',monospace}
+
+/* SUM BLOCKS — colored */
+.sum-block{border-radius:8px;padding:8px 10px;margin:-2px}
+.sum-block-odds{
+  background:rgba(240,160,48,.07);
+  border:1px solid rgba(240,160,48,.18);
+}
+.sum-block-profit{
+  background:rgba(34,201,122,.07);
+  border:1px solid rgba(34,201,122,.18);
+}
+.sum-block-return{
+  background:rgba(90,171,240,.07);
+  border:1px solid rgba(90,171,240,.18);
+}
+.sum-block-stake{
+  background:rgba(157,127,234,.07);
+  border:1px solid rgba(157,127,234,.18);
+}
+.sum-block-odds   .sum-label{color:var(--amber)}
+.sum-block-profit .sum-label{color:var(--green)}
+.sum-block-return .sum-label{color:var(--blue)}
+.sum-block-stake  .sum-label{color:var(--purple)}
+
+/* FIX BADGE */
+.fix-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(34,201,122,.08);border:1px solid rgba(34,201,122,.2);
+  border-radius:6px;padding:3px 8px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;color:var(--green);
+  margin-left:8px;
+}
 
 /* TOAST */
 #toast{
@@ -221,11 +298,15 @@ td.c{text-align:center}
       </svg>
     </div>
     <div>
-      <div class="logo-title">Parlay Analyzer</div>
-      <div class="logo-sub">Auto Calc &middot; E-Sports &amp; Football</div>
+      <div class="logo-title">Parlay Analyzer <span class="fix-badge">✓ FIXED</span></div>
+      <div class="logo-sub">sportgg</div>
     </div>
   </div>
   <div class="header-right">
+    <div id="dupBadge">
+      <span>⚠</span>
+      <span id="dupText">0 duplikat</span>
+    </div>
     <div id="matchCounter">
       <span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block"></span>
       <span id="matchCountText">0 match</span>
@@ -238,14 +319,19 @@ td.c{text-align:center}
 <main>
   <section class="left">
     <div class="header-row">
-      <span class="panel-label">Paste Bill Parlay</span>
+      <span class="panel-label">Paste Bill sportgg</span>
       <button class="btn-clear" id="clearBtn" style="display:none" onclick="clearAll()">&#x2715; Clear</button>
     </div>
     <textarea id="rawInput"
-      placeholder="Format 2 baris per match:&#10;&#10;pick hdp @odds @skor-awal&#10;home vs away HT [h-a] FT [h-a]&#10;&#10;Contoh:&#10;e-ecuador 0 @25.276 @0-0&#10;e-ecuador vs e-saudi arabia HT [1-2] FT [2-5]&#10;&#10;under 3.5 @25.276 @0-0&#10;e-austria vs e-haiti HT [1-0] FT [1-0]"
+      placeholder="Format sportgg 3 baris:&#10;&#10;(Handicap)&#10;e-team @Live -0.25 @-1.09 @0-0&#10;e-home vs e-away HT [0-0] FT [2-1]&#10;&#10;Duplikat otomatis difilter."
       oninput="autoAnalyze()"></textarea>
+    <div class="fmt-hint">
+      <b>Format dikenali:</b><br>
+      (Label) → pick @odds @live-score<br>
+      home vs away HT [h-a] FT [h-a]
+    </div>
     <div class="bet-box">
-      <span class="panel-label">Nilai Bet (Rp)</span>
+      <span class="panel-label">Nilai Bet per Match (Rp)</span>
       <div class="bet-row">
         <span class="bet-prefix">Rp</span>
         <input class="bet-input" id="nilaiBet" value="10,000" inputmode="numeric" oninput="formatBet(this)">
@@ -255,23 +341,29 @@ td.c{text-align:center}
   </section>
 
   <section class="right">
-    <div class="table-wrap">
+    <div class="tabs" id="tabBar" style="display:none">
+      <button class="tab-btn active" onclick="switchTab('matches')">Match Detail</button>
+      <button class="tab-btn" onclick="switchTab('summary')">Ringkasan P&L</button>
+    </div>
+
+    <div class="table-wrap" id="matchesTab">
       <div id="placeholder" class="placeholder">
         <svg width="52" height="52" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
         </svg>
-        <p>Paste bill parlay lalu klik Analyze<br>
-        <span style="font-size:10px;color:#252d42">Format 2 baris per match otomatis dideteksi</span></p>
+        <p>Paste bill sportgg lalu klik Analyze<br>
+        <span style="font-size:10px;color:#252d42">Format 3 baris per match otomatis dideteksi<br>Duplikat difilter otomatis</span></p>
       </div>
       <div id="resultArea" style="display:none">
         <div class="table-container">
           <table>
             <thead>
               <tr>
+                <th>#</th>
                 <th>Match</th>
                 <th class="c">Pick</th>
                 <th class="c">Keterangan</th>
-                <th class="c">HT / FT Score</th>
+                <th class="c">Score (bet / HT / FT)</th>
                 <th class="c">Odds</th>
                 <th class="c">Status</th>
               </tr>
@@ -282,11 +374,14 @@ td.c{text-align:center}
       </div>
     </div>
 
-    <!-- CALC PANEL inside right section -->
+    <div class="table-wrap" id="summaryTab" style="display:none">
+      <div id="summaryContent"></div>
+    </div>
+
     <div class="calc-panel" id="calcPanel" style="display:none">
       <div class="calc-inner">
         <div class="calc-legs">
-          <div class="panel-label" style="margin-bottom:8px">Auto Parlay Breakdown</div>
+          <div class="panel-label" style="margin-bottom:8px">Parlay Breakdown</div>
           <table style="width:100%;border-collapse:collapse">
             <thead>
               <tr style="font-size:8px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid var(--border)">
@@ -301,22 +396,24 @@ td.c{text-align:center}
           </table>
         </div>
         <div class="calc-summary">
-          <div>
-            <span class="sum-label">Total Odds</span>
+          <div class="sum-block sum-block-odds">
+            <span class="sum-label">Total Odds (All Win)</span>
             <span class="sum-val" id="totalOddsDisp" style="color:var(--amber)">—</span>
           </div>
           <div class="sum-divider"></div>
-          <div>
+          <div class="sum-block sum-block-profit">
             <span class="sum-label">Profit / Rugi</span>
             <span class="sum-val" id="totalProfit">—</span>
           </div>
-          <div>
-            <span class="sum-label">Kembali (incl. bet)</span>
-            <span class="sum-small" id="totalReturn" style="color:var(--muted)">—</span>
+          <div class="sum-divider"></div>
+          <div class="sum-block sum-block-stake">
+            <span class="sum-label">Bettingan</span>
+            <span class="sum-small" id="totalActual">—</span>
           </div>
-          <div>
-            <span class="sum-label">Stake</span>
-            <span class="sum-small" id="totalActual" style="color:var(--muted)">—</span>
+          <div class="sum-divider"></div>
+          <div class="sum-block sum-block-return">
+            <span class="sum-label">Menang (incl. bet)</span>
+            <span class="sum-small" id="totalReturn">—</span>
           </div>
           <div class="final-badge" id="finalBadge">—</div>
         </div>
@@ -326,6 +423,15 @@ td.c{text-align:center}
 </main>
 
 <script>
+// ══════════════════════════════════════════════════════════════
+//  PARLAY ANALYZER — FIXED VERSION
+//  Bug fixes:
+//  1. calcPL()        — LOSE 1/2 odds minus: rugi = stake/2 (bukan actualStake/2)
+//  2. oddsMultiplier()— odds minus WIN: multiplier = 1 + (1/|odds|), bukan toDecimal()
+//  3. toDecimal()     — hanya dipakai untuk display, bukan kalkulasi sportgg
+//  4. actualStakeFn() — sekarang dipakai juga di parlay refreshCalc()
+// ══════════════════════════════════════════════════════════════
+
 // ── TOAST ──
 var _toastTimer = null;
 function showToast(msg, isErr) {
@@ -336,12 +442,33 @@ function showToast(msg, isErr) {
   _toastTimer = setTimeout(function(){ t.className = ''; }, 2800);
 }
 
+// ── TAB ──
+var _activeTab = 'matches';
+function switchTab(name) {
+  _activeTab = name;
+  document.querySelectorAll('.tab-btn').forEach(function(b,i){
+    b.classList.toggle('active', (i===0&&name==='matches')||(i===1&&name==='summary'));
+  });
+  document.getElementById('matchesTab').style.display  = name === 'matches'  ? 'flex' : 'none';
+  document.getElementById('summaryTab').style.display  = name === 'summary'  ? 'block' : 'none';
+  document.getElementById('calcPanel').style.display   = name === 'matches'  ? '' : 'none';
+  if (name === 'summary') renderSummary();
+}
+
 // ── HELPERS ──
+
+// toDecimal: hanya untuk display odds, BUKAN untuk kalkulasi P&L sportgg
 function toDecimal(odds) {
   if (!odds || odds === 0) return 0;
-  if (odds >= 1) return odds;
-  if (odds > 0) return 1 + odds;
+  if (odds > 0) return odds >= 1 ? odds : 1 + odds;
   return 1 + Math.abs(odds);
+}
+
+// actualStakeFn: nominal yang ditarik provider saat bet
+// odds minus → actual stake = stake × |odds|
+// odds plus  → actual stake = stake (sama saja)
+function actualStakeFn(stake, odds) {
+  return odds < 0 ? stake * Math.abs(odds) : stake;
 }
 
 function hdpThreshold(res) {
@@ -351,7 +478,6 @@ function hdpThreshold(res) {
   if (res === -0.25) return 'LOSE 1/2';
   return 'LOSE';
 }
-
 function pillClass(s) {
   if (s === 'WIN')      return 'p-win';
   if (s === 'WIN 1/2')  return 'p-halfw';
@@ -360,633 +486,713 @@ function pillClass(s) {
   if (s === 'DRAW')     return 'p-draw';
   return 'p-pending';
 }
-
 function threshExp(res) {
   if (res > 0.25)    return '<span class="c-green">WIN penuh</span>';
   if (res === 0.25)  return '<span class="c-green">WIN SETENGAH (res = +0.25)</span>';
-  if (res === 0)     return '<span class="c-blue">DRAW / Void (res = 0)</span>';
+  if (res === 0)     return '<span class="c-blue">DRAW / Void</span>';
   if (res === -0.25) return '<span class="c-red">LOSE SETENGAH (res = -0.25)</span>';
   return '<span class="c-red">LOSE penuh</span>';
 }
 
-// ── REGEX SCORE PARSER (FIX: no range in character class) ──
-// Matches: [1-2], [1:2], [1 2]
+// ── SCORE REGEX ──
 var RE_HT = /HT\s*\[(\d+)[:\-\s](\d+)\]/i;
 var RE_FT = /FT\s*\[(\d+)[:\-\s](\d+)\]/i;
 
-// ── PARSER ──
-function isMatchLine(s) {
-  return /\bvs\b/i.test(s.replace(/-vs-/gi, ' vs '));
+// ── BARIS CLASSIFIER ──
+function isLabelLine(s) { return /^\(.*\)$/.test(s.trim()); }
+function isMatchLine(s) { return /\bvs\b/i.test(s.replace(/-vs-/gi,' vs ')); }
+function isPickLine(s)  { return !isMatchLine(s) && s.indexOf('@') >= 0; }
+function isInfoLine(s)  {
+  if (!s) return false;
+  if (isMatchLine(s) || isLabelLine(s) || isPickLine(s)) return false;
+  return /^(first half |1st half )?(handicap|over\/under|odd\/even|1x2|asian handicap)/i.test(s.trim());
 }
-function isLabelLine(s) {
-  return /^\(.*\)$/.test(s.trim());
-}
-function isInfoLine(s) {
-  // baris info: tidak ada @, bukan match line, bukan label
-  return s.length > 0 && !isMatchLine(s) && !isLabelLine(s) && s.indexOf('@') < 0;
-}
-function isPickLine(s) {
-  return s.indexOf('@') >= 0 && !isMatchLine(s);
+function isMetaLine(s) {
+  return /^(UID|User|Type|Debit|Credit|Details|Football|Parlay|Odds|Stake|Actual Stake|Win\/Lose|Status|Settled At|Selection)\s/i.test(s)
+    || /^\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}/.test(s)
+    || /^={3,}/.test(s)
+    || /^\d{7,}$/.test(s.trim());
 }
 
 function parseLines(raw) {
-  var lines = raw.split('\n').map(function(l){ return l.trim(); }).filter(Boolean);
+  var lines = raw.split('\n')
+    .map(function(l){ return l.trim(); })
+    .filter(function(l){ return l.length > 0 && !isMetaLine(l); });
+
   var matches = [];
   var i = 0;
   while (i < lines.length) {
-    var l0 = lines[i];
-    var l1 = lines[i+1] || '';
-    var l2 = lines[i+2] || '';
-    var l3 = lines[i+3] || '';
+    var l0 = lines[i], l1 = lines[i+1]||'', l2 = lines[i+2]||'', l3 = lines[i+3]||'';
 
-    // FORMAT A — 4 baris: (label) | pick@odds | info | match
     if (isLabelLine(l0) && isPickLine(l1) && isInfoLine(l2) && isMatchLine(l3)) {
-      matches.push(parsePair(l0 + ' ' + l1 + ' ' + l2, l3));
-      i += 4;
-      continue;
+      matches.push(parseSABA(l0, l1, l3));
+      i += 4; continue;
     }
-    // FORMAT B — 3 baris: (label) | pick@odds | match
     if (isLabelLine(l0) && isPickLine(l1) && isMatchLine(l2)) {
-      matches.push(parsePair(l0 + ' ' + l1, l2));
-      i += 3;
-      continue;
+      matches.push(parseSABA(l0, l1, l2));
+      i += 3; continue;
     }
-    // FORMAT C — 3 baris: pick@odds | info | match  (tanpa label kurung)
     if (isPickLine(l0) && isInfoLine(l1) && isMatchLine(l2)) {
-      matches.push(parsePair(l0 + ' ' + l1, l2));
-      i += 3;
-      continue;
+      matches.push(parseSABA('', l0, l2));
+      i += 3; continue;
     }
-    // FORMAT D — 2 baris: pick@odds | match
     if (isPickLine(l0) && isMatchLine(l1)) {
-      matches.push(parsePair(l0, l1));
-      i += 2;
-      continue;
+      matches.push(parseSABA('', l0, l1));
+      i += 2; continue;
     }
-    // skip baris tidak dikenali
     i++;
   }
   return matches;
 }
 
-function parsePair(line1, line2) {
-  // ── line2: "home vs away HT [h-a] FT [h-a]" ──
-  var l2 = line2.replace(/-vs-/gi, ' vs ');
-  var homeTeam = 'Home', awayTeam = 'Away';
-  var htH = '', htA = '', ftH = '', ftA = '';
-
-  var vsIdx = l2.search(/\svs\s/i);
+function parseSABA(labelLine, pickLine, matchLine) {
+  var ml = matchLine.replace(/-vs-/gi,' vs ');
+  var homeTeam='Home', awayTeam='Away';
+  var htH='', htA='', ftH='', ftA='';
+  var vsIdx = ml.search(/\svs\s/i);
   if (vsIdx >= 0) {
-    homeTeam = l2.slice(0, vsIdx).trim();
-    var rest = l2.slice(vsIdx + 4).trim();
+    homeTeam = ml.slice(0,vsIdx).trim();
+    var rest = ml.slice(vsIdx+4).trim();
     var htM = RE_HT.exec(rest);
     var ftM = RE_FT.exec(rest);
-    if (htM) { htH = htM[1]; htA = htM[2]; }
-    if (ftM) { ftH = ftM[1]; ftA = ftM[2]; }
-    awayTeam = rest
-      .replace(/HT\s*\[.*?\]/gi, '')
-      .replace(/FT\s*\[.*?\]/gi, '')
-      .trim();
+    if (htM){ htH=htM[1]; htA=htM[2]; }
+    if (ftM){ ftH=ftM[1]; ftA=ftM[2]; }
+    awayTeam = rest.replace(/HT\s*\[.*?\]/gi,'').replace(/FT\s*\[.*?\]/gi,'').trim();
   }
 
-  // ── line1: bisa berisi "(Label) pick @odds @opening" ──
-  var l1 = line1.trim();
-  var isLive = /@Live/i.test(l1);
-  var is1H   = /first\s*half|1st\s*half|\b1H\b/i.test(l1);
+  var label = labelLine.replace(/[()]/g,'').trim().toLowerCase();
+  var is1H   = /first.?half|1st.?half/i.test(label) || /first.?half/i.test(pickLine);
+  var isOU   = /over.?under|under.?over/i.test(label);
+  var isOE   = /odd.?even|even.?odd/i.test(label);
+  var is1X2  = /1x2/i.test(label);
 
-  // ekstrak label tipe dari dalam kurung jika ada: "(First Half Odd/Even)"
-  var labelMatch = l1.match(/\(([^)]+)\)/);
-  var labelStr   = labelMatch ? labelMatch[1] : '';
-  var isOEbet    = /odd.*even|even.*odd/i.test(labelStr) || /^(odd|even)$/i.test(l1.split('@')[0].trim());
-  var is1X2bet   = /1x2/i.test(labelStr);
-  var isHDPbet   = /handicap/i.test(labelStr);
-  var isOUbet    = /over.*under|under.*over/i.test(labelStr);
+  var isLive = /@Live/i.test(pickLine);
+  var cleanPL = pickLine.replace(/@Live/gi,'').replace(/\s+/g,' ').trim();
 
-  // buang label kurung dari l1 untuk parsing pick+odds
-  var cleanL1 = l1.replace(/\([^)]*\)/g, '').replace(/@Live/gi, '').replace(/\s+/g, ' ').trim();
-  // buang kata-kata info yang mungkin ikut tergabung (misal "1x2", "Handicap", "First Half Over/Under" dll)
-  cleanL1 = cleanL1.replace(/\b(first\s*half|1st\s*half|over\/under|odd\/even|handicap|1x2)\b/gi, '').replace(/\s+/g, ' ').trim();
-  var firstLine = cleanL1.split('\n')[0].trim();
-  var parts = firstLine.split('@');
-  var pickHdpPart = parts[0].trim();
-  var betOdds = parts[1] ? parseFloat(parts[1].trim()) : 0;
-  // opening score: bagian @X-Y setelah odds (misal @0-1 = live score saat bet dipasang)
-  var openRaw = parts[2] ? parts[2].trim() : '0-0';
-  var openM   = openRaw.match(/(\d+)[:\-](\d+)/);
-  var openH   = openM ? parseInt(openM[1], 10) : 0;
-  var openA   = openM ? parseInt(openM[2], 10) : 0;
-  var hasLiveOffset = isLive && (openH !== 0 || openA !== 0);
+  var parts = cleanPL.split('@').map(function(p){ return p.trim(); });
+  var pickHdpRaw = parts[0].trim();
+  var betOdds    = parts[1] ? parseFloat(parts[1]) : 0;
+  var openRaw    = parts[2] ? parts[2] : '0-0';
+  var openM      = openRaw.match(/(\d+)[:\-](\d+)/);
+  var openH      = openM ? parseInt(openM[1],10) : 0;
+  var openA      = openM ? parseInt(openM[2],10) : 0;
 
-  var type = 'HDP', pick = '', side = 'home', betValue = 0, ouPick = 'OVER';
+  var hasLiveOffset = isLive && (openH!==0||openA!==0);
 
-  // Odd/Even check
-  var oeM = /^(odd|even)$/i.exec(pickHdpPart);
-  if (oeM || isOEbet) {
-    type   = 'OE';
-    pick   = oeM ? oeM[1].toUpperCase() : pickHdpPart.toUpperCase();
-    ouPick = pick; // reuse ouPick field for ODD/EVEN
-  }
-  // OU check: starts with "over X" or "under X"
-  else if (/^(over|under)\s+[\d.]+/i.test(pickHdpPart) || isOUbet) {
-    var ouM = /^(over|under)\s+([\d.]+)/i.exec(pickHdpPart);
-    type     = 'OU';
-    ouPick   = ouM ? ouM[1].toUpperCase() : 'OVER';
-    pick     = ouPick;
+  var type='HDP', pick='', side='home', betValue=0, ouPick='OVER';
+
+  if (isOE) {
+    type = 'OE';
+    var oeM = /^(odd|even)$/i.exec(pickHdpRaw);
+    pick = oeM ? oeM[1].toUpperCase() : pickHdpRaw.toUpperCase();
+    ouPick = pick;
+  } else if (isOU) {
+    type = 'OU';
+    var ouM = /^(over|under)\s+([\d.]+)/i.exec(pickHdpRaw);
+    ouPick   = ouM ? ouM[1].toUpperCase() : (/over/i.test(pickHdpRaw)?'OVER':'UNDER');
     betValue = ouM ? parseFloat(ouM[2]) : 0;
-  }
-  // 1X2 check: pick is "draw" or team name with no numeric suffix, and label says 1x2
-  else if (is1X2bet || /^draw$/i.test(pickHdpPart)) {
+    pick = ouPick;
+  } else if (is1X2) {
     type = '1X2';
-    if (/^draw$/i.test(pickHdpPart)) {
-      pick = 'DRAW'; side = 'draw';
-    } else {
-      pick = pickHdpPart;
-      var norm2 = function(s){ return s.toLowerCase().replace(/[\s\-_]/g, ''); };
-      var pn2 = norm2(pick), an2 = norm2(awayTeam);
-      side = (pn2 === an2 || an2.indexOf(pn2) >= 0 || pn2.indexOf(an2) >= 0) ? 'away' : 'home';
+    if (/^draw$/i.test(pickHdpRaw)) { pick='DRAW'; side='draw'; }
+    else {
+      pick = pickHdpRaw;
+      side = sideDetect(pick, homeTeam, awayTeam);
     }
-  }
-  else {
-    // HDP: last token is numeric = handicap value
-    var tokens = pickHdpPart.split(/\s+/);
-    var lastTok = tokens[tokens.length - 1];
+  } else {
+    type = 'HDP';
+    var tokens = pickHdpRaw.split(/\s+/);
+    var lastTok = tokens[tokens.length-1];
     if (/^-?[\d.]+$/.test(lastTok)) {
       betValue = parseFloat(lastTok);
-      pick     = tokens.slice(0, tokens.length - 1).join(' ');
+      pick = tokens.slice(0,-1).join(' ');
     } else {
-      pick     = pickHdpPart;
+      pick = pickHdpRaw;
       betValue = 0;
     }
-    // jika label bilang 1x2 tapi pick bukan draw → 1X2
-    if (is1X2bet) {
-      type = '1X2';
-      var norm3 = function(s){ return s.toLowerCase().replace(/[\s\-_]/g, ''); };
-      var pn3 = norm3(pick), an3 = norm3(awayTeam);
-      side = (pn3 === an3 || an3.indexOf(pn3) >= 0 || pn3.indexOf(an3) >= 0) ? 'away' : 'home';
-      betValue = 0;
-    } else {
-      type = 'HDP';
-      var norm4 = function(s){ return s.toLowerCase().replace(/[\s\-_]/g, ''); };
-      var pn4 = norm4(pick), an4 = norm4(awayTeam);
-      side = (pn4 === an4 || an4.indexOf(pn4) >= 0 || pn4.indexOf(an4) >= 0) ? 'away' : 'home';
-    }
+    side = sideDetect(pick, homeTeam, awayTeam);
   }
 
-  var isEsport = /^e-/i.test(homeTeam) || /^e-/i.test(awayTeam) || /^e-/i.test(pick);
+  var isEsport = /^e-/i.test(homeTeam)||/^e-/i.test(awayTeam)||/^e-/i.test(pick);
 
   return {
-    type: type, pick: pick, side: side, betValue: betValue,
-    ouPick: ouPick, betOdds: betOdds,
-    homeTeam: homeTeam, awayTeam: awayTeam,
-    htH: htH, htA: htA, ftH: ftH, ftA: ftA,
-    isLive: isLive, isEsport: isEsport, is1H: is1H,
-    openH: openH, openA: openA, hasLiveOffset: hasLiveOffset,
-    htHN: htH !== '' ? parseInt(htH, 10) : null,
-    htAN: htA !== '' ? parseInt(htA, 10) : null,
-    ftHN: ftH !== '' ? parseInt(ftH, 10) : null,
-    ftAN: ftA !== '' ? parseInt(ftA, 10) : null
+    type,pick,side,betValue,ouPick,betOdds,
+    homeTeam,awayTeam,
+    htH,htA,ftH,ftA,
+    isLive,isEsport,is1H,
+    openH,openA,hasLiveOffset,
+    htHN: htH!==''?parseInt(htH,10):null,
+    htAN: htA!==''?parseInt(htA,10):null,
+    ftHN: ftH!==''?parseInt(ftH,10):null,
+    ftAN: ftA!==''?parseInt(ftA,10):null
   };
+}
+
+function norm(s){ return s.toLowerCase().replace(/[\s\-_]/g,''); }
+function sideDetect(pickStr, home, away) {
+  var p=norm(pickStr), h=norm(home), a=norm(away);
+  if (p===a||a.indexOf(p)>=0||p.indexOf(a)>=0) return 'away';
+  return 'home';
+}
+
+// ── DEDUPLIKASI ──
+function dedupMatches(matches) {
+  var seen = {};
+  return matches.map(function(m) {
+    var key = [norm(m.homeTeam),norm(m.awayTeam),m.betOdds,m.betValue,m.is1H?'1h':'ft'].join('|');
+    if (seen[key]) { m._dup = true; }
+    else { seen[key]=true; m._dup=false; }
+    return m;
+  });
 }
 
 // ── CALC STATUS ──
 function calcStatus(m) {
   var h, a;
   if (m.is1H) {
-    if (m.htHN === null || m.htAN === null) return '—';
-    h = m.htHN; a = m.htAN;
+    if (m.htHN===null||m.htAN===null) return '—';
+    h=m.htHN; a=m.htAN;
   } else {
-    if (m.ftHN === null || m.ftAN === null) return '—';
-    h = m.ftHN; a = m.ftAN;
+    if (m.ftHN===null||m.ftAN===null) return '—';
+    h=m.ftHN; a=m.ftAN;
   }
-  // Live bet dengan opening score bukan 0-0: hitung dari gol setelah bet masuk
-  if (m.hasLiveOffset) {
-    h = h - m.openH;
-    a = a - m.openA;
-  }
-  if (m.type === 'OU') {
-    var res = h + a - m.betValue;
-    if (m.ouPick === 'UNDER') res = -res;
+  if (m.hasLiveOffset) { h=h-m.openH; a=a-m.openA; }
+
+  if (m.type==='OU') {
+    var res=h+a-m.betValue;
+    if (m.ouPick==='UNDER') res=-res;
     return hdpThreshold(res);
   }
-  if (m.type === 'HDP') {
-    var diff = m.side === 'away' ? a - h : h - a;
-    var res2 = m.betValue < 0 ? diff - Math.abs(m.betValue) : diff + m.betValue;
+  if (m.type==='HDP') {
+    var diff = m.side==='away'?a-h:h-a;
+    var res2 = m.betValue<0 ? diff-Math.abs(m.betValue) : diff+m.betValue;
     return hdpThreshold(res2);
   }
-  if (m.type === 'OE') {
-    var total = h + a;
-    var actual = total % 2 !== 0 ? 'ODD' : 'EVEN';
-    return actual === m.ouPick ? 'WIN' : 'LOSE';
+  if (m.type==='OE') {
+    var total=h+a;
+    return (total%2!==0?'ODD':'EVEN')===m.ouPick?'WIN':'LOSE';
   }
-  if (m.type === '1X2') {
-    if (m.side === 'draw') return (h === a) ? 'WIN' : 'LOSE';
-    var winner = h > a ? 'home' : h < a ? 'away' : 'draw';
-    return winner === m.side ? 'WIN' : 'LOSE';
+  if (m.type==='1X2') {
+    if (m.side==='draw') return h===a?'WIN':'LOSE';
+    var winner=h>a?'home':h<a?'away':'draw';
+    return winner===m.side?'WIN':'LOSE';
   }
   return '—';
 }
 
 // ── BUILD EXPLANATION ──
-function buildExplanation(m, stat) {
-  var h = m.is1H ? (m.htHN || 0) : (m.ftHN || 0);
-  var a = m.is1H ? (m.htAN || 0) : (m.ftAN || 0);
-  // Live bet: kurangi opening score
-  if (m.hasLiveOffset) { h = h - m.openH; a = a - m.openA; }
-  var skorLabel = m.is1H ? 'HT' : 'FT';
-  var betSteps = [];
+function buildExplanation(m,stat) {
+  var h = m.is1H?(m.htHN||0):(m.ftHN||0);
+  var a = m.is1H?(m.htAN||0):(m.ftAN||0);
+  if (m.hasLiveOffset){ h=h-m.openH; a=a-m.openA; }
+  var skorLabel = m.is1H?'HT':'FT';
+  var isNeg = m.betOdds < 0;
+  var abs_odds = Math.abs(m.betOdds);
+  var steps=[];
 
-  if (m.type === 'HDP') {
-    var diff = m.side === 'away' ? a - h : h - a;
-    var abs  = Math.abs(m.betValue);
-    var res  = m.betValue < 0 ? diff - abs : diff + m.betValue;
-    var sL   = m.side === 'home' ? 'Home' : 'Away';
-    var oL   = m.side === 'home' ? 'Away' : 'Home';
-    var myH  = m.side === 'home' ? h : a;
-    var myA  = m.side === 'home' ? a : h;
-    betSteps.push('<span class="lbl">Pick & Handicap</span>' + sL + ' ' + (m.betValue >= 0 ? '+' : '') + m.betValue);
-    if (m.hasLiveOffset) {
-      betSteps.push('<span class="lbl">Live Skor Saat Bet</span>Home <span class="hi">' + m.openH + '</span> – Away <span class="hi">' + m.openA + '</span>');
-      betSteps.push('<span class="lbl">Skor ' + skorLabel + ' (total)</span>' + (m.ftHN||0) + ' – ' + (m.ftAN||0));
-      betSteps.push('<span class="lbl">Gol Setelah Bet (' + sL + ' – ' + oL + ')</span>' + myH + ' – ' + myA + ' <span style="color:var(--muted);font-size:10px">(FT minus live offset)</span>');
+  // Tambah info odds system dengan nominal nyata
+  var stake = getNilai();
+  var actualSt = actualStakeFn(stake, m.betOdds);
+  var fmtStake  = 'Rp '+fmt(stake);
+  var fmtActual = 'Rp '+fmt(actualSt);
+  var fmtWinFull, fmtWinHalf, fmtLoseFull, fmtLoseHalf;
+  var oddsInfo;
+
+  if (isNeg) {
+    fmtWinFull  = '+Rp '+fmt(stake);
+    fmtWinHalf  = '+Rp '+fmt(stake/2);
+    fmtLoseFull = '-Rp '+fmt(actualSt);
+    fmtLoseHalf = '-Rp '+fmt(stake/2);
+    oddsInfo =
+      // Baris 1 — formula dengan nominal inline
+      '<span class="lbl">Sistem Odds</span>'
+      +'Odds <span class="c-orange">MINUS ('+m.betOdds+')</span> &rarr; '
+      +'Modal ditarik <span class="hi">'+fmtActual+'</span> '
+      +'= Bettingan <span class="hi">'+fmtStake+'</span> &times; '+abs_odds+' &nbsp;|&nbsp; '
+      +'Menang <span class="c-green">'+fmtWinFull+'</span> '
+      +'= +Bettingan &nbsp;|&nbsp; '
+      +'Kalah <span class="c-red">'+fmtLoseFull+'</span> '
+      +'= &minus;Modal ditarik'
+      // Baris 2 — ringkasan skenario
+      +'<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07);font-size:10px;line-height:2">'
+      +'<span style="color:var(--muted)">Bettingan</span> <span class="hi">'+fmtStake+'</span> '
+      +'<span style="color:var(--muted)">&rarr; ditarik</span> <span class="c-orange">'+fmtActual+'</span><br>'
+      +'<span class="c-green" style="font-weight:700">WIN</span> <span class="c-green">'+fmtWinFull+'</span>'
+      +'&ensp;<span style="color:var(--border2)">|</span>&ensp;'
+      +'<span class="c-green" style="font-weight:700">WIN½</span> <span class="c-green">'+fmtWinHalf+'</span>'
+      +'&ensp;<span style="color:var(--border2)">|</span>&ensp;'
+      +'<span class="c-red" style="font-weight:700">LOSE½</span> <span class="c-red">'+fmtLoseHalf+'</span>'
+      +'&ensp;<span style="color:var(--border2)">|</span>&ensp;'
+      +'<span class="c-red" style="font-weight:700">LOSE</span> <span class="c-red">'+fmtLoseFull+'</span>'
+      +'</div>';
+  } else {
+    var profitFull = stake*(m.betOdds-1);
+    var profitHalf = profitFull/2;
+    fmtWinFull  = '+Rp '+fmt(profitFull);
+    fmtWinHalf  = '+Rp '+fmt(profitHalf);
+    fmtLoseFull = '-Rp '+fmt(stake);
+    fmtLoseHalf = '-Rp '+fmt(stake/2);
+    oddsInfo =
+      // Baris 1 — formula dengan nominal inline
+      '<span class="lbl">Sistem Odds</span>'
+      +'Odds <span class="c-green">PLUS (+'+m.betOdds+')</span> &rarr; '
+      +'Modal ditarik <span class="hi">'+fmtActual+'</span> '
+      +'= Bettingan <span class="hi">'+fmtStake+'</span> &nbsp;|&nbsp; '
+      +'Menang <span class="c-green">'+fmtWinFull+'</span> '
+      +'= Bettingan <span class="hi">'+fmtStake+'</span> &times; ('+((m.betOdds-1).toFixed(3))+')'
+      // Baris 2 — ringkasan skenario
+      +'<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,.07);font-size:10px;line-height:2">'
+      +'<span style="color:var(--muted)">Bettingan</span> <span class="hi">'+fmtStake+'</span> '
+      +'<span style="color:var(--muted)">&rarr; ditarik</span> <span class="hi">'+fmtActual+'</span><br>'
+      +'<span class="c-green" style="font-weight:700">WIN</span> <span class="c-green">'+fmtWinFull+'</span>'
+      +'&ensp;<span style="color:var(--border2)">|</span>&ensp;'
+      +'<span class="c-green" style="font-weight:700">WIN½</span> <span class="c-green">'+fmtWinHalf+'</span>'
+      +'&ensp;<span style="color:var(--border2)">|</span>&ensp;'
+      +'<span class="c-red" style="font-weight:700">LOSE½</span> <span class="c-red">'+fmtLoseHalf+'</span>'
+      +'&ensp;<span style="color:var(--border2)">|</span>&ensp;'
+      +'<span class="c-red" style="font-weight:700">LOSE</span> <span class="c-red">'+fmtLoseFull+'</span>'
+      +'</div>';
+  }
+  steps.push(oddsInfo);
+
+  if (m.type==='HDP') {
+    var sL=m.side==='home'?'Home':'Away', oL=m.side==='home'?'Away':'Home';
+    var myH=m.side==='home'?h:a, myA=m.side==='home'?a:h;
+    var diff=myH-myA;
+    var abs=Math.abs(m.betValue);
+    var res=m.betValue<0?diff-abs:diff+m.betValue;
+    steps.push('<span class="lbl">Pick & Handicap</span>'+sL+' '+(m.betValue>=0?'+':'')+m.betValue);
+    if (m.hasLiveOffset){
+      steps.push('<span class="lbl">Live Skor Saat Bet</span>Home <span class="hi">'+m.openH+'</span> – Away <span class="hi">'+m.openA+'</span>');
+      steps.push('<span class="lbl">Gol Setelah Bet ('+sL+' – '+oL+')</span>'+myH+' – '+myA);
     } else {
-      betSteps.push('<span class="lbl">Skor ' + skorLabel + '</span>' + sL + ' <span class="hi">' + myH + '</span> vs ' + oL + ' <span class="hi">' + myA + '</span>');
+      steps.push('<span class="lbl">Skor '+skorLabel+'</span>'+sL+' <span class="hi">'+myH+'</span> vs '+oL+' <span class="hi">'+myA+'</span>');
     }
-    betSteps.push('<span class="lbl">Selisih (' + sL + ' - ' + oL + ')</span>' + myH + ' - ' + myA + ' = <span class="hi">' + diff + '</span>');
-    betSteps.push('<span class="lbl">Setelah voor</span>' + diff + (m.betValue < 0 ? ' - ' + abs : ' + ' + m.betValue) + ' = <span class="hi">' + res + '</span>');
-    betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res));
+    steps.push('<span class="lbl">Selisih</span>'+myH+' – '+myA+' = <span class="hi">'+diff+'</span>');
+    steps.push('<span class="lbl">Setelah voor</span>'+diff+(m.betValue<0?' – '+abs:' + '+m.betValue)+' = <span class="hi">'+res+'</span>');
+    steps.push('<span class="lbl">Threshold</span>'+threshExp(res));
   }
-
-  if (m.type === 'OU') {
-    var total = h + a;
-    var res3  = total - m.betValue;
-    if (m.ouPick === 'UNDER') res3 = -res3;
-    betSteps.push('<span class="lbl">Bet</span>' + m.ouPick + ' <span class="hi">' + m.betValue + '</span>');
-    betSteps.push('<span class="lbl">Total Gol ' + skorLabel + '</span>' + h + ' + ' + a + ' = <span class="hi">' + total + '</span>');
-    betSteps.push('<span class="lbl">Selisih vs batas</span>' + Math.abs(total - m.betValue) + ' gol ' + (total >= m.betValue ? 'lebih' : 'kurang'));
-    betSteps.push('<span class="lbl">Threshold</span>' + threshExp(res3));
+  if (m.type==='OU') {
+    var total=h+a, res3=total-m.betValue;
+    if (m.ouPick==='UNDER') res3=-res3;
+    steps.push('<span class="lbl">Bet</span>'+m.ouPick+' <span class="hi">'+m.betValue+'</span>');
+    steps.push('<span class="lbl">Total Gol '+skorLabel+'</span>'+h+' + '+a+' = <span class="hi">'+total+'</span>');
+    steps.push('<span class="lbl">Threshold</span>'+threshExp(res3));
   }
-
-  if (m.type === 'OE') {
-    var total2 = h + a;
-    var actual2 = total2 % 2 !== 0 ? 'ODD' : 'EVEN';
-    betSteps.push('<span class="lbl">Bet</span>Odd/Even → <span class="hi">' + m.ouPick + '</span>');
-    betSteps.push('<span class="lbl">Total Gol ' + skorLabel + '</span>' + h + ' + ' + a + ' = <span class="hi">' + total2 + '</span>');
-    betSteps.push('<span class="lbl">Paritas</span>' + total2 + ' → <span class="hi">' + actual2 + '</span>');
-    betSteps.push('<span class="lbl">Evaluasi</span>Bet <span class="hi">' + m.ouPick + '</span>, hasil <span class="hi">' + actual2 + '</span> → ' + (actual2 === m.ouPick ? '<span class="c-green">WIN</span>' : '<span class="c-red">LOSE</span>'));
+  if (m.type==='OE') {
+    var total2=h+a, actual2=total2%2!==0?'ODD':'EVEN';
+    steps.push('<span class="lbl">Total Gol</span>'+h+'+'+a+' = <span class="hi">'+total2+'</span> → <span class="hi">'+actual2+'</span>');
+    steps.push('<span class="lbl">Evaluasi</span>Bet <span class="hi">'+m.ouPick+'</span> → '+(actual2===m.ouPick?'<span class="c-green">WIN</span>':'<span class="c-red">LOSE</span>'));
   }
-
-  if (m.type === '1X2') {
-    var winner3 = h > a ? 'HOME' : h < a ? 'AWAY' : 'DRAW';
-    var betSide3 = m.side === 'draw' ? 'DRAW' : m.side.toUpperCase();
-    betSteps.push('<span class="lbl">Bet</span>1X2 → <span class="hi">' + (m.pick || betSide3) + '</span>');
-    betSteps.push('<span class="lbl">Skor ' + skorLabel + '</span>' + h + ' – ' + a);
-    betSteps.push('<span class="lbl">Hasil</span><span class="hi">' + winner3 + '</span>');
-    betSteps.push('<span class="lbl">Evaluasi</span>Bet <span class="hi">' + betSide3 + '</span>, terjadi <span class="hi">' + winner3 + '</span> → ' + (winner3 === betSide3 ? '<span class="c-green">WIN</span>' : '<span class="c-red">LOSE</span>'));
-  }
-
-  function rs(arr, bc) {
-    return arr.map(function(s){
-      return '<div class="calc-step" style="border-left:3px solid ' + bc + '">' + s + '</div>';
-    }).join('');
+  if (m.type==='1X2') {
+    var winner3=h>a?'HOME':h<a?'AWAY':'DRAW';
+    var betSide3=m.side==='draw'?'DRAW':m.side.toUpperCase();
+    steps.push('<span class="lbl">Skor '+skorLabel+'</span>'+h+' – '+a+' → <span class="hi">'+winner3+'</span>');
+    steps.push('<span class="lbl">Evaluasi</span>Bet <span class="hi">'+betSide3+'</span> → '+(winner3===betSide3?'<span class="c-green">WIN</span>':'<span class="c-red">LOSE</span>'));
   }
 
   return '<div>'
-    + '<div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2a3148;margin-bottom:6px">Analisa Bet</div>'
-    + rs(betSteps, '#1e40af')
-    + '</div>';
+    +'<div style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2a3148;margin-bottom:6px">Analisa Bet</div>'
+    +steps.map(function(s){ return '<div class="calc-step" style="border-left:3px solid #1e40af">'+s+'</div>'; }).join('')
+    +'</div>';
 }
 
-// ── HELPERS ──
-function fmt(n) { return new Intl.NumberFormat('id-ID').format(Math.round(n / 10) * 10); }
+// ── FORMAT HELPERS ──
+function fmt(n){ return new Intl.NumberFormat('id-ID').format(Math.round(n/10)*10); }
 function formatBet(el) {
-  var pos = el.selectionStart, before = el.value.length;
-  var d = el.value.replace(/\D/g, '');
-  el.value = d ? new Intl.NumberFormat('id-ID').format(parseInt(d)) : '';
-  var diff = el.value.length - before;
-  el.setSelectionRange(pos + diff, pos + diff);
+  var pos=el.selectionStart, before=el.value.length;
+  var d=el.value.replace(/\D/g,'');
+  el.value=d?new Intl.NumberFormat('id-ID').format(parseInt(d)):'';
+  var diff=el.value.length-before;
+  el.setSelectionRange(pos+diff,pos+diff);
   refreshCalc();
 }
-function getNilai() {
-  var el = document.getElementById('nilaiBet');
-  return el ? parseFloat(el.value.replace(/\D/g, '')) || 0 : 0;
-}
+function getNilai(){ return parseFloat((document.getElementById('nilaiBet').value||'').replace(/\D/g,''))||0; }
 
-// ── SABA NEGATIVE ODDS PROFIT FORMULA ──
-// Terbukti dari data nyata:
-//   actual_stake = stake × |odds|
-//   WIN full  → profit = +stake
-//   WIN 1/2   → profit = +stake / 2
-//   DRAW      → profit = 0
-//   LOSE 1/2  → profit = -(actual_stake / 2)
-//   LOSE full → profit = -actual_stake
+// ══════════════════════════════════════════════════════════════
+//  FIX 1: calcPL() — P&L per bet (single match, bukan parlay)
 //
-// Odds positif (decimal ≥ 1):
-//   WIN full  → profit = stake × (odds - 1)
-//   WIN 1/2   → profit = stake × (odds - 1) / 2
-//   DRAW      → profit = 0
-//   LOSE 1/2  → profit = -stake / 2
-//   LOSE full → profit = -stake
-
-function calcProfit(stake, odds, stat) {
+//  ATURAN sportgg:
+//  Odds MINUS (misal -1.18):
+//    - Actual Stake = stake × |odds|  (provider tarik lebih besar)
+//    - WIN      → profit = +stake           (dapat balik stake saja)
+//    - WIN 1/2  → profit = +stake/2
+//    - DRAW     → profit = 0
+//    - LOSE 1/2 → profit = -stake/2         ← FIXED (sebelumnya -actualStake/2)
+//    - LOSE     → profit = -actualStake     (= -stake × |odds|)
+//
+//  Odds PLUS (misal +1.06):
+//    - Actual Stake = stake
+//    - WIN      → profit = stake × (odds-1)
+//    - WIN 1/2  → profit = stake × (odds-1) / 2
+//    - DRAW     → profit = 0
+//    - LOSE 1/2 → profit = -stake/2
+//    - LOSE     → profit = -stake
+// ══════════════════════════════════════════════════════════════
+function calcPL(stake, odds, stat) {
+  if (stat === '—') return null;
   var isNeg = odds < 0;
   var absOdds = Math.abs(odds);
   var actualStake = isNeg ? stake * absOdds : stake;
 
-  if (stat === 'WIN') {
-    return isNeg ? stake : stake * (odds - 1);
+  if (isNeg) {
+    // ODDS MINUS
+    if (stat === 'WIN')      return stake;
+    if (stat === 'WIN 1/2')  return stake / 2;
+    if (stat === 'DRAW')     return 0;
+    if (stat === 'LOSE 1/2') return -(stake / 2);          // ← FIXED
+    if (stat === 'LOSE')     return -actualStake;
+  } else {
+    // ODDS PLUS
+    if (stat === 'WIN')      return stake * (odds - 1);
+    if (stat === 'WIN 1/2')  return stake * (odds - 1) / 2;
+    if (stat === 'DRAW')     return 0;
+    if (stat === 'LOSE 1/2') return -(stake / 2);
+    if (stat === 'LOSE')     return -stake;
   }
-  if (stat === 'WIN 1/2') {
-    return isNeg ? stake / 2 : stake * (odds - 1) / 2;
-  }
-  if (stat === 'DRAW') {
-    return 0;
-  }
-  if (stat === 'LOSE 1/2') {
-    return isNeg ? -(actualStake / 2) : -(stake / 2);
-  }
-  if (stat === 'LOSE') {
-    return isNeg ? -actualStake : -stake;
-  }
-  return null; // pending
+  return null;
 }
 
-// ── PARLAY ODDS MULTIPLIER PER LEG ──
+// ══════════════════════════════════════════════════════════════
+//  FIX 2: oddsMultiplier() — untuk kalkulasi parlay
+//
+//  sportgg Parlay multiplier per leg:
+//  Odds MINUS (misal -1.18):
+//    - WIN      → × (1 + 1/|odds|)    misal -1.18 → 1 + 0.847 = 1.847
+//    - WIN 1/2  → × (1 + 1/|odds|/2) = 1 + 0.424 = 1.424
+//    - DRAW     → × 1.0 (void, odds tidak dihitung)
+//    - LOSE 1/2 → × 0.5
+//    - LOSE     → × 0.0
+//
+//  Odds PLUS (misal +1.06):
+//    - WIN      → × odds              misal 1.06
+//    - WIN 1/2  → × ((odds-1)/2 + 1) = 1.03
+//    - DRAW     → × 1.0
+//    - LOSE 1/2 → × 0.5
+//    - LOSE     → × 0.0
+// ══════════════════════════════════════════════════════════════
 function oddsMultiplier(odds, stat) {
-  var dec = toDecimal(odds);
-  if (stat === 'WIN')      return dec;
-  if (stat === 'WIN 1/2')  return ((dec - 1) / 2) + 1;
-  if (stat === 'DRAW')     return 1.0;
-  if (stat === 'LOSE 1/2') return 0.5;
-  if (stat === 'LOSE')     return 0.0;
+  var isNeg = odds < 0;
+  var absOdds = Math.abs(odds);
+
+  if (isNeg) {
+    // ODDS MINUS — FIXED
+    if (stat === 'WIN')      return 1 + (1 / absOdds);           // ← FIXED
+    if (stat === 'WIN 1/2')  return 1 + (1 / absOdds / 2);       // ← FIXED
+    if (stat === 'DRAW')     return 1.0;
+    if (stat === 'LOSE 1/2') return 0.5;
+    if (stat === 'LOSE')     return 0.0;
+  } else {
+    // ODDS PLUS
+    if (stat === 'WIN')      return odds;
+    if (stat === 'WIN 1/2')  return ((odds - 1) / 2) + 1;
+    if (stat === 'DRAW')     return 1.0;
+    if (stat === 'LOSE 1/2') return 0.5;
+    if (stat === 'LOSE')     return 0.0;
+  }
   return null; // pending
 }
 
-// ── REFRESH CALC — baca langsung dari _matches, bukan DOM ──
-function refreshCalc() {
-  var body = document.getElementById('parlayBody');
-  if (!body) return;
-  body.innerHTML = '';
-  if (!_matches || _matches.length === 0) return;
-
+// ── RENDER SUMMARY (P&L per match) ──
+function renderSummary() {
   var stake = getNilai();
-  var totalOdds = 1.0;
-  var totalOddsAllWin = 1.0;
-  var hasLose = false, hasPending = false;
-  var actualTotal = 0;
+  var actives = _matches.filter(function(m){ return !m._dup; });
 
-  _matches.forEach(function(m, i) {
-    var stat  = calcStatus(m);
-    var odds  = m.betOdds;
-    var isNeg = odds < 0;
-    var dec   = toDecimal(odds);
-    var name  = m.homeTeam + ' vs ' + m.awayTeam;
-    var isPending = (stat === '—');
+  var totalPL=0, totalActual=0;
+  var wins=0, halfw=0, draws=0, halfl=0, losses=0, pending=0;
 
-    actualTotal += isNeg ? stake * Math.abs(odds) : stake;
-
-    // Total odds (all WIN scenario)
-    totalOddsAllWin *= (odds !== 0 ? dec : 1);
-
-    // Running parlay multiplier
-    var mult = isPending ? null : oddsMultiplier(odds, stat);
-    if (isPending) {
-      hasPending = true;
-    } else {
-      totalOdds *= mult;
-      if (stat === 'LOSE' || stat === 'LOSE 1/2') hasLose = true;
-    }
-
-    var multStr   = isPending ? '?' : (mult !== null ? mult.toFixed(4) : '0.0000');
-    var multColor = isPending ? 'var(--muted)'
-      : (mult > 1 ? 'var(--green)' : mult === 1 ? 'var(--blue)' : mult > 0 ? 'var(--amber)' : 'var(--red)');
-    var pCls = isPending ? 'p-pending' : pillClass(stat);
-    var sTxt = isPending ? 'Pending' : stat;
-
-    var oddsDisp = isNeg
-      ? '<span style="color:var(--orange)">' + odds.toFixed(3) + '</span><span style="color:var(--muted);font-size:8px"> (neg)</span>'
-      : '<span style="color:var(--amber)">' + odds.toFixed(3) + '</span>';
-
-    body.innerHTML +=
-      '<tr style="border-bottom:1px solid var(--border);font-size:10px">'
-      + '<td style="padding:5px 4px 5px 0;width:22px"><div class="leg-num">' + (i+1) + '</div></td>'
-      + '<td style="padding:5px 6px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)">' + name + '</td>'
-      + '<td style="padding:5px 6px;text-align:center"><span class="status-pill ' + pCls + '" style="font-size:7px;padding:2px 5px">' + sTxt + '</span></td>'
-      + '<td style="padding:5px 6px;text-align:right;font-family:monospace;font-size:9px">' + oddsDisp + '</td>'
-      + '<td style="padding:5px 0 5px 6px;text-align:right;font-family:monospace;font-size:9px;font-weight:700;color:' + multColor + '">&times;' + multStr + '</td>'
-      + '</tr>';
+  var rows = actives.map(function(m) {
+    var stat=calcStatus(m);
+    var pl=calcPL(stake,m.betOdds,stat);
+    var act=actualStakeFn(stake,m.betOdds);
+    totalActual += act;
+    if (pl!==null) totalPL+=pl;
+    if (stat==='WIN')           wins++;
+    else if (stat==='WIN 1/2')  halfw++;
+    else if (stat==='DRAW')     draws++;
+    else if (stat==='LOSE 1/2') halfl++;
+    else if (stat==='LOSE')     losses++;
+    else pending++;
+    var plStr = pl===null?'—':(pl>=0?'+ Rp '+fmt(pl):'- Rp '+fmt(Math.abs(pl)));
+    var plColor= pl===null?'var(--muted)':pl>0?'var(--green)':pl<0?'var(--red)':'var(--muted)';
+    return {m,stat,pl,act,plStr,plColor};
   });
 
-  var totalReturn = stake * totalOdds;
-  var totalProfit = totalReturn - stake;
+  var html='';
+  html+='<div class="summary-grid">'
+    +'<div class="stat-card"><div class="stat-card-label">Total Bet</div><div class="stat-card-val" style="color:var(--amber)">'+(actives.length)+'</div><div class="stat-card-sub">match aktif</div></div>'
+    +'<div class="stat-card"><div class="stat-card-label">Win</div><div class="stat-card-val" style="color:var(--green)">'+(wins+halfw)+'</div><div class="stat-card-sub">'+wins+' full, '+halfw+' half</div></div>'
+    +'<div class="stat-card"><div class="stat-card-label">Lose</div><div class="stat-card-val" style="color:var(--red)">'+(losses+halfl)+'</div><div class="stat-card-sub">'+losses+' full, '+halfl+' half</div></div>'
+    +'<div class="stat-card"><div class="stat-card-label">Pending</div><div class="stat-card-val" style="color:var(--muted)">'+pending+'</div><div class="stat-card-sub">belum settle</div></div>'
+    +'</div>';
+  var profColor=totalPL>0?'var(--green)':totalPL<0?'var(--red)':'var(--muted)';
+  html+='<div class="profit-row">'
+    +'<div class="profit-item"><label>Total Actual Stake</label><span style="color:var(--text)">Rp '+fmt(totalActual)+'</span></div>'
+    +'<div class="profit-item"><label>Total Profit/Rugi</label><span style="color:'+profColor+'">'+(totalPL>=0?'+ ':'- ')+'Rp '+fmt(Math.abs(totalPL))+'</span></div>'
+    +'<div class="profit-item"><label>Net Return</label><span style="color:var(--text)">Rp '+fmt(totalActual+totalPL)+'</span></div>'
+    +'</div>';
+  html+='<div class="table-container"><table>'
+    +'<thead><tr><th>#</th><th>Match</th><th class="c">Pick</th><th class="c">Jenis</th><th class="c">Status</th><th class="c">Odds</th><th class="c">Actual Stake</th><th class="c">Profit/Rugi</th></tr></thead>'
+    +'<tbody>';
+  rows.forEach(function(r,i){
+    var m=r.m, stat=r.stat;
+    var isNeg=m.betOdds<0;
+    var pickLabel;
+    if (m.type==='OU') pickLabel=m.ouPick+' '+m.betValue;
+    else if (m.type==='OE') pickLabel=m.ouPick;
+    else if (m.type==='1X2') pickLabel=m.pick||m.side.toUpperCase();
+    else pickLabel=m.pick+' '+(m.betValue===0?'0':m.betValue>0?'+'+m.betValue:m.betValue);
 
-  var profEl  = document.getElementById('totalProfit');
-  var retEl   = document.getElementById('totalReturn');
-  var actEl   = document.getElementById('totalActual');
-  var oddsEl  = document.getElementById('totalOddsDisp');
-  var badge   = document.getElementById('finalBadge');
-  if (!profEl) return;
+    html+='<tr style="border-bottom:1px solid rgba(30,35,50,.8)">'
+      +'<td style="font-size:9px;color:var(--muted);font-family:monospace">'+(i+1)+'</td>'
+      +'<td><div style="font-size:11px;font-weight:700;color:var(--bright)">'+m.homeTeam+'<span style="color:var(--amber);margin:0 4px;font-size:9px">vs</span>'+m.awayTeam+'</div></td>'
+      +'<td class="c"><span class="pick-badge">'+pickLabel+'</span></td>'
+      +'<td class="c" style="font-size:9px;color:var(--muted)">'+(m.is1H?'1H ':'')+m.type+'</td>'
+      +'<td class="c"><span class="status-pill '+pillClass(stat)+'">'+stat+'</span></td>'
+      +'<td class="c" style="font-family:monospace;font-size:11px;color:'+(isNeg?'var(--orange)':'var(--amber)')+'">'+m.betOdds.toFixed(3)+'</td>'
+      +'<td class="c" style="font-family:monospace;font-size:10px;color:var(--muted)">Rp '+fmt(r.act)+'</td>'
+      +'<td class="c" style="font-family:monospace;font-size:11px;font-weight:700;color:'+r.plColor+'">'+r.plStr+'</td>'
+      +'</tr>';
+  });
+  html+='</tbody></table></div>';
+  document.getElementById('summaryContent').innerHTML = html;
+}
 
-  // Total odds display
-  if (oddsEl) {
-    if (hasPending) {
-      oddsEl.textContent = '...';
-      oddsEl.style.color = 'var(--muted)';
-    } else {
-      oddsEl.textContent = totalOddsAllWin.toFixed(3);
-      oddsEl.style.color = 'var(--amber)';
+// ── REFRESH CALC (parlay) ──
+function refreshCalc() {
+  var body=document.getElementById('parlayBody');
+  if(!body) return;
+  body.innerHTML='';
+  var actives=_matches.filter(function(m){ return !m._dup; });
+  if(!actives.length) return;
+
+  var stake=getNilai();
+  var totalMult=1.0;         // accumulate actual multiplier (considering status)
+  var totalOddsAllWin=1.0;   // hypothetical all-win for display
+  var hasLose=false, hasPending=false;
+
+  actives.forEach(function(m,i){
+    var stat=calcStatus(m);
+    var odds=m.betOdds;
+    var isNeg=odds<0;
+    var absOdds=Math.abs(odds);
+    var name=m.homeTeam+' vs '+m.awayTeam;
+    var isPending=(stat==='—');
+
+    // All-win hypothetical odds display
+    var winMult = isNeg ? (1 + 1/absOdds) : odds;
+    totalOddsAllWin *= winMult;
+
+    var mult = isPending ? null : oddsMultiplier(odds, stat);
+    if (isPending) { hasPending=true; }
+    else {
+      totalMult *= mult;
+      if (stat==='LOSE'||stat==='LOSE 1/2') hasLose=true;
     }
-  }
 
-  actEl.textContent = 'Rp ' + fmt(stake); // parlay: 1 stake saja
+    var multStr=isPending?'?':(mult!==null?mult.toFixed(4):'0.0000');
+    var multColor=isPending?'var(--muted)':mult>1?'var(--green)':mult===1?'var(--blue)':mult>0?'var(--amber)':'var(--red)';
+    var pCls=isPending?'p-pending':pillClass(stat);
+    var sTxt=isPending?'Pending':stat;
+    var oddsDisp=isNeg
+      ?'<span style="color:var(--orange)">'+odds.toFixed(3)+'</span>'
+      :'<span style="color:var(--amber)">'+odds.toFixed(3)+'</span>';
 
-  if (hasPending && totalOdds === 1.0) {
-    profEl.textContent = 'Pending...';
-    profEl.style.color = 'var(--muted)';
-    retEl.textContent  = '—';
-    badge.textContent  = 'RUNNING';
-    badge.style.cssText = 'background:var(--bg3);color:var(--muted);border:1px solid var(--border)';
-  } else if (hasLose && totalOdds === 0) {
-    profEl.textContent = '- Rp ' + fmt(stake);
-    profEl.style.color = 'var(--red)';
-    retEl.textContent  = 'Rp 0';
-    badge.textContent  = 'TICKET LOSE';
-    badge.style.cssText = 'background:var(--red-dim);color:var(--red);border:1px solid rgba(232,85,85,.25)';
-  } else if (totalProfit > 0) {
-    profEl.textContent = '+ Rp ' + fmt(totalProfit);
-    profEl.style.color = 'var(--green)';
-    retEl.textContent  = 'Rp ' + fmt(totalReturn);
-    badge.textContent  = hasPending ? 'RUNNING' : 'ALL WIN';
-    badge.style.cssText = 'background:var(--green-dim);color:var(--green);border:1px solid rgba(34,201,122,.25)';
-  } else if (totalProfit < 0) {
-    profEl.textContent = '- Rp ' + fmt(Math.abs(totalProfit));
-    profEl.style.color = 'var(--red)';
-    retEl.textContent  = 'Rp ' + fmt(Math.max(0, totalReturn));
-    badge.textContent  = 'PARTIAL LOSE';
-    badge.style.cssText = 'background:var(--red-dim);color:var(--red);border:1px solid rgba(232,85,85,.25)';
+    body.innerHTML+='<tr style="border-bottom:1px solid var(--border);font-size:10px">'
+      +'<td style="padding:5px 4px 5px 0;width:22px"><div class="leg-num">'+(i+1)+'</div></td>'
+      +'<td style="padding:5px 6px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)">'+name+'</td>'
+      +'<td style="padding:5px 6px;text-align:center"><span class="status-pill '+pCls+'" style="font-size:7px;padding:2px 5px">'+sTxt+'</span></td>'
+      +'<td style="padding:5px 6px;text-align:right;font-family:monospace;font-size:9px">'+oddsDisp+'</td>'
+      +'<td style="padding:5px 0 5px 6px;text-align:right;font-family:monospace;font-size:9px;font-weight:700;color:'+multColor+'">&times;'+multStr+'</td>'
+      +'</tr>';
+  });
+
+  var totalReturn = stake * totalMult;
+  var totalProfit = totalReturn - stake;
+  var profEl=document.getElementById('totalProfit');
+  var retEl=document.getElementById('totalReturn');
+  var actEl=document.getElementById('totalActual');
+  var oddsEl=document.getElementById('totalOddsDisp');
+  var badge=document.getElementById('finalBadge');
+  if(!profEl) return;
+
+  oddsEl.textContent = hasPending ? '...' : totalOddsAllWin.toFixed(3);
+  oddsEl.style.color = hasPending ? 'var(--muted)' : 'var(--amber)';
+  actEl.textContent  = 'Rp '+fmt(stake);
+  actEl.style.color  = 'var(--purple)';
+
+  if (hasPending && totalMult===1.0) {
+    profEl.textContent='Pending...'; profEl.style.color='var(--muted)';
+    retEl.textContent='—'; retEl.style.color='var(--muted)';
+    badge.textContent='RUNNING'; badge.style.cssText='background:var(--bg3);color:var(--muted);border:1px solid var(--border)';
+  } else if (hasLose && totalMult===0) {
+    profEl.textContent='- Rp '+fmt(stake); profEl.style.color='var(--red)';
+    retEl.textContent='Rp 0'; retEl.style.color='var(--red)';
+    badge.textContent='TICKET LOSE'; badge.style.cssText='background:var(--red-dim);color:var(--red);border:1px solid rgba(232,85,85,.25)';
+  } else if (totalProfit>0) {
+    profEl.textContent='+ Rp '+fmt(totalProfit); profEl.style.color='var(--green)';
+    retEl.textContent='Rp '+fmt(totalReturn); retEl.style.color='var(--blue)';
+    badge.textContent=hasPending?'RUNNING':'ALL WIN'; badge.style.cssText='background:var(--green-dim);color:var(--green);border:1px solid rgba(34,201,122,.25)';
+  } else if (totalProfit<0) {
+    profEl.textContent='- Rp '+fmt(Math.abs(totalProfit)); profEl.style.color='var(--red)';
+    retEl.textContent='Rp '+fmt(Math.max(0,totalReturn)); retEl.style.color='var(--orange)';
+    badge.textContent='PARTIAL LOSE'; badge.style.cssText='background:var(--red-dim);color:var(--red);border:1px solid rgba(232,85,85,.25)';
   } else {
-    profEl.textContent = 'Rp 0';
-    profEl.style.color = 'var(--muted)';
-    retEl.textContent  = 'Rp ' + fmt(stake);
-    badge.textContent  = hasPending ? 'RUNNING' : 'DRAW / VOID';
-    badge.style.cssText = 'background:var(--bg3);color:var(--muted);border:1px solid var(--border)';
+    profEl.textContent='Rp 0'; profEl.style.color='var(--muted)';
+    retEl.textContent='Rp '+fmt(stake); retEl.style.color='var(--blue)';
+    badge.textContent=hasPending?'RUNNING':'DRAW / VOID'; badge.style.cssText='background:var(--bg3);color:var(--muted);border:1px solid var(--border)';
   }
 }
 
 // ── RENDER TABLE ──
-var _matches = [];
-var _activeDetailRow = null;
+var _matches=[], _activeDetailRow=null;
 
-function renderTable() {
-  var list = document.getElementById('matchList');
-  list.innerHTML = '';
+function renderTable(){
+  var list=document.getElementById('matchList');
+  list.innerHTML='';
+  var no=0;
+  _matches.forEach(function(m,idx){
+    var stat=calcStatus(m);
+    var isNeg=m.betOdds<0;
+    var hasHT=m.htH!==''&&m.htA!=='';
+    var hasFT=m.ftH!==''&&m.ftA!=='';
 
-  _matches.forEach(function(m) {
-    var stat  = calcStatus(m);
-    var isNeg = m.betOdds < 0;
-    var dec   = toDecimal(m.betOdds);
-    var hasHT = m.htH !== '' && m.htA !== '';
-    var hasFT = m.ftH !== '' && m.ftA !== '';
+    var scoreCell='<td class="c"><div style="display:flex;flex-direction:column;gap:5px;align-items:center">'
+      +(m.hasLiveOffset?'<div class="score-wrap"><span class="score-period score-live">@BET</span><span class="score-val">'+m.openH+'</span><span class="score-sep">:</span><span class="score-val">'+m.openA+'</span></div>':'')
+      +(hasHT?'<div class="score-wrap"><span class="score-period score-ht">HT</span><span class="score-val">'+m.htH+'</span><span class="score-sep">:</span><span class="score-val">'+m.htA+'</span></div>':'')
+      +(hasFT?'<div class="score-wrap"><span class="score-period score-ft">FT</span><span class="score-val">'+m.ftH+'</span><span class="score-sep">:</span><span class="score-val">'+m.ftA+'</span></div>':'<span class="score-empty">—</span>')
+      +'</div></td>';
 
-    var scoreCell = '<td class="c"><div style="display:flex;flex-direction:column;gap:5px;align-items:center">'
-      + (m.hasLiveOffset ? '<div class="score-wrap"><span class="score-period" style="background:#2a1a00;color:#f07844;border:1px solid rgba(240,120,68,.3)">@BET</span><span class="score-val">' + m.openH + '</span><span class="score-sep">:</span><span class="score-val">' + m.openA + '</span></div>' : '')
-      + (hasHT ? '<div class="score-wrap"><span class="score-period score-ht">HT</span><span class="score-val">' + m.htH + '</span><span class="score-sep">:</span><span class="score-val">' + m.htA + '</span></div>' : '')
-      + (hasFT  ? '<div class="score-wrap"><span class="score-period score-ft">FT</span><span class="score-val">' + m.ftH + '</span><span class="score-sep">:</span><span class="score-val">' + m.ftA + '</span></div>'
-                : '<span class="score-empty">—</span>')
-      + '</div></td>';
+    // Tampilkan actual stake info di odds cell
+    var actStake = actualStakeFn(getNilai(), m.betOdds);
+    var oddsCell='<td class="c">'
+      +'<div class="'+(isNeg?'odds-neg':'odds-val')+'">'+m.betOdds.toFixed(3)+'</div>'
+      +(isNeg?'<div class="odds-dec" style="color:var(--orange)">actual ×'+Math.abs(m.betOdds).toFixed(2)+'</div>':'')
+      +'</td>';
 
-    var oddsCell = '<td class="c">'
-      + '<div class="' + (isNeg ? 'odds-neg' : 'odds-val') + '">' + m.betOdds.toFixed(3) + '</div>'
-      + (isNeg ? '<div class="odds-dec" style="color:var(--orange)">dec ' + dec.toFixed(3) + '</div>' : '')
-      + '</td>';
-
-    var b1H = m.is1H ? '<span class="badge b-1h" style="margin-right:4px">1H</span>' : '';
-    var ket = '';
-    if (m.type === 'OU') {
-      ket = m.ouPick === 'OVER'
-        ? b1H + 'Total gol <span style="color:var(--blue)">lebih dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>'
-        : b1H + 'Total gol <span style="color:var(--blue)">kurang dari</span> <b style="color:var(--amber)">' + m.betValue + '</b>';
-    } else if (m.type === 'OE') {
-      ket = b1H + 'Total gol <span style="color:var(--purple)">' + m.ouPick + '</span>';
-    } else if (m.type === '1X2') {
-      if (m.side === 'draw')
-        ket = b1H + 'Bet <span style="color:var(--amber)">DRAW</span>';
-      else
-        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> menang';
+    var b1H=m.is1H?'<span class="badge b-1h" style="margin-right:4px">1H</span>':'';
+    var ket='';
+    if (m.type==='OU') {
+      ket=m.ouPick==='OVER'
+        ?b1H+'Total gol <span style="color:var(--blue)">lebih dari</span> <b style="color:var(--amber)">'+m.betValue+'</b>'
+        :b1H+'Total gol <span style="color:var(--blue)">kurang dari</span> <b style="color:var(--amber)">'+m.betValue+'</b>';
+    } else if (m.type==='OE') {
+      ket=b1H+'Total gol <span style="color:var(--purple)">'+m.ouPick+'</span>';
+    } else if (m.type==='1X2') {
+      ket=m.side==='draw'?b1H+'Bet <span style="color:var(--amber)">DRAW</span>':b1H+'<span style="color:var(--green)">'+m.pick+'</span> menang';
     } else {
-      var abs = Math.abs(m.betValue);
-      if (m.betValue < 0)
-        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> harus unggul &gt; <b style="color:var(--amber)">' + abs + '</b> gol';
-      else if (m.betValue > 0)
-        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> menerima voor <b style="color:var(--amber)">' + abs + '</b> gol';
-      else
-        ket = b1H + '<span style="color:var(--green)">' + m.pick + '</span> bet <b style="color:var(--amber)">level</b>';
+      var abs=Math.abs(m.betValue);
+      if (m.betValue<0)  ket=b1H+'<span style="color:var(--green)">'+m.pick+'</span> unggul &gt; <b style="color:var(--amber)">'+abs+'</b> gol';
+      else if (m.betValue>0) ket=b1H+'<span style="color:var(--green)">'+m.pick+'</span> terima voor <b style="color:var(--amber)">'+abs+'</b>';
+      else ket=b1H+'<span style="color:var(--green)">'+m.pick+'</span> bet <b style="color:var(--amber)">level</b>';
     }
 
     var pickLabel;
-    if (m.type === 'OU')      pickLabel = m.ouPick + ' ' + m.betValue;
-    else if (m.type === 'OE') pickLabel = m.ouPick;
-    else if (m.type === '1X2') pickLabel = m.pick || m.side.toUpperCase();
-    else pickLabel = m.pick + ' ' + (m.betValue === 0 ? '0' : m.betValue > 0 ? '+' + m.betValue : m.betValue);
+    if (m.type==='OU') pickLabel=m.ouPick+' '+m.betValue;
+    else if (m.type==='OE') pickLabel=m.ouPick;
+    else if (m.type==='1X2') pickLabel=m.pick||m.side.toUpperCase();
+    else pickLabel=m.pick+' '+(m.betValue===0?'0':m.betValue>0?'+'+m.betValue:m.betValue);
 
-    var leagueLabel = m.isEsport ? 'E-SPORTS' : 'FOOTBALL';
+    if (!m._dup) no++;
+    var rowNo = m._dup ? '<span style="color:var(--muted);font-size:8px">DUP</span>' : '<span style="font-family:monospace;font-size:9px;color:var(--muted)">'+no+'</span>';
 
-    var tr = document.createElement('tr');
-    tr.className = 'match-row';
-    tr.innerHTML =
-      '<td>'
-      + '<div class="match-league">' + leagueLabel
-        + (m.isLive   ? '<span class="badge b-live" style="margin-left:5px">LIVE</span>'   : '')
-        + (m.isEsport ? '<span class="badge b-esport" style="margin-left:2px">E-SPORTS</span>' : '')
-      + '</div>'
-      + '<div class="match-teams">' + m.homeTeam + '<span class="match-vs">vs</span>' + m.awayTeam + '</div>'
-      + '</td>'
-      + '<td class="c"><span class="pick-badge">' + pickLabel + '</span></td>'
-      + '<td class="c" style="font-size:11px;color:#8a93b0;line-height:1.5">' + ket + '</td>'
-      + scoreCell
-      + oddsCell
-      + '<td class="c"><span class="status-pill ' + pillClass(stat) + '">' + stat + '</span></td>';
+    var tr=document.createElement('tr');
+    tr.className='match-row'+(m._dup?' dup-row':'');
+    tr.innerHTML='<td class="c">'+rowNo+'</td>'
+      +'<td>'
+      +'<div class="match-league">E-SPORTS'
+      +(m.isLive?'<span class="badge b-live" style="margin-left:5px">LIVE</span>':'')
+      +(m._dup?'<span class="badge b-dup" style="margin-left:3px">DUPLIKAT</span>':'')
+      +'</div>'
+      +'<div class="match-teams">'+m.homeTeam+'<span class="match-vs">vs</span>'+m.awayTeam+'</div>'
+      +'</td>'
+      +'<td class="c"><span class="pick-badge">'+pickLabel+'</span></td>'
+      +'<td class="c" style="font-size:11px;color:#8a93b0;line-height:1.5">'+ket+'</td>'
+      +scoreCell+oddsCell
+      +'<td class="c"><span class="status-pill '+pillClass(stat)+'">'+stat+'</span></td>';
 
-    (function(row, matchData, matchStat) {
-      row.onclick = function() { toggleDetail(row, matchData, matchStat); };
-    })(tr, m, stat);
+    (function(row,matchData,matchStat){
+      row.onclick=function(){ toggleDetail(row,matchData,matchStat); };
+    })(tr,m,stat);
 
-    var detailTr = document.createElement('tr');
-    detailTr.className = 'detail-row';
-    detailTr.innerHTML = '<td colspan="6" style="padding:0"><div class="detail-inner"><div class="detail-content"></div></div></td>';
-
+    var detailTr=document.createElement('tr');
+    detailTr.className='detail-row';
+    detailTr.innerHTML='<td colspan="7" style="padding:0"><div class="detail-inner"><div class="detail-content"></div></div></td>';
     list.appendChild(tr);
     list.appendChild(detailTr);
   });
 }
 
-// ── TOGGLE DETAIL ──
-function toggleDetail(el, m, stat) {
-  if (_activeDetailRow && _activeDetailRow !== el) {
+function toggleDetail(el,m,stat){
+  if (_activeDetailRow&&_activeDetailRow!==el){
     _activeDetailRow.classList.remove('active-row');
-    var prev = _activeDetailRow.nextElementSibling && _activeDetailRow.nextElementSibling.querySelector('.detail-inner');
-    if (prev) prev.classList.remove('open');
+    var prev=_activeDetailRow.nextElementSibling&&_activeDetailRow.nextElementSibling.querySelector('.detail-inner');
+    if(prev) prev.classList.remove('open');
   }
-  var detailDiv = el.nextElementSibling && el.nextElementSibling.querySelector('.detail-inner');
-  var dc        = el.nextElementSibling && el.nextElementSibling.querySelector('.detail-content');
-  if (!detailDiv || !dc) return;
-  var isOpen = detailDiv.classList.toggle('open');
-  el.classList.toggle('active-row', isOpen);
-  _activeDetailRow = isOpen ? el : null;
-  if (isOpen) {
-    dc.innerHTML = stat === '—'
-      ? '<div style="font-size:10px;color:var(--muted);font-family:\'IBM Plex Mono\',monospace;padding:4px 0">Isi skor dulu untuk melihat detail perhitungan.</div>'
-      : buildExplanation(m, stat);
+  var detailDiv=el.nextElementSibling&&el.nextElementSibling.querySelector('.detail-inner');
+  var dc=el.nextElementSibling&&el.nextElementSibling.querySelector('.detail-content');
+  if(!detailDiv||!dc) return;
+  var isOpen=detailDiv.classList.toggle('open');
+  el.classList.toggle('active-row',isOpen);
+  _activeDetailRow=isOpen?el:null;
+  if(isOpen){
+    dc.innerHTML=stat==='—'
+      ?'<div style="font-size:10px;color:var(--muted);font-family:\'IBM Plex Mono\',monospace;padding:4px 0">Isi skor dulu untuk melihat detail perhitungan.</div>'
+      :buildExplanation(m,stat);
   }
 }
 
 // ── PROCESS ──
-function processData() {
-  var raw = document.getElementById('rawInput').value;
-  if (!raw.trim()) { showToast('Paste bill dulu', true); return; }
-  _matches = parseLines(raw);
-  _activeDetailRow = null;
-  if (_matches.length === 0) { showToast('Tidak ada match terdeteksi', true); return; }
-  document.getElementById('placeholder').style.display = 'none';
-  document.getElementById('resultArea').style.display  = 'block';
-  document.getElementById('clearBtn').style.display    = 'block';
-  var mc = document.getElementById('matchCounter');
-  mc.style.display = 'flex';
-  document.getElementById('matchCountText').textContent = _matches.length + ' match';
+function processData(){
+  var raw=document.getElementById('rawInput').value;
+  if(!raw.trim()){ showToast('Paste bill dulu',true); return; }
+  var parsed=parseLines(raw);
+  _matches=dedupMatches(parsed);
+  _activeDetailRow=null;
+  if(!_matches.length){ showToast('Tidak ada match terdeteksi',true); return; }
+  var dups=_matches.filter(function(m){ return m._dup; }).length;
+  var actives=_matches.filter(function(m){ return !m._dup; }).length;
+  document.getElementById('placeholder').style.display='none';
+  document.getElementById('resultArea').style.display='block';
+  document.getElementById('clearBtn').style.display='block';
+  document.getElementById('tabBar').style.display='flex';
+  var mc=document.getElementById('matchCounter');
+  mc.style.display='flex';
+  document.getElementById('matchCountText').textContent=actives+' match';
+  var db=document.getElementById('dupBadge');
+  if(dups>0){ db.style.display='flex'; document.getElementById('dupText').textContent=dups+' duplikat'; }
+  else { db.style.display='none'; }
   renderTable();
-  document.getElementById('calcPanel').style.display = 'block';
+  document.getElementById('calcPanel').style.display='block';
   refreshCalc();
-  showToast(_matches.length + ' pertandingan berhasil diparse');
+  showToast(actives+' bet aktif'+(dups?' ('+dups+' duplikat difilter)':''));
 }
 
-// ── CLEAR ──
-function clearAll() {
-  document.getElementById('rawInput').value = '';
-  _matches = []; _activeDetailRow = null;
-  document.getElementById('placeholder').style.display  = 'flex';
-  document.getElementById('resultArea').style.display   = 'none';
-  document.getElementById('clearBtn').style.display     = 'none';
-  document.getElementById('matchCounter').style.display = 'none';
-  document.getElementById('matchList').innerHTML = '';
-  if (document.getElementById('parlayBody')) document.getElementById('parlayBody').innerHTML = '';
-  if (document.getElementById('calcPanel')) document.getElementById('calcPanel').style.display = 'none';
-  if (document.getElementById('totalProfit')) { document.getElementById('totalProfit').textContent = '—'; document.getElementById('totalProfit').style.color = ''; }
-  if (document.getElementById('totalReturn')) document.getElementById('totalReturn').textContent = '—';
-  if (document.getElementById('totalActual')) document.getElementById('totalActual').textContent = '—';
-  if (document.getElementById('finalBadge')) { document.getElementById('finalBadge').textContent = '—'; document.getElementById('finalBadge').style.cssText = ''; }
+function clearAll(){
+  document.getElementById('rawInput').value='';
+  _matches=[]; _activeDetailRow=null;
+  document.getElementById('placeholder').style.display='flex';
+  document.getElementById('resultArea').style.display='none';
+  document.getElementById('clearBtn').style.display='none';
+  document.getElementById('tabBar').style.display='none';
+  document.getElementById('matchCounter').style.display='none';
+  document.getElementById('dupBadge').style.display='none';
+  document.getElementById('matchList').innerHTML='';
+  document.getElementById('summaryContent').innerHTML='';
+  if(document.getElementById('parlayBody')) document.getElementById('parlayBody').innerHTML='';
+  if(document.getElementById('calcPanel')) document.getElementById('calcPanel').style.display='none';
   showToast('Bill dibersihkan');
 }
 
-// ── AUTO ANALYZE ──
-var _analyzeTimer = null;
-function autoAnalyze() {
+var _analyzeTimer=null;
+function autoAnalyze(){
   clearTimeout(_analyzeTimer);
-  _analyzeTimer = setTimeout(function() {
-    var raw = document.getElementById('rawInput').value.trim();
-    if (!raw) { clearAll(); return; }
+  _analyzeTimer=setTimeout(function(){
+    var raw=document.getElementById('rawInput').value.trim();
+    if(!raw){ clearAll(); return; }
     processData();
-  }, 500);
+  },500);
 }
-
 </script>
 </body>
 </html>

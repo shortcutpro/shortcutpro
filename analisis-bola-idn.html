@@ -451,7 +451,7 @@ function switchTab(name) {
   });
   document.getElementById('matchesTab').style.display  = name === 'matches'  ? 'block' : 'none';
   document.getElementById('summaryTab').style.display  = name === 'summary'  ? 'block' : 'none';
-  document.getElementById('calcPanel').style.display   = name === 'matches'  ? '' : 'none';
+  document.getElementById('calcPanel').style.display   = name === 'matches'  ? 'block' : 'none';
   if (name === 'summary') renderSummary();
 }
 

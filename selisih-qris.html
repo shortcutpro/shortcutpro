@@ -567,9 +567,11 @@
             </div>
             <div class="format-hint" id="qrisFormatHint">
                 <span class="col-label">Kolom yang dipakai:</span><br>
-                <span style="color:var(--blue);font-weight:600">Minera</span> → B = reference_no (KEY) &nbsp;|&nbsp; C = amount<br>
-                <span style="color:var(--gold);font-weight:600">VIP</span> &nbsp;&nbsp;&nbsp;→ B = Id Transaction Client (KEY) &nbsp;|&nbsp; G = amount<br>
-                Baris 1 = header (otomatis di-skip)
+                <span style="color:var(--blue);font-weight:600">Minera / Orion</span> → B = reference_no (KEY) &nbsp;|&nbsp; C = amount<br>
+                <span style="color:var(--gold);font-weight:600">VIP</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ B = Id Transaction Client (KEY) &nbsp;|&nbsp; G = amount<br>
+                <span style="color:var(--green);font-weight:600">XPay</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ J = PARTNER ID (KEY) &nbsp;|&nbsp; C = RECORD VALUE<br>
+                <span style="color:#c084fc;font-weight:600">P2MIH</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;→ D = Order ID (KEY) &nbsp;|&nbsp; F = amount<br>
+                Format auto-detect saat upload — baris 1 di-skip
             </div>
         </div>
 
@@ -686,14 +688,27 @@
 
 <script>
 // ─── State ───────────────────────────────────────────────────────────────────
-let adminRows  = [];
-let qrisRows   = [];
-let qrisAmtCol = 2; // auto-detected from header
+let adminRows       = [];
+let qrisRows        = [];
+let qrisKeyCol      = 1;     // auto-detected per format
+let qrisAmtCol      = 2;     // auto-detected per format
+let qrisStripDec    = false; // strip ",00" / ".00" decimal suffix (P2MIH)
+let qrisTypeDetected = '';   // 'minera' | 'vip' | 'xpay' | 'p2mih'
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function parseNum(v) {
     if (v == null) return 0;
     return parseInt(String(v).replace(/[^\d-]/g, ''), 10) || 0;
+}
+
+// Parse amount, strip trailing decimal part (,00 / .00) before converting
+function parseAmt(v) {
+    if (v == null) return 0;
+    let s = String(v).trim();
+    // Strip trailing decimal: "10000,00" → "10000", "100.000,00" → "100.000"
+    s = s.replace(/[,.]\d+$/, '');
+    // Remove remaining non-digit chars (thousand separators etc)
+    return parseInt(s.replace(/[^\d-]/g, ''), 10) || 0;
 }
 
 function fmt(n) {
@@ -716,16 +731,25 @@ function updateCompareBtn() {
 }
 
 // ─── Excel parser ─────────────────────────────────────────────────────────────
-function parseExcel(file, cb) {
+function parseExcel(file, rawMode, cb) {
     const reader = new FileReader();
     reader.onload = e => {
         try {
-            const wb = XLSX.read(e.target.result, { type: 'array' });
+            const wb = XLSX.read(e.target.result, { type: 'array', raw: rawMode });
             const ws = wb.Sheets[wb.SheetNames[0]];
-            const raw = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '' });
-            const header = raw[0] ? raw[0].map(h => String(h).toLowerCase().trim()) : [];
-            const data   = raw.slice(1).filter(r => r[0] && String(r[0]).trim() !== '');
-            cb(null, data, header);
+            const raw = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: rawMode });
+
+            // XPay: first cell of row0 contains 'mutasi' or 'xpay' → header at row1
+            const row0first = String(raw[0]?.[0] ?? '').toLowerCase();
+            const isXPay = row0first.includes('mutasi') || row0first.includes('xpay');
+
+            const headerRowIdx = isXPay ? 1 : 0;
+            const dataStartIdx = headerRowIdx + 1;
+
+            const header = (raw[headerRowIdx] || []).map(h => String(h).toLowerCase().trim());
+            const data   = raw.slice(dataStartIdx).filter(r => r[0] && String(r[0]).trim() !== '');
+
+            cb(null, data, header, isXPay);
         } catch(err) {
             cb(err);
         }
@@ -744,15 +768,47 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
 
     function loadFile(file) {
         if (!file) return;
-        parseExcel(file, (err, data, header) => {
+        // Admin: raw:true (numbers stay as integers)
+        // QRIS:  raw:false (keep comma-decimal values as strings e.g. "10000,00")
+        const rawMode = target === 'admin';
+        parseExcel(file, rawMode, (err, data, header, isXPay) => {
             if (err) { showToast('Gagal baca file: ' + file.name, 'err'); return; }
             if (target === 'admin') {
                 adminRows = data;
             } else {
-                qrisRows = data;
-                // Auto-detect amount column: find header named 'amount'
-                const amtIdx = header.findIndex(h => h === 'amount');
-                qrisAmtCol = amtIdx >= 0 ? amtIdx : 2; // fallback col C
+                qrisRows     = data;
+                qrisStripDec = false; // reset
+
+                if (isXPay) {
+                    // XPay: KEY=PARTNER ID (col J=9), AMT=RECORD VALUE (col C=2)
+                    const partnerIdx = header.findIndex(h => h === 'partner id');
+                    const recValIdx  = header.findIndex(h => h === 'record value');
+                    qrisKeyCol   = partnerIdx >= 0 ? partnerIdx : 9;
+                    qrisAmtCol   = recValIdx  >= 0 ? recValIdx  : 2;
+                    qrisStripDec = true;
+                    qrisTypeDetected = 'xpay';
+
+                } else if (header[3] && header[3].toLowerCase().includes('order id') ||
+                           header.some(h => h.includes('p2mih'))) {
+                    // P2MIH: KEY=col D (Order ID, idx 3), AMT=col F (Amount, idx 5), strip decimal
+                    const orderIdx = header.findIndex(h => h.includes('order id'));
+                    const amtIdx   = header.findIndex(h => h === 'amount' || h === 'nominal');
+                    qrisKeyCol   = orderIdx >= 0 ? orderIdx : 3;
+                    qrisAmtCol   = amtIdx   >= 0 ? amtIdx   : 5;
+                    qrisStripDec = true;
+                    qrisTypeDetected = 'p2mih';
+
+                } else {
+                    // Minera/Orion or VIP — key always col B (1)
+                    qrisKeyCol = 1;
+                    const amtIdx = header.findIndex(h => h === 'amount');
+                    qrisAmtCol = amtIdx >= 0 ? amtIdx : 2;
+                    // VIP has amount at col G (6+), Minera/Orion at col C (2)
+                    qrisTypeDetected = qrisAmtCol >= 6 ? 'vip' : 'minera';
+                }
+
+                const typeLabel = { xpay:'XPay', p2mih:'P2MIH', vip:'VIP', minera:'Minera / Orion' }[qrisTypeDetected] || '?';
+                showToast(`Terdeteksi format: ${typeLabel}`);
             }
             fname.textContent = file.name;
             frows.textContent = data.length + ' baris';
@@ -775,7 +831,7 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
     remove.addEventListener('click', e => {
         e.stopPropagation();
         if (target === 'admin') adminRows = [];
-        else { qrisRows = []; qrisAmtCol = 2; }
+        else { qrisRows = []; qrisKeyCol = 1; qrisAmtCol = 2; qrisStripDec = false; qrisTypeDetected = ''; }
         input.value = '';
         prev.classList.remove('show');
         updateCompareBtn();
@@ -789,8 +845,11 @@ setupUpload('fileQris',  'dropQris',  'previewQris',  'fnameQris',  'frowsQris',
 // ─── Compare ──────────────────────────────────────────────────────────────────
 document.getElementById('btnCompare').addEventListener('click', () => {
     // Build maps
-    // Admin:  col0=Akun Pemain(A)  col2=Jumlah Operator(C)  col4=No.Rek Pembayar(E) ← KEY
-    // QRIS:   col1=KEY(B),  amount=auto-detected column (Standard=C, VIP=G)
+    // Admin:      col0=Akun Pemain(A)  col2=Jumlah Operator(C)  col4=No.Rek Pembayar(E) ← KEY
+    // Minera/Orion: keyCol=1(B ref_no),     amtCol=2(C amount)
+    // VIP:          keyCol=1(B id_trx),     amtCol=6(G amount)
+    // XPay:         keyCol=9(J partner_id), amtCol=2(C record_value), strip decimal
+    // P2MIH:        keyCol=3(D order_id),   amtCol=5(F amount),       strip decimal
 
     const adminMap = new Map(); // noRek(E) → {akunPemain, nominal, noRek}
     adminRows.forEach(r => {
@@ -803,13 +862,13 @@ document.getElementById('btnCompare').addEventListener('click', () => {
         });
     });
 
-    const qrisMap = new Map(); // key(B) → {refNo, nominal}
+    const qrisMap = new Map(); // key → {refNo, nominal}
     qrisRows.forEach(r => {
-        const refNo = String(r[1] ?? '').trim();
+        const refNo = String(r[qrisKeyCol] ?? '').trim();
         if (!refNo) return;
         qrisMap.set(refNo, {
             refNo,
-            nominal: parseNum(r[qrisAmtCol])
+            nominal: parseAmt(r[qrisAmtCol])
         });
     });
 

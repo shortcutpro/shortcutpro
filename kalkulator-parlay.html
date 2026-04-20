@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Gunakan kalkulator parlay untuk menghitung hasil taruhan mix parlay Anda secara otomatis dan akurat.">
   <meta name="keywords" content="Kalkulator Parlay, Rumus Mix Parlay, Hitung Parlay, Mix Parlay Otomatis">
-  <!-- Bootstrap 5 CSS & JS (konsisten satu versi) -->
+
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css">
   <link rel="icon" type="image/x-icon" href="https://hokben84059.com/favicon.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -149,13 +149,36 @@
     .result-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(201, 162, 39, 0.4); }
     .result-card strong { color: var(--secondary-color); font-size: 1.15rem; }
 
-    /* Warna hasil akhir */
     .result-card.win { border-color: var(--win-color); box-shadow: 0 0 15px rgba(46,204,113,0.3); }
     .result-card.win strong { color: var(--win-color); }
     .result-card.lose { border-color: var(--lose-color); box-shadow: 0 0 15px rgba(231,76,60,0.3); }
     .result-card.lose strong { color: var(--lose-color); }
     .result-card.bust { border-color: #ff0000; box-shadow: 0 0 20px rgba(255,0,0,0.5); }
     .result-card.bust strong { color: #ff4444; }
+
+    /* ── Detail breakdown ── */
+    .breakdown-box {
+      background: rgba(201, 162, 39, 0.06);
+      border: 1px solid rgba(201, 162, 39, 0.2);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 12px;
+      font-size: 0.83rem;
+      color: rgba(240, 192, 64, 0.85);
+    }
+    .breakdown-box .brow {
+      display: flex;
+      justify-content: space-between;
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(201,162,39,0.1);
+    }
+    .breakdown-box .brow:last-child { border-bottom: none; }
+    .breakdown-box .brow .blabel { color: rgba(240,192,64,0.65); }
+    .breakdown-box .brow .bval   { color: #f0c040; font-weight: 600; }
+    .breakdown-box .brow.total-row { border-top: 1px solid rgba(201,162,39,0.3); margin-top: 4px; padding-top: 6px; }
+    .breakdown-box .brow.total-row .bval { font-size: 1rem; }
+    .breakdown-box .brow.profit-row .bval.plus  { color: var(--win-color); }
+    .breakdown-box .brow.profit-row .bval.minus { color: var(--lose-color); }
 
     .radio-label {
       display: inline-flex;
@@ -172,8 +195,6 @@
     }
 
     .radio-label:hover { background-color: rgba(201, 162, 39, 0.15); }
-
-    /* Highlight radio yang dipilih */
     .radio-label.win-full   { border-color: rgba(46,204,113,0.3); }
     .radio-label.win-half   { border-color: rgba(46,204,113,0.15); }
     .radio-label.lose-half  { border-color: rgba(231,76,60,0.2); }
@@ -208,16 +229,12 @@
       margin-right: 5px;
     }
 
-    /* Badge kalah full */
-    .badge-kalah-full {
-      background: rgba(231,76,60,0.25);
-      border: 1px solid rgba(231,76,60,0.5);
-      border-radius: 4px;
-      padding: 2px 8px;
-      font-size: 0.75rem;
-      color: #ff6b6b;
-      margin-left: 6px;
+    .odds-detail {
+      font-size: 0.78rem;
+      color: rgba(240,192,64,0.65);
+      margin-top: 4px;
     }
+    .odds-detail span.eff { color: #f0c040; font-weight: 600; }
 
     @media (max-width: 768px) {
       .vertical-divider {
@@ -237,7 +254,7 @@
 
     <hr>
     <div class="card mb-5 shadow-lg">
-      <div class="card-header">
+      <div class="card-header p-3">
 
         <!-- Toolbar -->
         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -270,7 +287,7 @@
           </div>
         </div>
 
-        <!-- Hasil -->
+        <!-- Hasil Ringkas -->
         <div class="d-flex align-items-end flex-wrap mt-4" style="gap:16px;">
           <div class="text-center">
             <label class="form-label d-block"><strong><i class="fas fa-percentage"></i> Total Odds</strong></label>
@@ -290,7 +307,28 @@
             </div>
           </div>
         </div>
-      </div>
+
+        <!-- Breakdown Detail -->
+        <div class="breakdown-box" v-if="!adaKalahFull">
+          <div class="brow">
+            <span class="blabel"><i class="fas fa-layer-group"></i> Total Odds</span>
+            <span class="bval">{{ computedOdds.toFixed(4) }}</span>
+          </div>
+          <div class="brow">
+            <span class="blabel"><i class="fas fa-money-bill-wave"></i> Nilai Bet</span>
+            <span class="bval">{{ formatRupiah(nilaibet) }}</span>
+          </div>
+          <div class="brow total-row">
+            <span class="blabel"><i class="fas fa-coins"></i> Hasil Akhir (Odds × Bet)</span>
+            <span class="bval">{{ formatRupiah(hasilAkhirRaw) }}</span>
+          </div>
+          <div class="brow profit-row">
+            <span class="blabel"><i class="fas fa-chart-line"></i> Profit / Loss (Hasil − Bet)</span>
+            <span class="bval" :class="profitLossClass">{{ profitLossDisplay }}</span>
+          </div>
+        </div>
+
+      </div><!-- /card-header -->
 
       <div class="card-body">
         <div
@@ -301,7 +339,7 @@
           <!-- Hapus -->
           <div class="col-auto vertical-divider pr-3">
             <label>&nbsp;</label>
-            <button type="button" class="btn btn-danger btn-block" @click="removeParlay(index)">
+            <button type="button" class="btn btn-danger" @click="removeParlay(index)">
               <i class="fas fa-trash"></i>
             </button>
           </div>
@@ -344,15 +382,31 @@
                 <i class="fas fa-skull-crossbones me-1" style="color:#e74c3c;font-size:0.75rem;"></i> Kalah Full
               </label>
             </div>
-            <div class="mt-2">
-              <small><i class="fas fa-info-circle"></i> Hasil Odds: {{ parlay.oddsx }}</small>
+            <!-- Penjelasan rumus per hasil -->
+            <div class="odds-detail mt-2">
+              <i class="fas fa-info-circle"></i>
+              <span v-if="parlay.hasil === '1'">
+                Menang Full → Odds Efektif = {{ parlay.odds }}
+              </span>
+              <span v-else-if="parlay.hasil === '0.5'">
+                Menang ½ → (({{ parlay.odds }} − 1) / 2) + 1 = <span class="eff">{{ parlay.oddsx.toFixed(4) }}</span>
+              </span>
+              <span v-else-if="parlay.hasil === '-0.5'">
+                Kalah ½ → Odds Efektif = <span class="eff">0.5</span>
+              </span>
+              <span v-else-if="parlay.hasil === '0'">
+                Seri → Odds Efektif = <span class="eff">1</span> (taruhan kembali)
+              </span>
+              <span v-else-if="parlay.hasil === '-1'">
+                <span style="color:#ff4444;"><i class="fas fa-skull-crossbones"></i> Kalah Full → Bet Hangus (Odds Efektif = 0)</span>
+              </span>
             </div>
           </div>
         </div>
 
         <hr class="my-4">
 
-        <!-- Collapse buttons - Bootstrap 5 attributes -->
+        <!-- Collapse Buttons -->
         <div class="mb-3">
           <button class="btn btn-dark me-2" type="button" data-bs-toggle="collapse" data-bs-target="#catatanCollapse">
             <i class="fas fa-sticky-note"></i> Catatan
@@ -364,26 +418,29 @@
 
         <div class="collapse show" id="catatanCollapse">
           <div class="p-3 rounded collapse-content small mb-2">
-            <strong><i class="fas fa-info-circle"></i> Catatan:</strong><br>
-            - Menang Full &nbsp;&nbsp;= Odds<br>
-            - Menang ½ &nbsp;&nbsp;&nbsp;&nbsp;= ((Odds − 1) / 2) + 1<br>
-            - Kalah ½ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 0.5<br>
-            - Seri &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 1<br>
-            - <strong style="color:#ff6b6b">Kalah Full &nbsp;&nbsp;= 0 (Bet Hangus)</strong>
+            <strong><i class="fas fa-info-circle"></i> Catatan Odds Efektif per Hasil:</strong><br>
+            - <strong>Menang Full</strong> &nbsp;&nbsp;&nbsp;= Odds asli<br>
+            - <strong>Menang ½</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= ((Odds − 1) / 2) + 1<br>
+            - <strong>Kalah ½</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 0.5<br>
+            - <strong>Seri</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 1 (taruhan kembali)<br>
+            - <strong style="color:#ff6b6b">Kalah Full</strong> &nbsp;&nbsp;= 0 → Seluruh bet hangus
           </div>
         </div>
 
         <div class="collapse show mt-2" id="rumusCollapse">
           <div class="p-3 rounded collapse-content small">
             <strong><i class="fas fa-calculator"></i> Rumus Mix Parlay:</strong><br>
-            <strong>Hasil Akhir</strong> = Perkalian Semua Odds × Jumlah Bet<br>
-            <strong>Profit/Loss</strong> = Hasil Akhir − Jumlah Bet<br>
-            <i>*Jika ada satu partai Kalah Full, seluruh bet hangus (hasil = 0).</i>
-            <br><i>(Hasil Perkalian Odds × Jumlah Bet) - Jumlah Bet</i></br>
-            <i>*Jika hasil minus, Anda kalah sebesar hasil tersebut. Jika plus, itu adalah keuntungan Anda.</i>
+            <strong>Total Odds</strong> = Perkalian semua Odds Efektif (tanpa pembulatan per langkah)<br>
+            <strong>Hasil Akhir</strong> = Total Odds × Nilai Bet<br>
+            <strong>Profit / Loss</strong> = Hasil Akhir − Nilai Bet<br>
+            <br>
+            <i>* Odds efektif tiap partai dikalikan langsung tanpa dibulatkan terlebih dahulu untuk menjaga presisi penuh.</i><br>
+            <i>* Jika ada satu partai Kalah Full, seluruh bet hangus (Hasil = 0).</i><br>
+            <i>* Hasil Akhir dibulatkan ke kelipatan 10 terdekat (standar platform).</i>
           </div>
         </div>
-      </div>
+
+      </div><!-- /card-body -->
     </div>
   </main>
 
@@ -396,6 +453,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.min.js"></script>
+
   <script>
     new Vue({
       el: '#app',
@@ -403,39 +461,65 @@
         nilaibet: 10000,
         parlays: []
       },
+
       created() {
         this.addNewParlay();
         this.addNewParlay();
         this.addNewParlay();
+        this.recalc();
       },
+
       computed: {
         totalbet() {
           return this.parlays.length;
         },
 
-        // Perkalian total odds efektif dari semua partai
+        /*
+         * ─── KUNCI PERBAIKAN PRESISI ───────────────────────────────────────────
+         * Odds efektif tiap partai disimpan sebagai float PENUH (tidak toFixed).
+         * Perkalian dilakukan langsung dari nilai raw tanpa intermediate rounding.
+         */
         computedOdds() {
-          return this.parlays.reduce((acc, p) => acc * (parseFloat(p.oddsx) || 1), 1);
+          return this.parlays.reduce((acc, p) => acc * p.oddsx, 1);
         },
 
-        // True jika ada minimal 1 partai Kalah Full
         adaKalahFull() {
           return this.parlays.some(p => p.hasil === '-1');
         },
 
-        // Hasil akhir = total odds × bet (termasuk modal kembali)
-        hasilAkhir() {
-          if (this.adaKalahFull) return 0;
-          return this.computedOdds * this.nilaibet;
+        // Odds tampilan 4 desimal — dipakai juga untuk hitung hasil agar konsisten
+        displayOdds() {
+          return parseFloat(this.computedOdds.toFixed(4));
         },
 
-        // Display hasil akhir dalam format Rupiah
+        // Hasil akhir = odds tampilan (4 desimal) × bet
+        hasilAkhirRaw() {
+          if (this.adaKalahFull) return 0;
+          return this.displayOdds * this.nilaibet;
+        },
+
+        hasilAkhir() {
+          return this.hasilAkhirRaw;
+        },
+
+        profitLoss() {
+          return this.hasilAkhir - this.nilaibet;
+        },
+
+        profitLossDisplay() {
+          const p = this.profitLoss;
+          return (p >= 0 ? '+' : '') + this.formatRupiah(p);
+        },
+
+        profitLossClass() {
+          return this.profitLoss >= 0 ? 'plus' : 'minus';
+        },
+
         hasilDisplay() {
           if (this.adaKalahFull) return 'Rp 0 (Hangus)';
           return this.formatRupiah(this.hasilAkhir);
         },
 
-        // Class warna kartu hasil
         hasilClass() {
           if (this.adaKalahFull) return 'bust';
           if (this.computedOdds > 1) return 'win';
@@ -443,6 +527,7 @@
           return '';
         }
       },
+
       methods: {
         formatRupiah(val) {
           const num = parseFloat(val) || 0;
@@ -451,11 +536,13 @@
 
         addNewParlay() {
           this.parlays.push({ odds: 1.50, hasil: '1', oddsx: 1.50 });
+          this.recalc();
         },
 
         removeParlay(index) {
           if (this.parlays.length > 1) {
             this.parlays.splice(index, 1);
+            this.recalc();
           }
         },
 
@@ -465,23 +552,29 @@
           this.addNewParlay();
           this.addNewParlay();
           this.addNewParlay();
+          this.recalc();
         },
 
-        // Hitung oddsx tiap partai, lalu trigger reaktivitas dengan Vue.set
+        /*
+         * ─── recalc ────────────────────────────────────────────────────────────
+         * Simpan oddsx sebagai float PENUH — TIDAK pakai toFixed/parseFloat
+         * rounding di sini. Pembulatan hanya terjadi di tahap tampilan (toFixed)
+         * dan di hasilAkhir (round ke 10).
+         */
         recalc() {
           this.parlays.forEach((p, i) => {
             const o = parseFloat(p.odds) || 1;
             let ox;
             switch (p.hasil) {
-              case '1':    ox = o; break;
-              case '0.5':  ox = ((o - 1) / 2) + 1; break;
-              case '-0.5': ox = 0.5; break;
-              case '0':    ox = 1; break;
-              case '-1':   ox = 0; break;   // Kalah Full — bet hangus
+              case '1':    ox = o;                   break; // Menang Full
+              case '0.5':  ox = ((o - 1) / 2) + 1;  break; // Menang Setengah
+              case '-0.5': ox = 0.5;                 break; // Kalah Setengah
+              case '0':    ox = 1;                   break; // Seri
+              case '-1':   ox = 0;                   break; // Kalah Full
               default:     ox = 1;
             }
-            // Gunakan Vue.set agar perubahan property nested terdeteksi Vue 2
-            this.$set(this.parlays[i], 'oddsx', parseFloat(ox.toFixed(4)));
+            // ✅ Simpan nilai PENUH tanpa pembulatan
+            this.$set(this.parlays[i], 'oddsx', ox);
           });
         }
       }

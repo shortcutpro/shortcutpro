@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator Mix Parlay & Handicap</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    /* ============================================================
+       1. DESIGN TOKENS
+       ============================================================ */
+    :root {
+      /* Surfaces */
+      --bg: #060b14;
+      --bg2: #0c1322;
+      --card: #111a2e;
+      --card-alt: #162038;
+      --border: #1c2a45;
+      --border-light: #243352;
+
+      /* Text */
+      --text: #e8edf5;
+      --text-muted: #5a6e8a;
+
+      /* Accent */
+      --accent: #10b981;
+      --accent-dim: #10b98130;
+      --accent-glow: #10b98118;
+
+      /* Result states */
+      --win: #22c55e;        --win-bg: #22c55e15;
+      --lose: #ef4444;       --lose-bg: #ef444415;
+      --draw: #eab308;       --draw-bg: #eab30815;
+      --half-win: #84cc16;   --half-win-bg: #84cc1615;
+      --half-lose: #f97316;  --half-lose-bg: #f9731615;
+
+      /* Minus odds badge */
+      --minus: #f59e0b;
+      --minus-bg: #f59e0b12;
+      --minus-border: #f59e0b35;
+    }
+
+    /* ============================================================
+       2. BASE
+       ============================================================ */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ============================================================
+       3. BACKGROUND EFFECTS
+       ============================================================ */
+    .bg-glow {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
+    }
+    .bg-glow::before,
+    .bg-glow::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+    }
+    .bg-glow::before {
+      width: 600px; height: 600px;
+      top: -200px; right: -200px;
+      background: radial-gradient(circle, #10b98108 0%, transparent 70%);
+      animation: floatGlow 12s ease-in-out infinite;
+    }
+    .bg-glow::after {
+      width: 500px; height: 500px;
+      bottom: -150px; left: -150px;
+      background: radial-gradient(circle, #f59e0b06 0%, transparent 70%);
+      animation: floatGlow 15s ease-in-out infinite reverse;
+    }
+    @keyframes floatGlow {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50%      { transform: translate(60px, 40px) scale(1.2); }
+    }
+
+    .grid-overlay {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.07;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    #confetti-canvas {
+      position: fixed; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 9998;
+    }
+
+    /* ============================================================
+       4. LAYOUT
+       ============================================================ */
+    .main-container {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px 16px 80px;
+    }
+
+    /* ============================================================
+       5. HEADER
+       ============================================================ */
+    .header-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
+      border-radius: 100px;
+      background: var(--accent-dim);
+      border: 1px solid #10b98140;
+      color: var(--accent);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.5px; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .header-title {
+      font-size: 28px; font-weight: 700; line-height: 1.2;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, #e8edf5 30%, #10b981 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .header-sub {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    /* ============================================================
+       6. TABS
+       ============================================================ */
+    .tabs {
+      display: flex; gap: 4px;
+      padding: 4px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: inherit; font-size: 14px; font-weight: 600;
+      border-radius: 9px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .tab-btn.active {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 2px 12px #10b98140;
+    }
+    .tab-btn:not(.active):hover {
+      color: var(--text);
+      background: var(--card-alt);
+    }
+
+    /* ============================================================
+       7. CARDS
+       ============================================================ */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title i { color: var(--accent); font-size: 13px; }
+
+    /* ============================================================
+       8. FORM CONTROLS
+       ============================================================ */
+    .form-group { margin-bottom: 14px; }
+
+    .form-label {
+      display: block;
+      font-size: 12px; font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      font-family: inherit; font-size: 14px;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .form-input::placeholder { color: var(--text-muted); opacity: 0.5; }
+    .form-select option { background: var(--card); color: var(--text); }
+
+    .form-row { display: flex; gap: 10px; }
+    .form-row .form-group { flex: 1; }
+
+    .vs-divider {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-muted);
+      padding: 0 4px;
+      min-width: 32px;
+    }
+
+    /* Radio pick */
+    .radio-group { display: flex; gap: 8px; }
+    .radio-label {
+      flex: 1;
+      display: flex; align-items: center; justify-content: center;
+      padding: 9px 14px;
+      border-radius: 9px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 13px; font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.2s;
+    }
+    .radio-label input { display: none; }
+    .radio-label:has(input:checked) {
+      border-color: var(--accent);
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+    .radio-label:hover:not(:has(input:checked)) {
+      border-color: var(--border-light);
+      color: var(--text);
+    }
+
+    /* Score inputs */
+    .score-input {
+      width: 64px;
+      text-align: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 18px; font-weight: 700;
+      padding: 8px !important;
+    }
+
+    /* Odds input with sign indicator */
+    .odds-input-wrap { position: relative; }
+    .odds-input-wrap .form-input { padding-left: 36px; }
+    .odds-sign-indicator {
+      position: absolute;
+      left: 12px; top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    /* ============================================================
+       9. BUTTONS
+       ============================================================ */
+    .btn-primary {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #10b981, #059669);
+      border: none;
+      border-radius: 11px;
+      color: #fff;
+      font-family: inherit; font-size: 15px; font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 4px 20px #10b98130;
+      transition: all 0.25s;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-primary:hover  { transform: translateY(-1px); box-shadow: 0 6px 28px #10b98145; }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-outline {
+      width: 100%;
+      padding: 9px 16px;
+      background: transparent;
+      border: 1px dashed var(--border-light);
+      border-radius: 9px;
+      color: var(--accent);
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+
+    .btn-sm-danger {
+      width: 34px; height: 34px; min-width: 34px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--lose-bg);
+      border: 1px solid #ef444430;
+      border-radius: 8px;
+      color: var(--lose);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm-danger:hover {
+      background: #ef444425;
+      border-color: #ef444450;
+    }
+
+    .copy-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 14px;
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text-muted);
+      font-family: inherit; font-size: 12px; font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 10px;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .copy-btn.copied {
+      border-color: var(--win);
+      color: var(--win);
+      background: var(--win-bg);
+    }
+
+    /* ============================================================
+       10. LEG CARDS
+       ============================================================ */
+    .leg-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 12px;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+    .leg-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .leg-number {
+      font-size: 12px; font-weight: 700;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ============================================================
+       11. RESULTS PANEL
+       ============================================================ */
+    .result-panel { display: none; animation: resultIn 0.4s ease; }
+    .result-panel.show { display: block; }
+    @keyframes resultIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 16px; font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .status-badge.menang-full     { background: var(--win-bg);       color: var(--win);       border: 1px solid #22c55e35; }
+    .status-badge.menang-setengah { background: var(--half-win-bg);  color: var(--half-win);  border: 1px solid #84cc1635; }
+    .status-badge.kalah-setengah  { background: var(--half-lose-bg); color: var(--half-lose); border: 1px solid #f9731635; }
+    .status-badge.seri            { background: var(--draw-bg);      color: var(--draw);      border: 1px solid #eab30835; }
+    .status-badge.kalah-full      { background: var(--lose-bg);      color: var(--lose);      border: 1px solid #ef444435; }
+
+    .detail-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-label { color: var(--text-muted); }
+    .detail-value { font-weight: 600; }
+    .detail-value.positive    { color: var(--win); }
+    .detail-value.negative    { color: var(--lose); }
+    .detail-value.neutral     { color: var(--draw); }
+    .detail-value.minus-color { color: var(--minus); }
+
+    .analysis-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 12px 14px;
+      margin: 10px 0;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.9;
+      color: var(--text-muted);
+      white-space: pre-line;
+    }
+    .analysis-box .win-text   { color: var(--win);   font-weight: 600; }
+    .analysis-box .lose-text  { color: var(--lose);  font-weight: 600; }
+    .analysis-box .draw-text  { color: var(--draw);  font-weight: 600; }
+    .analysis-box .minus-text { color: var(--minus); font-weight: 600; }
+
+    .message-box {
+      padding: 16px 18px;
+      border-radius: 10px;
+      font-size: 14px; line-height: 1.7;
+      margin-top: 12px;
+    }
+    .message-box.win       { background: var(--win-bg);       border: 1px solid #22c55e25; color: var(--win); }
+    .message-box.half-win  { background: var(--half-win-bg);  border: 1px solid #84cc1625; color: var(--half-win); }
+    .message-box.half-lose { background: var(--half-lose-bg); border: 1px solid #f9731625; color: var(--half-lose); }
+    .message-box.draw      { background: var(--draw-bg);      border: 1px solid #eab30825; color: var(--draw); }
+    .message-box.lose      { background: var(--lose-bg);      border: 1px solid #ef444425; color: var(--lose); }
+
+    .big-amount {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 28px; font-weight: 700;
+      margin: 8px 0;
+    }
+
+    .odds-type-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .odds-type-badge.minus {
+      background: var(--minus-bg);
+      border: 1px solid var(--minus-border);
+      color: var(--minus);
+    }
+    .odds-type-badge.plus {
+      background: var(--accent-dim);
+      border: 1px solid #10b98130;
+      color: var(--accent);
+    }
+
+    .odds-info-box {
+      background: var(--minus-bg);
+      border: 1px solid var(--minus-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin: 8px 0;
+      font-size: 12px; line-height: 1.7;
+      color: var(--minus);
+    }
+    .odds-info-box strong { font-weight: 700; }
+
+    .parlay-leg-result {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      background: var(--bg2);
+      border-radius: 8px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+    .parlay-leg-result .leg-info { flex: 1; }
+    .parlay-leg-result .leg-status { font-weight: 700; font-size: 11px; }
+    .parlay-leg-result .leg-odds {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-left: 12px;
+    }
+
+    /* ============================================================
+       12. GUIDE (collapsible)
+       ============================================================ */
+    .guide-toggle {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px;
+      background: none; border: none;
+      color: var(--text-muted);
+      font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .guide-toggle:hover { color: var(--text); }
+    .guide-toggle i { transition: transform 0.3s; }
+    .guide-toggle.open i { transform: rotate(180deg); }
+
+    .guide-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .guide-content.open { max-height: 3000px; }
+
+    .guide-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 10px;
+    }
+    .guide-table th {
+      background: var(--bg2);
+      padding: 8px 6px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .guide-table td {
+      padding: 7px 6px;
+      text-align: center;
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+
+    /* ============================================================
+       13. TOAST
+       ============================================================ */
+    .toast-container {
+      position: fixed;
+      top: 20px; right: 20px;
+      z-index: 9999;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+      display: flex; align-items: center; gap: 10px;
+      max-width: 340px;
+      padding: 12px 18px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 13px; font-weight: 500;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      animation: toastIn 0.3s ease, toastOut 0.3s ease 2.7s forwards;
+    }
+    .toast.error { border-color: #ef444450; }
+    .toast.error i { color: var(--lose); }
+    @keyframes toastIn  { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes toastOut { from { opacity: 1; } to { opacity: 0; transform: translateY(-10px); } }
+
+    /* ============================================================
+       14. RESPONSIVE & A11Y
+       ============================================================ */
+    @media (max-width: 480px) {
+      .header-title { font-size: 22px; }
+      .form-row { flex-direction: column; gap: 8px; }
+      .vs-divider { padding: 4px 0; min-width: auto; }
+      .big-amount { font-size: 22px; }
+      .score-input { width: 56px; font-size: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-glow"></div>
+  <div class="grid-overlay"></div>
+  <canvas id="confetti-canvas"></canvas>
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="main-container">
+
+    <!-- ======================= HEADER ======================= -->
+    <header style="margin-bottom: 4px;">
+      <div class="header-badge">
+        <i class="fa-solid fa-futbol"></i> Sports Betting Calculator
+      </div>
+      <h1 class="header-title">Hitung Mix Parlay<br>&amp; Handicap</h1>
+      <p class="header-sub">Mendukung odds plus (+) dan minus (-). Menang Full, Setengah, Kalah Setengah, Seri.</p>
+    </header>
+
+    <!-- ======================= TABS ======================= -->
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="single">
+        <i class="fa-solid fa-circle-dot" style="margin-right:4px;font-size:11px;"></i> Single Bet
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="parlay">
+        <i class="fa-solid fa-layer-group" style="margin-right:4px;font-size:11px;"></i> Mix Parlay
+      </button>
+    </div>
+
+    <!-- ======================= SINGLE BET MODE ======================= -->
+    <div id="singleMode">
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-shield-halved"></i> Pertandingan</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Tim Home</label>
+            <input type="text" class="form-input" id="s-home" placeholder="Tim Home" value="e-Manchester United">
+          </div>
+          <div class="vs-divider" style="align-self:flex-end;padding-bottom:14px;">VS</div>
+          <div class="form-group">
+            <label class="form-label">Tim Away</label>
+            <input type="text" class="form-input" id="s-away" placeholder="Tim Away" value="E-PSV">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Skor Akhir</label>
+          <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
+            <input type="number" class="form-input score-input" id="s-scoreHome" value="2" min="0" max="99">
+            <span style="color:var(--text-muted);font-size:20px;font-weight:300;">:</span>
+            <input type="number" class="form-input score-input" id="s-scoreAway" value="1" min="0" max="99">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><i class="fa-solid fa-hand-pointer"></i> Taruhanmu</div>
+
+        <div class="form-group">
+          <label class="form-label">Pilihan</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="s-pick" value="home">
+              <span id="s-pickHomeLabel">e-Manchester United</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="s-pick" value="away" checked>
+              <span id="s-pickAwayLabel">E-PSV</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Voor (Handicap)</label>
+            <select class="form-select" id="s-voor"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">
+              Odds <span style="font-weight:400;opacity:0.6;">(bisa minus, cth: -1.24)</span>
+            </label>
+            <div class="odds-input-wrap">
+              <span class="odds-sign-indicator" id="s-oddsSign" style="color:var(--minus);">-</span>
+              <input type="text" class="form-input mono" id="s-odds" placeholder="-1.24" value="-1.24">
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Stake (Rp)</label>
+          <input type="text" class="form-input mono" id="s-stake" placeholder="500.000" value="500.000">
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btnCalcSingle">
+        <i class="fa-solid fa-bolt"></i> Hitung Sekarang
+      </button>
+    </div>
+
+    <!-- ======================= PARLAY MODE ======================= -->
+    <div id="parlayMode" style="display:none;">
+      <div id="parlayLegs"></div>
+
+      <button class="btn-outline" id="btnAddLeg" style="margin-bottom:16px;">
+        <i class="fa-solid fa-plus"></i> Tambah Pertandingan
+      </button>
+
+      <div class="card">
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Total Stake (Rp)</label>
+          <input type="text" class="form-input mono" id="p-stake" placeholder="100.000" value="100.000">
+        </div>
+      </div>
+
+      <button class="btn-primary" id="btnCalcParlay">
+        <i class="fa-solid fa-bolt"></i> Hitung Mix Parlay
+      </button>
+    </div>
+
+    <!-- ======================= RESULT PANEL ======================= -->
+    <div class="result-panel" id="resultPanel" style="margin-top:20px;"></div>
+
+    <!-- ======================= GUIDE ======================= -->
+    <div class="card" style="margin-top:24px;padding:0;overflow:hidden;">
+      <button class="guide-toggle" id="guideToggle" aria-expanded="false">
+        <i class="fa-solid fa-chevron-down"></i>
+        Panduan Lengkap: Voor &amp; Odds Minus
+      </button>
+      <div class="guide-content" id="guideContent">
+        <div style="padding:0 18px 18px;overflow-x:auto;">
+
+          <!-- Plus vs Minus -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">
+              <i class="fa-solid fa-circle-info" style="color:var(--accent);margin-right:4px;"></i>
+              Perbedaan Odds Plus &amp; Minus
+            </div>
+            <div style="background:var(--card-alt);border-radius:9px;padding:14px;font-size:12px;line-height:1.8;color:var(--text-muted);">
+              <div style="margin-bottom:8px;">
+                <span class="odds-type-badge plus" style="margin-right:4px;">PLUS</span>
+                <strong style="color:var(--text);">Odds 1.85</strong> — Tim underdog<br>
+                Return = Stake × 1.85<br>
+                Stake 500rb → Return <span style="color:var(--win);font-weight:600;">925.000</span> (profit 425.000)
+              </div>
+              <div>
+                <span class="odds-type-badge minus" style="margin-right:4px;">MINUS</span>
+                <strong style="color:var(--text);">Odds -1.24</strong> — Tim favorit (kei)<br>
+                Return = Stake × 1.24 (pakai nilai absolut)<br>
+                Stake 500rb → Return <span style="color:var(--minus);font-weight:600;">620.000</span> (profit 120.000)
+              </div>
+            </div>
+          </div>
+
+          <!-- Rumus setengah menang + minus -->
+          <div style="margin-bottom:18px;">
+            <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:10px;">
+              <i class="fa-solid fa-calculator" style="color:var(--accent);margin-right:4px;"></i>
+              Rumus Menang Setengah + Odds Minus
+            </div>
+            <div style="background:var(--minus-bg);border:1px solid var(--minus-border);border-radius:9px;padding:14px;font-size:12px;line-height:1.9;font-family:'JetBrains Mono',monospace;color:var(--minus);">
+              Contoh: Stake 500.000, Odds -1.24<br>
+              ─────────────────────────────<br>
+              Setengah menang: 250.000 x 1.24 = 310.000<br>
+              Setengah seri   : 250.000 (kembali)<br>
+              ─────────────────────────────<br>
+              Total Return = <strong>560.000</strong><br>
+              Profit = 560.000 - 500.000 = <strong>60.000</strong>
+            </div>
+          </div>
+
+          <!-- Tabel voor -->
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:6px;">
+            <i class="fa-solid fa-table" style="color:var(--accent);margin-right:4px;"></i>
+            Tabel Hasil Voor Lengkap
+          </div>
+          <table class="guide-table" id="guideTable"></table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SCRIPT
+       ============================================================ -->
+  <script>
+  'use strict';
+
+  /* ============================================================
+     CONSTANTS
+     ============================================================ */
+  const VOOR_OPTIONS = [
+    { value: -3,    label: '-3.0' },
+    { value: -2.75, label: '-2.75 (2¾)' },
+    { value: -2.5,  label: '-2.5 (2½)' },
+    { value: -2.25, label: '-2.25 (2¼)' },
+    { value: -2,    label: '-2.0' },
+    { value: -1.75, label: '-1.75 (1¾)' },
+    { value: -1.5,  label: '-1.5 (1½)' },
+    { value: -1.25, label: '-1.25 (1¼)' },
+    { value: -1,    label: '-1.0' },
+    { value: -0.75, label: '-0.75 (¾)' },
+    { value: -0.5,  label: '-0.5 (½)' },
+    { value: -0.25, label: '-0.25 (¼)' },
+    { value: 0,     label: '0.0' },
+    { value: 0.25,  label: '+0.25 (¼)' },
+    { value: 0.5,   label: '+0.5 (½)' },
+    { value: 0.75,  label: '+0.75 (¾)' },
+    { value: 1,     label: '+1.0' },
+    { value: 1.25,  label: '+1.25 (1¼)' },
+    { value: 1.5,   label: '+1.5 (1½)' },
+    { value: 1.75,  label: '+1.75 (1¾)' },
+    { value: 2,     label: '+2.0' },
+    { value: 2.25,  label: '+2.25 (2¼)' },
+    { value: 2.5,   label: '+2.5 (2½)' },
+    { value: 2.75,  label: '+2.75 (2¾)' },
+    { value: 3,     label: '+3.0' },
+  ];
+
+  const STATUS = {
+    WIN_FULL:  'MENANG FULL',
+    WIN_HALF:  'MENANG SETENGAH',
+    DRAW:      'SERI',
+    LOSE_HALF: 'KALAH SETENGAH',
+    LOSE_FULL: 'KALAH FULL',
+  };
+
+  const STATUS_CLASS = {
+    [STATUS.WIN_FULL]:  'menang-full',
+    [STATUS.WIN_HALF]:  'menang-setengah',
+    [STATUS.DRAW]:      'seri',
+    [STATUS.LOSE_HALF]: 'kalah-setengah',
+    [STATUS.LOSE_FULL]: 'kalah-full',
+  };
+
+  let legCounter = 0;
+
+  /* ============================================================
+     FORMATTERS
+     ============================================================ */
+  const formatRp = (n) => 'Rp ' + Math.round(n).toLocaleString('id-ID');
+
+  const parseStake = (v) => {
+    if (typeof v === 'number') return v;
+    return parseFloat(String(v).replace(/\./g, '').replace(/,/g, '')) || 0;
+  };
+
+  const formatVoor = (v) => v === 0 ? '0' : (v > 0 ? '+' : '') + v;
+
+  function voorFraction(v) {
+    const abs = Math.abs(v);
+    const frac = abs % 1;
+    let s = '';
+    if (Math.floor(abs) > 0) s += Math.floor(abs);
+    if (frac === 0.25) s += '¼';
+    else if (frac === 0.5)  s += '½';
+    else if (frac === 0.75) s += '¾';
+    if (!s) s = '0';
+    return (v < 0 ? '-' : v > 0 ? '+' : '') + s;
+  }
+
+  function parseOddsRaw(raw) {
+    const s = String(raw).trim();
+    if (!s) return null;
+    const isMinus = s.charAt(0) === '-';
+    const numStr = s.replace(/^[+-]/, '');
+    const abs = parseFloat(numStr);
+    if (isNaN(abs) || abs <= 0) return null;
+    return { value: isMinus ? -abs : abs, isMinus, abs };
+  }
+
+  /* ============================================================
+     UI HELPERS
+     ============================================================ */
+  function showToast(msg) {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast error';
+    toast.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> ${msg}`;
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  function updateOddsSign(inputId, signId) {
+    const val = document.getElementById(inputId).value.trim();
+    const el  = document.getElementById(signId);
+    if (!el) return;
+
+    if (val.startsWith('-')) {
+      el.textContent = '-';
+      el.style.color = 'var(--minus)';
+    } else if (val.startsWith('+')) {
+      el.textContent = '+';
+      el.style.color = 'var(--accent)';
+    } else if (val === '' || val === '0') {
+      el.textContent = '';
+    } else {
+      el.textContent = '+';
+      el.style.color = 'var(--accent)';
+    }
+  }
+
+  function populateVoorSelect(id, def) {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    sel.innerHTML = '';
+    VOOR_OPTIONS.forEach(o => {
+      const opt = document.createElement('option');
+      opt.value = o.value;
+      opt.textContent = o.label;
+      if (o.value === def) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
+  function getStatusColor(s) {
+    if (s === STATUS.WIN_FULL) return '#22c55e';
+    if (s === STATUS.WIN_HALF  || s === 'MENANG (PARLAY)') return '#84cc16';
+    if (s === STATUS.LOSE_HALF || s === 'KALAH (PARLAY)')  return '#f97316';
+    if (s === STATUS.DRAW)      return '#eab308';
+    if (s === STATUS.LOSE_FULL) return '#ef4444';
+    return '#64748b';
+  }
+
+  function getStatusIcon(s) {
+    if (s.includes('MENANG')) return 'fa-trophy';
+    if (s === STATUS.DRAW)    return 'fa-handshake';
+    return 'fa-face-sad-tear';
+  }
+
+  /* ============================================================
+     CORE CALCULATION — HANDICAP RESULT
+     ============================================================ */
+  function calculateHandicapResult(goalDiff, handicap) {
+    // Whole-number handicap (including 0): single outcome
+    if (handicap % 1 === 0) {
+      const effective = goalDiff + handicap;
+      if (effective > 0)  return { status: STATUS.WIN_FULL,  cls: STATUS_CLASS[STATUS.WIN_FULL] };
+      if (effective === 0) return { status: STATUS.DRAW,     cls: STATUS_CLASS[STATUS.DRAW] };
+      return { status: STATUS.LOSE_FULL, cls: STATUS_CLASS[STATUS.LOSE_FULL] };
+    }
+
+    // Quarter handicap — split into two halves (0.25 apart)
+    const absH = Math.abs(handicap);
+    const sign = Math.sign(handicap);
+    const h1 = sign * (absH - 0.25);
+    const h2 = sign * (absH + 0.25);
+    const d1 = goalDiff + h1;
+    const d2 = goalDiff + h2;
+    const r1 = d1 > 0 ? 'WIN' : d1 === 0 ? 'DRAW' : 'LOSE';
+    const r2 = d2 > 0 ? 'WIN' : d2 === 0 ? 'DRAW' : 'LOSE';
+    const meta = { h1, h2, d1, d2, r1, r2 };
+
+    if (r1 === 'WIN'  && r2 === 'WIN')  return { status: STATUS.WIN_FULL,  cls: STATUS_CLASS[STATUS.WIN_FULL],  ...meta };
+    if (r1 === 'LOSE' && r2 === 'LOSE') return { status: STATUS.LOSE_FULL, cls: STATUS_CLASS[STATUS.LOSE_FULL], ...meta };
+    if ((r1 === 'WIN'  && r2 === 'DRAW') || (r1 === 'DRAW' && r2 === 'WIN'))
+      return { status: STATUS.WIN_HALF,  cls: STATUS_CLASS[STATUS.WIN_HALF],  ...meta };
+    if ((r1 === 'LOSE' && r2 === 'DRAW') || (r1 === 'DRAW' && r2 === 'LOSE'))
+      return { status: STATUS.LOSE_HALF, cls: STATUS_CLASS[STATUS.LOSE_HALF], ...meta };
+    return { status: STATUS.DRAW, cls: STATUS_CLASS[STATUS.DRAW], ...meta };
+  }
+
+  /* ============================================================
+     CORE CALCULATION — PAYOUT (for single & per-leg display)
+     ============================================================ */
+  function calculateLegPayout(stake, odds, result) {
+    const abs   = Math.abs(odds);
+    const minus = odds < 0;
+
+    switch (result.status) {
+      case STATUS.WIN_FULL:
+        return {
+          ret: stake * abs,
+          profit: stake * (abs - 1),
+          detail: minus
+            ? `Full stake ${formatRp(stake)} x ${abs} (abs dr ${odds}) = ${formatRp(stake * abs)}`
+            : `Full stake ${formatRp(stake)} x ${odds} = ${formatRp(stake * abs)}`,
+        };
+
+      case STATUS.WIN_HALF: {
+        const halfWin  = (stake / 2) * abs;
+        const halfBack = stake / 2;
+        return {
+          ret: halfWin + halfBack,
+          profit: (stake / 2) * (abs - 1),
+          detail: minus
+            ? `Setengah menang: ${formatRp(stake / 2)} x ${abs} (abs dr ${odds}) = ${formatRp(halfWin)}\nSetengah seri kembali: ${formatRp(halfBack)}`
+            : `Setengah menang: ${formatRp(stake / 2)} x ${odds} = ${formatRp(halfWin)}\nSetengah seri kembali: ${formatRp(halfBack)}`,
+        };
+      }
+
+      case STATUS.DRAW:
+        return { ret: stake, profit: 0, detail: `Stake dikembalikan penuh: ${formatRp(stake)}` };
+
+      case STATUS.LOSE_HALF: {
+        const halfLose = stake / 2;
+        return {
+          ret: halfLose,
+          profit: -halfLose,
+          detail: `Setengah kalah: -${formatRp(halfLose)}\nSetengah kembali: ${formatRp(halfLose)}`,
+        };
+      }
+
+      case STATUS.LOSE_FULL:
+        return { ret: 0, profit: -stake, detail: `Full stake hangus: -${formatRp(stake)}` };
+
+      default:
+        return { ret: 0, profit: -stake, detail: '' };
+    }
+  }
+
+  /* ============================================================
+     CORE CALCULATION — EFFECTIVE ODDS (parlay multiplication)
+     ============================================================ */
+  function getEffectiveOdds(odds, result) {
+    const abs = Math.abs(odds);
+    switch (result.status) {
+      case STATUS.WIN_FULL:  return abs;
+      case STATUS.WIN_HALF:  return (1 + abs) / 2;
+      case STATUS.DRAW:      return 1;
+      case STATUS.LOSE_HALF: return 0.5;
+      case STATUS.LOSE_FULL: return 0;
+      default:               return 0;
+    }
+  }
+
+  /* ============================================================
+     MESSAGE GENERATORS (polite templates to send to members)
+     ============================================================ */
+  function getResultMessage(result, payout, stake, odds, team) {
+    const minus = odds < 0;
+    const abs   = Math.abs(odds);
+    const ret   = formatRp(payout.ret);
+    const prof  = formatRp(Math.abs(payout.profit));
+    const stakeStr  = formatRp(stake);
+    const teamLabel = team ? ` pilihan ${team}` : '';
+    const oddsNote  = minus ? ` dengan odds minus ${odds} (tim favorit)` : ` dengan odds ${odds}`;
+
+    switch (result.status) {
+
+      case STATUS.WIN_FULL:
+        return minus
+          ? `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel}${oddsNote} telah <strong>dinyatakan MENANG FULL</strong>.<br><br>Berikut rincian pembayaran yang akan kami proses:<br>&bull; Stake yang dipasang: <strong>${stakeStr}</strong><br>&bull; Total return diterima: <strong>${ret}</strong><br>&bull; Profit bersih: <strong>${prof}</strong><br><br>Meskipun odds tergolong minus karena tim favorit, member tetap berhak mendapatkan kemenangan penuh. Pembayaran akan segera kami proses. Terima kasih atas kepercayaan member.`
+          : `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel}${oddsNote} telah <strong>dinyatakan MENANG FULL</strong>.<br><br>Berikut rincian pembayaran yang akan kami proses:<br>&bull; Stake yang dipasang: <strong>${stakeStr}</strong><br>&bull; Total return diterima: <strong>${ret}</strong><br>&bull; Profit bersih: <strong>${prof}</strong><br><br>Selamat atas kemenangan member. Pembayaran akan segera kami proses. Terima kasih atas kepercayaan member.`;
+
+      case STATUS.WIN_HALF:
+        return minus
+          ? `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel}${oddsNote} hasilnya <strong>MENANG SETENGAH</strong>.<br><br>Penjelasan singkat: karena voor pecahan, taruhan terbagi menjadi dua bagian. Satu bagian dinyatakan menang penuh, sedangkan satu bagian lainnya dinyatakan seri sehingga modal dikembalikan.<br><br>Rincian pembayaran:<br>&bull; Setengah taruhan menang: <strong>${formatRp(stake / 2)} &times; ${abs} = ${formatRp((stake / 2) * abs)}</strong><br>&bull; Setengah taruhan seri dikembalikan: <strong>${formatRp(stake / 2)}</strong><br>&bull; Total return diterima: <strong>${ret}</strong><br>&bull; Profit bersih: <strong>${prof}</strong><br><br>Walaupun odds minus, member tetap mendapatkan keuntungan. Pembayaran akan segera kami proses. Terima kasih.`
+          : `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel}${oddsNote} hasilnya <strong>MENANG SETENGAH</strong>.<br><br>Penjelasan singkat: karena voor pecahan, taruhan terbagi menjadi dua bagian. Satu bagian dinyatakan menang penuh, sedangkan satu bagian lainnya dinyatakan seri sehingga modal dikembalikan.<br><br>Rincian pembayaran:<br>&bull; Setengah taruhan menang: <strong>${formatRp(stake / 2)} &times; ${odds} = ${formatRp((stake / 2) * abs)}</strong><br>&bull; Setengah taruhan seri dikembalikan: <strong>${formatRp(stake / 2)}</strong><br>&bull; Total return diterima: <strong>${ret}</strong><br>&bull; Profit bersih: <strong>${prof}</strong><br><br>Pembayaran akan segera kami proses. Terima kasih atas kepercayaan member.`;
+
+      case STATUS.DRAW:
+        return `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel} hasilnya <strong>dinyatakan SERI</strong>.<br><br>Artinya setelah nilai voor ditambahkan ke selisih gol, hasilnya tepat imbang. Dalam situasi ini, <strong>modal member sebesar ${stakeStr} akan dikembalikan sepenuhnya</strong>. Tidak ada potongan, tidak ada keuntungan, tidak ada kerugian.<br><br>Modal telah kami kembalikan ke saldo member. Terima kasih dan semoga beruntung di taruhan berikutnya.`;
+
+      case STATUS.LOSE_HALF:
+        return `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel} hasilnya <strong>KALAH SETENGAH</strong>.<br><br>Penjelasan: karena voor pecahan, taruhan terbagi menjadi dua. Satu bagian dinyatakan kalah, namun satu bagian lainnya dinyatakan seri sehingga setengah modal dikembalikan.<br><br>Rincian:<br>&bull; Setengah taruhan yang kalah: <strong>-${formatRp(stake / 2)}</strong><br>&bull; Setengah taruhan yang dikembalikan: <strong>${formatRp(stake / 2)}</strong><br>&bull; Sisa return diterima: <strong>${ret}</strong><br>&bull; Kerugian bersih: <strong>${prof}</strong><br><br>Member masih menerima pengembalian sebesar ${ret}. Kami mengimbau agar selalu mempertimbangkan voor dan odds dengan matang sebelum memasang taruhan. Terima kasih.`;
+
+      case STATUS.LOSE_FULL:
+        return minus
+          ? `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel}${oddsNote} telah <strong>dinyatakan KALAH FULL</strong>.<br><br>Sayangnya, setelah nilai voor ditambahkan ke selisih gol, tim yang dipilih tidak mampu menutupi voor. Dengan hasil ini, <strong>seluruh stake sebesar ${stakeStr} dinyatakan kalah</strong>.<br><br>Kami memahami hal ini tentu tidak menyenangkan. Perlu kami sampaikan bahwa odds minus memang memiliki keuntungan yang lebih kecil karena tim berstatus favorit. Kami mengimbau member untuk tetap tenang dan bijak dalam mengambil keputusan taruhan selanjutnya. Terima kasih atas kepercayaan member.`
+          : `Dengan hormat kami sampaikan kepada member, taruhan${teamLabel}${oddsNote} telah <strong>dinyatakan KALAH FULL</strong>.<br><br>Sayangnya, setelah nilai voor ditambahkan ke selisih gol, tim yang dipilih tidak mampu menutupi voor. Dengan hasil ini, <strong>seluruh stake sebesar ${stakeStr} dinyatakan kalah</strong>.<br><br>Kami memahami hal ini tentu tidak menyenangkan. Kami mengimbau member untuk tetap tenang dan bijak dalam mengambil keputusan taruhan selanjutnya. Keberuntungan pasti akan berpihak di lain waktu. Terima kasih atas kepercayaan member.`;
+
+      default:
+        return '';
+    }
+  }
+
+  function getParlayMessage(finalStatus, totalRet, totalProf, stake, results) {
+    const ret  = formatRp(totalRet);
+    const prof = formatRp(Math.abs(totalProf));
+    const stakeStr = formatRp(stake);
+    const hasHalfOrDraw = results.some(r => r.result.status.includes('SETENGAH') || r.result.status === STATUS.DRAW);
+    const hasMinus      = results.some(r => r.isMinus);
+
+    switch (finalStatus) {
+      case STATUS.LOSE_FULL:
+        return `Dengan hormat kami sampaikan kepada member, tiket mix parlay telah <strong>dinyatakan KALAH</strong>.<br><br>Penjelasan: dalam mix parlay, apabila terdapat satu pertandingan saja yang kalah full, maka seluruh taruhan dihitung kalah. Hal ini berlaku sebagai ketentuan standar mix parlay.<br><br>Modal yang dipasang: <strong>${stakeStr}</strong> dinyatakan kalah.<br><br>Kami mengimbau member untuk tetap bijak dan tidak terbawa emosi. Keberuntungan bisa berubah di taruhan berikutnya. Terima kasih atas kepercayaan member.`;
+
+      case STATUS.WIN_FULL:
+        return `Dengan hormat kami sampaikan kepada member, tiket mix parlay telah <strong>dinyatakan MENANG FULL</strong>. Luar biasa!<br><br>Semua pertandingan dalam tiket berhasil menang penuh. Berikut rincian pembayaran:<br>&bull; Total stake dipasang: <strong>${stakeStr}</strong><br>&bull; Total return diterima: <strong>${ret}</strong><br>&bull; Profit bersih: <strong>${prof}</strong><br><br>${hasMinus ? 'Perlu kami sampaikan bahwa ada beberapa odds minus di dalam tiket, namun hal tersebut tidak mengurangi hak kemenangan member. ' : ''}Pembayaran akan segera kami proses. Selamat dan terima kasih atas kepercayaan member.`;
+
+      case 'MENANG (PARLAY)':
+        return `Dengan hormat kami sampaikan kepada member, tiket mix parlay telah <strong>dinyatakan MENANG</strong>, namun tidak full.<br><br>Penjelasan: terdapat pertandingan yang hasilnya menang setengah atau seri, sehingga odds efektifnya disesuaikan (tidak full). Tidak ada pertandingan yang kalah full, sehingga tiket tetap dinyatakan menang.<br><br>Rincian pembayaran:<br>&bull; Total stake dipasang: <strong>${stakeStr}</strong><br>&bull; Total return diterima: <strong>${ret}</strong><br>&bull; Profit bersih: <strong>${prof}</strong><br><br>${hasMinus ? 'Catatan: terdapat odds minus di dalam tiket. ' : ''}${hasHalfOrDraw ? 'Catatan: ada leg yang menang setengah/seri sehingga odds efektif lebih rendah dari odds asli. ' : ''}Pembayaran akan segera kami proses. Terima kasih atas kepercayaan member.`;
+
+      case STATUS.DRAW:
+        return `Dengan hormat kami sampaikan kepada member, tiket mix parlay hasilnya <strong>dinyatakan SERI</strong>.<br><br>Setelah dikalkulasi dengan odds efektif dari masing-masing pertandingan, total odds menghasilkan angka 1.00, yang berarti modal member dikembalikan utuh tanpa keuntungan maupun kerugian.<br><br>Modal sebesar <strong>${stakeStr}</strong> telah dikembalikan ke saldo member. Terima kasih dan semoga beruntung di taruhan berikutnya.`;
+
+      default:
+        return `Dengan hormat kami sampaikan kepada member, tiket mix parlay mengalami kerugian sebagian.<br><br>Rincian:<br>&bull; Total stake dipasang: <strong>${stakeStr}</strong><br>&bull; Sisa return diterima: <strong>${ret}</strong><br>&bull; Kerugian bersih: <strong>${prof}</strong><br><br>Kami mengimbau member untuk tetap tenang. Terima kasih atas kepercayaan member.`;
+    }
+  }
+
+  /* ============================================================
+     RENDER HELPERS — analysis + money detail
+     ============================================================ */
+  function generateAnalysis(result, goalDiff, handicap, yourScore, oppScore, team, odds) {
+    const minus = odds < 0;
+    const abs   = Math.abs(odds);
+    let voorAnalysis = '';
+
+    if (result.h1 !== undefined) {
+      // Quarter voor → two halves
+      const resultClass = r => r === 'WIN' ? 'win-text' : r === 'LOSE' ? 'lose-text' : 'draw-text';
+      const resultLabel = r => r === 'WIN' ? 'MENANG' : r === 'LOSE' ? 'KALAH' : 'SERI';
+
+      voorAnalysis =
+        `Skor ${team}: ${yourScore} - ${oppScore} | Goal Diff: ${goalDiff}\n` +
+        `Voor ${formatVoor(handicap)} (${voorFraction(handicap)}) dipecah jadi 2:\n` +
+        `├─ Setengah 1: voor ${formatVoor(result.h1)} → ${goalDiff} + (${result.h1}) = ${result.d1} → ${resultLabel(result.r1)}\n` +
+        `└─ Setengah 2: voor ${formatVoor(result.h2)} → ${goalDiff} + (${result.h2}) = ${result.d2} → ${resultLabel(result.r2)}\n` +
+        `Hasil Voor: ${result.status}`;
+
+      voorAnalysis = voorAnalysis
+        .replace(new RegExp(`(${resultLabel(result.r1)})`),     `<span class="${resultClass(result.r1)}">$1</span>`)
+        .replace(new RegExp(`(${resultLabel(result.r2)})`),     `<span class="${resultClass(result.r2)}">$1</span>`)
+        .replace(new RegExp(`(${result.status})`),              `<strong>$1</strong>`)
+        .replace(new RegExp(`(${result.d1})`),                  `<strong class="${resultClass(result.r1)}">$1</strong>`)
+        .replace(new RegExp(`(${result.d2})`),                  `<strong class="${resultClass(result.r2)}">$1</strong>`);
+    } else {
+      // Whole voor
+      const effective = goalDiff + handicap;
+      const cls = effective > 0 ? 'win-text' : effective < 0 ? 'lose-text' : 'draw-text';
+      const lbl = effective > 0 ? 'MENANG' : effective < 0 ? 'KALAH' : 'SERI';
+
+      voorAnalysis =
+        `Skor ${team}: ${yourScore} - ${oppScore} | Goal Diff: ${goalDiff}\n` +
+        `Voor: ${formatVoor(handicap)} (${voorFraction(handicap)})\n` +
+        `Hasil: ${goalDiff} + (${handicap}) = ${effective} → ${lbl}`;
+
+      voorAnalysis = voorAnalysis
+        .replace(new RegExp(`(${effective})`), `<strong class="${cls}">$1</strong>`)
+        .replace(new RegExp(`(${lbl})`),       `<span class="${cls}">$1</span>`);
+    }
+
+    let oddsAnalysis;
+    if (minus) {
+      oddsAnalysis =
+        `\n────────────────────────────\n` +
+        `ODDS MINUS: ${odds}\n` +
+        `Tim favorit → profit lebih kecil\n` +
+        `Return per unit = |${odds}| = ${abs}\n` +
+        `Profit per unit = ${abs} - 1 = ${abs - 1}\n` +
+        `Jika Menang Full: Stake x ${abs}`;
+      oddsAnalysis = oddsAnalysis.replace(/ODDS MINUS: [^\n]+/, `<span class="minus-text">ODDS MINUS: ${odds}</span>`);
+    } else {
+      oddsAnalysis =
+        `\n────────────────────────────\n` +
+        `ODDS PLUS: ${odds}\n` +
+        `Tim underdog → profit lebih besar\n` +
+        `Return per unit = ${odds}\n` +
+        `Profit per unit = ${odds - 1}\n` +
+        `Jika Menang Full: Stake x ${odds}`;
+      oddsAnalysis = oddsAnalysis.replace(/ODDS PLUS: [^\n]+/, `<span class="win-text">ODDS PLUS: ${odds}</span>`);
+    }
+
+    return `<div class="analysis-box">${voorAnalysis}${oddsAnalysis}</div>`;
+  }
+
+  function generateMoneyDetail(payout) {
+    const lines = payout.detail.split('\n');
+    let html = '<div style="margin-top:10px;">';
+
+    lines.forEach(line => {
+      const isNeg = line.includes('hangus') || (line.includes('-') && line.includes('kalah'));
+      const isWin = line.toLowerCase().includes('menang');
+      const cls   = isNeg ? 'negative' : isWin ? 'positive' : 'neutral';
+      const parts = line.includes('=') ? line.split('=') : [line, ''];
+      const label = parts[0].trim();
+      const val   = parts.length > 1 ? parts.slice(1).join('=').trim() : '';
+      html += `<div class="detail-row"><span class="detail-label">${label}</span><span class="detail-value ${cls} mono">${val}</span></div>`;
+    });
+
+    if (payout.profit !== 0) {
+      const cls  = payout.profit > 0 ? 'positive' : 'negative';
+      const sign = payout.profit > 0 ? '+' : '-';
+      html += `<div class="detail-row" style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;">
+        <span class="detail-label" style="font-weight:700;">Profit</span>
+        <span class="detail-value ${cls} mono" style="font-size:15px;">${sign}${formatRp(Math.abs(payout.profit))}</span>
+      </div>`;
+    }
+
+    html += '</div>';
+    return html;
+  }
+
+  /* ============================================================
+     TAB SWITCHING
+     ============================================================ */
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+      const active = (tab === 'single' && i === 0) || (tab === 'parlay' && i === 1);
+      btn.classList.toggle('active', active);
+      btn.setAttribute('aria-selected', active);
+    });
+    document.getElementById('singleMode').style.display = tab === 'single' ? 'block' : 'none';
+    document.getElementById('parlayMode').style.display = tab === 'parlay' ? 'block' : 'none';
+
+    const panel = document.getElementById('resultPanel');
+    panel.innerHTML = '';
+    panel.classList.remove('show');
+  }
+
+  /* ============================================================
+     SINGLE BET — handler
+     ============================================================ */
+  function calculateSingle() {
+    const homeName   = document.getElementById('s-home').value.trim() || 'Home';
+    const awayName   = document.getElementById('s-away').value.trim() || 'Away';
+    const scoreHome  = parseInt(document.getElementById('s-scoreHome').value) || 0;
+    const scoreAway  = parseInt(document.getElementById('s-scoreAway').value) || 0;
+    const pick       = document.querySelector('input[name="s-pick"]:checked')?.value;
+    const voor       = parseFloat(document.getElementById('s-voor').value);
+    const stake      = parseStake(document.getElementById('s-stake').value);
+
+    if (!pick) { showToast('Pilih tim dulu boss!'); return; }
+
+    const parsed = parseOddsRaw(document.getElementById('s-odds').value);
+    if (!parsed) { showToast('Odds tidak valid! Masukkan angka positif, contoh: 1.85 atau -1.24'); return; }
+
+    if (stake <= 0) { showToast('Stake harus lebih dari 0!'); return; }
+
+    const { value: odds, isMinus, abs } = parsed;
+    const isHome = pick === 'home';
+    const yS   = isHome ? scoreHome : scoreAway;
+    const oS   = isHome ? scoreAway : scoreHome;
+    const team = isHome ? homeName  : awayName;
+    const gd   = yS - oS;
+
+    const result  = calculateHandicapResult(gd, voor);
+    const payout  = calculateLegPayout(stake, odds, result);
+    const message = getResultMessage(result, payout, stake, odds, team);
+
+    renderSingleResult({
+      homeName, awayName, scoreHome, scoreAway,
+      team, voor, odds, isMinus, abs, stake,
+      gd, yS, oS,
+      result, payout, message,
+    });
+  }
+
+  function renderSingleResult(ctx) {
+    const { homeName, awayName, scoreHome, scoreAway, team, voor, odds, isMinus, abs, stake,
+            gd, yS, oS, result, payout, message } = ctx;
+
+    const analysis    = generateAnalysis(result, gd, voor, yS, oS, team, odds);
+    const moneyDetail = generateMoneyDetail(payout);
+
+    const profitCls  = payout.profit > 0 ? 'positive' : payout.profit < 0 ? 'negative' : 'neutral';
+    const profitSign = payout.profit > 0 ? '+' : payout.profit < 0 ? '-' : '';
+
+    const msgCls = result.status.includes('MENANG')
+      ? (result.status === STATUS.WIN_FULL ? 'win' : 'half-win')
+      : result.status === STATUS.DRAW        ? 'draw'
+      : result.status === STATUS.LOSE_HALF   ? 'half-lose'
+      : 'lose';
+
+    const oddsBadge = isMinus
+      ? `<span class="odds-type-badge minus"><i class="fa-solid fa-arrow-down" style="font-size:9px;"></i> MINUS (Favorit)</span>`
+      : `<span class="odds-type-badge plus"><i class="fa-solid fa-arrow-up" style="font-size:9px;"></i> PLUS (Underdog)</span>`;
+
+    let potentialInfo = '';
+    if (result.status !== STATUS.LOSE_FULL) {
+      potentialInfo = `
+        <div class="detail-row">
+          <span class="detail-label">Return per Unit</span>
+          <span class="detail-value mono ${isMinus ? 'minus-color' : ''}">${isMinus ? `|${odds}| = ${abs}` : odds}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Profit per Unit</span>
+          <span class="detail-value mono">${(abs - 1).toFixed(2)}</span>
+        </div>`;
+    }
+
+    const minusInfoBox = isMinus ? `
+      <div class="odds-info-box">
+        <i class="fa-solid fa-circle-info" style="margin-right:4px;"></i>
+        <strong>Odds Minus ${odds}</strong> = tim favorit (kei).<br>
+        Return dihitung: Stake x ${abs} (nilai absolut).<br>
+        Jika menang full: ${formatRp(stake)} x ${abs} = <strong>${formatRp(stake * abs)}</strong>
+      </div>` : '';
+
+    const msgBoxId = 'msg-single-' + Date.now();
+
+    const panel = document.getElementById('resultPanel');
+    panel.innerHTML = `
+      <div class="card" style="border-color:${getStatusColor(result.status)}30;">
+        <div class="card-title"><i class="fa-solid fa-chart-column"></i> Hasil Perhitungan</div>
+        <div class="detail-row"><span class="detail-label">Pertandingan</span><span class="detail-value">${homeName} ${scoreHome} - ${scoreAway} ${awayName}</span></div>
+        <div class="detail-row"><span class="detail-label">Pilihan</span><span class="detail-value">${team}</span></div>
+        <div class="detail-row"><span class="detail-label">Voor</span><span class="detail-value mono">${formatVoor(voor)} (${voorFraction(voor)})</span></div>
+        <div class="detail-row"><span class="detail-label">Odds</span><span class="detail-value"><span class="mono ${isMinus ? 'minus-color' : ''}">${odds}</span> ${oddsBadge}</span></div>
+        <div class="detail-row"><span class="detail-label">Stake</span><span class="detail-value mono">${formatRp(stake)}</span></div>
+        ${minusInfoBox}
+        ${analysis}
+        ${moneyDetail}
+        ${potentialInfo}
+        <div style="text-align:center;margin-top:18px;padding-top:18px;border-top:1px solid var(--border);">
+          <div class="status-badge ${result.cls}" style="font-size:18px;">
+            <i class="fa-solid ${getStatusIcon(result.status)}"></i> ${result.status}
+          </div>
+          <div class="big-amount ${profitCls}">${formatRp(payout.ret)}</div>
+          <div style="font-size:13px;color:var(--text-muted);">
+            Profit: <span class="mono ${profitCls}" style="font-weight:600;">${profitSign}${formatRp(Math.abs(payout.profit))}</span>
+          </div>
+        </div>
+        <div class="message-box ${msgCls}" id="${msgBoxId}" style="margin-top:14px;text-align:left;">${message}</div>
+        <div style="text-align:right;">
+          <button class="copy-btn" data-copy-target="${msgBoxId}"><i class="fa-regular fa-copy"></i> Salin Pesan</button>
+        </div>
+      </div>`;
+
+    panel.classList.add('show');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (result.status.startsWith('MENANG')) launchConfetti();
+  }
+
+  /* ============================================================
+     PARLAY — leg management
+     ============================================================ */
+  function addLeg(data) {
+    legCounter++;
+    const id = legCounter;
+
+    const leg = document.createElement('div');
+    leg.className = 'leg-card';
+    leg.id = `leg-${id}`;
+    leg.innerHTML = `
+      <div class="leg-header">
+        <span class="leg-number">Leg ${id}</span>
+        <button class="btn-sm-danger" data-remove-leg="${id}" aria-label="Hapus leg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Tim Home</label>
+          <input type="text" class="form-input" id="p-${id}-home" placeholder="Tim Home" value="${data?.home || ''}">
+        </div>
+        <div class="vs-divider" style="align-self:flex-end;padding-bottom:14px;">VS</div>
+        <div class="form-group">
+          <label class="form-label">Tim Away</label>
+          <input type="text" class="form-input" id="p-${id}-away" placeholder="Tim Away" value="${data?.away || ''}">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Skor Akhir</label>
+        <div style="display:flex;align-items:center;gap:10px;justify-content:center;">
+          <input type="number" class="form-input score-input" id="p-${id}-sh" value="${data?.sh ?? ''}" min="0" max="99" placeholder="-">
+          <span style="color:var(--text-muted);font-size:20px;font-weight:300;">:</span>
+          <input type="number" class="form-input score-input" id="p-${id}-sa" value="${data?.sa ?? ''}" min="0" max="99" placeholder="-">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Pilihan</label>
+        <div class="radio-group">
+          <label class="radio-label">
+            <input type="radio" name="p-${id}-pick" value="home" ${data?.pick === 'home' ? 'checked' : ''}>
+            <span id="p-${id}-ph">${data?.home || 'Home'}</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="p-${id}-pick" value="away" ${data?.pick === 'away' || !data ? 'checked' : ''}>
+            <span id="p-${id}-pa">${data?.away || 'Away'}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Voor</label>
+          <select class="form-select" id="p-${id}-voor"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Odds <span style="font-weight:400;opacity:0.6;">(bisa minus)</span></label>
+          <div class="odds-input-wrap">
+            <span class="odds-sign-indicator" id="p-${id}-os"
+                  style="color:${data?.odds?.startsWith('-') ? 'var(--minus)' : 'var(--accent)'};">
+              ${data?.odds?.startsWith('-') ? '-' : '+'}
+            </span>
+            <input type="text" class="form-input mono" id="p-${id}-odds"
+                   placeholder="-1.24" value="${data?.odds || ''}"
+                   data-odds-sign-target="p-${id}-os">
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('parlayLegs').appendChild(leg);
+    populateVoorSelect(`p-${id}-voor`, data?.voor ?? -0.75);
+
+    // Sync pick labels with team name inputs
+    document.getElementById(`p-${id}-home`).addEventListener('input', function () {
+      document.getElementById(`p-${id}-ph`).textContent = this.value || 'Home';
+    });
+    document.getElementById(`p-${id}-away`).addEventListener('input', function () {
+      document.getElementById(`p-${id}-pa`).textContent = this.value || 'Away';
+    });
+  }
+
+  function removeLeg(id) {
+    const leg = document.getElementById(`leg-${id}`);
+    if (!leg) return;
+    leg.style.opacity    = '0';
+    leg.style.transform  = 'translateY(-10px)';
+    leg.style.transition = 'all 0.2s ease';
+    setTimeout(() => leg.remove(), 200);
+  }
+
+  /* ============================================================
+     PARLAY — calculate & render
+     ============================================================ */
+  function calculateParlay() {
+    const legs = document.querySelectorAll('.leg-card');
+    if (!legs.length) { showToast('Tambahkan minimal 1 pertandingan!'); return; }
+
+    const stake = parseStake(document.getElementById('p-stake').value);
+    if (stake <= 0) { showToast('Stake harus lebih dari 0!'); return; }
+
+    const results = [];
+    let hasError = false;
+    let anyKalahFull = false;
+
+    legs.forEach((leg) => {
+      const id = leg.id.replace('leg-', '');
+      const homeName = document.getElementById(`p-${id}-home`).value.trim() || 'Home';
+      const awayName = document.getElementById(`p-${id}-away`).value.trim() || 'Away';
+      const sH = parseInt(document.getElementById(`p-${id}-sh`).value);
+      const sA = parseInt(document.getElementById(`p-${id}-sa`).value);
+      const pick = document.querySelector(`input[name="p-${id}-pick"]:checked`)?.value;
+      const voor = parseFloat(document.getElementById(`p-${id}-voor`).value);
+      const parsed = parseOddsRaw(document.getElementById(`p-${id}-odds`).value);
+
+      if (isNaN(sH) || isNaN(sA)) { showToast(`Leg ${results.length + 1}: Skor belum diisi!`); hasError = true; return; }
+      if (!pick)                   { showToast(`Leg ${results.length + 1}: Pilih tim!`);       hasError = true; return; }
+      if (!parsed)                 { showToast(`Leg ${results.length + 1}: Odds tidak valid!`); hasError = true; return; }
+
+      const { value: odds, isMinus, abs } = parsed;
+      const isHome = pick === 'home';
+      const yS   = isHome ? sH : sA;
+      const oS   = isHome ? sA : sH;
+      const team = isHome ? homeName : awayName;
+      const gd   = yS - oS;
+
+      const result = calculateHandicapResult(gd, voor);
+      const effectiveOdds = getEffectiveOdds(odds, result);
+
+      if (result.status === STATUS.LOSE_FULL) anyKalahFull = true;
+
+      results.push({
+        homeName, awayName,
+        sH, sA, pick, team,
+        gd, voor, odds, isMinus, abs,
+        result, eff: effectiveOdds,
+      });
+    });
+
+    if (hasError) return;
+
+    // Multiply effective odds
+    let totalEff = 1;
+    const breakdown = [];
+    results.forEach(r => { totalEff *= r.eff; breakdown.push(r.eff); });
+
+    const totalRet  = anyKalahFull ? 0 : stake * totalEff;
+    const totalProf = totalRet - stake;
+
+    // Determine final parlay status
+    let finalStatus, finalCls, finalMsgCls;
+    if (anyKalahFull) {
+      finalStatus = STATUS.LOSE_FULL;
+      finalCls    = STATUS_CLASS[STATUS.LOSE_FULL];
+      finalMsgCls = 'lose';
+    } else if (totalProf > 0) {
+      const allFullWin = results.every(r => r.result.status === STATUS.WIN_FULL);
+      finalStatus = allFullWin ? STATUS.WIN_FULL : 'MENANG (PARLAY)';
+      finalCls    = allFullWin ? STATUS_CLASS[STATUS.WIN_FULL] : 'menang-setengah';
+      finalMsgCls = 'win';
+    } else if (totalProf === 0) {
+      finalStatus = STATUS.DRAW;
+      finalCls    = STATUS_CLASS[STATUS.DRAW];
+      finalMsgCls = 'draw';
+    } else {
+      finalStatus = 'KALAH (PARLAY)';
+      finalCls    = 'kalah-setengah';
+      finalMsgCls = 'half-lose';
+    }
+
+    renderParlayResult({
+      results, stake, breakdown, totalEff, totalRet, totalProf,
+      finalStatus, finalCls, finalMsgCls,
+    });
+  }
+
+  function renderParlayResult(ctx) {
+    const { results, stake, breakdown, totalEff, totalRet, totalProf,
+            finalStatus, finalCls, finalMsgCls } = ctx;
+
+    // Per-leg summary rows
+    let legSummary = '';
+    results.forEach(r => {
+      const color = getStatusColor(r.result.status);
+      const minusTag = r.isMinus
+        ? `<span style="color:var(--minus);font-size:9px;margin-left:3px;">MINUS</span>`
+        : '';
+      legSummary += `
+        <div class="parlay-leg-result" style="border-left:3px solid ${color};">
+          <div class="leg-info">
+            <div style="font-weight:600;margin-bottom:2px;">${r.homeName} ${r.sH} - ${r.sA} ${r.awayName}</div>
+            <div style="font-size:11px;color:var(--text-muted);">Pilih: ${r.team} | Voor: ${formatVoor(r.voor)}</div>
+          </div>
+          <span class="leg-odds">${r.odds}${minusTag} → ${r.eff.toFixed(3)}</span>
+          <span class="leg-status" style="color:${color};min-width:110px;text-align:right;">${r.result.status}</span>
+        </div>`;
+    });
+
+    const profitCls  = totalProf > 0 ? 'positive' : totalProf < 0 ? 'negative' : 'neutral';
+    const profitSign = totalProf > 0 ? '+' : totalProf < 0 ? '-' : '';
+
+    const finalMessage = getParlayMessage(finalStatus, totalRet, totalProf, stake, results);
+
+    // Detail per leg
+    let detailHtml = '';
+    results.forEach((r, i) => {
+      const analysis = generateAnalysis(
+        r.result, r.gd, r.voor,
+        r.pick === 'home' ? r.sH : r.sA,
+        r.pick === 'home' ? r.sA : r.sH,
+        r.team, r.odds
+      );
+      const payout = calculateLegPayout(stake, r.odds, r.result);
+      detailHtml += `
+        <div class="card" style="border-left:3px solid ${getStatusColor(r.result.status)};">
+          <div class="card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Detail Leg ${i + 1}: ${r.team}</div>
+          ${analysis}
+          <div class="detail-row"><span class="detail-label">Odds Asli</span><span class="detail-value mono ${r.isMinus ? 'minus-color' : ''}">${r.odds} ${r.isMinus ? '(MINUS)' : '(PLUS)'}</span></div>
+          <div class="detail-row"><span class="detail-label">Nilai Absolut</span><span class="detail-value mono">${r.abs}</span></div>
+          <div class="detail-row"><span class="detail-label">Odds Efektif (Parlay)</span><span class="detail-value mono" style="color:${getStatusColor(r.result.status)}">${r.eff.toFixed(4)}</span></div>
+          <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value" style="color:${getStatusColor(r.result.status)};font-weight:700;">${r.result.status}</span></div>
+          ${generateMoneyDetail(payout)}
+        </div>`;
+    });
+
+    const msgBoxId = 'msg-parlay-' + Date.now();
+
+    const panel = document.getElementById('resultPanel');
+    panel.innerHTML = `
+      <div class="card" style="border-color:${getStatusColor(finalStatus)}30;">
+        <div class="card-title"><i class="fa-solid fa-layer-group"></i> Hasil Mix Parlay</div>
+        ${legSummary}
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
+          <div class="detail-row"><span class="detail-label">Total Odds Efektif</span><span class="detail-value mono" style="font-size:11px;word-break:break-all;">${breakdown.map(o => o.toFixed(3)).join(' x ')}</span></div>
+          <div class="detail-row"><span class="detail-label">Total Odds</span><span class="detail-value mono">${totalEff.toFixed(4)}</span></div>
+          <div class="detail-row"><span class="detail-label">Stake</span><span class="detail-value mono">${formatRp(stake)}</span></div>
+        </div>
+        <div style="text-align:center;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);">
+          <div class="status-badge ${finalCls}" style="font-size:18px;">
+            <i class="fa-solid ${getStatusIcon(finalStatus)}"></i> ${finalStatus}
+          </div>
+          <div class="big-amount ${profitCls}">${formatRp(totalRet)}</div>
+          <div style="font-size:13px;color:var(--text-muted);">
+            Profit: <span class="mono ${profitCls}" style="font-weight:600;">${profitSign}${formatRp(Math.abs(totalProf))}</span>
+          </div>
+        </div>
+        <div class="message-box ${finalMsgCls}" id="${msgBoxId}" style="margin-top:14px;text-align:left;">${finalMessage}</div>
+        <div style="text-align:right;">
+          <button class="copy-btn" data-copy-target="${msgBoxId}"><i class="fa-regular fa-copy"></i> Salin Pesan</button>
+        </div>
+      </div>
+      ${detailHtml}`;
+
+    panel.classList.add('show');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (finalStatus.includes('MENANG')) launchConfetti();
+  }
+
+  /* ============================================================
+     COPY TO CLIPBOARD
+     ============================================================ */
+  function copyMessage(targetId, btn) {
+    const box = document.getElementById(targetId);
+    if (!box) return;
+    navigator.clipboard.writeText(box.innerText).then(() => {
+      if (!btn) return;
+      btn.classList.add('copied');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Tersalin';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = '<i class="fa-regular fa-copy"></i> Salin Pesan';
+      }, 2000);
+    });
+  }
+
+  /* ============================================================
+     CONFETTI
+     ============================================================ */
+  function launchConfetti() {
+    const cv = document.getElementById('confetti-canvas');
+    const ctx = cv.getContext('2d');
+    cv.width  = window.innerWidth;
+    cv.height = window.innerHeight;
+
+    const particles = [];
+    const colors = ['#22c55e', '#10b981', '#84cc16', '#fbbf24', '#f97316', '#06b6d4', '#f59e0b'];
+
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x:   Math.random() * cv.width,
+        y:   -20 - Math.random() * 100,
+        vx:  (Math.random() - 0.5) * 6,
+        vy:  Math.random() * 3 + 2,
+        sz:  Math.random() * 7 + 3,
+        col: colors[Math.floor(Math.random() * colors.length)],
+        rot: Math.random() * 360,
+        rs:  (Math.random() - 0.5) * 12,
+        g:   0.08 + Math.random() * 0.04,
+        op:  1,
+        dc:  0.003 + Math.random() * 0.005,
+        wb:  Math.random() * Math.PI * 2,
+        ws:  0.05 + Math.random() * 0.05,
+      });
+    }
+
+    (function animate() {
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      let alive = false;
+
+      particles.forEach(p => {
+        if (p.op <= 0) return;
+        alive = true;
+        p.wb += p.ws;
+        p.x  += p.vx + Math.sin(p.wb) * 0.8;
+        p.vy += p.g;
+        p.y  += p.vy;
+        p.rot += p.rs;
+        p.op  -= p.dc;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.globalAlpha = Math.max(0, p.op);
+        ctx.fillStyle = p.col;
+        ctx.fillRect(-p.sz / 2, -p.sz / 4, p.sz, p.sz / 2);
+        ctx.restore();
+      });
+
+      if (alive) requestAnimationFrame(animate);
+      else ctx.clearRect(0, 0, cv.width, cv.height);
+    })();
+  }
+
+  /* ============================================================
+     GUIDE TABLE (generated from calculateHandicapResult)
+     ============================================================ */
+  function toggleGuide() {
+    const toggle  = document.getElementById('guideToggle');
+    const content = document.getElementById('guideContent');
+    toggle.classList.toggle('open');
+    content.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', content.classList.contains('open'));
+  }
+
+  function buildGuideTable() {
+    const table = document.getElementById('guideTable');
+    const voors = [-0.25, -0.5, -0.75, -1, -1.25, -1.5, -1.75, -2];
+    const diffs = [
+      { label: 'Menang 2+', gd:  3 },
+      { label: 'Menang 2',  gd:  2 },
+      { label: 'Menang 1',  gd:  1 },
+      { label: 'Seri',      gd:  0 },
+      { label: 'Kalah 1',   gd: -1 },
+      { label: 'Kalah 2+',  gd: -3 },
+    ];
+
+    let html = '<thead><tr><th>Voor</th>';
+    diffs.forEach(d => html += `<th>${d.label}</th>`);
+    html += '</tr></thead><tbody>';
+
+    voors.forEach(v => {
+      html += `<tr><td style="font-weight:700;color:var(--accent);">${formatVoor(v)} (${voorFraction(v)})</td>`;
+      diffs.forEach(d => {
+        const r = calculateHandicapResult(d.gd, v);
+        const fontSize = r.status.includes('SETENGAH') ? 'font-size:10px;' : '';
+        html += `<td style="color:${getStatusColor(r.status)};${fontSize}">${r.status}</td>`;
+      });
+      html += '</tr>';
+    });
+
+    html += '</tbody>';
+    table.innerHTML = html;
+  }
+
+  /* ============================================================
+     INITIALIZATION
+     ============================================================ */
+  function updatePickLabels() {
+    document.getElementById('s-pickHomeLabel').textContent = document.getElementById('s-home').value || 'Home';
+    document.getElementById('s-pickAwayLabel').textContent = document.getElementById('s-away').value || 'Away';
+  }
+
+  function initEventListeners() {
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // Single-bet team name syncing
+    document.getElementById('s-home').addEventListener('input', updatePickLabels);
+    document.getElementById('s-away').addEventListener('input', updatePickLabels);
+
+    // Single odds sign indicator
+    document.getElementById('s-odds').addEventListener('input', () => updateOddsSign('s-odds', 's-oddsSign'));
+
+    // Calc buttons
+    document.getElementById('btnCalcSingle').addEventListener('click', calculateSingle);
+    document.getElementById('btnCalcParlay').addEventListener('click', calculateParlay);
+
+    // Add leg
+    document.getElementById('btnAddLeg').addEventListener('click', () => addLeg());
+
+    // Parlay delegation: remove leg + odds sign + copy message
+    document.body.addEventListener('click', (e) => {
+      const rm = e.target.closest('[data-remove-leg]');
+      if (rm) { removeLeg(rm.dataset.removeLeg); return; }
+
+      const cp = e.target.closest('[data-copy-target]');
+      if (cp) { copyMessage(cp.dataset.copyTarget, cp); return; }
+    });
+
+    document.body.addEventListener('input', (e) => {
+      const t = e.target.closest('[data-odds-sign-target]');
+      if (t) updateOddsSign(t.id, t.dataset.oddsSignTarget);
+    });
+
+    // Guide toggle
+    document.getElementById('guideToggle').addEventListener('click', toggleGuide);
+  }
+
+  function init() {
+    populateVoorSelect('s-voor', -0.75);
+    updatePickLabels();
+    updateOddsSign('s-odds', 's-oddsSign');
+    initEventListeners();
+
+    // Seed example legs
+    addLeg({ home: 'e-Manchester United', away: 'E-PSV',          sh: '2', sa: '1', pick: 'away', voor: -0.75, odds: '-1.24' });
+    addLeg({ home: 'e-Liverpool',         away: 'e-Arsenal',      sh: '3', sa: '1', pick: 'home', voor: -1.25, odds: '1.85'  });
+    addLeg({ home: 'e-Barcelona',         away: 'e-Real Madrid',  sh: '2', sa: '2', pick: 'home', voor: -0.5,  odds: '-1.10' });
+
+    buildGuideTable();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>

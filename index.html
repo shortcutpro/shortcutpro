@@ -17,19 +17,19 @@
            CSS VARIABLES & GLOBAL STYLES
            ============================================ */
         :root {
-            --primary-color: #00ff41;
-            --secondary-color: #008f11;
-            --accent-color: #00ff9d;
+            --primary-color: #ffd700;
+            --secondary-color: #b8860b;
+            --accent-color: #ffc947;
             --dark-bg: #000000;
             --light-bg: #0d0208;
             --card-bg: rgba(0, 0, 0, 0.7);
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --border-color: #555555;
-            --notification-color: #ff5500;
-            --shadow-sm: 0 0 15px rgba(255, 255, 255, 0.1);
-            --shadow-md: 0 0 25px rgba(255, 255, 255, 0.2);
-            --shadow-lg: 0 0 30px rgba(255, 255, 255, 0.3);
+            --text-primary: #ffd700;
+            --text-secondary: #c8a840;
+            --border-color: #7a6010;
+            --notification-color: #ffd700;
+            --shadow-sm: 0 0 15px rgba(255, 215, 0, 0.1);
+            --shadow-md: 0 0 25px rgba(255, 215, 0, 0.2);
+            --shadow-lg: 0 0 30px rgba(255, 215, 0, 0.3);
             --transition-fast: 0.2s ease;
             --transition-normal: 0.3s ease;
             --transition-slow: 0.5s ease;
@@ -62,7 +62,7 @@
             padding: 12px 20px;
             border-radius: 10px;
             border: 2px solid var(--text-primary);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
             z-index: 100;
             font-size: 0.9rem;
             backdrop-filter: blur(10px);
@@ -72,7 +72,7 @@
         
         .info-box:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
             border-color: var(--accent-color);
         }
         
@@ -112,8 +112,8 @@
         }
         
         .info-box--copied {
-            border-color: #00ff00;
-            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
         }
         
         .info-box__tooltip {
@@ -121,7 +121,7 @@
             bottom: -35px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 255, 0, 0.9);
+            background: rgba(255, 215, 0, 0.9);
             color: #000;
             padding: 5px 12px;
             border-radius: 5px;
@@ -170,7 +170,28 @@
             text-align: center;
             margin-bottom: 40px;
         }
-        
+
+        /* Logo image menggantikan teks judul */
+        .header__logo-wrapper {
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .header__logo-img {
+            height: 160px;
+            width: auto;
+            max-width: 600px;
+            object-fit: contain;
+            display: block;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6)) drop-shadow(0 0 25px rgba(255, 215, 0, 0.3));
+        }
+
+        /* Fallback title jika gambar gagal load */
         .header__title {
             font-size: clamp(2rem, 5vw, 3.5rem);
             color: var(--text-primary);
@@ -181,7 +202,7 @@
             padding: 10px 30px;
             border-radius: 10px;
             border: 1px solid var(--text-primary);
-            display: inline-block;
+            display: none;
             position: relative;
         }
         
@@ -303,7 +324,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
             opacity: 0;
             transition: opacity 0.4s ease;
             pointer-events: none;
@@ -317,7 +338,7 @@
             transform: translateY(-5px);
             box-shadow: var(--shadow-md);
             background: rgba(20, 20, 20, 0.8);
-            border-color: #777;
+            border-color: #b8860b;
         }
         
         .shortcut--visible {
@@ -344,7 +365,7 @@
         .shortcut:hover .shortcut__icon {
             transform: scale(1.1);
             box-shadow: var(--shadow-md);
-            border-color: #888;
+            border-color: #c8a840;
         }
         
         .shortcut__name {
@@ -390,7 +411,7 @@
             color: var(--notification-color);
             padding: 18px 30px;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 85, 0, 0.3);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
             transform: translateX(400px);
             opacity: 0;
             transition: all var(--transition-normal);
@@ -483,6 +504,10 @@
                 left: 20px;
                 max-width: none;
             }
+
+            .header__logo-img {
+                height: 110px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -504,6 +529,10 @@
             
             .shortcut__name {
                 font-size: 0.9rem;
+            }
+
+            .header__logo-img {
+                height: 85px;
             }
         }
         
@@ -568,7 +597,15 @@
     <div class="container">
         <!-- Header -->
         <header class="header">
-            <h1 class="header__title">Dashboard LEO</h1>
+            <div class="header__logo-wrapper">
+                <img
+                    src="https://i.postimg.cc/Xr0LKt8V/Chat-GPT-Image-22-Apr-2026-14-38-29-(1).png"
+                    alt="Dashboard LEO"
+                    class="header__logo-img"
+                    onerror="this.style.display='none'; document.querySelector('.header__title').style.display='inline-block';"
+                >
+                <h1 class="header__title">Dashboard LEO</h1>
+            </div>
             <p class="header__subtitle">Akses cepat ke tools favorit Anda dengan satu klik</p>
         </header>
         
@@ -876,7 +913,7 @@
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
                 
-                ctx.fillStyle = '#0f0';
+                ctx.fillStyle = '#b8860b';
                 ctx.font = fontSize + 'px monospace';
                 
                 for (let i = 0; i < rainDrops.length; i++) {

@@ -158,6 +158,57 @@
         to   { opacity: 1; transform: translateY(0); }
       }
       .match-row { animation: rowIn 0.2s ease both; }
+
+      /* ── TABS ── */
+      .tab-bar {
+        display: none; /* shown via JS */
+        border-bottom: 1px solid #1e293b;
+        background: #07101e;
+        flex-shrink: 0;
+      }
+      .tab-btn-main {
+        padding: 10px 18px;
+        font-size: 10px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase;
+        color: #475569; border: none; background: transparent; cursor: pointer;
+        border-bottom: 2px solid transparent; transition: all .15s;
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .tab-btn-main.active { color: #22c55e; border-bottom-color: #22c55e; }
+      .tab-btn-main:hover:not(.active) { color: #e2e8f0; }
+
+      /* ── Ringkasan P&L ── */
+      .summary-grid {
+        display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; padding: 16px 16px 8px;
+      }
+      .stat-card {
+        background: #0d1525; border: 1px solid #1e293b; border-radius: 10px;
+        padding: 12px 14px; display: flex; flex-direction: column; gap: 4px;
+      }
+      .stat-card-label { font-size: 8px; font-weight: 900; color: #475569; text-transform: uppercase; letter-spacing: .1em; }
+      .stat-card-val { font-size: 22px; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+      .stat-card-sub { font-size: 10px; color: #475569; font-family: 'JetBrains Mono', monospace; }
+      .profit-row {
+        margin: 0 16px 12px; background: #0d1525; border: 1px solid #1e293b;
+        border-radius: 10px; padding: 14px 18px; display: flex; gap: 24px; align-items: center; flex-wrap: wrap;
+      }
+      .profit-item { display: flex; flex-direction: column; gap: 3px; }
+      .profit-item label { font-size: 8px; font-weight: 900; color: #475569; text-transform: uppercase; letter-spacing: .1em; }
+      .profit-item span { font-size: 16px; font-weight: 900; font-family: 'JetBrains Mono', monospace; }
+      .sum-table-wrap {
+        margin: 0 16px 16px;
+        border: 1px solid #1e293b; border-radius: 10px; overflow: hidden;
+      }
+      .sum-table-wrap table { width: 100%; border-collapse: collapse; }
+      .sum-table-wrap thead th {
+        padding: 8px 12px; text-align: left; font-size: 8px; font-weight: 900;
+        color: #475569; letter-spacing: .1em; text-transform: uppercase;
+        border-bottom: 1px solid #1e293b; background: #0d1525;
+      }
+      .sum-table-wrap thead th.c { text-align: center; }
+      .sum-table-wrap tbody tr { border-bottom: 1px solid rgba(30,41,59,.8); }
+      .sum-table-wrap tbody tr:last-child { border-bottom: none; }
+      .sum-table-wrap tbody td { padding: 10px 12px; vertical-align: middle; font-size: 11px; }
+      .sum-table-wrap tbody td.c { text-align: center; }
     </style>
   </head>
   <body>
@@ -251,72 +302,94 @@
       <!-- RIGHT: Results -->
       <section class="flex-1 flex flex-col overflow-hidden">
 
-        <!-- Match table -->
-        <div class="flex-1 overflow-y-auto scroll px-5 pt-5">
-          <div id="placeholder" class="py-16 flex flex-col items-center justify-center text-slate-700 text-center">
-            <svg class="w-12 h-12 mb-3 opacity-20" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
-            </svg>
-            <p class="text-xs">Paste bill parlay → klik Analyze</p>
-            <p class="text-[9px] mt-1 text-slate-800">Odds & hasil otomatis terhitung</p>
-            <div class="mt-6 grid grid-cols-3 gap-3 max-w-xs opacity-50">
-              <div class="bg-slate-900/60 rounded-lg p-2 border border-slate-800 text-center">
-                <div class="text-[8px] mono text-slate-600 mb-1">SABA</div>
-                <div class="w-4 h-4 rounded-full bg-green-500/10 border border-green-500/20 mx-auto"></div>
+        <!-- ══ TAB BAR ══ -->
+        <div class="tab-bar" id="tabBar">
+          <button class="tab-btn-main active" onclick="switchTab('matches')">Match Detail</button>
+          <button class="tab-btn-main" onclick="switchTab('summary')">Ringkasan P&amp;L</button>
+        </div>
+
+        <!-- ══ TAB: MATCH DETAIL ══ -->
+        <div id="matchesTab" class="flex-1 flex flex-col overflow-hidden">
+          <!-- Match table -->
+          <div class="flex-1 overflow-y-auto scroll px-5 pt-5">
+            <div id="placeholder" class="py-16 flex flex-col items-center justify-center text-slate-700 text-center">
+              <svg class="w-12 h-12 mb-3 opacity-20" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+              </svg>
+              <p class="text-xs">Paste bill parlay → klik Analyze</p>
+              <p class="text-[9px] mt-1 text-slate-800">Odds & hasil otomatis terhitung</p>
+              <div class="mt-6 grid grid-cols-3 gap-3 max-w-xs opacity-50">
+                <div class="bg-slate-900/60 rounded-lg p-2 border border-slate-800 text-center">
+                  <div class="text-[8px] mono text-slate-600 mb-1">SABA</div>
+                  <div class="w-4 h-4 rounded-full bg-green-500/10 border border-green-500/20 mx-auto"></div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-2 border border-slate-800 text-center">
+                  <div class="text-[8px] mono text-slate-600 mb-1">SBOBET</div>
+                  <div class="w-4 h-4 rounded-full bg-amber-500/10 border border-amber-500/20 mx-auto"></div>
+                </div>
+                <div class="bg-slate-900/60 rounded-lg p-2 border border-slate-800 text-center">
+                  <div class="text-[8px] mono text-slate-600 mb-1">AP</div>
+                  <div class="w-4 h-4 rounded-full bg-red-500/10 border border-red-500/20 mx-auto"></div>
+                </div>
               </div>
-              <div class="bg-slate-900/60 rounded-lg p-2 border border-slate-800 text-center">
-                <div class="text-[8px] mono text-slate-600 mb-1">SBOBET</div>
-                <div class="w-4 h-4 rounded-full bg-amber-500/10 border border-amber-500/20 mx-auto"></div>
-              </div>
-              <div class="bg-slate-900/60 rounded-lg p-2 border border-slate-800 text-center">
-                <div class="text-[8px] mono text-slate-600 mb-1">AP</div>
-                <div class="w-4 h-4 rounded-full bg-red-500/10 border border-red-500/20 mx-auto"></div>
+            </div>
+
+            <div id="resultArea" class="hidden">
+              <div class="rounded-2xl border border-slate-800/60 overflow-hidden shadow-xl mb-4">
+                <table class="w-full text-left">
+                  <thead class="sticky top-0 z-10">
+                    <tr class="bg-slate-900 text-[9px] font-black text-slate-600 border-b border-slate-800 uppercase tracking-widest">
+                      <th class="px-6 py-4">Match</th>
+                      <th class="px-6 py-4 text-center">Pick</th>
+                      <th class="px-6 py-4">Keterangan</th>
+                      <th class="px-6 py-4 text-center">Score</th>
+                      <th class="px-6 py-4 text-center">Odds</th>
+                      <th class="px-6 py-4 text-center">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="matchList" class="text-xs font-medium text-slate-400 divide-y divide-slate-800/60"></tbody>
+                </table>
               </div>
             </div>
           </div>
 
-          <div id="resultArea" class="hidden">
-            <div class="rounded-2xl border border-slate-800/60 overflow-hidden shadow-xl mb-4">
-              <table class="w-full text-left">
-                <thead class="sticky top-0 z-10">
-                  <tr class="bg-slate-900 text-[9px] font-black text-slate-600 border-b border-slate-800 uppercase tracking-widest">
-                    <th class="px-6 py-4">Match</th>
-                    <th class="px-6 py-4 text-center">Pick</th>
-                    <th class="px-6 py-4">Keterangan</th>
-                    <th class="px-6 py-4 text-center">Score</th>
-                    <th class="px-6 py-4 text-center">Odds</th>
-                    <th class="px-6 py-4 text-center">Status</th>
-                  </tr>
-                </thead>
-                <tbody id="matchList" class="text-xs font-medium text-slate-400 divide-y divide-slate-800/60"></tbody>
-              </table>
+          <!-- ══ PARLAY CALCULATOR PANEL ══ -->
+          <div id="calcPanel" class="hidden shrink-0 border-t border-slate-800/50 bg-[#060c18] p-4">
+            <div class="flex items-start gap-6">
+              <div class="flex-1 min-w-0">
+                <div class="text-[9px] font-black text-slate-600 uppercase tracking-widest mb-2">Auto Parlay Breakdown</div>
+                <table id="parlayRows" class="w-full border-collapse"></table>
+              </div>
+              <div class="shrink-0 w-56 flex flex-col gap-2">
+                <!-- Total Odds (All Win) -->
+                <div class="bg-slate-900/60 border border-amber-500/20 rounded-xl p-3" style="background:rgba(245,158,11,0.06)">
+                  <div class="text-[8px] text-amber-600 uppercase tracking-widest font-black mb-1">Total Odds (All Win)</div>
+                  <div id="totalOddsDisp" class="text-2xl font-black mono text-amber-400">—</div>
+                </div>
+                <!-- Profit / Rugi -->
+                <div class="bg-slate-900/60 border border-green-500/20 rounded-xl p-3" style="background:rgba(34,197,94,0.06)" id="profitBlock">
+                  <div class="text-[8px] text-green-700 uppercase tracking-widest font-black mb-1">Profit / Rugi</div>
+                  <div id="totalProfitDisp" class="text-2xl font-black mono text-green-400">—</div>
+                </div>
+                <!-- Bettingan -->
+                <div class="bg-slate-900/60 border border-purple-500/20 rounded-xl p-3" style="background:rgba(167,139,250,0.06)">
+                  <div class="text-[8px] text-purple-600 uppercase tracking-widest font-black mb-1">Bettingan</div>
+                  <div id="totalBetDisp" class="text-sm font-bold mono text-purple-400">—</div>
+                </div>
+                <!-- Menang (incl. bet) -->
+                <div class="bg-slate-900/60 border border-blue-500/20 rounded-xl p-3" style="background:rgba(96,165,250,0.06)">
+                  <div class="text-[8px] text-blue-600 uppercase tracking-widest font-black mb-1">Menang (incl. bet)</div>
+                  <div id="totalReturnDisp" class="text-sm font-bold mono text-blue-400">—</div>
+                </div>
+                <div id="finalBadge" class="text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest">—</div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- ══ PARLAY CALCULATOR PANEL ══ -->
-        <div id="calcPanel" class="hidden shrink-0 border-t border-slate-800/50 bg-[#060c18] p-4">
-          <div class="flex items-start gap-6">
-            <div class="flex-1 min-w-0">
-              <div class="text-[9px] font-black text-slate-600 uppercase tracking-widest mb-2">Auto Parlay Breakdown</div>
-              <table id="parlayRows" class="w-full border-collapse"></table>
-            </div>
-            <div class="shrink-0 w-52 bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex flex-col gap-3">
-              <div>
-                <div class="text-[9px] text-slate-600 uppercase tracking-widest font-black mb-1">Total Odds</div>
-                <div id="totalOddsDisp" class="text-xl font-black mono text-amber-400">—</div>
-              </div>
-              <div class="border-t border-slate-800 pt-3">
-                <div class="text-[9px] text-slate-600 uppercase tracking-widest font-black mb-1">Profit / Rugi</div>
-                <div id="totalProfitDisp" class="text-2xl font-black mono">—</div>
-              </div>
-              <div class="border-t border-slate-800 pt-3">
-                <div class="text-[9px] text-slate-600 uppercase tracking-widest font-black mb-1">Kembali (incl. bet)</div>
-                <div id="totalReturnDisp" class="text-sm font-bold mono text-slate-400">—</div>
-              </div>
-              <div id="finalBadge" class="text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest">—</div>
-            </div>
-          </div>
+        <!-- ══ TAB: RINGKASAN P&L ══ -->
+        <div id="summaryTab" class="flex-1 overflow-y-auto scroll" style="display:none">
+          <div id="summaryContent" class="pt-4"></div>
         </div>
 
       </section>
@@ -336,6 +409,20 @@
     }
 
     // ═══════════════════════════════════════════════════════════════════
+    //  TAB SYSTEM
+    // ═══════════════════════════════════════════════════════════════════
+    let _activeTab = 'matches';
+    function switchTab(name) {
+      _activeTab = name;
+      document.querySelectorAll('.tab-btn-main').forEach((b, i) => {
+        b.classList.toggle('active', (i === 0 && name === 'matches') || (i === 1 && name === 'summary'));
+      });
+      document.getElementById('matchesTab').style.display  = name === 'matches' ? 'flex' : 'none';
+      document.getElementById('summaryTab').style.display  = name === 'summary' ? 'block' : 'none';
+      if (name === 'summary') renderSummary();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
     //  CLEAR ALL
     // ═══════════════════════════════════════════════════════════════════
     function clearAll() {
@@ -348,10 +435,14 @@
       document.getElementById("totalOddsDisp").textContent = "—";
       document.getElementById("totalProfitDisp").textContent = "—";
       document.getElementById("totalReturnDisp").textContent = "—";
+      document.getElementById("totalBetDisp").textContent = "—";
       document.getElementById("finalBadge").textContent = "—";
       document.getElementById("finalBadge").className = "text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest";
       document.getElementById("clearBtn").classList.add("hidden");
       document.getElementById("matchCounter").style.display = "none";
+      document.getElementById("tabBar").style.display = "none";
+      document.getElementById("summaryContent").innerHTML = "";
+      switchTab('matches');
       _activeDetailRow = null;
       showToast("✓ Bill dibersihkan");
     }
@@ -379,22 +470,6 @@
     // ═══════════════════════════════════════════════════════════════════
     //  HELPERS
     // ═══════════════════════════════════════════════════════════════════
-
-    /**
-     * toDecimal — konversi semua format odds ke decimal multiplier
-     *   ≥ 1        : decimal biasa (e.g. 1.92)
-     *   0 < x < 1  : Malay positif (e.g. 0.87 → 1.87)
-     *   < 0        : Malay negatif SABA (e.g. -1.17 → 2.17)
-     *
-     * SABA negative odds:
-     *   Actual Stake = Stake × |odds|
-     *   WIN return   = Stake + Actual Stake = Stake × (1 + |odds|)
-     *   Decimal mult = 1 + |odds|
-     *
-     * NOTE: LOSE amount:
-     *   Single bet  → LOSE = Actual Stake = Stake × |odds|
-     *   Parlay leg  → LOSE = seluruh Stake (standard parlay rule)
-     */
     function toDecimal(odds) {
       if (!odds || odds === 0) return 0;
       if (odds >= 1)  return odds;
@@ -420,14 +495,13 @@
       return "pill-pending";
     }
     function scoreInput(cls, val, mode) {
-      // mode: false = manual, "auto" = SBO auto-fill, "live" = AP live score
       const isAuto = mode === "auto", isLive = mode === "live";
       const extraCls = isAuto ? " auto" : isLive ? " live-auto" : "";
       return `<input type="number" placeholder="0" value="${val}"
         oninput="calculate()" onclick="event.stopPropagation()" onfocus="event.stopPropagation()"
         class="score-inp ${cls}${extraCls}">`;
     }
-    // Bulatkan ke kelipatan 10 terdekat — sama persis dengan sistem SABA
+    // Bulatkan ke kelipatan 10 terdekat
     function fmt(n) { return new Intl.NumberFormat("id-ID").format(Math.round(n / 10) * 10); }
     function getNilaiBet() {
       return parseFloat(document.getElementById("nilaiBet").value.replace(/[^0-9]/g, "")) || 0;
@@ -439,6 +513,7 @@
       const after = el.value.length;
       el.setSelectionRange(pos + (after - before), pos + (after - before));
       refreshCalc();
+      if (_activeTab === 'summary') renderSummary();
     }
 
     function ketHDP(pick, betValue, halfPfx) {
@@ -448,6 +523,153 @@
       } else {
         return `${halfPfx}<span class="text-green-400">${pick}</span> menerima voor <span class="text-amber-300 font-black">${abs}</span> gol`;
       }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  RINGKASAN P&L — calcPL per single match
+    //  Aturan odds MINUS (SABA):
+    //    WIN      → profit = +stake
+    //    WIN 1/2  → profit = +stake/2
+    //    DRAW     → profit = 0
+    //    LOSE 1/2 → profit = -stake/2
+    //    LOSE     → profit = -(stake × |odds|)
+    //  Aturan odds PLUS:
+    //    WIN      → profit = stake × (odds-1)
+    //    WIN 1/2  → profit = stake × (odds-1) / 2
+    //    DRAW     → profit = 0
+    //    LOSE 1/2 → profit = -stake/2
+    //    LOSE     → profit = -stake
+    // ═══════════════════════════════════════════════════════════════════
+    function calcPL(stake, odds, stat) {
+      if (!stat || stat === "—" || stat === "MANUAL") return null;
+      const isNeg = odds < 0;
+      const absOdds = Math.abs(odds);
+      const actualStake = isNeg ? stake * absOdds : stake;
+
+      if (isNeg) {
+        if (stat === "WIN")      return stake;
+        if (stat === "WIN 1/2")  return stake / 2;
+        if (stat === "DRAW")     return 0;
+        if (stat === "LOSE 1/2") return -(stake / 2);
+        if (stat === "LOSE")     return -actualStake;
+      } else {
+        if (stat === "WIN")      return stake * (odds - 1);
+        if (stat === "WIN 1/2")  return stake * (odds - 1) / 2;
+        if (stat === "DRAW")     return 0;
+        if (stat === "LOSE 1/2") return -(stake / 2);
+        if (stat === "LOSE")     return -stake;
+      }
+      return null;
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    //  RENDER RINGKASAN P&L
+    // ═══════════════════════════════════════════════════════════════════
+    function renderSummary() {
+      const stake = getNilaiBet();
+      const rows  = document.querySelectorAll("#matchList tr.match-row");
+      if (!rows.length) {
+        document.getElementById("summaryContent").innerHTML =
+          '<div class="py-16 text-center text-slate-700 text-xs">Belum ada data — paste bill terlebih dahulu.</div>';
+        return;
+      }
+
+      let totalPL = 0, totalActual = 0;
+      let wins = 0, halfw = 0, draws = 0, halfl = 0, losses = 0, pending = 0;
+      let rowsData = [];
+
+      rows.forEach((row, i) => {
+        const type    = row.querySelector(".bet-type")?.value;
+        const pill    = row.querySelector(".status-pill");
+        const stat    = pill?.textContent?.trim() || "—";
+        const betOdds = parseFloat(row.querySelector(".bet-odds")?.value) || 0;
+        const isNeg   = betOdds < 0;
+        const actStake = isNeg ? stake * Math.abs(betOdds) : stake;
+        const pl = calcPL(stake, betOdds, stat);
+
+        const matchTd = row.querySelector("td:first-child");
+        const matchName = matchTd?.querySelector(".font-bold")?.textContent || `Match ${i+1}`;
+
+        if (pl !== null) { totalPL += pl; totalActual += actStake; }
+        if      (stat === "WIN")      wins++;
+        else if (stat === "WIN 1/2")  halfw++;
+        else if (stat === "DRAW")     draws++;
+        else if (stat === "LOSE 1/2") halfl++;
+        else if (stat === "LOSE")     losses++;
+        else if (stat !== "MANUAL")   pending++;
+
+        const plStr   = pl === null ? "—" : (pl >= 0 ? `+ Rp ${fmt(pl)}` : `- Rp ${fmt(Math.abs(pl))}`);
+        const plColor = pl === null ? "#475569" : pl > 0 ? "#22c55e" : pl < 0 ? "#ef4444" : "#94a3b8";
+        rowsData.push({ matchName, stat, betOdds, actStake, pl, plStr, plColor, type, isNeg, i });
+      });
+
+      const profColor = totalPL > 0 ? "#22c55e" : totalPL < 0 ? "#ef4444" : "#94a3b8";
+
+      let html = '';
+
+      // ── Stat cards ──
+      html += `<div class="summary-grid">
+        <div class="stat-card">
+          <div class="stat-card-label">Total Bet</div>
+          <div class="stat-card-val" style="color:#f59e0b">${rows.length}</div>
+          <div class="stat-card-sub">match aktif</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Win</div>
+          <div class="stat-card-val" style="color:#22c55e">${wins + halfw}</div>
+          <div class="stat-card-sub">${wins} full, ${halfw} half</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Lose</div>
+          <div class="stat-card-val" style="color:#ef4444">${losses + halfl}</div>
+          <div class="stat-card-sub">${losses} full, ${halfl} half</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-label">Pending</div>
+          <div class="stat-card-val" style="color:#475569">${pending}</div>
+          <div class="stat-card-sub">belum settle</div>
+        </div>
+      </div>`;
+
+      // ── Profit row ──
+      html += `<div class="profit-row">
+        <div class="profit-item">
+          <label>Total Actual Stake</label>
+          <span style="color:#e2e8f0">Rp ${fmt(totalActual)}</span>
+        </div>
+        <div class="profit-item">
+          <label>Total Profit / Rugi</label>
+          <span style="color:${profColor}">${totalPL >= 0 ? '+ ' : '- '}Rp ${fmt(Math.abs(totalPL))}</span>
+        </div>
+        <div class="profit-item">
+          <label>Net Return</label>
+          <span style="color:#e2e8f0">Rp ${fmt(totalActual + totalPL)}</span>
+        </div>
+      </div>`;
+
+      // ── Detail table ──
+      html += `<div class="sum-table-wrap"><table>
+        <thead><tr>
+          <th>#</th><th>Match</th><th class="c">Type</th><th class="c">Status</th>
+          <th class="c">Odds</th><th class="c">Actual Stake</th><th class="c">Profit / Rugi</th>
+        </tr></thead><tbody>`;
+
+      rowsData.forEach((r, i) => {
+        html += `<tr>
+          <td style="font-size:9px;color:#475569;font-family:'JetBrains Mono',monospace">${i + 1}</td>
+          <td>
+            <div style="font-size:11px;font-weight:700;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px">${r.matchName}</div>
+          </td>
+          <td class="c" style="font-size:9px;color:#475569;font-family:'JetBrains Mono',monospace">${r.type === "MANUAL" ? "MANUAL" : r.type || "?"}</td>
+          <td class="c"><span class="text-[9px] font-black uppercase tracking-wide rounded-full px-2.5 py-1 ${pillClass(r.stat)}">${r.stat}</span></td>
+          <td class="c" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:${r.isNeg ? '#fb923c' : '#f59e0b'}">${r.betOdds !== 0 ? r.betOdds.toFixed(2) : '—'}</td>
+          <td class="c" style="font-family:'JetBrains Mono',monospace;font-size:10px;color:#94a3b8">Rp ${fmt(r.actStake)}</td>
+          <td class="c" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:900;color:${r.plColor}">${r.plStr}</td>
+        </tr>`;
+      });
+
+      html += `</tbody></table></div>`;
+      document.getElementById("summaryContent").innerHTML = html;
     }
 
     // ═══════════════════════════════════════════════════════════════════
@@ -479,7 +701,6 @@
       const homeTeam = home0.trim(), awayTeam = (away0 || 'Away').trim();
       const is1H = /1st Half|Pertengahan\s*1/i.test(line3);
 
-      // ── FIX: parse live score dari line3 untuk auto-fill input ──
       const liveM = line3.match(/\[(\d+)-(\d+)\]/);
       const liveH = liveM ? liveM[1] : "";
       const liveA = liveM ? liveM[2] : "";
@@ -528,14 +749,12 @@
         ket = `<span class="text-slate-600 italic text-[9px]">Tipe bet tidak dikenali</span>`;
       }
 
-      // ── FIX: tampilkan live score di keterangan jika ada ──
       if (hasLiveScore) {
         ket += ` <span class="badge b-live ml-1">LIVE ${liveH}–${liveA}</span>`;
       }
 
       const lbl = is1H ? `<span class="badge b-1h">1H</span>` : `<span class="text-[8px] text-slate-600 font-black tracking-widest">FT</span>`;
 
-      // ── FIX: auto-fill live score ke input jika ada ──
       const scoreMode = hasLiveScore ? "live" : false;
       const scoreCell = `<td class="px-4 py-3 text-center">
         <div class="flex items-center justify-center gap-1">
@@ -598,7 +817,6 @@
       const list    = document.getElementById("matchList");
       if (!rawText.trim()) { showToast("⚠ Paste bill terlebih dahulu", true); return; }
 
-      // ── FIX #1: reset active detail row reference ──
       _activeDetailRow = null;
 
       list.innerHTML = "";
@@ -606,6 +824,8 @@
       document.getElementById("resultArea").classList.remove("hidden");
       document.getElementById("calcPanel").classList.remove("hidden");
       document.getElementById("clearBtn").classList.remove("hidden");
+      document.getElementById("tabBar").style.display = "flex";
+      document.getElementById("summaryContent").innerHTML = "";
 
       if (detectAPFormat(rawText)) {
         parseAPFormat(rawText, list);
@@ -925,7 +1145,6 @@
 
     // ═══════════════════════════════════════════════════════════════════
     //  CALCULATE (status per row)
-    //  FIX #2: hapus refreshCalc() dari dalam forEach — panggil 1× di akhir
     // ═══════════════════════════════════════════════════════════════════
     function calculate() {
       document.querySelectorAll("#matchList tr").forEach(row => {
@@ -940,11 +1159,10 @@
         const hV = hEl?.value??"", aV = aEl?.value??"";
         const htHV = htHEl?.value??"", htAV = htAEl?.value??"";
 
-        // ── FIX #2: tidak panggil refreshCalc di sini ──
         if (hV===""||aV===""|| (htHEl&&(htHV===""||htAV===""))) {
           pill.textContent = "—";
           pill.className = "status-pill text-[9px] font-black uppercase tracking-wide rounded-full px-2.5 py-1 pill-pending";
-          return; // hanya return dari forEach callback, refreshCalc dipanggil setelah loop
+          return;
         }
 
         const h=parseInt(hV)||0, a=parseInt(aV)||0;
@@ -991,12 +1209,12 @@
         }
       });
 
-      // ── FIX #2: refreshCalc dipanggil sekali di sini ──
       refreshCalc();
+      if (_activeTab === 'summary') renderSummary();
     }
 
     // ═══════════════════════════════════════════════════════════════════
-    //  BUILD EXPLANATION HTML
+    //  BUILD EXPLANATION HTML (from Script 1, unchanged)
     // ═══════════════════════════════════════════════════════════════════
     function buildExplanation(type, stat, h, a, htH, htA, bet, side, ouPick, extra, betOdds) {
       const scoreStr = `<span class="val">${h}–${a}</span>`;
@@ -1128,29 +1346,75 @@
         default: steps.push(`<span class="label">Info</span>Tidak ada detail tersedia untuk tipe bet ini`);
       }
 
-      // ── Odds multiplier breakdown ──
+      // ── Odds & Nominal breakdown (Script 2 style) ──
       let oddsSteps = [];
       if (betOdds !== 0) {
-        const isNeg   = betOdds < 0;
-        const decOdds = toDecimal(betOdds);
+        const isNeg    = betOdds < 0;
+        const absOdds  = Math.abs(betOdds);
+        const stake    = getNilaiBet();
+        const actStake = isNeg ? stake * absOdds : stake;
+
+        // Hitung profit per skenario
+        let fmtWinFull, fmtWinHalf, fmtLoseFull, fmtLoseHalf;
         if (isNeg) {
-          const absO = Math.abs(betOdds);
-          oddsSteps.push(`<span class="label">Format Odds Negatif SABA</span>Odds <span class="orange">${betOdds.toFixed(2)}</span>`);
-          oddsSteps.push(`<span class="label">Rumus SABA</span>Actual Stake = Stake × <span class="orange">${absO.toFixed(2)}</span>`);
-          oddsSteps.push(`<span class="label">WIN return</span>Stake + Actual Stake = Stake × (1 + ${absO.toFixed(2)}) = Stake × <span class="orange">${decOdds.toFixed(4)}</span>`);
-          oddsSteps.push(`<span class="label">Decimal Multiplier</span>1 + |${betOdds.toFixed(2)}| = <span class="orange">${decOdds.toFixed(4)}</span>`);
+          fmtWinFull  = `+Rp ${fmt(stake)}`;
+          fmtWinHalf  = `+Rp ${fmt(stake / 2)}`;
+          fmtLoseFull = `-Rp ${fmt(actStake)}`;
+          fmtLoseHalf = `-Rp ${fmt(stake / 2)}`;
+          oddsSteps.push(
+            `<span class="label">Sistem Odds MINUS (${betOdds.toFixed(2)})</span>`
+            +`Modal ditarik <span class="orange">Rp ${fmt(actStake)}</span> `
+            +`= Bettingan <span class="hi">Rp ${fmt(stake)}</span> × ${absOdds.toFixed(2)}`
+          );
+        } else {
+          const profitFull = stake * (betOdds - 1);
+          fmtWinFull  = `+Rp ${fmt(profitFull)}`;
+          fmtWinHalf  = `+Rp ${fmt(profitFull / 2)}`;
+          fmtLoseFull = `-Rp ${fmt(stake)}`;
+          fmtLoseHalf = `-Rp ${fmt(stake / 2)}`;
+          oddsSteps.push(
+            `<span class="label">Sistem Odds PLUS (+${betOdds.toFixed(2)})</span>`
+            +`Modal ditarik <span class="hi">Rp ${fmt(actStake)}</span> `
+            +`= Bettingan <span class="hi">Rp ${fmt(stake)}</span>`
+          );
         }
+
+        // Baris skenario hasil
+        oddsSteps.push(
+          `<span class="label">Skenario Hasil</span>`
+          +`<span style="display:flex;flex-wrap:wrap;gap:6px;margin-top:2px">`
+          +`<span><span class="green" style="font-weight:900">WIN</span> <span class="green">${fmtWinFull}</span></span>`
+          +`<span style="color:#334155">|</span>`
+          +`<span><span class="green" style="font-weight:900">WIN½</span> <span class="green">${fmtWinHalf}</span></span>`
+          +`<span style="color:#334155">|</span>`
+          +`<span><span class="red" style="font-weight:900">LOSE½</span> <span class="red">${fmtLoseHalf}</span></span>`
+          +`<span style="color:#334155">|</span>`
+          +`<span><span class="red" style="font-weight:900">LOSE</span> <span class="red">${fmtLoseFull}</span></span>`
+          +`</span>`
+        );
+
+        // Multiplier aktual berdasarkan stat
+        const mult = oddsMultiplier(betOdds, stat);
         if (stat === "WIN") {
-          oddsSteps.push(`<span class="label">Rumus (Menang Full)</span>Multiplier = <span class="green">${decOdds.toFixed(4)}</span>`);
+          oddsSteps.push(`<span class="label">Multiplier (Menang Full)</span>× <span class="green">${(mult||0).toFixed(4)}</span>`);
         } else if (stat === "WIN 1/2") {
-          const ox = ((decOdds-1)/2)+1;
-          oddsSteps.push(`<span class="label">Rumus (Menang Setengah)</span>((${decOdds.toFixed(4)} – 1) / 2) + 1 = <span class="green">${ox.toFixed(4)}</span>`);
+          oddsSteps.push(`<span class="label">Multiplier (Menang Setengah)</span>× <span class="green">${(mult||0).toFixed(4)}</span>`);
         } else if (stat === "LOSE 1/2") {
-          oddsSteps.push(`<span class="label">Rumus (Kalah Setengah)</span>Multiplier = <span class="red">0.5</span> — setengah dikembalikan`);
+          oddsSteps.push(`<span class="label">Multiplier (Kalah Setengah)</span>× <span class="red">0.5000</span> — setengah dikembalikan`);
         } else if (stat === "DRAW") {
-          oddsSteps.push(`<span class="label">Rumus (Seri/Void)</span>Multiplier = <span class="blue">1.00</span> — bet kembali`);
+          oddsSteps.push(`<span class="label">Multiplier (Seri/Void)</span>× <span class="blue">1.0000</span> — bet kembali`);
         } else if (stat === "LOSE") {
-          oddsSteps.push(`<span class="label">Rumus (Kalah Full)</span>Multiplier = <span class="red">0</span> — bet hilang`);
+          oddsSteps.push(`<span class="label">Multiplier (Kalah Full)</span>× <span class="red">0.0000</span> — bet hilang`);
+        }
+
+        // Hasil aktual nominal
+        if (stat && stat !== "—") {
+          const pl = calcPL(stake, betOdds, stat);
+          if (pl !== null) {
+            const plStr  = pl >= 0 ? `+Rp ${fmt(pl)}` : `-Rp ${fmt(Math.abs(pl))}`;
+            const plCls  = pl >= 0 ? "green" : "red";
+            oddsSteps.push(`<span class="label">Hasil Nyata (${stat})</span>Profit/Rugi = <span class="${plCls}" style="font-size:12px">${plStr}</span>`);
+          }
         }
       }
 
@@ -1181,23 +1445,27 @@
 
     // ═══════════════════════════════════════════════════════════════════
     //  REFRESH PARLAY CALC
-    //  FIX #3: negOddsProduct hanya berlaku untuk single bet (1 leg)
-    //          multi-leg parlay → LOSE = stake saja
+    //  oddsMultiplier() — logika benar per Script 2:
+    //  Odds MINUS: WIN→1+(1/|odds|), WIN½→1+(1/|odds|/2), DRAW→1, LOSE½→0.5, LOSE→0
+    //  Odds PLUS : WIN→odds,         WIN½→(odds-1)/2+1,   DRAW→1, LOSE½→0.5, LOSE→0
     // ═══════════════════════════════════════════════════════════════════
-    function statToHasil(stat) {
-      if (stat === "WIN")      return 1;
-      if (stat === "WIN 1/2")  return 0.5;
-      if (stat === "DRAW")     return 0;
-      if (stat === "LOSE 1/2") return -0.5;
-      if (stat === "LOSE")     return -1;
+    function oddsMultiplier(odds, stat) {
+      const isNeg = odds < 0;
+      const absOdds = Math.abs(odds);
+      if (isNeg) {
+        if (stat === "WIN")      return 1 + (1 / absOdds);
+        if (stat === "WIN 1/2")  return 1 + (1 / absOdds / 2);
+        if (stat === "DRAW")     return 1.0;
+        if (stat === "LOSE 1/2") return 0.5;
+        if (stat === "LOSE")     return 0.0;
+      } else {
+        if (stat === "WIN")      return odds;
+        if (stat === "WIN 1/2")  return ((odds - 1) / 2) + 1;
+        if (stat === "DRAW")     return 1.0;
+        if (stat === "LOSE 1/2") return 0.5;
+        if (stat === "LOSE")     return 0.0;
+      }
       return null;
-    }
-    function oddsX(decimalOdds, hasil) {
-      if (hasil === 1)    return decimalOdds;
-      if (hasil === 0.5)  return ((decimalOdds - 1) / 2) + 1;
-      if (hasil === 0)    return 1;
-      if (hasil === -0.5) return 0.5;
-      return 0;
     }
 
     function refreshCalc() {
@@ -1206,10 +1474,9 @@
       const parlayTbl = document.getElementById("parlayRows");
       parlayTbl.innerHTML = "";
 
-      let totalOdds = 1, hasLose = false, hasPending = false;
-      let singleNegAbsOdds = 0; // untuk single bet SABA negative odds
-      let activeLegCount   = 0; // hitung leg aktif (non-MANUAL)
-      let loseLegNegOdds   = 0; // abs odds dari leg yang LOSE dengan negative odds
+      let totalOdds = 1, totalOddsAllWin = 1, hasLose = false, hasPending = false;
+      let activeLegCount = 0;
+      let loseLegNegOdds = 0;
 
       rows.forEach((row, i) => {
         const type  = row.querySelector(".bet-type")?.value;
@@ -1218,37 +1485,41 @@
 
         activeLegCount++;
         const rawOdds  = parseFloat(row.querySelector(".bet-odds")?.value) || 0;
-        const decOdds  = toDecimal(rawOdds);
         const statText = pill.textContent.trim();
         const matchTd  = row.querySelector("td:first-child");
         const matchName= matchTd ? matchTd.querySelector(".font-bold")?.textContent || `Match ${i+1}` : `Match ${i+1}`;
 
-        const hasil = statToHasil(statText);
-        let oxVal = 1, dispOX = "×1.00", rowPill = "pill-pending";
-        let statusTxt = statText === "—" ? "Pending" : statText;
+        // All-win hypothetical untuk display "Total Odds"
+        const winMult = rawOdds < 0 ? (1 + 1 / Math.abs(rawOdds)) : (rawOdds || 1);
+        totalOddsAllWin *= winMult;
 
-        if (statText === "—" || statText === "") {
+        const isPending = (statText === "—" || statText === "");
+        const mult = isPending ? null : oddsMultiplier(rawOdds, statText);
+
+        let oxVal = 1, dispOX = "×1.00", rowPill = "pill-pending";
+        let statusTxt = isPending ? "Pending" : statText;
+
+        if (isPending) {
           hasPending = true; dispOX = "?";
-        } else if (hasil === -1) {
+        } else if (mult === 0) {
           hasLose = true; oxVal = 0; dispOX = "×0 (LOSE)"; rowPill = "pill-lose";
-          // catat abs odds untuk leg yang kalah (untuk single bet neg odds)
           if (rawOdds < 0) loseLegNegOdds = Math.abs(rawOdds);
-        } else if (hasil !== null && rawOdds !== 0) {
-          oxVal      = oddsX(decOdds, hasil);
+          totalOdds *= 0;
+        } else if (mult !== null && rawOdds !== 0) {
+          oxVal      = mult;
           dispOX     = `×${oxVal.toFixed(4)}`;
           rowPill    = pillClass(statText);
           totalOdds *= oxVal;
-        } else if (hasil !== null && rawOdds === 0) {
+        } else if (mult !== null && rawOdds === 0) {
           dispOX = "odds?"; hasPending = true;
         } else {
           hasPending = true; dispOX = "?";
         }
 
-        if (hasil === -1) totalOdds = 0;
-
+        const _decOdds = toDecimal(rawOdds);
         const oddsDisp = rawOdds !== 0
           ? (rawOdds < 0
-              ? `<span class="text-orange-400">${rawOdds.toFixed(2)}</span><span class="text-slate-700 text-[8px]"> (≈${decOdds.toFixed(3)})</span>`
+              ? `<span class="text-orange-400">${rawOdds.toFixed(2)}</span><span class="text-slate-700 text-[8px]"> (≈${_decOdds.toFixed(3)})</span>`
               : `<span class="${oxVal>1?'text-green-400':oxVal<1?'text-red-400':'text-amber-400'}">${rawOdds.toFixed(2)}</span>`)
           : "—";
 
@@ -1287,42 +1558,73 @@
       const totalRet = nilaibet * totalOdds;
       const profit   = totalRet - nilaibet;
 
+      // Total Odds (All Win) = hipotesis semua menang
       document.getElementById("totalOddsDisp").textContent =
-        hasLose ? "0.00" : hasPending ? "..." : totalOdds.toFixed(4);
+        activeLegCount === 0 ? "—" : totalOddsAllWin.toFixed(3);
+
+      // Bettingan
+      document.getElementById("totalBetDisp").textContent =
+        nilaibet > 0 ? `Rp ${fmt(nilaibet)}` : "—";
 
       const profEl = document.getElementById("totalProfitDisp");
       const retEl  = document.getElementById("totalReturnDisp");
       const badge  = document.getElementById("finalBadge");
+      const profBlock = document.getElementById("profitBlock");
 
-      if (hasLose) {
-        // ── FIX #3: Single bet dengan SABA negative odds → lose = stake × |odds|
-        //           Parlay (≥2 leg)                       → lose = stake saja
+      if (hasLose && totalOdds === 0) {
+        // Semua lose — profit = -(nilaibet) untuk parlay, single neg odds sudah via calcPL
         const lossAmt = (activeLegCount === 1 && loseLegNegOdds > 0)
           ? nilaibet * loseLegNegOdds
           : nilaibet;
-        profEl.textContent = `− Rp ${fmt(lossAmt)}`;
-        profEl.className   = "text-2xl font-black mono text-red-500";
+        profEl.textContent = `- Rp ${fmt(lossAmt)}`;
+        profEl.className   = "text-2xl font-black mono text-red-400";
+        profBlock.style.background = "rgba(239,68,68,0.06)";
+        profBlock.style.borderColor = "rgba(239,68,68,0.2)";
+        profBlock.querySelector("div").style.color = "#ef4444";
         retEl.textContent  = "Rp 0";
+        retEl.className    = "text-sm font-bold mono text-blue-400";
         badge.textContent  = "❌ TICKET LOSE";
         badge.className    = "text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest bg-red-500/10 border border-red-500/20 text-red-500";
       } else if (hasPending) {
         profEl.textContent = "Pending...";
         profEl.className   = "text-2xl font-black mono text-slate-500";
+        profBlock.style.background = "rgba(34,197,94,0.06)";
+        profBlock.style.borderColor = "rgba(34,197,94,0.2)";
+        profBlock.querySelector("div").style.color = "#22c55e";
         retEl.textContent  = "—";
+        retEl.className    = "text-sm font-bold mono text-blue-400";
         badge.textContent  = "⏳ RUNNING";
         badge.className    = "text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest bg-slate-800 border border-slate-700 text-slate-500";
       } else if (profit > 0) {
         profEl.textContent = `+ Rp ${fmt(profit)}`;
         profEl.className   = "text-2xl font-black mono text-green-400";
+        profBlock.style.background = "rgba(34,197,94,0.06)";
+        profBlock.style.borderColor = "rgba(34,197,94,0.2)";
+        profBlock.querySelector("div").style.color = "#22c55e";
         retEl.textContent  = `Rp ${fmt(totalRet)}`;
+        retEl.className    = "text-sm font-bold mono text-blue-400";
         badge.textContent  = "✅ ALL WIN";
         badge.className    = "text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest bg-green-500/10 border border-green-500/20 text-green-400";
-      } else {
-        profEl.textContent = `Rp ${fmt(profit)}`;
-        profEl.className   = "text-2xl font-black mono text-amber-400";
-        retEl.textContent  = `Rp ${fmt(totalRet)}`;
-        badge.textContent  = "✴ PARTIAL";
+      } else if (profit < 0) {
+        profEl.textContent = `- Rp ${fmt(Math.abs(profit))}`;
+        profEl.className   = "text-2xl font-black mono text-red-400";
+        profBlock.style.background = "rgba(239,68,68,0.06)";
+        profBlock.style.borderColor = "rgba(239,68,68,0.2)";
+        profBlock.querySelector("div").style.color = "#ef4444";
+        retEl.textContent  = `Rp ${fmt(Math.max(0, totalRet))}`;
+        retEl.className    = "text-sm font-bold mono text-blue-400";
+        badge.textContent  = "✴ PARTIAL LOSE";
         badge.className    = "text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest bg-amber-500/10 border border-amber-500/20 text-amber-400";
+      } else {
+        profEl.textContent = `Rp 0`;
+        profEl.className   = "text-2xl font-black mono text-slate-400";
+        profBlock.style.background = "rgba(34,197,94,0.06)";
+        profBlock.style.borderColor = "rgba(34,197,94,0.2)";
+        profBlock.querySelector("div").style.color = "#22c55e";
+        retEl.textContent  = `Rp ${fmt(nilaibet)}`;
+        retEl.className    = "text-sm font-bold mono text-blue-400";
+        badge.textContent  = "✴ DRAW / VOID";
+        badge.className    = "text-center text-[11px] font-black py-2 rounded-xl uppercase tracking-widest bg-slate-800 border border-slate-700 text-slate-500";
       }
     }
 

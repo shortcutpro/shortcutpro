@@ -45,7 +45,7 @@
             font-family: 'Rajdhani', sans-serif;
             background:
                 linear-gradient(135deg, rgba(10,10,15,0.9), rgba(21,21,32,0.9)),
-                url('https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg');
+                url('https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/997f37bf3bc90016a5e32ae52406c5c4/background-web-hokbentoto-1.jpg');
             background-size: cover; background-position: center; background-attachment: fixed;
             color: #ffffff; min-height: 100vh; transition: background 0.6s ease;
         }
@@ -70,9 +70,6 @@
 
         .container { max-width: 1800px; margin: 0 auto; padding: 20px; }
 
-        /* ══════════════════════════════════════════
-           HAMBURGER BUTTON — pojok kiri atas
-        ══════════════════════════════════════════ */
         #hamburgerBtn {
             position: fixed;
             top: 20px; left: 20px;
@@ -104,9 +101,6 @@
         #hamburgerBtn.open .bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
         #hamburgerBtn.open .bar:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
 
-        /* ══════════════════════════════════════════
-           SITE MENU DRAWER — slide dari kiri
-        ══════════════════════════════════════════ */
         #siteMenuOverlay {
             display: none;
             position: fixed; inset: 0; z-index: 8000;
@@ -205,9 +199,8 @@
         }
         .site-option.active .site-option-badge { opacity: 1; }
 
-        /* Warna per site-option */
         .site-option.opt-hokben  { --opt-color:#FFD700; --opt-glow:rgba(255,215,0,0.25); --opt-bg:rgba(255,215,0,0.06); --opt-inner:rgba(255,215,0,0.04); }
-        .site-option.opt-bandar  { --opt-color:#00BFFF; --opt-glow:rgba(0,191,255,0.25); --opt-bg:rgba(0,191,255,0.06); --opt-inner:rgba(0,191,255,0.04); }
+        .site-option.opt-bandar  { --opt-color:#4DC8F0; --opt-glow:rgba(77,200,240,0.30); --opt-bg:rgba(77,200,240,0.07); --opt-inner:rgba(77,200,240,0.04); }
         .site-option.opt-tvtoto  { --opt-color:#FF2222; --opt-glow:rgba(255,34,34,0.25);  --opt-bg:rgba(255,34,34,0.06);  --opt-inner:rgba(255,34,34,0.04); }
         .site-option.opt-wati    { --opt-color:#FF5500; --opt-glow:rgba(255,85,0,0.30);   --opt-bg:rgba(255,85,0,0.07);   --opt-inner:rgba(255,85,0,0.04); }
 
@@ -219,7 +212,6 @@
             letter-spacing: 1.5px; text-transform: uppercase;
         }
 
-        /* ── CURRENT SITE BADGE di header ── */
         #currentSiteBadge {
             position: fixed;
             top: 20px; left: 84px;
@@ -237,18 +229,15 @@
         #badgeLogo { height: 28px; width: auto; max-width: 80px; object-fit: contain; filter: drop-shadow(0 0 6px var(--primary)); }
         #badgeName { font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; color: var(--primary); letter-spacing: 1.5px; text-shadow: 0 0 10px var(--primary); white-space: nowrap; }
 
-        /* HEADER */
         .header { text-align:center; padding:30px 20px; margin-bottom:30px; margin-top: 10px; background:linear-gradient(135deg,rgba(26,26,46,0.7),rgba(21,21,32,0.9)); border-radius:20px; border:3px solid var(--primary); box-shadow:0 0 40px var(--glow-alpha); transition:all 0.5s ease; }
         .header img.logo { max-width:300px; filter:drop-shadow(0 0 25px var(--primary)); transition:all 0.5s; }
         .header h1 { font-family:'Orbitron',sans-serif; font-size:42px; font-weight:900; color:var(--primary); margin:15px 0 10px; text-shadow:0 0 20px var(--primary); letter-spacing:3px; transition:all 0.5s; }
         .header p { font-size:16px; color:#ffffff; letter-spacing:1px; }
 
-        /* AUTO DATE */
         .auto-date { background:linear-gradient(135deg,rgba(26,26,46,0.7),rgba(21,21,32,0.9)); border:3px solid var(--primary); border-radius:15px; padding:20px; margin-bottom:25px; text-align:center; box-shadow:0 0 30px var(--glow-alpha); transition:all 0.5s; }
         .auto-date strong { display:block; color:var(--primary); font-size:14px; margin-bottom:10px; text-transform:uppercase; letter-spacing:2px; font-weight:900; }
         .auto-date .date-display { font-family:'Orbitron',sans-serif; color:var(--primary); font-size:28px; font-weight:900; text-shadow:0 0 20px var(--primary); }
 
-        /* COLOR PANEL */
         .color-panel { background:linear-gradient(135deg,rgba(26,26,46,0.7),rgba(21,21,32,0.9)); border:2px solid rgba(255,215,0,0.5); border-radius:15px; padding:25px; margin-bottom:25px; box-shadow:0 0 25px var(--glow-soft); transition:all 0.5s ease; }
         .color-panel h3 { font-family:'Orbitron',sans-serif; color:var(--primary); font-size:18px; margin-bottom:20px; display:flex; align-items:center; gap:10px; text-transform:uppercase; letter-spacing:2px; font-weight:900; }
         .color-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; margin-bottom:20px; }
@@ -262,7 +251,6 @@
         .btn-reset-colors { width:100%; padding:15px 30px; background:linear-gradient(135deg,rgba(255,215,0,0.2),rgba(212,175,55,0.2)); border:2px solid var(--primary); border-radius:12px; color:var(--primary); font-family:'Orbitron',sans-serif; font-weight:700; font-size:14px; cursor:pointer; transition:all 0.3s; text-transform:uppercase; letter-spacing:2px; }
         .btn-reset-colors:hover { background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#000; box-shadow:0 0 30px var(--primary); transform:translateY(-2px); }
 
-        /* MAIN LAYOUT */
         .main-layout { display:grid; grid-template-columns:1fr 1fr; gap:25px; align-items:start; }
         .section { background:linear-gradient(135deg,rgba(26,26,46,0.7),rgba(21,21,32,0.9)); border:2px solid rgba(255,215,0,0.5); border-radius:15px; padding:25px; margin-bottom:25px; box-shadow:0 0 25px var(--glow-soft); transition:all 0.5s ease; }
         .section h2 { font-family:'Orbitron',sans-serif; color:var(--primary); font-size:20px; margin-bottom:20px; text-transform:uppercase; letter-spacing:2px; font-weight:900; transition:color 0.5s; }
@@ -293,7 +281,6 @@
         .btn-clear { background:rgba(255,255,255,0.1); color:#ffffff; border:2px solid rgba(255,255,255,0.3); }
         .btn-clear:hover { background:rgba(255,255,255,0.2); border-color:#ffffff; transform:translateY(-2px); }
 
-        /* PREVIEW */
         .preview-sticky { position:sticky; top:20px; }
         .preview-container { background:var(--bg-main); border-radius:15px; border:3px solid var(--primary); overflow:visible; box-shadow:0 0 40px var(--glow-alpha); transition:all 0.5s; }
         .preview-header { text-align:center; padding:20px; background:linear-gradient(180deg,#1a1a1a,#000); border-bottom:3px solid var(--primary); transition:all 0.5s; }
@@ -383,20 +370,17 @@
 })();
 </script>
 
-<!-- ══ HAMBURGER BUTTON ══ -->
 <button id="hamburgerBtn" onclick="toggleSiteMenu()" aria-label="Menu Site">
     <span class="bar"></span>
     <span class="bar"></span>
     <span class="bar"></span>
 </button>
 
-<!-- ══ CURRENT SITE BADGE ══ -->
 <div id="currentSiteBadge" onclick="toggleSiteMenu()" title="Klik untuk ganti site">
     <img id="badgeLogo" src="https://hokben38422.com/resources/images/logo.png" alt="Logo">
     <span id="badgeName">HOKBENTOTO</span>
 </div>
 
-<!-- ══ OVERLAY & DRAWER ══ -->
 <div id="siteMenuOverlay" onclick="closeSiteMenu()"></div>
 
 <div id="siteMenuDrawer">
@@ -447,7 +431,6 @@
     <div class="drawer-footer">v4.0 · Site Generator</div>
 </div>
 
-<!-- ══ MAIN CONTENT ══ -->
 <div class="container" id="mainContent">
 
     <div class="header">
@@ -568,7 +551,6 @@ ITALY SERIE A
 
 <div class="notification" id="notification">✓ Notification</div>
 
-<!-- ══ FOOTER COPYRIGHT ══ -->
 <div id="pageFooter">
     🔒 2025 Dashboard LEO. Created by LEO | All Rights Reserved | Semua hak cipta dilindungi !!! 🔒
 </div>
@@ -594,13 +576,12 @@ ITALY SERIE A
 </style>
 
 <script>
-// ── SITES CONFIG ───────────────────────────────────────────────────────────────
 var SITES = {
     hokben: {
         name: 'HOKBENTOTO', sub: 'Crown Top Edition — Auto Team Logo',
         logo: 'https://hokben38422.com/resources/images/logo.png',
         favicon: 'https://hokben84059.com/favicon.ico',
-        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/02/03/20260203/d8632a0c7c9125ef1a67069b11b5a102/background-imlek-hokbentoto.jpg',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/997f37bf3bc90016a5e32ae52406c5c4/background-web-hokbentoto-1.jpg',
         bgOverlay: 'rgba(10,10,15,0.9), rgba(21,21,32,0.9)',
         previewHeaderBg: 'linear-gradient(180deg,#1a1a1a,#000)',
         marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di HOKBENTOTO dan nikmati pengalaman taruhan yang seru dengan peluang besar! 🔥',
@@ -615,17 +596,17 @@ var SITES = {
     bandar80: {
         name: 'BANDAR80', sub: 'Crown Top Edition — Auto Team Logo',
         logo: 'https://bandar80.com/resources/images/logo.png',
-        favicon: 'https://bandar81209.com/favicon.ico',
-        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/02/02/20260202/3e6aabe1cc793a0589e3568b5c34ffed/bandar80-background-cny2026.jpg',
-        bgOverlay: 'rgba(0,8,32,0.92), rgba(0,17,51,0.92)',
-        previewHeaderBg: 'linear-gradient(180deg,#001133,#000020)',
+        favicon: 'https://bandar31102.com/favicon.ico',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az5/2026/03/02/20260302/20e8efc43cfbf551408b31932d699826/background-web-bandar80.jpg',
+        bgOverlay: 'rgba(10,40,80,0.85), rgba(5,20,55,0.85)',
+        previewHeaderBg: 'linear-gradient(180deg,#0a2850,#051437)',
         marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di BANDAR80 dan nikmati pengalaman Casino Online terbaik dengan peluang besar! ♠',
-        defaultColors: { bg:'#0088CC', txt:'#c4e8ff', hd:'#000033', mq:'#00BFFF' },
+        defaultColors: { bg:'#4DC8F0', txt:'#e0f6ff', hd:'#0a2850', mq:'#7DDCF8' },
         cssVars: {
-            '--primary':'#00BFFF','--primary-light':'#40D0FF','--primary-dark':'#0088CC',
-            '--bg-deep':'#000033','--bg-main':'#000820','--bg-surface':'#001133',
-            '--text-color':'#c4e8ff','--marquee-color':'#00BFFF',
-            '--glow-alpha':'rgba(0,191,255,0.4)','--glow-soft':'rgba(0,191,255,0.2)'
+            '--primary':'#4DC8F0','--primary-light':'#7DDCF8','--primary-dark':'#1A9FD4',
+            '--bg-deep':'#051437','--bg-main':'#071d4a','--bg-surface':'#0a2850',
+            '--text-color':'#e0f6ff','--marquee-color':'#7DDCF8',
+            '--glow-alpha':'rgba(77,200,240,0.45)','--glow-soft':'rgba(77,200,240,0.22)'
         }
     },
     tvtoto: {
@@ -663,11 +644,8 @@ var SITES = {
 };
 var currentSite = 'hokben';
 
-// ── MENU FUNCTIONS ─────────────────────────────────────────────────────────────
 function toggleSiteMenu() {
-    var btn = document.getElementById('hamburgerBtn');
     var drawer = document.getElementById('siteMenuDrawer');
-    var overlay = document.getElementById('siteMenuOverlay');
     var isOpen = drawer.classList.contains('open');
     if(isOpen) { closeSiteMenu(); } else { openSiteMenu(); }
 }
@@ -682,7 +660,6 @@ function closeSiteMenu() {
     document.getElementById('siteMenuOverlay').classList.remove('visible');
 }
 
-// ── OBFUSCATED SHEET ───────────────────────────────────────────────────────────
 var _x = (function(){
     var _f = ['1lHO5','zSQtb','BONLM','0WxiC','Ryh2Z','mvO-Q','74gpW','gu59Y','jFKg'];
     var _e = [
@@ -723,7 +700,6 @@ function _loadOneSheet(sheet) {
 async function _loadAllSheets(){if(_ldbReady)return;await Promise.all(_x.sheets.map(function(s){return _loadOneSheet(s);}));_ldbReady=true;}
 _ldbPromise=_loadAllSheets();
 
-// ── TEAM LOGO ──────────────────────────────────────────────────────────────────
 var teamLogoCache={};
 var SHORT_NAMES={
     'manchester city':'Man City','manchester united':'Man United','atletico madrid':'Atletico Madrid',
@@ -772,7 +748,6 @@ async function fetchTeamLogo(teamName){
 }
 function getTeamLogoUrl(name){var c=teamLogoCache[name.toLowerCase().trim()];return(c&&c.url)?c.url:generateSVGLogo(name);}
 
-// ── SITE SWITCHER ──────────────────────────────────────────────────────────────
 function switchSite(site) {
     currentSite = site;
     var cfg = SITES[site];
@@ -782,30 +757,21 @@ function switchSite(site) {
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
-
-    // Update active option in drawer
     ['hokben','bandar80','tvtoto','watitoto'].forEach(function(s){
         var el = document.getElementById('opt-'+s);
         if(el) el.classList.toggle('active', s === site);
     });
-
-    // Update badge
     document.getElementById('badgeLogo').src = cfg.logo;
     document.getElementById('badgeName').textContent = cfg.name;
-
-    // Update header
     document.getElementById('headerLogo').src = cfg.logo;
     document.getElementById('headerTitle').textContent = cfg.name+' GENERATOR';
     document.getElementById('headerSub').textContent = cfg.sub;
     document.title = cfg.name+' Generator';
     document.getElementById('favicon').href = cfg.favicon;
-
-    // Update preview
     document.getElementById('previewLogo').src = cfg.logo;
     document.getElementById('previewSiteName').textContent = cfg.name;
     document.getElementById('previewMarqueeText').textContent = cfg.marquee;
     document.querySelector('.preview-header').style.background = cfg.previewHeaderBg;
-
     var d = cfg.defaultColors;
     setColorValues(d.bg, d.txt, d.hd, d.mq);
     updatePreviewColors();
@@ -825,7 +791,6 @@ function setColorValues(bg, txt, hd, mq) {
     document.getElementById('colorMarqueeBgText').value=mq;
 }
 
-// ── PARSE ──────────────────────────────────────────────────────────────────────
 function parseMatchLine(line){
     var tmp=line.trim().replace(/\r/g,'');
     if(!/\bv\.?s\.?\b/i.test(tmp))return null;
@@ -864,7 +829,6 @@ function getAllTeams(leagues){
     return Object.keys(set);
 }
 
-// ── COLOR ──────────────────────────────────────────────────────────────────────
 function adjustColor(color,amount){
     var num=parseInt(color.replace('#',''),16);
     var r=Math.min(255,Math.max(0,(num>>16)+amount));
@@ -874,7 +838,6 @@ function adjustColor(color,amount){
 }
 function getColors(){return{bg:document.getElementById('colorBackground').value,txt:document.getElementById('colorText').value,hd:document.getElementById('colorHeaderBg').value,mq:document.getElementById('colorMarqueeBg').value};}
 
-// ── FILTER LIGA ────────────────────────────────────────────────────────────────
 function buildLeagueDropdown(leagues){
     var wrap=document.getElementById('leagueFilterWrap');var sel=document.getElementById('leagueSelect');
     if(!leagues.length){wrap.style.display='none';return;}
@@ -889,7 +852,6 @@ function filterLeague(name){
     });
 }
 
-// ── RENDER PREVIEW ─────────────────────────────────────────────────────────────
 function renderPreview(leagues){
     var tablesDiv=document.getElementById('previewTables');
     var emptyDiv=document.getElementById('previewEmpty');
@@ -917,7 +879,6 @@ function renderPreview(leagues){
     filterLeague('all');
 }
 
-// ── BUILD OUTPUT HTML ──────────────────────────────────────────────────────────
 function buildOutputHTML(leagues){
     var autoDate=document.getElementById('autoDate').textContent;
     var c=getColors();
@@ -972,8 +933,6 @@ function buildOutputHTML(leagues){
 '.score-center{flex-shrink:0;width:80px;text-align:center;padding:0 4px;}\n'+
 '.score-num{font-family:\'Cinzel\',serif;font-size:clamp(15px,4vw,20px);font-weight:900;color:var(--g);text-shadow:0 0 10px var(--gd);letter-spacing:3px;line-height:1;margin-bottom:4px;}\n'+
 '.match-dt{font-size:clamp(8px,1.8vw,10px);font-weight:700;color:var(--g);opacity:.8;line-height:1.5;}\n'+
-'.flake{position:fixed;top:-40px;z-index:9999;user-select:none;pointer-events:none;animation:fall linear forwards;}\n'+
-'@keyframes fall{0%{top:-40px;transform:translateX(0) rotate(0deg);opacity:1}100%{top:110vh;transform:translateX(80px) rotate(360deg);opacity:.3}}\n'+
 '@media(min-width:600px){.crown-name{font-size:15px;}.team-name{font-size:13px;}.score-num{font-size:22px;}.match-dt{font-size:11px;}.score-center{width:100px;}}\n'+
 '</style>\n\n'+
 '<header class="site-logo"><img src="'+cfg.logo+'" alt="'+cfg.name+'"/></header>\n'+
@@ -984,11 +943,9 @@ leagues.map(function(l){return '      <option value="'+l.name.replace(/"/g,'&quo
 blocks+
 '<script>\n'+
 'function filterLeague(val){document.querySelectorAll(\'.league-block\').forEach(function(b){b.style.display=(val===\'all\'||b.dataset.league===val)?\'\':\' none\';});}\n'+
-'function spawnFlake(){var f=document.createElement(\'div\');f.classList.add(\'flake\');f.textContent=\'⚽\';f.style.left=(Math.random()*window.innerWidth)+\'px\';f.style.fontSize=(Math.random()*12+9)+\'px\';f.style.animationDuration=(Math.random()*5+6)+\'s\';f.style.opacity=(Math.random()*.5+.3);document.body.appendChild(f);setTimeout(function(){f.remove();},12000);}\nsetInterval(spawnFlake,600);\n'+
 '<\/script>\n';
 }
 
-// ── DEBOUNCE INPUT ─────────────────────────────────────────────────────────────
 var debounceTimer=null;
 document.getElementById('inputText').addEventListener('input',function(){
     clearTimeout(debounceTimer);
@@ -1031,7 +988,6 @@ async function handleInput(){
     document.getElementById('outputCode').textContent=buildOutputHTML(leagues);
 }
 
-// ── COLOR PICKERS ──────────────────────────────────────────────────────────────
 function initColorPickers(){
     ['Background','Text','HeaderBg','MarqueeBg'].forEach(function(name){
         var picker=document.getElementById('color'+name);
@@ -1074,7 +1030,6 @@ function resetColors(){
     showNotification('✓ Warna direset ke default '+SITES[currentSite].name+'!');
 }
 
-// ── AUTO DATE ──────────────────────────────────────────────────────────────────
 function generateAutoDate(){
     var today=new Date(),tomorrow=new Date(today);
     tomorrow.setDate(today.getDate()+1);
@@ -1085,7 +1040,6 @@ function generateAutoDate(){
     document.getElementById('previewDate').textContent=str;
 }
 
-// ── UTILS ──────────────────────────────────────────────────────────────────────
 function copyToClipboard(){
     var output=document.getElementById('outputCode').textContent;
     if(output.startsWith('Script HTML')){showNotification('⚠️ Belum ada script yang di-generate!');return;}
@@ -1113,7 +1067,6 @@ function showNotification(msg){
     setTimeout(function(){n.style.display='none';},3000);
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded',function(){
     generateAutoDate();
     initColorPickers();

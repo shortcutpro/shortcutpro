@@ -111,7 +111,7 @@
         .site-option-logo { width: 60px; height: 44px; object-fit: contain; flex-shrink: 0; filter: drop-shadow(0 0 6px var(--opt-color)); transition: all 0.3s; }
         .site-option.active .site-option-logo { filter: drop-shadow(0 0 12px var(--opt-color)); transform: scale(1.05); }
         .site-option-info { flex: 1; min-width: 0; }
-        .site-option-name { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: var(--opt-color); letter-spacing: 1.5px; text-shadow: 0 0 10px var(--opt-color); line-height: 1.2; }
+        .site-option-name { font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: var(--opt-color); letter-spacing: 1.5px; text-shadow: 0 0 10px var(--opt-color)); line-height: 1.2; }
         .site-option-sub { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 1px; margin-top: 4px; font-weight: 600; }
         .site-option-badge { width: 8px; height: 8px; border-radius: 50%; background: var(--opt-color); box-shadow: 0 0 8px var(--opt-color); flex-shrink: 0; opacity: 0; transition: opacity 0.3s; }
         .site-option.active .site-option-badge { opacity: 1; }
@@ -119,6 +119,9 @@
         .site-option.opt-bandar  { --opt-color:#4DC8F0; --opt-glow:rgba(77,200,240,0.30); --opt-bg:rgba(77,200,240,0.07); --opt-inner:rgba(77,200,240,0.04); }
         .site-option.opt-tvtoto  { --opt-color:#FF2222; --opt-glow:rgba(255,34,34,0.25);  --opt-bg:rgba(255,34,34,0.06);  --opt-inner:rgba(255,34,34,0.04); }
         .site-option.opt-wati    { --opt-color:#FF5500; --opt-glow:rgba(255,85,0,0.30);   --opt-bg:rgba(255,85,0,0.07);   --opt-inner:rgba(255,85,0,0.04); }
+        .site-option.opt-line   { --opt-color:#CC44FF; --opt-glow:rgba(204,68,255,0.30);  --opt-bg:rgba(204,68,255,0.07);  --opt-inner:rgba(204,68,255,0.04); }
+        .site-option.opt-zia    { --opt-color:#F5C518; --opt-glow:rgba(245,197,24,0.30);  --opt-bg:rgba(245,197,24,0.07);  --opt-inner:rgba(245,197,24,0.04); }
+        .site-option.opt-indra  { --opt-color:#9966FF; --opt-glow:rgba(153,102,255,0.30); --opt-bg:rgba(153,102,255,0.07); --opt-inner:rgba(153,102,255,0.04); }
         .drawer-footer { padding: 16px 24px; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 1.5px; text-transform: uppercase; }
 
         #currentSiteBadge {
@@ -347,8 +350,36 @@
             <div class="site-option-badge"></div>
         </div>
 
+
+        <div class="site-option opt-line" id="opt-linetogel" onclick="switchSite('linetogel')">
+            <img class="site-option-logo" src="https://linetogel.com/assets/img/ei/logo.png" alt="LINETOGEL">
+            <div class="site-option-info">
+                <div class="site-option-name">LINETOGEL</div>
+                <div class="site-option-sub">Togel Online 💜</div>
+            </div>
+            <div class="site-option-badge"></div>
+        </div>
+
+        <div class="site-option opt-zia" id="opt-ziatogel" onclick="switchSite('ziatogel')">
+            <img class="site-option-logo" src="https://ziatogel.com/assets/img/auo/logo.png" alt="ZIATOGEL">
+            <div class="site-option-info">
+                <div class="site-option-name">ZIATOGEL</div>
+                <div class="site-option-sub">Togel Terbaik ✨</div>
+            </div>
+            <div class="site-option-badge"></div>
+        </div>
+
+        <div class="site-option opt-indra" id="opt-indratogel" onclick="switchSite('indratogel')">
+            <img class="site-option-logo" src="https://indratogel90.com/assets/img/aei/logo.png?v=666" alt="INDRATOGEL">
+            <div class="site-option-info">
+                <div class="site-option-name">INDRATOGEL</div>
+                <div class="site-option-sub">Togel Jackpot 🔮</div>
+            </div>
+            <div class="site-option-badge"></div>
+        </div>
+
     </div>
-    <div class="drawer-footer">v4.1 · Site Generator</div>
+    <div class="drawer-footer">v4.2 · Site Generator</div>
 </div>
 
 <div class="container" id="mainContent">
@@ -565,6 +596,54 @@ var SITES = {
             '--text-color':'#ffe8d0','--marquee-color':'#FF6600',
             '--glow-alpha':'rgba(255,102,0,0.45)','--glow-soft':'rgba(255,102,0,0.22)'
         }
+    },
+    linetogel: {
+        name: 'LINETOGEL', sub: 'Crown Top Edition — Auto Team Logo',
+        logo: 'https://linetogel.com/assets/img/ei/logo.png',
+        favicon: 'https://linetogel.com/assets/img/ei/favicon.png',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az6/2026/01/08/20260108/0e9b0ec9a88ad88a5935bc5802bc41a5/linetogel-background-07januari2026.jpg',
+        bgOverlay: 'rgba(20,0,40,0.88), rgba(10,0,25,0.88)',
+        previewHeaderBg: 'linear-gradient(180deg,#1a0030,#080015)',
+        marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di LINETOGEL dan nikmati pengalaman taruhan terbaik dengan peluang besar! 💜',
+        defaultColors: { bg:'#CC44FF', txt:'#f0d0ff', hd:'#1a0030', mq:'#DD66FF' },
+        cssVars: {
+            '--primary':'#CC44FF','--primary-light':'#DD66FF','--primary-dark':'#9900CC',
+            '--bg-deep':'#0a0014','--bg-main':'#0f001e','--bg-surface':'#1a0030',
+            '--text-color':'#f0d0ff','--marquee-color':'#DD66FF',
+            '--glow-alpha':'rgba(204,68,255,0.45)','--glow-soft':'rgba(204,68,255,0.22)'
+        }
+    },
+    ziatogel: {
+        name: 'ZIATOGEL', sub: 'Crown Top Edition — Auto Team Logo',
+        logo: 'https://ziatogel.com/assets/img/auo/logo.png',
+        favicon: 'https://ziatogel.com/assets/img/auo/favicon.png',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az8/2025/11/19/20251119/9e6dcba5f4e223f30432ee6f22abe6dd/new-background-ziatogel.jpg',
+        bgOverlay: 'rgba(5,8,20,0.85), rgba(5,12,30,0.85)',
+        previewHeaderBg: 'linear-gradient(180deg,#0a1020,#050810)',
+        marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di ZIATOGEL dan nikmati pengalaman taruhan terbaik dengan peluang besar! ✨',
+        defaultColors: { bg:'#F5C518', txt:'#fff8d0', hd:'#0a0800', mq:'#FFD940' },
+        cssVars: {
+            '--primary':'#F5C518','--primary-light':'#FFD940','--primary-dark':'#C9A200',
+            '--bg-deep':'#050808','--bg-main':'#080e18','--bg-surface':'#0d1828',
+            '--text-color':'#fff8d0','--marquee-color':'#F5C518',
+            '--glow-alpha':'rgba(245,197,24,0.45)','--glow-soft':'rgba(245,197,24,0.22)'
+        }
+    },
+    indratogel: {
+        name: 'INDRATOGEL', sub: 'Crown Top Edition — Auto Team Logo',
+        logo: 'https://indratogel90.com/assets/img/aei/logo.png?v=666',
+        favicon: 'https://indratogel90.com/assets/img/aei/favicon.png',
+        bg: 'https://cdn.areabermain.club/assets/cdn/az3/2026/01/14/20260114/55bc758c10becd1d02514cf92628b661/background-new-indratogel.jpg',
+        bgOverlay: 'rgba(15,0,35,0.88), rgba(8,0,22,0.88)',
+        previewHeaderBg: 'linear-gradient(180deg,#1a0040,#0a0020)',
+        marquee: '🔥 PREDIKSI BOLA TERUPDATE ! Tunggu apa lagi? Daftar di INDRATOGEL dan nikmati pengalaman taruhan terbaik dengan peluang besar! 🔮',
+        defaultColors: { bg:'#9966FF', txt:'#e8d0ff', hd:'#1a0040', mq:'#BB88FF' },
+        cssVars: {
+            '--primary':'#9966FF','--primary-light':'#BB88FF','--primary-dark':'#7744DD',
+            '--bg-deep':'#0a0018','--bg-main':'#0f0025','--bg-surface':'#1a003a',
+            '--text-color':'#e8d0ff','--marquee-color':'#BB88FF',
+            '--glow-alpha':'rgba(153,102,255,0.45)','--glow-soft':'rgba(153,102,255,0.22)'
+        }
     }
 };
 var currentSite = 'hokben';
@@ -692,7 +771,7 @@ function switchSite(site) {
     document.body.style.backgroundSize = 'cover';
     document.body.style.backgroundPosition = 'center';
     document.body.style.backgroundAttachment = 'fixed';
-    ['hokben','bandar80','tvtoto','watitoto'].forEach(function(s){
+    ['hokben','bandar80','tvtoto','watitoto','linetogel','ziatogel','indratogel'].forEach(function(s){
         var el = document.getElementById('opt-'+s);
         if(el) el.classList.toggle('active', s === site);
     });

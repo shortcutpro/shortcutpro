@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Syair Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Cinzel',serif;
+  background:#0a0a0a;
+  display:flex;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+
+/* =============================================
+   LAYOUT UTAMA: card kiri + panel kanan
+   ============================================= */
+.main-layout{
+  display:flex;
+  gap:14px;
+  align-items:flex-start;
+  width:100%;
+  max-width:1220px;
+}
+
+/* CARD */
+.cw{flex-shrink:0;}
+#card{
+  width:960px;height:960px;
+  position:relative;overflow:hidden;
+  background-image:url('https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/background.png');
+  background-size:cover;background-position:center;
+}
+
+/* =============================================
+   PANEL KANAN — 3 kotak sama ukuran & posisi
+   ============================================= */
+.side-panel{
+  flex-shrink:0;
+  width:220px;          /* ← lebar semua 3 panel sama */
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  position:sticky;
+  top:20px;
+}
+
+/* Satu kotak panel — ukuran & style identik */
+.panel-box{
+  width:100%;           /* sama semua */
+  background:linear-gradient(135deg,#1a1a1a,#2a2000);
+  border:2px solid #c8962c;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+/* Header kotak — klik untuk toggle (pasaran & shio) */
+.panel-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 14px;
+  cursor:pointer;
+  user-select:none;
+  border-bottom:1px solid rgba(200,150,44,.0); /* hidden by default */
+  transition:border-color .2s;
+}
+.panel-header.open{border-bottom:1px solid rgba(200,150,44,.3);}
+.panel-header h3{
+  color:#e8b84b;
+  font-family:'Cinzel Decorative',serif;
+  font-size:10px;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  flex:1;
+  text-align:center;
+}
+.panel-header .arrow{
+  color:#c8962c;font-size:12px;
+  transition:transform .25s;flex-shrink:0;
+}
+.panel-header.open .arrow{transform:rotate(180deg);}
+
+/* Untuk panel Syair Generator — tidak punya toggle */
+.panel-header.static{cursor:default;}
+.panel-header.static .arrow{display:none;}
+
+/* Body accordion */
+.panel-body{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .3s ease;
+}
+.panel-body.open{
+  max-height:600px; /* cukup untuk semua item */
+  overflow-y:auto;
+}
+.panel-body::-webkit-scrollbar{width:4px;}
+.panel-body::-webkit-scrollbar-track{background:rgba(0,0,0,.3);}
+.panel-body::-webkit-scrollbar-thumb{background:#c8962c;border-radius:2px;}
+
+/* Body panel Syair Generator — selalu terbuka */
+.panel-body.always-open{
+  max-height:none;
+  overflow:visible;
+  padding:10px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+/* =============================================
+   KONTEN SYAIR GENERATOR
+   ============================================= */
+.cg{display:flex;flex-direction:column;gap:3px;}
+.cg label{color:#c8962c;font-size:8px;letter-spacing:1px;text-transform:uppercase;}
+.cg input,.cg select{
+  background:#0d0d0d;border:1px solid #c8962c;border-radius:5px;
+  color:#fff;padding:6px 8px;font-family:'Cinzel',serif;font-size:11px;
+  width:100%;
+}
+.cg input:focus,.cg select:focus{outline:none;border-color:#e8b84b;}
+.btn-row{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
+.btn{
+  border:none;border-radius:6px;padding:9px 10px;
+  font-family:'Cinzel',serif;font-weight:700;font-size:9px;
+  letter-spacing:1px;cursor:pointer;text-transform:uppercase;
+  transition:all .2s;width:100%;
+}
+.btn:hover{transform:scale(1.03);}
+.btn-g{background:linear-gradient(135deg,#c8962c,#e8b84b,#c8962c);color:#000;}
+.btn-r{background:linear-gradient(135deg,#8b0000,#cc0000,#8b0000);color:#fff;}
+.btn-dl{background:linear-gradient(135deg,#003366,#0055aa,#003366);color:#fff;}
+
+
+
+/* =============================================
+   GOLD TEXT & DRAGGABLE (sama seperti sebelumnya)
+   ============================================= */
+.gt{font-family:'Cinzel Decorative',serif;font-weight:900;
+  background:linear-gradient(180deg,#fffbe0 0%,#f5d060 18%,#c8962c 40%,#8b5e0a 58%,#c8962c 76%,#f5d060 92%,#fffbe0 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  text-align:center;display:block;white-space:nowrap;}
+.gt-syair{font-family:'Playfair Display',serif;font-style:italic;
+  background:linear-gradient(180deg,#fffbe0 0%,#f5d060 18%,#c8962c 40%,#8b5e0a 58%,#c8962c 76%,#f5d060 92%,#fffbe0 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  display:block;text-align:center;}
+.dl-mode .gt,.dl-mode .gt-syair{
+  background:none !important;-webkit-background-clip:unset !important;
+  -webkit-text-fill-color:#e8c84a !important;background-clip:unset !important;
+  color:#e8c84a !important;text-shadow:0 2px 8px rgba(0,0,0,.95) !important;filter:none !important;}
+.el{position:absolute;z-index:10;cursor:move;user-select:none;}
+.el:hover{outline:1.5px dashed rgba(100,220,40,.7);}
+.el.active{outline:2px solid rgba(100,220,40,1);z-index:50;}
+.el:hover .el-ctrl{opacity:1;}
+.el-ctrl{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
+  display:flex;gap:3px;align-items:center;background:rgba(0,0,0,.9);
+  border:1px solid #4a8000;border-radius:5px;padding:3px 6px;
+  opacity:0;transition:opacity .15s;pointer-events:auto;white-space:nowrap;z-index:100;}
+.el-ctrl button{background:rgba(200,150,44,.2);border:1px solid rgba(200,150,44,.4);
+  color:#e8b84b;font-size:10px;border-radius:3px;padding:2px 5px;cursor:pointer;
+  font-family:'Cinzel',serif;font-weight:700;line-height:1;}
+.el-ctrl button:hover{background:rgba(200,150,44,.5);}
+.el-ctrl .sv{color:#8adc40;font-size:9px;min-width:26px;text-align:center;font-family:monospace;}
+.rh{position:absolute;bottom:-5px;right:-5px;width:12px;height:12px;
+  background:#4adc20;border-radius:50%;cursor:se-resize;opacity:0;transition:opacity .15s;}
+.el:hover .rh,.el.active .rh{opacity:1;}
+
+/* TOAST & OVERLAY */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);
+  background:linear-gradient(135deg,#003300,#007700);color:#b8ff80;
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;
+  padding:9px 22px;border-radius:7px;border:1px solid #00cc44;
+  z-index:99999;transition:transform .3s;pointer-events:none;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+#dl-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
+#dl-overlay.show{display:flex;}
+#dl-overlay p{color:#e8b84b;font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;}
+.spinner{width:42px;height:42px;border:4px solid rgba(200,150,44,.2);border-top-color:#e8b84b;border-radius:50%;animation:spin .8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="main-layout">
+
+  <!-- CARD -->
+  <div class="cw"><div id="card">
+
+    <div class="el" id="el-logo" style="top:0px;left:313px;">
+      <div class="el-ctrl">
+        <button onclick="rz('el-logo','w',-10)">W-</button><span class="sv" id="sv-lw">324</span><button onclick="rz('el-logo','w',10)">W+</button>
+        <button onclick="rz('el-logo','h',-10)">H-</button><span class="sv" id="sv-lh">116</span><button onclick="rz('el-logo','h',10)">H+</button>
+      </div>
+      <img id="logo-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/logo-mobile.png"
+        crossorigin="anonymous" onerror="this.style.display='none'" alt="LOGO"
+        style="width:324px;height:116px;object-fit:contain;display:block;filter:drop-shadow(0 0 14px rgba(200,150,44,.85));">
+      <div class="rh" data-el="el-logo"></div>
+    </div>
+
+    <div class="el" id="el-date" style="top:128px;left:352px;">
+      <div class="el-ctrl">
+        <button onclick="fs('date-txt',-1)">A-</button><span class="sv" id="sv-dfs">36</span><button onclick="fs('date-txt',1)">A+</button>
+      </div>
+      <span id="date-txt" class="gt" style="font-size:36px;letter-spacing:2px;">30 MEI 2026</span>
+      <div class="rh" data-el="el-date"></div>
+    </div>
+
+    <div class="el" id="el-pasaran" style="top:197px;left:381px;">
+      <div class="el-ctrl">
+        <button onclick="rz('el-pasaran','w',-10)">W-</button><span class="sv" id="sv-pw">216</span><button onclick="rz('el-pasaran','w',10)">W+</button>
+        <button onclick="rz('el-pasaran','h',-10)">H-</button><span class="sv" id="sv-ph">83</span><button onclick="rz('el-pasaran','h',10)">H+</button>
+      </div>
+      <img id="pas-img" src="" crossorigin="anonymous" onerror="this.style.display='none'" alt=""
+        style="width:216px;height:83px;object-fit:contain;display:none;filter:drop-shadow(0 0 18px rgba(200,150,44,.9));">
+      <div class="rh" data-el="el-pasaran"></div>
+    </div>
+
+    <div class="el" id="el-c1" style="top:422px;left:46px;">
+      <div class="el-ctrl"><button onclick="fs('c1',-2)">A-</button><span class="sv" id="sv-c1">46</span><button onclick="fs('c1',2)">A+</button></div>
+      <span id="c1" class="gt" style="font-size:46px;line-height:1;display:block;">3</span>
+      <div class="rh" data-el="el-c1"></div>
+    </div>
+    <div class="el" id="el-c2" style="top:424px;left:215px;">
+      <div class="el-ctrl"><button onclick="fs('c2',-2)">A-</button><span class="sv" id="sv-c2">46</span><button onclick="fs('c2',2)">A+</button></div>
+      <span id="c2" class="gt" style="font-size:46px;line-height:1;display:block;">5</span>
+      <div class="rh" data-el="el-c2"></div>
+    </div>
+    <div class="el" id="el-c3" style="top:581px;left:48px;">
+      <div class="el-ctrl"><button onclick="fs('c3',-2)">A-</button><span class="sv" id="sv-c3">46</span><button onclick="fs('c3',2)">A+</button></div>
+      <span id="c3" class="gt" style="font-size:46px;line-height:1;display:block;">8</span>
+      <div class="rh" data-el="el-c3"></div>
+    </div>
+    <div class="el" id="el-c4" style="top:579px;left:203px;">
+      <div class="el-ctrl"><button onclick="fs('c4',-2)">A-</button><span class="sv" id="sv-c4">46</span><button onclick="fs('c4',2)">A+</button></div>
+      <span id="c4" class="gt" style="font-size:46px;line-height:1;display:block;">9</span>
+      <div class="rh" data-el="el-c4"></div>
+    </div>
+
+    <div class="el" id="el-bbfs" style="top:325px;left:766px;">
+      <div class="el-ctrl"><button onclick="fs('bbfs-num',-1)">A-</button><span class="sv" id="sv-bfs">34</span><button onclick="fs('bbfs-num',1)">A+</button></div>
+      <div id="bbfs-num" class="gt" style="font-size:34px;letter-spacing:4px;line-height:1.55;text-align:center;">1 2 3 4<br>5 6 7 8</div>
+      <div class="rh" data-el="el-bbfs"></div>
+    </div>
+
+    <div class="el" id="el-tarung" style="top:589px;left:744px;">
+      <div class="el-ctrl"><button onclick="fs('tarung-num',-1)">A-</button><span class="sv" id="sv-tfs">31</span><button onclick="fs('tarung-num',1)">A+</button></div>
+      <div id="tarung-num" class="gt" style="font-size:31px;letter-spacing:3px;text-align:center;">1-2-3-4-5</div>
+      <div class="rh" data-el="el-tarung"></div>
+    </div>
+
+    <div class="el" id="el-shio" style="top:283px;left:266px;">
+      <div class="el-ctrl">
+        <button onclick="rz('el-shio','w',-10)">W-</button><span class="sv" id="sv-sw">452</span><button onclick="rz('el-shio','w',10)">W+</button>
+        <button onclick="rz('el-shio','h',-10)">H-</button><span class="sv" id="sv-sh">451</span><button onclick="rz('el-shio','h',10)">H+</button>
+      </div>
+      <img id="shio-img" src="" crossorigin="anonymous" onerror="this.style.display='none'" alt=""
+        style="width:452px;height:451px;object-fit:contain;display:none;filter:drop-shadow(0 0 20px rgba(200,150,44,.7));">
+      <div class="rh" data-el="el-shio"></div>
+    </div>
+
+    <div class="el" id="el-syair" style="top:756px;left:372px;">
+      <div class="el-ctrl"><button onclick="fs('syair-txt',-1)">A-</button><span class="sv" id="sv-sfs">15</span><button onclick="fs('syair-txt',1)">A+</button></div>
+      <span id="syair-txt" class="gt-syair" style="font-size:15px;line-height:1.75;display:block;text-align:center;">–</span>
+      <div class="rh" data-el="el-syair"></div>
+    </div>
+
+  </div></div>
+  <!-- END CARD -->
+
+  <!-- PANEL KANAN — 3 kotak sejajar, lebar sama -->
+  <div class="side-panel">
+
+    <!-- 1. SYAIR GENERATOR (selalu terbuka) -->
+    <div class="panel-box">
+      <div class="panel-header static">
+        <h3>⚜ Syair Generator</h3>
+      </div>
+      <div class="panel-body always-open">
+        <div class="cg">
+          <label>Pasaran</label>
+          <select id="sel-pas" onchange="setPasaran(this.value)">
+            <option value="sgp">Singapore</option><option value="hk">Hongkong</option>
+            <option value="sydney">Sydney</option><option value="macau">Toto Macau</option>
+            <option value="cambodia">Cambodia</option><option value="bangkok">Bangkok</option>
+            <option value="huahin">Huahin</option><option value="poipet">Poipet</option>
+            <option value="brunei">Brunei</option><option value="magnum">Magnum</option>
+            <option value="pcso">PCSO</option><option value="kentucky">Kentucky</option>
+            <option value="california">California</option><option value="florida">Florida</option>
+            <option value="newyork">New York</option><option value="nevada">Nevada</option>
+            <option value="oregon">Oregon</option><option value="carolina">Carolina</option>
+            <option value="bullseye">Bullseye</option><option value="kingkong">King Kong</option>
+            <option value="hokidraw">Hoki Draw</option><option value="totoMali">Toto Mali</option>
+          </select>
+        </div>
+        <div class="cg">
+          <label>Shio</label>
+          <select id="sel-shio" onchange="setShio(this.selectedIndex)">
+            <option value="0">Tikus</option>
+            <option value="1">Kerbau</option>
+            <option value="2">Harimau</option>
+            <option value="3">Kelinci</option>
+            <option value="4">Naga</option>
+            <option value="5">Ular</option>
+            <option value="6">Kuda</option>
+            <option value="7" selected>Kambing</option>
+            <option value="8">Monyet</option>
+            <option value="9">Ayam</option>
+            <option value="10">Anjing</option>
+            <option value="11">Babi</option>
+          </select>
+        </div>
+        <div class="cg"><label>Tanggal</label><input type="date" id="inp-date"></div>
+        <div class="cg"><label>Colok (4 angka)</label><input type="text" id="inp-colok" maxlength="4" placeholder="1234"></div>
+        <div class="cg"><label>BBFS (8 angka)</label><input type="text" id="inp-bbfs" maxlength="8" placeholder="12345678"></div>
+        <div class="cg"><label>Angka Tarung</label><input type="text" id="inp-tarung" maxlength="15" placeholder="1-2-3-4-5"></div>
+        <div class="btn-row">
+          <button class="btn btn-g" onclick="randomAll()">🎲 Acak Semua</button>
+          <button class="btn btn-r" onclick="generate()">⚡ Generate</button>
+          <button class="btn btn-dl" onclick="downloadCard()">⬇ Download PNG</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end side-panel -->
+
+</div><!-- end main-layout -->
+
+<div id="dl-overlay"><div class="spinner"></div><p>Sedang memproses...</p></div>
+<div id="toast">Done</div>
+
+<script>
+const RAW='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/';
+const PASARAN=[
+  {id:'sgp',name:'Singapore',file:'LOGO SINGAPORE.png'},
+  {id:'hk',name:'Hongkong',file:'logo hongkong-lotto.png'},
+  {id:'sydney',name:'Sydney',file:'logo sydney lotto.png'},
+  {id:'macau',name:'Toto Macau',file:'logo toto macau.png'},
+  {id:'cambodia',name:'Cambodia',file:'logo cambodia.png'},
+  {id:'bangkok',name:'Bangkok',file:'logo bangkok.png'},
+  {id:'huahin',name:'Huahin',file:'logo huahin.png'},
+  {id:'poipet',name:'Poipet',file:'logo poipet.png'},
+  {id:'brunei',name:'Brunei',file:'logo brunei.png'},
+  {id:'magnum',name:'Magnum',file:'logo magnum.jpg'},
+  {id:'pcso',name:'PCSO',file:'LOGO PCSO.png'},
+  {id:'kentucky',name:'Kentucky',file:'LOGO KENTUCKY.png'},
+  {id:'california',name:'California',file:'logo california.png'},
+  {id:'florida',name:'Florida',file:'logo florida.png'},
+  {id:'newyork',name:'New York',file:'logo newyork.png'},
+  {id:'nevada',name:'Nevada',file:'logo nevada.png'},
+  {id:'oregon',name:'Oregon',file:'logo oregon.png'},
+  {id:'carolina',name:'Carolina',file:'logo CAROLINa.png'},
+  {id:'bullseye',name:'Bullseye',file:'logo bulseye.png'},
+  {id:'kingkong',name:'King Kong',file:'logo king kong.png'},
+  {id:'hokidraw',name:'Hoki Draw',file:'logo hoki draw.png'},
+  {id:'totoMali',name:'Toto Mali',file:'logo toto mali.png'},
+];
+const SHIO=[
+  {name:'Tikus',file:'shio tikus.png'},{name:'Kerbau',file:'shio kerbau.png'},
+  {name:'Harimau',file:'shio harimau.png'},{name:'Kelinci',file:'shio kelinci.png'},
+  {name:'Naga',file:'shio naga.png'},{name:'Ular',file:'shio ular.png'},
+  {name:'Kuda',file:'shio kuda.png'},{name:'Kambing',file:'shio kambing.png'},
+  {name:'Monyet',file:'shio monyet.png'},{name:'Ayam',file:'shio ayam.png'},
+  {name:'Anjing',file:'shio anjing.png'},{name:'Babi',file:'shio babi.png'},
+];
+const SYAIR=[
+  "Bunga mekar di taman indah,\nAngka jitu membawa berkah.\nSatu dua tiga empat lima,\nRezeki mengalir tiada tara.",
+  "Air mengalir ke laut luas,\nPetunjuk datang terang dan jelas.\nHitung baik angka pilihan,\nMudah-mudahan turun keberuntungan.",
+  "Bintang bersinar di langit malam,\nAngka turun dari kedalaman alam.\nSemoga hoki menyertai kita,\nRezeki lancar tiada dusta.",
+  "Naga emas terbang melayang,\nBawa hoki sepanjang zaman.\nAngka sakti telah tertulis,\nRezeki mengalir tiada habis.",
+  "Bulan purnama bersinar terang,\nAngka jitu kan datang serang.\nSemua petunjuk sudah nyata,\nKemenangan ada di mata.",
+  "Singa mengaum di padang luas,\nAngka hadir terang dan jelas.\nTiga enam delapan sembilan,\nKemenangan ada di tangan.",
+  "Awan berarak di langit biru,\nPetunjuk angka datang selalu.\nSemua hewan membawa tanda,\nNomor jitu ada di sana.",
+  "Dari timur matahari terbit,\nAngka jitu makin mendekat.\nHitung cermat dan teliti,\nRezeki datang pasti.",
+  "Lautan luas penuh misteri,\nAngka sakti hadir kembali.\nDua angka di depan mata,\nHoki datang membawa serta.",
+  "Pohon bambu tumbuh tinggi,\nAngka jitu turun hari ini.\nDua kali tiga sama enam,\nKemenangan pasti akan datang.",
+  "Di balik awan ada cahaya,\nAngka berkilau penuh pesona.\nSemua bilangan sudah terpilih,\nKeberuntungan datang berlipih.",
+  "Roda berputar tiada henti,\nAngka jitu datang kembali.\nSatu hingga sembilan berjajar,\nRezeki mengalir semakin besar.",
+];
+let curPas='bullseye', curShio=7;
+
+function setPasaran(id){
+  curPas=id;
+  const p=PASARAN.find(x=>x.id===id); if(!p)return;
+  const img=document.getElementById('pas-img');
+  img.src=RAW+encodeURIComponent(p.file);
+  img.style.display='block';
+  img.onerror=()=>{img.style.display='none';};
+}
+function setShio(idx){
+  curShio=Number(idx);
+  const s=SHIO[curShio]; if(!s)return;
+  const img=document.getElementById('shio-img');
+  img.src=RAW+encodeURIComponent(s.file);
+  img.style.display='block';
+  img.onerror=()=>{img.style.display='none';};
+  document.getElementById('sel-shio').value=curShio;
+}
+
+/* ===== DRAG ===== */
+function initDrag(){
+  document.querySelectorAll('.el').forEach(el=>{
+    let drag=false,sx,sy,ox,oy;
+    const start=(cx,cy)=>{drag=true;document.querySelectorAll('.el').forEach(x=>x.classList.remove('active'));el.classList.add('active');sx=cx;sy=cy;ox=parseInt(el.style.left)||0;oy=parseInt(el.style.top)||0;};
+    const move=(cx,cy)=>{if(!drag)return;el.style.left=(ox+cx-sx)+'px';el.style.top=(oy+cy-sy)+'px';};
+    const end=()=>{drag=false;};
+    el.addEventListener('mousedown',e=>{if(e.target.closest('.el-ctrl,.rh'))return;start(e.clientX,e.clientY);e.preventDefault();});
+    document.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
+    document.addEventListener('mouseup',end);
+    el.addEventListener('touchstart',e=>{if(e.target.closest('.el-ctrl,.rh'))return;start(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();},{passive:false});
+    document.addEventListener('touchmove',e=>{if(drag){move(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();}},{passive:false});
+    document.addEventListener('touchend',end);
+  });
+}
+
+/* ===== RESIZE ===== */
+function initResize(){
+  document.querySelectorAll('.rh').forEach(handle=>{
+    const elId=handle.dataset.el;
+    let resizing=false,sx,sy,sw,sh;
+    const start=(cx,cy)=>{resizing=true;sx=cx;sy=cy;const el=document.getElementById(elId);const img=el.querySelector('img');if(img){sw=img.offsetWidth;sh=img.offsetHeight;}else{sw=el.offsetWidth;sh=el.offsetHeight;}};
+    const move=(cx,cy)=>{if(!resizing)return;applyRZ(elId,Math.max(20,sw+cx-sx),Math.max(14,sh+cy-sy));};
+    handle.addEventListener('mousedown',e=>{start(e.clientX,e.clientY);e.stopPropagation();e.preventDefault();});
+    document.addEventListener('mousemove',e=>{if(resizing)move(e.clientX,e.clientY);});
+    document.addEventListener('mouseup',()=>{resizing=false;});
+    handle.addEventListener('touchstart',e=>{start(e.touches[0].clientX,e.touches[0].clientY);e.stopPropagation();e.preventDefault();},{passive:false});
+    document.addEventListener('touchmove',e=>{if(resizing)move(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
+    document.addEventListener('touchend',()=>{resizing=false;});
+  });
+}
+function applyRZ(elId,w,h){
+  const el=document.getElementById(elId);const img=el.querySelector('img');if(!img)return;
+  img.style.width=w+'px';img.style.height=h+'px';
+  const wM={'el-logo':'sv-lw','el-pasaran':'sv-pw','el-shio':'sv-sw'};
+  const hM={'el-logo':'sv-lh','el-pasaran':'sv-ph','el-shio':'sv-sh'};
+  if(wM[elId])document.getElementById(wM[elId]).textContent=Math.round(w);
+  if(hM[elId])document.getElementById(hM[elId]).textContent=Math.round(h);
+}
+function rz(elId,axis,delta){
+  const img=document.getElementById(elId).querySelector('img');if(!img)return;
+  if(axis==='w'){const nw=Math.max(20,img.offsetWidth+delta);img.style.width=nw+'px';const sv={'el-logo':'sv-lw','el-pasaran':'sv-pw','el-shio':'sv-sw'}[elId];if(sv)document.getElementById(sv).textContent=nw;}
+  else{const nh=Math.max(14,img.offsetHeight+delta);img.style.height=nh+'px';const sv={'el-logo':'sv-lh','el-pasaran':'sv-ph','el-shio':'sv-sh'}[elId];if(sv)document.getElementById(sv).textContent=nh;}
+}
+function fs(txtId,delta){
+  const el=document.getElementById(txtId);const nf=Math.max(8,parseFloat(el.style.fontSize||16)+delta);
+  el.style.fontSize=nf+'px';
+  const m={'date-txt':'sv-dfs','c1':'sv-c1','c2':'sv-c2','c3':'sv-c3','c4':'sv-c4','bbfs-num':'sv-bfs','tarung-num':'sv-tfs','syair-txt':'sv-sfs'};
+  if(m[txtId])document.getElementById(m[txtId]).textContent=Math.round(nf);
+}
+
+/* ===== RANDOM & GENERATE ===== */
+function rDigits(n){const d=[0,1,2,3,4,5,6,7,8,9];for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d.slice(0,n).sort((a,b)=>a-b).join('');}
+function rTarung(n){const d=[0,1,2,3,4,5,6,7,8,9];for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d.slice(0,n).sort((a,b)=>a-b).join('-');}
+function randomAll(){
+  document.getElementById('inp-colok').value=rDigits(4);
+  document.getElementById('inp-bbfs').value=rDigits(8);
+  document.getElementById('inp-tarung').value=rTarung(5);
+  const pi=Math.floor(Math.random()*PASARAN.length);
+  curPas=PASARAN[pi].id;document.getElementById('sel-pas').value=curPas;
+  setPasaran(curPas);
+  const si=Math.floor(Math.random()*SHIO.length);
+  setShio(si);
+  generate();
+}
+function generate(){
+  const dv=document.getElementById('inp-date').value;
+  if(dv){
+    const dt=new Date(dv+'T00:00:00');
+    const M=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+    document.getElementById('date-txt').textContent=`${dt.getDate()} ${M[dt.getMonth()]} ${dt.getFullYear()}`;
+  }
+  const cv=(document.getElementById('inp-colok').value||rDigits(4)).padEnd(4,'0');
+  ['c1','c2','c3','c4'].forEach((id,i)=>document.getElementById(id).textContent=cv[i]||'?');
+  const bv=document.getElementById('inp-bbfs').value||rDigits(8);
+  document.getElementById('bbfs-num').innerHTML=bv.slice(0,4).split('').join(' ')+'<br>'+bv.slice(4,8).split('').join(' ');
+  document.getElementById('tarung-num').textContent=document.getElementById('inp-tarung').value||rTarung(5);
+  const s=SYAIR[Math.floor(Math.random()*SYAIR.length)];
+  document.getElementById('syair-txt').innerHTML=s.replace(/\n/g,'<br>');
+  setPasaran(curPas);setShio(curShio);
+}
+
+/* ===== DOWNLOAD ===== */
+async function downloadCard(){
+  const overlay=document.getElementById('dl-overlay');
+  overlay.classList.add('show');
+  const card=document.getElementById('card');
+  const ctrls=card.querySelectorAll('.el-ctrl,.rh');
+  ctrls.forEach(el=>el.style.display='none');
+  card.querySelectorAll('.el').forEach(el=>{el.classList.remove('active');el.style.outline='none';});
+  try{
+    const imgs=[...card.querySelectorAll('img')];
+    await Promise.all(imgs.map(img=>{if(img.complete&&img.naturalHeight!==0)return Promise.resolve();return new Promise(res=>{img.onload=res;img.onerror=res;});}));
+    await new Promise(r=>setTimeout(r,300));
+    card.classList.add('dl-mode');
+    await new Promise(r=>setTimeout(r,80));
+    const canvas=await html2canvas(card,{
+      useCORS:true,allowTaint:false,scale:1,width:960,height:960,backgroundColor:null,logging:false,imageTimeout:20000,
+      onclone:(doc)=>{const c=doc.getElementById('card');if(c){c.classList.add('dl-mode');c.querySelectorAll('.el-ctrl,.rh').forEach(el=>el.style.display='none');c.querySelectorAll('.el').forEach(el=>{el.classList.remove('active');el.style.outline='none';});}}
+    });
+    card.classList.remove('dl-mode');
+    const dateStr=document.getElementById('date-txt').textContent.replace(/\s+/g,'-');
+    const pasName=(PASARAN.find(p=>p.id===curPas)||{name:'syair'}).name.replace(/\s+/g,'_');
+    const link=document.createElement('a');
+    link.download=`syair_${pasName}_${dateStr}.png`;
+    link.href=canvas.toDataURL('image/png');
+    link.click();
+  }catch(e){card.classList.remove('dl-mode');alert('Gagal: '+e.message);}
+  finally{ctrls.forEach(el=>el.style.display='');overlay.classList.remove('show');}
+}
+
+function init(){
+  const t=new Date();t.setDate(t.getDate()+1);
+  const y=t.getFullYear(),m=String(t.getMonth()+1).padStart(2,'0'),d=String(t.getDate()).padStart(2,'0');
+  document.getElementById('inp-date').value=`${y}-${m}-${d}`;
+  document.getElementById('sel-pas').value=curPas;
+  document.getElementById('sel-shio').value=curShio;
+  initDrag();initResize();
+  setPasaran(curPas);setShio(curShio);
+  generate();
+}
+init();
+</script>
+</body>
+</html>

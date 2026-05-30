@@ -17,10 +17,6 @@ body{
   min-height:100vh;
   padding:20px;
 }
-
-/* =============================================
-   LAYOUT UTAMA: card kiri + panel kanan
-   ============================================= */
 .main-layout{
   display:flex;
   gap:14px;
@@ -28,8 +24,6 @@ body{
   width:100%;
   max-width:1220px;
 }
-
-/* CARD */
 .cw{flex-shrink:0;}
 #card{
   width:960px;height:960px;
@@ -37,30 +31,22 @@ body{
   background-image:url('https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/background.png');
   background-size:cover;background-position:center;
 }
-
-/* =============================================
-   PANEL KANAN — 3 kotak sama ukuran & posisi
-   ============================================= */
 .side-panel{
   flex-shrink:0;
-  width:220px;          /* ← lebar semua 3 panel sama */
+  width:220px;
   display:flex;
   flex-direction:column;
   gap:10px;
   position:sticky;
   top:20px;
 }
-
-/* Satu kotak panel — ukuran & style identik */
 .panel-box{
-  width:100%;           /* sama semua */
+  width:100%;
   background:linear-gradient(135deg,#1a1a1a,#2a2000);
   border:2px solid #c8962c;
   border-radius:10px;
   overflow:hidden;
 }
-
-/* Header kotak — klik untuk toggle (pasaran & shio) */
 .panel-header{
   display:flex;
   align-items:center;
@@ -68,7 +54,7 @@ body{
   padding:10px 14px;
   cursor:pointer;
   user-select:none;
-  border-bottom:1px solid rgba(200,150,44,.0); /* hidden by default */
+  border-bottom:1px solid rgba(200,150,44,.0);
   transition:border-color .2s;
 }
 .panel-header.open{border-bottom:1px solid rgba(200,150,44,.3);}
@@ -86,26 +72,20 @@ body{
   transition:transform .25s;flex-shrink:0;
 }
 .panel-header.open .arrow{transform:rotate(180deg);}
-
-/* Untuk panel Syair Generator — tidak punya toggle */
 .panel-header.static{cursor:default;}
 .panel-header.static .arrow{display:none;}
-
-/* Body accordion */
 .panel-body{
   max-height:0;
   overflow:hidden;
   transition:max-height .3s ease;
 }
 .panel-body.open{
-  max-height:600px; /* cukup untuk semua item */
+  max-height:600px;
   overflow-y:auto;
 }
 .panel-body::-webkit-scrollbar{width:4px;}
 .panel-body::-webkit-scrollbar-track{background:rgba(0,0,0,.3);}
 .panel-body::-webkit-scrollbar-thumb{background:#c8962c;border-radius:2px;}
-
-/* Body panel Syair Generator — selalu terbuka */
 .panel-body.always-open{
   max-height:none;
   overflow:visible;
@@ -114,10 +94,6 @@ body{
   flex-direction:column;
   gap:8px;
 }
-
-/* =============================================
-   KONTEN SYAIR GENERATOR
-   ============================================= */
 .cg{display:flex;flex-direction:column;gap:3px;}
 .cg label{color:#c8962c;font-size:8px;letter-spacing:1px;text-transform:uppercase;}
 .cg input,.cg select{
@@ -137,12 +113,8 @@ body{
 .btn-g{background:linear-gradient(135deg,#c8962c,#e8b84b,#c8962c);color:#000;}
 .btn-r{background:linear-gradient(135deg,#8b0000,#cc0000,#8b0000);color:#fff;}
 .btn-dl{background:linear-gradient(135deg,#003366,#0055aa,#003366);color:#fff;}
+.btn-save{background:linear-gradient(135deg,#004d00,#00aa44,#004d00);color:#fff;}
 
-
-
-/* =============================================
-   GOLD TEXT & DRAGGABLE (sama seperti sebelumnya)
-   ============================================= */
 .gt{font-family:'Cinzel Decorative',serif;font-weight:900;
   background:linear-gradient(180deg,#fffbe0 0%,#f5d060 18%,#c8962c 40%,#8b5e0a 58%,#c8962c 76%,#f5d060 92%,#fffbe0 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
@@ -172,7 +144,6 @@ body{
   background:#4adc20;border-radius:50%;cursor:se-resize;opacity:0;transition:opacity .15s;}
 .el:hover .rh,.el.active .rh{opacity:1;}
 
-/* TOAST & OVERLAY */
 #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);
   background:linear-gradient(135deg,#003300,#007700);color:#b8ff80;
   font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;
@@ -189,7 +160,6 @@ body{
 <body>
 <div class="main-layout">
 
-  <!-- CARD -->
   <div class="cw"><div id="card">
 
     <div class="el" id="el-logo" style="top:0px;left:313px;">
@@ -271,12 +241,8 @@ body{
     </div>
 
   </div></div>
-  <!-- END CARD -->
 
-  <!-- PANEL KANAN — 3 kotak sejajar, lebar sama -->
   <div class="side-panel">
-
-    <!-- 1. SYAIR GENERATOR (selalu terbuka) -->
     <div class="panel-box">
       <div class="panel-header static">
         <h3>⚜ Syair Generator</h3>
@@ -323,15 +289,15 @@ body{
           <button class="btn btn-g" onclick="randomAll()">🎲 Acak Semua</button>
           <button class="btn btn-r" onclick="generate()">⚡ Generate</button>
           <button class="btn btn-dl" onclick="downloadCard()">⬇ Download PNG</button>
+          <button class="btn btn-save" onclick="savePositions()">💾 Simpan Posisi ke File</button>
         </div>
       </div>
     </div>
+  </div>
 
-  </div><!-- end side-panel -->
+</div>
 
-</div><!-- end main-layout -->
-
-<div id="dl-overlay"><div class="spinner"></div><p>Sedang memproses...</p></div>
+<div id="dl-overlay"><div class="spinner"></div><p id="dl-msg">Sedang memproses...</p></div>
 <div id="toast">Done</div>
 
 <script>
@@ -382,7 +348,109 @@ const SYAIR=[
   "Di balik awan ada cahaya,\nAngka berkilau penuh pesona.\nSemua bilangan sudah terpilih,\nKeberuntungan datang berlipih.",
   "Roda berputar tiada henti,\nAngka jitu datang kembali.\nSatu hingga sembilan berjajar,\nRezeki mengalir semakin besar.",
 ];
-let curPas='bullseye', curShio=7;
+
+// ===== ANTI-REPEAT STATE =====
+let lastPasIdx = -1;
+let lastShioIdx = -1;
+let lastColok = '';
+let lastBBFS = '';
+let lastTarung = '';
+let curPas = 'bullseye';
+let curShio = 7;
+
+// Pick random index, never same as last
+function pickDiff(total, last) {
+  if (total <= 1) return 0;
+  let idx;
+  do { idx = Math.floor(Math.random() * total); } while (idx === last);
+  return idx;
+}
+
+// ===== SYAIR SHUFFLE DECK — semua 12 harus keluar dulu sebelum ada yang diulang =====
+let syairDeck = [];
+let syairUsed = [];
+
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initSyairDeck() {
+  // Buat deck berisi index 0..11, di-shuffle
+  syairDeck = shuffleArray([...Array(SYAIR.length).keys()]);
+  syairUsed = [];
+}
+
+function pickNextSyair() {
+  // Jika deck habis, refill (pastikan index pertama baru ≠ index terakhir yang dipakai)
+  if (syairDeck.length === 0) {
+    const lastUsed = syairUsed[syairUsed.length - 1];
+    let newDeck;
+    do {
+      newDeck = shuffleArray([...Array(SYAIR.length).keys()]);
+    } while (newDeck[0] === lastUsed);
+    syairDeck = newDeck;
+    syairUsed = [];
+  }
+  const idx = syairDeck.shift();
+  syairUsed.push(idx);
+  return idx;
+}
+
+// Generate unique 4-digit colok (never same as last)
+function rColok() {
+  const digits = [0,1,2,3,4,5,6,7,8,9];
+  let result;
+  let tries = 0;
+  do {
+    for (let i = digits.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [digits[i],digits[j]]=[digits[j],digits[i]];
+    }
+    result = digits.slice(0,4).sort((a,b)=>a-b).join('');
+    tries++;
+  } while (result === lastColok && tries < 20);
+  lastColok = result;
+  return result;
+}
+
+// Generate unique 8-digit BBFS (never same as last)
+function rBBFS() {
+  const digits = [0,1,2,3,4,5,6,7,8,9];
+  let result;
+  let tries = 0;
+  do {
+    for (let i = digits.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [digits[i],digits[j]]=[digits[j],digits[i]];
+    }
+    result = digits.slice(0,8).sort((a,b)=>a-b).join('');
+    tries++;
+  } while (result === lastBBFS && tries < 20);
+  lastBBFS = result;
+  return result;
+}
+
+// Generate unique angka tarung (never same as last)
+function rTarung(n) {
+  const digits = [0,1,2,3,4,5,6,7,8,9];
+  let result;
+  let tries = 0;
+  do {
+    for (let i = digits.length-1; i > 0; i--) {
+      const j = Math.floor(Math.random()*(i+1));
+      [digits[i],digits[j]]=[digits[j],digits[i]];
+    }
+    result = digits.slice(0,n).sort((a,b)=>a-b).join('-');
+    tries++;
+  } while (result === lastTarung && tries < 20);
+  lastTarung = result;
+  return result;
+}
 
 function setPasaran(id){
   curPas=id;
@@ -402,11 +470,18 @@ function setShio(idx){
   document.getElementById('sel-shio').value=curShio;
 }
 
-/* ===== DRAG ===== */
+// ===== DRAG =====
 function initDrag(){
   document.querySelectorAll('.el').forEach(el=>{
     let drag=false,sx,sy,ox,oy;
-    const start=(cx,cy)=>{drag=true;document.querySelectorAll('.el').forEach(x=>x.classList.remove('active'));el.classList.add('active');sx=cx;sy=cy;ox=parseInt(el.style.left)||0;oy=parseInt(el.style.top)||0;};
+    const start=(cx,cy)=>{
+      drag=true;
+      document.querySelectorAll('.el').forEach(x=>x.classList.remove('active'));
+      el.classList.add('active');
+      sx=cx;sy=cy;
+      ox=parseInt(el.style.left)||0;
+      oy=parseInt(el.style.top)||0;
+    };
     const move=(cx,cy)=>{if(!drag)return;el.style.left=(ox+cx-sx)+'px';el.style.top=(oy+cy-sy)+'px';};
     const end=()=>{drag=false;};
     el.addEventListener('mousedown',e=>{if(e.target.closest('.el-ctrl,.rh'))return;start(e.clientX,e.clientY);e.preventDefault();});
@@ -418,12 +493,18 @@ function initDrag(){
   });
 }
 
-/* ===== RESIZE ===== */
+// ===== RESIZE =====
 function initResize(){
   document.querySelectorAll('.rh').forEach(handle=>{
     const elId=handle.dataset.el;
     let resizing=false,sx,sy,sw,sh;
-    const start=(cx,cy)=>{resizing=true;sx=cx;sy=cy;const el=document.getElementById(elId);const img=el.querySelector('img');if(img){sw=img.offsetWidth;sh=img.offsetHeight;}else{sw=el.offsetWidth;sh=el.offsetHeight;}};
+    const start=(cx,cy)=>{
+      resizing=true;sx=cx;sy=cy;
+      const el=document.getElementById(elId);
+      const img=el.querySelector('img');
+      if(img){sw=img.offsetWidth;sh=img.offsetHeight;}
+      else{sw=el.offsetWidth;sh=el.offsetHeight;}
+    };
     const move=(cx,cy)=>{if(!resizing)return;applyRZ(elId,Math.max(20,sw+cx-sx),Math.max(14,sh+cy-sy));};
     handle.addEventListener('mousedown',e=>{start(e.clientX,e.clientY);e.stopPropagation();e.preventDefault();});
     document.addEventListener('mousemove',e=>{if(resizing)move(e.clientX,e.clientY);});
@@ -453,20 +534,32 @@ function fs(txtId,delta){
   if(m[txtId])document.getElementById(m[txtId]).textContent=Math.round(nf);
 }
 
-/* ===== RANDOM & GENERATE ===== */
-function rDigits(n){const d=[0,1,2,3,4,5,6,7,8,9];for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d.slice(0,n).sort((a,b)=>a-b).join('');}
-function rTarung(n){const d=[0,1,2,3,4,5,6,7,8,9];for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d.slice(0,n).sort((a,b)=>a-b).join('-');}
+// ===== RANDOM ALL — ANTI-REPEAT =====
 function randomAll(){
-  document.getElementById('inp-colok').value=rDigits(4);
-  document.getElementById('inp-bbfs').value=rDigits(8);
-  document.getElementById('inp-tarung').value=rTarung(5);
-  const pi=Math.floor(Math.random()*PASARAN.length);
-  curPas=PASARAN[pi].id;document.getElementById('sel-pas').value=curPas;
-  setPasaran(curPas);
-  const si=Math.floor(Math.random()*SHIO.length);
-  setShio(si);
+  // Pasaran anti-repeat
+  const piNew = pickDiff(PASARAN.length, lastPasIdx);
+  lastPasIdx = piNew;
+  curPas = PASARAN[piNew].id;
+  document.getElementById('sel-pas').value = curPas;
+
+  // Shio anti-repeat
+  const siNew = pickDiff(SHIO.length, lastShioIdx);
+  lastShioIdx = siNew;
+  curShio = siNew;
+  document.getElementById('sel-shio').value = curShio;
+
+  // Angka anti-repeat
+  const colokNew = rColok();
+  const bbfsNew = rBBFS();
+  const tarungNew = rTarung(5);
+
+  document.getElementById('inp-colok').value = colokNew;
+  document.getElementById('inp-bbfs').value = bbfsNew;
+  document.getElementById('inp-tarung').value = tarungNew;
+
   generate();
 }
+
 function generate(){
   const dv=document.getElementById('inp-date').value;
   if(dv){
@@ -474,19 +567,28 @@ function generate(){
     const M=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
     document.getElementById('date-txt').textContent=`${dt.getDate()} ${M[dt.getMonth()]} ${dt.getFullYear()}`;
   }
-  const cv=(document.getElementById('inp-colok').value||rDigits(4)).padEnd(4,'0');
+
+  const cv=(document.getElementById('inp-colok').value||rColok()).padEnd(4,'0');
   ['c1','c2','c3','c4'].forEach((id,i)=>document.getElementById(id).textContent=cv[i]||'?');
-  const bv=document.getElementById('inp-bbfs').value||rDigits(8);
+
+  const bv=document.getElementById('inp-bbfs').value||rBBFS();
   document.getElementById('bbfs-num').innerHTML=bv.slice(0,4).split('').join(' ')+'<br>'+bv.slice(4,8).split('').join(' ');
+
   document.getElementById('tarung-num').textContent=document.getElementById('inp-tarung').value||rTarung(5);
-  const s=SYAIR[Math.floor(Math.random()*SYAIR.length)];
+
+  // Syair shuffle deck — semua 12 keluar dulu sebelum ada yang diulang
+  const siNew = pickNextSyair();
+  const s = SYAIR[siNew];
   document.getElementById('syair-txt').innerHTML=s.replace(/\n/g,'<br>');
-  setPasaran(curPas);setShio(curShio);
+
+  setPasaran(curPas);
+  setShio(curShio);
 }
 
-/* ===== DOWNLOAD ===== */
+// ===== DOWNLOAD PNG =====
 async function downloadCard(){
   const overlay=document.getElementById('dl-overlay');
+  document.getElementById('dl-msg').textContent='Sedang memproses...';
   overlay.classList.add('show');
   const card=document.getElementById('card');
   const ctrls=card.querySelectorAll('.el-ctrl,.rh');
@@ -513,7 +615,176 @@ async function downloadCard(){
   finally{ctrls.forEach(el=>el.style.display='');overlay.classList.remove('show');}
 }
 
+// ===== SIMPAN POSISI KE FILE =====
+function savePositions(){
+  // Kumpulkan semua posisi & ukuran elemen saat ini
+  const elIds=['el-logo','el-date','el-pasaran','el-c1','el-c2','el-c3','el-c4','el-bbfs','el-tarung','el-shio','el-syair'];
+  const positions={};
+  elIds.forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const img=el.querySelector('img');
+    const txt=el.querySelector('[id]');
+    positions[id]={
+      top:el.style.top,
+      left:el.style.left,
+      imgW:img?img.style.width:'',
+      imgH:img?img.style.height:'',
+      txtFs:txt?txt.style.fontSize:''
+    };
+  });
+
+  // Baca source HTML halaman ini
+  const doctype='<!DOCTYPE html>';
+  let html=document.documentElement.outerHTML;
+
+  // Inject posisi ke dalam HTML sebagai override pada setiap elemen
+  elIds.forEach(id=>{
+    const p=positions[id];
+    if(!p)return;
+
+    // Ganti style top/left pada elemen .el
+    // Pattern: id="el-xxx" style="top:...;left:...;"
+    const elPattern=new RegExp(`(id="${id}"[^>]*style=")([^"]*)(")`, 'g');
+    html=html.replace(elPattern,(match,pre,styleStr,post)=>{
+      // Update top dan left
+      styleStr=styleStr.replace(/top:[^;]+;?/,'').replace(/left:[^;]+;?/,'');
+      styleStr=`top:${p.top};left:${p.left};`+styleStr.trim();
+      return pre+styleStr+post;
+    });
+
+    // Ganti width/height pada img di dalam elemen ini jika ada
+    if(p.imgW){
+      // Cari img setelah id="el-xxx" dan update style width/height
+      // Kita inject style langsung via data attribute untuk keamanan
+    }
+  });
+
+  // Cara lebih reliable: bangun ulang style inline tiap .el
+  // Gunakan DOM snapshot untuk mendapatkan outerHTML card
+  const card=document.getElementById('card');
+  // Clone card, hapus outline/ctrl, ambil HTML-nya
+  const cardClone=card.cloneNode(true);
+  cardClone.querySelectorAll('.el-ctrl').forEach(el=>el.remove());
+  cardClone.querySelectorAll('.rh').forEach(el=>el.remove());
+  cardClone.querySelectorAll('.el').forEach(el=>{
+    el.classList.remove('active');
+    el.style.outline='none';
+    el.style.cursor='move';
+  });
+  const cardHTML=cardClone.outerHTML;
+
+  // Bangun HTML baru dengan card HTML yang sudah berisi posisi terkini
+  const fullHTML=document.documentElement.outerHTML;
+  // Ganti blok card dengan versi yang sudah ter-update
+  const cardStart=fullHTML.indexOf('<div class="cw"><div id="card">');
+  const cardEnd=fullHTML.indexOf('</div></div>\n  <!-- END CARD -->');
+  let newHTML;
+  if(cardStart>-1&&cardEnd>-1){
+    newHTML=fullHTML.substring(0,cardStart)+'<div class="cw">'+cardHTML+fullHTML.substring(cardEnd+'</div></div>\n  <!-- END CARD -->'.length);
+  } else {
+    // fallback: ganti seluruh #card innerHTML
+    newHTML=fullHTML.replace(/<div id="card"[^>]*>[\s\S]*?<\/div>\s*<\/div>\s*<!-- END CARD -->/, '<div class="cw">'+cardHTML);
+  }
+
+  // Gunakan metode yang lebih robust: serialisasi posisi via script inject
+  savePositionsRobust(positions);
+}
+
+function savePositionsRobust(positions){
+  // Ambil full source HTML
+  const src=`<!DOCTYPE html>\n`+document.documentElement.outerHTML;
+
+  // Parse dan modifikasi: ganti style setiap .el berdasarkan posisi aktual dari DOM
+  const card=document.getElementById('card');
+  const elEls=card.querySelectorAll('.el');
+  
+  // Buat map id -> style string terkini dari DOM
+  const styleMap={};
+  elEls.forEach(el=>{
+    const id=el.id;
+    // Ambil computed/actual style
+    const top=el.style.top||'0px';
+    const left=el.style.left||'0px';
+    // Untuk img dalam el
+    const img=el.querySelector('img');
+    const imgStyle=img?`width:${img.style.width};height:${img.style.height};`:'';
+    styleMap[id]={top,left,imgStyle,el};
+  });
+
+  // Rekonstruksi: ganti setiap occurance id="el-xxx" style="..."  
+  let newSrc=src;
+  
+  Object.entries(styleMap).forEach(([id,{top,left}])=>{
+    // Match: <div class="el" id="el-xxx" style="...">
+    const re=new RegExp(`(<div class="el" id="${id}" style=")[^"]*(")`,'g');
+    newSrc=newSrc.replace(re,`$1top:${top};left:${left};$2`);
+  });
+
+  // Ganti juga ukuran img di dalam tiap el
+  // img logo
+  const logoImg=document.getElementById('logo-img');
+  if(logoImg){
+    const re=/(id="logo-img"[^>]*style=")[^"]*(")/g;
+    newSrc=newSrc.replace(re,(m,pre,post)=>{
+      return `${pre}width:${logoImg.style.width};height:${logoImg.style.height};object-fit:contain;display:block;filter:drop-shadow(0 0 14px rgba(200,150,44,.85));${post}`;
+    });
+  }
+  const pasImg=document.getElementById('pas-img');
+  if(pasImg){
+    const re=/(id="pas-img"[^>]*style=")[^"]*(")/g;
+    newSrc=newSrc.replace(re,(m,pre,post)=>{
+      return `${pre}width:${pasImg.style.width};height:${pasImg.style.height};object-fit:contain;display:${pasImg.style.display||'none'};filter:drop-shadow(0 0 18px rgba(200,150,44,.9));${post}`;
+    });
+  }
+  const shioImg=document.getElementById('shio-img');
+  if(shioImg){
+    const re=/(id="shio-img"[^>]*style=")[^"]*(")/g;
+    newSrc=newSrc.replace(re,(m,pre,post)=>{
+      return `${pre}width:${shioImg.style.width};height:${shioImg.style.height};object-fit:contain;display:${shioImg.style.display||'none'};filter:drop-shadow(0 0 20px rgba(200,150,44,.7));${post}`;
+    });
+  }
+
+  // Ganti ukuran font text elements
+  const fontEls=[
+    {id:'date-txt', extra:'letter-spacing:2px;'},
+    {id:'c1', extra:'line-height:1;display:block;'},
+    {id:'c2', extra:'line-height:1;display:block;'},
+    {id:'c3', extra:'line-height:1;display:block;'},
+    {id:'c4', extra:'line-height:1;display:block;'},
+    {id:'bbfs-num', extra:'letter-spacing:4px;line-height:1.55;text-align:center;'},
+    {id:'tarung-num', extra:'letter-spacing:3px;text-align:center;'},
+    {id:'syair-txt', extra:'line-height:1.75;display:block;text-align:center;'},
+  ];
+  fontEls.forEach(({id,extra})=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const fs=el.style.fontSize||'16px';
+    const re=new RegExp(`(id="${id}"[^>]*style=")[^"]*(")`,'g');
+    newSrc=newSrc.replace(re,`$1font-size:${fs};${extra}$2`);
+  });
+
+  // Download file HTML
+  const blob=new Blob([newSrc],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
+  link.download='syair_generator_saved.html';
+  link.href=url;
+  link.click();
+  setTimeout(()=>URL.revokeObjectURL(url),3000);
+
+  showToast('✅ Posisi tersimpan ke file!');
+}
+
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg||'Done';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
 function init(){
+  initSyairDeck();
   const t=new Date();t.setDate(t.getDate()+1);
   const y=t.getFullYear(),m=String(t.getMonth()+1).padStart(2,'0'),d=String(t.getDate()).padStart(2,'0');
   document.getElementById('inp-date').value=`${y}-${m}-${d}`;

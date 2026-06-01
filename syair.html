@@ -785,15 +785,15 @@ function showToast(msg){
 
 function init(){
   initSyairDeck();
+  // Set tanggal default = besok
   const t=new Date();t.setDate(t.getDate()+1);
   const y=t.getFullYear(),m=String(t.getMonth()+1).padStart(2,'0'),d=String(t.getDate()).padStart(2,'0');
   document.getElementById('inp-date').value=`${y}-${m}-${d}`;
-  document.getElementById('sel-pas').value=curPas;
-  document.getElementById('sel-shio').value=curShio;
   initDrag();initResize();
-  setPasaran(curPas);setShio(curShio);
-  generate();
+  // Acak semua otomatis setiap kali file dibuka
+  randomAll();
 }
+
 init();
 </script>
 </body>

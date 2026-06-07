@@ -541,8 +541,9 @@
                 <button class="remove-file" id="removeAdmin" title="Hapus"><i class="fas fa-times"></i></button>
             </div>
             <div class="format-hint">
-                <span class="col-label">Kolom yang dipakai:</span>
-                A = Akun Pemain &nbsp;|&nbsp; C = Jumlah Operator &nbsp;|&nbsp; E = No. Rek Pembayar (KEY)<br>
+                <span class="col-label">Kolom yang dipakai (auto-detect):</span><br>
+                <span style="color:var(--blue);font-weight:600">Format 1</span> → A = Jumlah &nbsp;|&nbsp; C = Dari Rekening Bank (KEY) &nbsp;|&nbsp; L = UserId<br>
+                <span style="color:var(--text2);font-weight:600">Format 2</span> → A = Akun Pemain &nbsp;|&nbsp; C = Jumlah Operator &nbsp;|&nbsp; E = No. Rek Pembayar (KEY)<br>
                 Baris 1 = header (otomatis di-skip)
             </div>
         </div>
@@ -690,10 +691,15 @@
 // ─── State ───────────────────────────────────────────────────────────────────
 let adminRows       = [];
 let qrisRows        = [];
-let qrisKeyCol      = 1;     // auto-detected per format
-let qrisAmtCol      = 2;     // auto-detected per format
-let qrisStripDec    = false; // strip ",00" / ".00" decimal suffix (P2MIH)
-let qrisTypeDetected = '';   // 'minera' | 'vip' | 'xpay' | 'p2mih'
+let qrisKeyCol      = 1;
+let qrisAmtCol      = 2;
+let qrisStripDec    = false;
+let qrisTypeDetected = '';
+
+// Admin column indices (auto-detected from header)
+let adminKeyCol     = 4;  // default: col E = Nomor Rekening Pembayar
+let adminAmtCol     = 2;  // default: col C = Jumlah Operator
+let adminAccCol     = 0;  // default: col A = Akun Pemain
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function parseNum(v) {
@@ -775,6 +781,18 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
             if (err) { showToast('Gagal baca file: ' + file.name, 'err'); return; }
             if (target === 'admin') {
                 adminRows = data;
+                // Auto-detect admin format from header (already lowercased)
+                if (header[0] === 'jumlah') {
+                    // New format: A=Jumlah, C=Dari Rekening Bank, L=UserId
+                    adminAmtCol = 0;
+                    adminKeyCol = 2;
+                    adminAccCol = 11;
+                } else {
+                    // Old format: A=Akun Pemain, C=Jumlah Operator, E=Nomor Rekening Pembayar
+                    adminAmtCol = 2;
+                    adminKeyCol = 4;
+                    adminAccCol = 0;
+                }
             } else {
                 qrisRows     = data;
                 qrisStripDec = false; // reset
@@ -830,7 +848,7 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
 
     remove.addEventListener('click', e => {
         e.stopPropagation();
-        if (target === 'admin') adminRows = [];
+        if (target === 'admin') { adminRows = []; adminKeyCol = 4; adminAmtCol = 2; adminAccCol = 0; }
         else { qrisRows = []; qrisKeyCol = 1; qrisAmtCol = 2; qrisStripDec = false; qrisTypeDetected = ''; }
         input.value = '';
         prev.classList.remove('show');
@@ -851,13 +869,13 @@ document.getElementById('btnCompare').addEventListener('click', () => {
     // XPay:         keyCol=9(J partner_id), amtCol=2(C record_value), strip decimal
     // P2MIH:        keyCol=3(D order_id),   amtCol=5(F amount),       strip decimal
 
-    const adminMap = new Map(); // noRek(E) → {akunPemain, nominal, noRek}
+    const adminMap = new Map(); // key → {akunPemain, nominal, noRek}
     adminRows.forEach(r => {
-        const noRek = String(r[4] ?? '').trim();
+        const noRek = String(r[adminKeyCol] ?? '').trim();
         if (!noRek) return;
         adminMap.set(noRek, {
-            akunPemain: String(r[0] ?? '').trim(),
-            nominal:    parseNum(r[2]),
+            akunPemain: String(r[adminAccCol] ?? '').trim(),
+            nominal:    parseAmt(r[adminAmtCol]),
             noRek
         });
     });

@@ -740,8 +740,8 @@ function showNotification(message, isSuccess = true) {
    10 Tujuan Bank        ← bank untuk WITHDRAW
    11 UserId
 ============================================================ */
+/* Parse satu baris CSV — handle quoted fields dan Excel ="..." injection */
 function parseCSVLine(line) {
-    // Handle quoted CSV fields (nilai bisa mengandung koma)
     const result = [];
     let cur = '', inQ = false;
     for (let i = 0; i < line.length; i++) {
@@ -757,13 +757,30 @@ function parseCSVLine(line) {
         }
     }
     result.push(cur.trim());
-    return result;
+    // Strip Excel injection wrapper ="nilai" → nilai  (format: ="...") 
+    return result.map(v => {
+        v = v.trim();
+        if (v.startsWith('=\"') && v.endsWith('\"')) v = v.slice(2, -1);
+        return v.trim();
+    });
 }
 
+/* Deteksi baris header — support format lama (kolom 0=Jumlah) dan baru (kolom 0=Tanggal) */
 function isHeaderLine(tokens) {
     if (!tokens || !tokens.length) return false;
     const first = (tokens[0] || '').toLowerCase();
-    return first.includes('jumlah') || first.includes('amount') || first === 'no';
+    return first.includes('jumlah') || first.includes('tanggal') ||
+           first.includes('amount') || first.includes('date') || first === 'no';
+}
+
+/* Deteksi format kolom secara otomatis berdasarkan posisi kolom Tindakan */
+function detectFormat(tokens) {
+    // Format LAMA:  idx0=Jumlah, idx4=DariBank, idx6=Tindakan, idx10=TujuanBank
+    // Format BARU:  idx0=Tanggal, idx2=Tindakan, idx5=DariBank, idx6=TujuanBank, idx9=Jumlah
+    // Deteksi: cek apakah tokens[2] berisi kata Deposit/Withdraw/1/2
+    const t2 = (tokens[2] || '').toLowerCase();
+    if (t2 === 'deposit' || t2 === 'withdraw' || t2 === '1' || t2 === '2') return 'new';
+    return 'old';
 }
 
 /* ============================================================
@@ -843,28 +860,39 @@ function tambahData() {
         if (tokens.length !== 12) { fail++; return; }
 
         try {
-            const jumlah = parseFloat(tokens[0].replace(/,/g, '')) || 0;
+            const fmt = detectFormat(tokens);
 
-            // Support tindakan angka (1/2) ATAU teks ("Deposit"/"Withdraw")
-            const tindakanRaw = tokens[6].trim().toLowerCase();
+            let jumlah, tindakanRaw, dariBank, tujuanBank, operator;
+
+            if (fmt === 'new') {
+                // Format BARU: Tanggal|UserId|Tindakan|DariNama|DariRek|DariBank|TujuanBank|RekTujuan|NamaTujuan|Jumlah|Status|Operator
+                // idx:         0      |1     |2       |3       |4      |5       |6         |7        |8         |9     |10    |11
+                tindakanRaw = tokens[2].trim().toLowerCase();
+                dariBank    = tokens[5].trim().toUpperCase();
+                tujuanBank  = tokens[6].trim().toUpperCase();
+                jumlah      = parseFloat(tokens[9].replace(/,/g, '')) || 0;
+                operator    = tokens[11].trim();
+            } else {
+                // Format LAMA: Jumlah|Tanggal|DariRek|DariNama|DariBank|Status|Tindakan|Operator|RekTujuan|NamaTujuan|TujuanBank|UserId
+                // idx:         0     |1      |2      |3       |4       |5     |6       |7       |8        |9         |10        |11
+                tindakanRaw = tokens[6].trim().toLowerCase();
+                dariBank    = tokens[4].trim().toUpperCase();
+                tujuanBank  = tokens[10].trim().toUpperCase();
+                jumlah      = parseFloat(tokens[0].replace(/,/g, '')) || 0;
+                operator    = tokens[7].trim();
+            }
+
             let tindakan;
             if (tindakanRaw === '1' || tindakanRaw === 'deposit') tindakan = 1;
             else if (tindakanRaw === '2' || tindakanRaw === 'withdraw') tindakan = 2;
             else { fail++; return; }
 
             transactionData.push({
-                jumlah:          jumlah,
-                tanggal:         tokens[1],
-                dariRekeningBank: tokens[2],
-                dariNamaBank:    tokens[3],
-                dariBank:        tokens[4].trim().toUpperCase(),  // bank DEPOSIT
-                status:          tokens[5],
-                tindakan:        tindakan,                        // 1=Deposit, 2=WD
-                operator:        tokens[7].trim(),
-                rekTujuan:       tokens[8],
-                namaTujuan:      tokens[9],
-                tujuanBank:      tokens[10].trim().toUpperCase(), // bank WITHDRAW
-                userId:          tokens[11],
+                jumlah,
+                tindakan,   // 1=Deposit, 2=Withdraw
+                dariBank,   // bank untuk Deposit
+                tujuanBank, // bank untuk Withdraw
+                operator,
             });
             ok++;
         } catch { fail++; }

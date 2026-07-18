@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Arena — Panduan Sportsbook Lengkap</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-deep: #06060c;
+            --bg-panel: #0e0e18;
+            --bg-card: #111120;
+            --bg-card-hover: #16162a;
+            --gold: #d4a843;
+            --gold-bright: #f5c542;
+            --gold-dim: #9a7a2e;
+            --gold-glow: rgba(212,168,67,.12);
+            --border: rgba(212,168,67,.15);
+            --border-hover: rgba(212,168,67,.35);
+            --text: #d8d0c4;
+            --text-muted: #8a8278;
+            --text-heading: #f0e8da;
+            --win: #4caf50;
+            --lose: #ef4444;
+            --half: #f59e0b;
+            --draw: #60a5fa;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body {
+            font-family: Inter, 'Segoe UI', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        body::before {
+            content:""; position:fixed; inset:0; pointer-events:none;
+            background:
+                radial-gradient(ellipse at 20% 0%, rgba(212,168,67,.06), transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(139,32,32,.05), transparent 50%);
+            z-index:0;
+        }
+
+        .toast {
+            position:fixed; bottom:30px; left:50%;
+            transform:translateX(-50%) translateY(80px);
+            background:linear-gradient(135deg,#1a1a2e,#111120);
+            border:1px solid var(--gold); color:var(--gold-bright);
+            padding:12px 28px; border-radius:60px;
+            font-weight:700; font-size:14px;
+            box-shadow:0 8px 30px rgba(0,0,0,.6),0 0 20px rgba(212,168,67,.15);
+            opacity:0; transition:all .4s ease; z-index:999;
+        }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+        .wrapper { max-width:1400px; margin:0 auto; padding:16px; position:relative; z-index:1; }
+
+        /* ── HERO ── */
+        .hero {
+            position:relative; border-radius:24px; padding:52px 44px 48px; margin-bottom:20px; overflow:hidden;
+            display:grid; grid-template-columns:1fr 1fr; align-items:center; gap:24px; min-height:420px;
+            background:linear-gradient(135deg,rgba(6,6,12,.97),rgba(14,14,24,.94),rgba(20,18,12,.88));
+            border:1px solid var(--border);
+            box-shadow:0 20px 60px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.03);
+        }
+        .hero::before {
+            content:""; position:absolute; inset:0; pointer-events:none; z-index:1;
+            background:radial-gradient(circle at 85% 15%,rgba(212,168,67,.10),transparent 40%),
+                        radial-gradient(circle at 10% 85%,rgba(139,32,32,.06),transparent 40%);
+        }
+        .hero-eyebrow {
+            display:inline-flex; align-items:center; gap:8px;
+            border:1px solid rgba(212,168,67,.3); background:rgba(212,168,67,.08);
+            color:var(--gold); padding:6px 14px; border-radius:999px;
+            font-size:11px; font-weight:800; letter-spacing:1.6px; text-transform:uppercase;
+            position:relative; z-index:2;
+        }
+        .hero-eyebrow::before {
+            content:""; width:7px; height:7px; border-radius:50%;
+            background:var(--gold-bright); box-shadow:0 0 10px var(--gold-bright);
+            animation:pulse 1.4s infinite;
+        }
+        @keyframes pulse { 50%{opacity:.3;transform:scale(.7)} }
+        .hero h1 {
+            font-family:Cinzel,serif; font-size:clamp(32px,5vw,64px);
+            font-weight:900; line-height:1; letter-spacing:-2px; color:#fff;
+            margin:20px 0 14px; position:relative; z-index:2; max-width:700px;
+        }
+        .hero h1 span {
+            background:linear-gradient(90deg,var(--gold-bright),var(--gold),#e8c96a);
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+        }
+        .hero>p { font-size:15px; line-height:1.7; color:#a09888; max-width:580px; position:relative; z-index:2; }
+        .hero-tools { display:flex; gap:10px; flex-wrap:wrap; margin-top:22px; position:relative; z-index:2; }
+        .hero-search {
+            flex:1; min-width:min(320px,100%); display:flex; align-items:center; gap:10px;
+            background:rgba(0,0,0,.35); border:1px solid var(--border); padding:0 14px; border-radius:12px; transition:.25s;
+        }
+        .hero-search:focus-within { border-color:var(--gold); box-shadow:0 0 0 3px rgba(212,168,67,.1); }
+        .hero-search input { width:100%; height:46px; border:0; outline:0; background:transparent; color:#fff; font-size:14px; }
+        .hero-search input::placeholder { color:#6a6258; }
+        .search-clear { border:0; background:transparent; color:#6a6258; cursor:pointer; font-size:18px; display:none; }
+        .search-clear.visible { display:block; }
+        .hero-btn {
+            height:46px; padding:0 22px;
+            background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+            color:#0a0a0f; border:0; border-radius:12px;
+            font-family:Cinzel,serif; font-weight:800; font-size:13px;
+            cursor:pointer; letter-spacing:.5px; box-shadow:0 8px 20px rgba(212,168,67,.2); transition:.2s;
+        }
+        .hero-btn:hover { transform:translateY(-1px); box-shadow:0 12px 28px rgba(212,168,67,.3); }
+        .search-info { margin-top:8px; color:#6a6258; font-size:12px; position:relative; z-index:2; min-height:18px; }
+
+        /* ── STATS ── */
+        .stats-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:18px; }
+        .stat-box { display:flex; align-items:center; gap:12px; padding:16px; background:var(--bg-card); border:1px solid var(--border); border-radius:14px; }
+        .stat-icon { width:40px; height:40px; display:grid; place-items:center; font-size:18px; background:var(--gold-glow); border:1px solid rgba(212,168,67,.2); border-radius:10px; }
+        .stat-box strong { color:#fff; font-size:15px; display:block; }
+        .stat-box small { color:var(--text-muted); font-size:11px; }
+
+        /* ── HEADER BAR ── */
+        .header-bar {
+            position:sticky; top:8px; z-index:50;
+            display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;
+            padding:14px 18px; background:rgba(10,10,16,.88); backdrop-filter:blur(16px);
+            border:1px solid var(--border); border-radius:16px; margin-bottom:14px;
+            box-shadow:0 10px 30px rgba(0,0,0,.3);
+        }
+        .header-bar h2 {
+            font-family:Cinzel,serif; font-size:18px; font-weight:800;
+            background:linear-gradient(90deg,#fff,var(--gold-bright));
+            -webkit-background-clip:text; background-clip:text; color:transparent;
+        }
+        .header-bar .tag { font-size:12px; color:var(--gold); background:rgba(212,168,67,.08); border:1px solid rgba(212,168,67,.18); padding:4px 14px; border-radius:40px; }
+        .btn-copy-all {
+            background:linear-gradient(135deg,var(--gold),var(--gold-dim));
+            color:#0a0a0f; border:0; padding:8px 20px; border-radius:40px;
+            font-weight:800; font-size:13px; cursor:pointer; transition:.2s;
+        }
+        .btn-copy-all:hover { transform:scale(1.03); }
+
+        /* ── TABS ── */
+        .tabs-nav {
+            position:sticky; top:76px; z-index:45;
+            display:flex; gap:6px; overflow-x:auto; padding:10px; margin-bottom:20px;
+            background:rgba(10,10,16,.88); backdrop-filter:blur(16px);
+            border:1px solid var(--border); border-radius:14px;
+            box-shadow:0 10px 28px rgba(0,0,0,.25); scrollbar-width:thin;
+        }
+        .tabs-nav::-webkit-scrollbar { height:3px; }
+        .tabs-nav::-webkit-scrollbar-thumb { background:rgba(212,168,67,.3); border-radius:99px; }
+        .tab-btn {
+            white-space:nowrap; background:transparent; border:1px solid transparent;
+            color:var(--text-muted); font-size:13px; font-weight:700;
+            padding:8px 16px; border-radius:10px; cursor:pointer; transition:.2s;
+        }
+        .tab-btn:hover { color:#fff; background:rgba(212,168,67,.08); }
+        .tab-btn.active {
+            color:#0a0a0f; background:linear-gradient(135deg,var(--gold-bright),var(--gold));
+            border-color:rgba(255,255,255,.2); box-shadow:0 4px 14px rgba(212,168,67,.2);
+        }
+        .tab-content { display:none; animation:fadeIn .3s ease; }
+        .tab-content.active { display:block; }
+        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+        /* ── TAB TITLE ── */
+        .tab-title {
+            font-family:Cinzel,serif; font-size:20px; font-weight:800; color:var(--text-heading);
+            padding:16px 20px; border-radius:14px;
+            background:linear-gradient(90deg,rgba(212,168,67,.1),transparent);
+            border-left:4px solid var(--gold); margin-bottom:20px;
+            display:flex; align-items:center; gap:10px;
+        }
+        .tab-title .badge { font-family:Inter,sans-serif; font-size:11px; font-weight:700; background:var(--gold); color:#0a0a0f; padding:3px 12px; border-radius:40px; }
+
+        /* ── CARDS ── */
+        .card {
+            background:var(--bg-card); border:1px solid var(--border); border-radius:16px;
+            padding:22px 24px; margin-bottom:20px; position:relative; transition:.25s;
+        }
+        .card::before {
+            content:""; position:absolute; left:0; top:16px; bottom:16px; width:3px;
+            border-radius:0 6px 6px 0; background:linear-gradient(var(--gold),transparent); opacity:.4;
+        }
+        .card:hover { border-color:var(--border-hover); transform:translateY(-2px); box-shadow:0 14px 40px rgba(0,0,0,.2); }
+        .card-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:14px; }
+        .card-head h3 { font-size:16px; font-weight:700; color:var(--text-heading); }
+        .copy-btn {
+            background:rgba(212,168,67,.06); border:1px solid rgba(212,168,67,.18); color:var(--gold);
+            padding:4px 14px; border-radius:30px; font-size:11px; font-weight:700;
+            cursor:pointer; transition:.2s; display:flex; align-items:center; gap:5px;
+        }
+        .copy-btn:hover { background:rgba(212,168,67,.14); border-color:var(--gold); }
+        .copy-btn.copied { background:rgba(76,175,80,.15); border-color:var(--win); color:var(--win); }
+
+        p, li { line-height:1.65; font-size:14px; }
+        ul, ol { padding-left:22px; margin:8px 0 12px; }
+        li { margin-bottom:4px; }
+        strong { color:var(--text-heading); }
+
+        .table-wrap { overflow-x:auto; margin:14px 0 8px; }
+        table { width:100%; border-collapse:collapse; font-size:13px; min-width:500px; }
+        th { background:linear-gradient(180deg,rgba(212,168,67,.18),rgba(212,168,67,.08)); color:var(--gold-bright); font-weight:700; padding:10px; text-align:left; border-bottom:2px solid rgba(212,168,67,.25); white-space:nowrap; }
+        td { padding:8px 10px; border-bottom:1px solid rgba(212,168,67,.08); color:var(--text); }
+        tr:last-child td { border-bottom:none; }
+        tbody tr:hover td { background:rgba(212,168,67,.04); }
+        .w { color:var(--win); font-weight:700; }
+        .l { color:var(--lose); font-weight:700; }
+        .h { color:var(--half); font-weight:700; }
+        .d { color:var(--draw); font-weight:700; }
+
+        .note { background:rgba(212,168,67,.06); border-left:5px solid var(--gold); border-radius:10px; padding:14px 18px; margin:16px 0; }
+        .note strong { color:var(--gold-bright); }
+        .code-block { background:#08080f; border:1px solid rgba(212,168,67,.12); border-radius:10px; padding:12px 16px; margin:10px 0; font-family:'Courier New',monospace; color:var(--gold-bright); white-space:pre-wrap; word-break:break-word; font-size:13px; }
+
+        .dbox { background:rgba(6,6,12,.6); border-radius:12px; padding:14px 18px; margin-bottom:12px; border-left:4px solid var(--gold-dim); }
+        .dbox h4 { font-size:15px; margin-bottom:6px; }
+        .dbox:last-child { margin-bottom:0; }
+
+        .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+
+        .htft-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:10px; margin-top:10px; }
+        .htft-item { background:rgba(6,6,12,.6); border-radius:10px; padding:12px 16px; border:1px solid var(--border); font-size:13px; }
+        .htft-item strong { color:var(--gold); }
+
+        .odds-subnav { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:18px; padding-bottom:12px; border-bottom:1px solid var(--border); }
+        .sub-tab { background:transparent; border:0; color:var(--text-muted); font-size:13px; font-weight:700; padding:6px 14px; border-radius:30px; cursor:pointer; transition:.2s; }
+        .sub-tab:hover { color:#fff; background:rgba(212,168,67,.08); }
+        .sub-tab.active-sub { background:var(--gold); color:#0a0a0f; }
+        .odds-card { display:none; animation:fadeIn .3s ease; }
+        .odds-card.active-odds { display:block; }
+
+        .faq-item { border-bottom:1px solid var(--border); padding:14px 0; }
+        .faq-item:last-child { border-bottom:none; }
+        .faq-q { font-weight:700; color:var(--text-heading); font-size:14px; }
+        .faq-a { color:var(--text-muted); margin-top:4px; padding-left:10px; border-left:3px solid var(--gold); font-size:13px; }
+
+        .no-result { display:none; padding:24px; text-align:center; border:1px dashed rgba(212,168,67,.3); border-radius:14px; color:var(--text-muted); background:rgba(212,168,67,.03); margin-bottom:18px; }
+        .footer-note { text-align:center; color:var(--text-muted); font-size:12px; border-top:1px solid var(--border); padding-top:20px; margin-top:28px; }
+
+        /* ── CINEMATIC HERO VISUAL ── */
+        .hero {
+            display:grid; grid-template-columns:.88fr 1.12fr; align-items:center; gap:24px;
+            isolation:isolate;
+        }
+        .hero-copy { position:relative; z-index:8; max-width:680px; }
+        .realistic-hero-visual {
+            position:absolute; inset:-2px -2px -2px 29%; z-index:0;
+            display:block; overflow:hidden; pointer-events:none;
+            -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.08) 9%,#000 34%,#000 100%);
+            mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.08) 9%,#000 34%,#000 100%);
+        }
+        .real-match-scene {
+            position:absolute; inset:0; overflow:hidden;
+            border-radius:0 24px 24px 0; background:#060610;
+            border:1px solid rgba(212,168,67,.18);
+            box-shadow:0 32px 85px rgba(0,0,0,.56),0 0 55px rgba(212,168,67,.08);
+        }
+        .real-match-scene::before {
+            content:""; position:absolute; inset:0; z-index:4; pointer-events:none;
+            background:linear-gradient(90deg,rgba(0,0,0,.44),transparent 31%,transparent 78%,rgba(0,0,0,.15)),
+                        linear-gradient(180deg,rgba(5,5,15,.05),transparent 43%,rgba(0,0,0,.30));
+        }
+        .real-match-scene::after {
+            content:""; position:absolute; inset:-55%; z-index:5; pointer-events:none;
+            background:linear-gradient(115deg,transparent 42%,rgba(255,255,255,.14) 49%,transparent 56%);
+            transform:translateX(-58%) rotate(4deg);
+            animation:cinematicSweep 6.8s ease-in-out infinite; mix-blend-mode:screen;
+        }
+        .real-match-image {
+            width:100%; height:100%; object-fit:cover; object-position:58% 50%;
+            display:block; user-select:none;
+            filter:saturate(1.06) contrast(1.09) brightness(.80);
+            transform:scale(1.045);
+            animation:cinematicCamera 10s ease-in-out infinite alternate; will-change:transform;
+        }
+        .scene-vignette {
+            position:absolute; inset:0; z-index:3; pointer-events:none;
+            background:linear-gradient(90deg,rgba(6,6,12,.74),transparent 30%),
+                        linear-gradient(180deg,transparent 58%,rgba(6,6,12,.48));
+            box-shadow:inset 95px 0 120px rgba(6,6,12,.62),inset 0 -70px 85px rgba(6,6,12,.48),inset 0 0 65px rgba(0,0,0,.18);
+        }
+        .scene-light {
+            position:absolute; z-index:2; border-radius:50%; filter:blur(12px);
+            opacity:.6; mix-blend-mode:screen; pointer-events:none;
+        }
+        .scene-light-one {
+            width:160px; height:160px; right:-42px; top:-58px;
+            background:radial-gradient(circle,rgba(212,188,140,.7),transparent 67%);
+            animation:floodPulse 3.4s ease-in-out infinite;
+        }
+        .scene-light-two {
+            width:120px; height:120px; left:39%; top:4%;
+            background:radial-gradient(circle,rgba(212,168,67,.4),transparent 68%);
+            animation:floodPulse 4.4s 1s ease-in-out infinite;
+        }
+        .speed-line {
+            position:absolute; z-index:6; left:8%; height:2px; width:36%;
+            border-radius:99px;
+            background:linear-gradient(90deg,transparent,rgba(245,197,66,.6),transparent);
+            opacity:0; transform:rotate(-9deg) translateX(-80px);
+            filter:blur(.2px); pointer-events:none;
+            animation:speedFlash 3.8s ease-in-out infinite;
+        }
+        .speed-line-one { top:34%; animation-delay:.2s; }
+        .speed-line-two { top:49%; width:26%; animation-delay:1.15s; }
+        .speed-line-three { top:64%; width:31%; animation-delay:2.1s; }
+        .impact-ring {
+            position:absolute; z-index:6; left:54%; bottom:4%;
+            width:52px; height:52px;
+            border:2px solid rgba(212,168,67,.6); border-radius:50%;
+            opacity:0; pointer-events:none;
+            animation:impactPulse 2.4s ease-out infinite;
+        }
+        .impact-ring-two { animation-delay:.82s; }
+        .floating-particle {
+            position:absolute; z-index:7; width:5px; height:5px; border-radius:50%;
+            background:var(--gold-bright); box-shadow:0 0 10px rgba(245,197,66,.8);
+            opacity:0; pointer-events:none;
+            animation:turfParticle 4s linear infinite;
+        }
+        .particle-one { left:42%; bottom:18%; animation-delay:.1s; }
+        .particle-two { left:51%; bottom:14%; animation-delay:1.05s; transform:scale(.72); }
+        .particle-three { left:65%; bottom:22%; animation-delay:2.05s; transform:scale(1.2); }
+        .particle-four { left:75%; bottom:12%; animation-delay:2.9s; transform:scale(.6); }
+        .scene-badge {
+            position:absolute; top:16px; right:18px; z-index:8;
+            display:flex; align-items:center; gap:8px;
+            padding:8px 11px; border-radius:999px;
+            border:1px solid rgba(255,255,255,.15);
+            background:rgba(6,6,12,.66); color:#fff;
+            font-size:10px; font-weight:900; letter-spacing:1.35px;
+            backdrop-filter:blur(10px); box-shadow:0 8px 25px rgba(0,0,0,.25);
+        }
+        .scene-badge span {
+            width:7px; height:7px; border-radius:50%;
+            background:#ff3b4f; box-shadow:0 0 13px #ff3b4f;
+            animation:pulse 1s infinite;
+        }
+        .scene-caption {
+            position:absolute; z-index:8; right:18px; bottom:15px;
+            width:min(330px,45%);
+            display:flex; justify-content:space-between; align-items:end; gap:12px;
+            padding:13px 15px;
+            border:1px solid rgba(255,255,255,.12); border-radius:15px;
+            background:linear-gradient(90deg,rgba(6,6,12,.60),rgba(6,6,12,.82));
+            backdrop-filter:blur(9px); box-shadow:0 10px 30px rgba(0,0,0,.24);
+        }
+        .scene-caption strong { color:#fff; font-size:13px; }
+        .scene-caption small { color:var(--text-muted); font-size:10px; text-align:right; }
+
+        @keyframes cinematicCamera {
+            0%{transform:scale(1.045) translate3d(-.8%,-.5%,0)}
+            50%{transform:scale(1.085) translate3d(.6%,.15%,0)}
+            100%{transform:scale(1.055) translate3d(-.15%,.6%,0)}
+        }
+        @keyframes cinematicSweep {
+            0%,18%{transform:translateX(-64%) rotate(4deg);opacity:0}
+            38%{opacity:.5}
+            61%,100%{transform:translateX(64%) rotate(4deg);opacity:0}
+        }
+        @keyframes floodPulse {
+            0%,100%{opacity:.35;transform:scale(.88)}
+            50%{opacity:.8;transform:scale(1.14)}
+        }
+        @keyframes speedFlash {
+            0%,70%,100%{opacity:0;transform:rotate(-9deg) translateX(-90px) scaleX(.45)}
+            78%{opacity:.7}
+            92%{opacity:0;transform:rotate(-9deg) translateX(260px) scaleX(1.35)}
+        }
+        @keyframes impactPulse {
+            0%{opacity:.7;transform:translate(-50%,10%) scale(.12)}
+            70%,100%{opacity:0;transform:translate(-50%,10%) scale(3.2)}
+        }
+        @keyframes turfParticle {
+            0%{opacity:0;transform:translate(0,0) rotate(0deg)}
+            17%{opacity:.9}
+            100%{opacity:0;transform:translate(85px,-110px) rotate(250deg)}
+        }
+
+        @media(max-width:900px) {
+            .hero { display:block; }
+            .realistic-hero-visual {
+                inset:26% -2px -2px 18%;
+                -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.18) 12%,#000 37%,#000 100%);
+                mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.18) 12%,#000 37%,#000 100%);
+            }
+            .hero { min-height:660px; }
+            .scene-caption { width:min(350px,56%); }
+            .stats-strip { grid-template-columns:1fr 1fr; } .grid-2 { grid-template-columns:1fr; }
+        }
+        @media(max-width:640px) {
+            .wrapper { padding:8px; }
+            .hero { padding:32px 20px 28px; border-radius:18px; min-height:680px; }
+            .hero h1 { letter-spacing:-1.5px; font-size:clamp(32px,10vw,48px); }
+            .hero::after { display:none; }
+            .hero-copy { width:100%; }
+            .hero-search { min-width:100%; }
+            .hero-btn { width:100%; }
+            .realistic-hero-visual {
+                inset:41% -2px -2px -2px;
+                -webkit-mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.18) 10%,#000 34%,#000 100%);
+                mask-image:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.18) 10%,#000 34%,#000 100%);
+            }
+            .real-match-scene { border-radius:0 0 17px 17px; }
+            .real-match-image { object-position:55% 50%; }
+            .scene-caption { display:none; }
+            .scene-badge { top:12px; right:12px; }
+            .stats-strip { grid-template-columns:1fr; }
+            .header-bar { flex-direction:column; align-items:flex-start; }
+            .btn-copy-all { width:100%; text-align:center; }
+            .tabs-nav { top:4px; }
+            .tab-btn { font-size:12px; padding:7px 13px; }
+        }
+        @media(max-width:430px) {
+            .hero { min-height:655px; }
+            .realistic-hero-visual { inset:44% -2px -2px -2px; }
+        }
+        @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation-duration:.001ms!important; scroll-behavior:auto!important; } }
+    </style>
+</head>
+<body>
+<div id="toast" class="toast"></div>
+<div class="wrapper">
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-copy">
+        <span class="hero-eyebrow">Football Knowledge Center</span>
+        <h1>Panduan Bola <span>Lebih Jelas &amp; Modern</span></h1>
+        <p>Pelajari Handicap, Parlay, Over/Under, 1X2, HT/FT, Corner, Kartu, dan pasaran sepak bola lainnya dalam satu dashboard interaktif.</p>
+        <div class="hero-tools">
+            <label class="hero-search">
+                <span>🔎</span>
+                <input id="guideSearch" type="search" placeholder="Cari: handicap 0.75, over 2.25, HT/FT..." autocomplete="off">
+                <button class="search-clear" id="searchClear" type="button">×</button>
+            </label>
+            <button class="hero-btn" onclick="document.querySelector('.tabs-nav').scrollIntoView({behavior:'smooth'})">Mulai Belajar ↓</button>
+        </div>
+        <div class="search-info" id="searchInfo">Pilih kategori atau cari istilah yang ingin dipelajari.</div>
+        </div><!-- /.hero-copy -->
+
+        <div class="realistic-hero-visual">
+            <div class="real-match-scene">
+                <!-- HERO IMAGE: ganti src dengan path gambar football action Anda -->
+                <img class="real-match-image" id="heroImage" src="data:image/webp;base64,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" alt="Football Action" draggable="false">
+                <div class="scene-vignette"></div>
+                <div class="scene-light scene-light-one"></div>
+                <div class="scene-light scene-light-two"></div>
+                <div class="speed-line speed-line-one"></div>
+                <div class="speed-line speed-line-two"></div>
+                <div class="speed-line speed-line-three"></div>
+                <div class="impact-ring"></div>
+                <div class="impact-ring impact-ring-two"></div>
+                <div class="floating-particle particle-one"></div>
+                <div class="floating-particle particle-two"></div>
+                <div class="floating-particle particle-three"></div>
+                <div class="floating-particle particle-four"></div>
+                <div class="scene-badge"><span></span> LIVE ACTION</div>
+                <div class="scene-caption">
+                    <strong>Stadium Experience</strong>
+                    <small>Gerakan sinematik • Efek cahaya • Tampilan HD</small>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats-strip">
+        <div class="stat-box"><div class="stat-icon">⚽</div><div><strong>12+ Pasaran</strong><small>Penjelasan lengkap</small></div></div>
+        <div class="stat-box"><div class="stat-icon">📊</div><div><strong>Tabel Hasil</strong><small>Menang, setengah, seri, kalah</small></div></div>
+        <div class="stat-box"><div class="stat-icon">📋</div><div><strong>Salin Cepat</strong><small>Salin kartu / seluruh panduan</small></div></div>
+        <div class="stat-box"><div class="stat-icon">📱</div><div><strong>Responsif</strong><small>Nyaman di HP &amp; PC</small></div></div>
+    </section>
+
+    <!-- HEADER BAR -->
+    <div class="header-bar">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <h2>⚽ Football Arena</h2>
+            <span class="tag">Pusat Panduan Pasaran Bola</span>
+        </div>
+        <button class="btn-copy-all" onclick="copyAll()">📋 Salin Semua</button>
+    </div>
+
+    <!-- TABS NAV -->
+    <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="tab1">Handicap</button>
+        <button class="tab-btn" data-tab="tab2">Parlay</button>
+        <button class="tab-btn" data-tab="tab3">Over/Under</button>
+        <button class="tab-btn" data-tab="tab8">Total Bookings</button>
+        <button class="tab-btn" data-tab="tab9">1X2</button>
+        <button class="tab-btn" data-tab="tab10">Odd/Even</button>
+        <button class="tab-btn" data-tab="tab11">AOS / Score</button>
+        <button class="tab-btn" data-tab="tab12">Total Corners</button>
+        <button class="tab-btn" data-tab="tab4">Lainnya</button>
+        <button class="tab-btn" data-tab="tab5">Odds TT</button>
+        <button class="tab-btn" data-tab="tab6">Cash Out</button>
+        <button class="tab-btn" data-tab="tab7">FAQ</button>
+    </div>
+
+    <div class="no-result" id="noResult">⚽ Tidak ada panduan yang cocok. Coba kata lain seperti <strong>handicap</strong>, <strong>over</strong>, <strong>parlay</strong>, atau <strong>1X2</strong>.</div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 1: HANDICAP (LENGKAP)
+         ════════════════════════════════════════════════ -->
+    <div id="tab1" class="tab-content active">
+        <div class="tab-title">⚽ Handicap (Voor) <span class="badge">Panduan Lengkap</span></div>
+
+        <!-- Card: Apa itu Handicap -->
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu Handicap?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Handicap</strong> ataupun lebih diketahui dengan sebutan <strong>voor</strong> ialah suatu taruhan dimana salah satu regu hendak membagikan voor kepada regu yang lain. Umumnya pemberian voor ini didasarkan pada mutu sesuatu regu yang bertanding tidak balance.</p>
+            <p>Dalam <strong>Parlay</strong>, handicap tetap digunakan sebagai salah satu jenis pasaran yang bisa Anda pilih untuk setiap pertandingan dalam tiket kombinasi.</p>
+        </div>
+
+        <!-- Card: Contoh Bola Jalan -->
+        <div class="card">
+            <div class="card-head"><h3>⚡ Contoh Bola Jalan (Live Handicap) - Reset Skor 3-0</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Berikut adalah contoh bermain bola jalan handicap yang mungkin dapat memudahkan Anda lebih mengerti:</p>
+            <p>Mengambil pada saat posisi <strong>3-0</strong>, maka skor akan di-reset untuk perhitungan taruhan:</p>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Posisi Saat Bet</th><th>Skor Akhir</th><th>Dianggap Menjadi</th><th>Hasil</th></tr></thead>
+                <tbody>
+                    <tr><td>3-0</td><td>3-0</td><td>0-0</td><td class="d">Draw</td></tr>
+                    <tr><td>3-0</td><td>3-1</td><td>0-1</td><td class="l">Kalah</td></tr>
+                    <tr><td>3-0</td><td>3-2</td><td>0-2</td><td class="l">Kalah</td></tr>
+                    <tr><td>3-0</td><td>4-0</td><td>1-0</td><td class="w">Menang</td></tr>
+                    <tr><td>3-0</td><td>4-1</td><td>1-1</td><td class="d">Draw</td></tr>
+                    <tr><td>3-0</td><td>4-2</td><td>1-2</td><td class="l">Kalah</td></tr>
+                    <tr><td>3-0</td><td>5-0</td><td>2-0</td><td class="w">Menang</td></tr>
+                </tbody>
+            </table></div>
+            <div class="note"><strong>🔔 Intinya:</strong> Skor saat Anda memasang taruhan <strong>dikurangi</strong> dari skor akhir untuk menentukan hasil taruhan handicap.</div>
+        </div>
+
+        <!-- Card: Cara Membaca Pasaran Bola -->
+        <div class="card">
+            <div class="card-head"><h3>📊 Cara Membaca Pasaran Bola (Vooran)</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Voor</th><th>Nilai</th><th>Keterangan</th></tr></thead>
+                <tbody>
+                    <tr><td>0 – 0.5</td><td>0.25</td><td>voor 1/4</td></tr>
+                    <tr><td>0.5</td><td>0.50</td><td>voor 1/2</td></tr>
+                    <tr><td>0.5 – 1</td><td>0.75</td><td>voor 3/4</td></tr>
+                    <tr><td>1.0</td><td>1.00</td><td>voor 1</td></tr>
+                    <tr><td>1 – 1.5</td><td>1.25</td><td>voor 1 1/4</td></tr>
+                    <tr><td>1.5</td><td>1.50</td><td>voor 1 1/2</td></tr>
+                    <tr><td>1.5 – 2</td><td>1.75</td><td>voor 1 3/4</td></tr>
+                    <tr><td>2.0</td><td>2.00</td><td>voor 2</td></tr>
+                    <tr><td>2 – 2.5</td><td>2.25</td><td>voor 2 1/4</td></tr>
+                    <tr><td>2.5</td><td>2.50</td><td>voor 2 1/2</td></tr>
+                    <tr><td>2.5 – 3</td><td>2.75</td><td>voor 2 3/4</td></tr>
+                    <tr><td>3.0</td><td>3.00</td><td>voor 3</td></tr>
+                </tbody>
+            </table></div>
+            <div class="note"><strong>📌</strong> 0.0 = Leg-legan / lek-lekan = kedua tim tidak ada yang kasih voor.</div>
+        </div>
+
+        <!-- Card: Penjelasan Detail Setiap Voor -->
+        <div class="card">
+            <div class="card-head"><h3>📌 Penjelasan Detail Setiap Voor</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+
+            <div class="dbox" style="border-left-color:#f59e0b"><h4 style="color:#f59e0b">Voor ¼ (0.25) – 0-0.5</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 1 gol. Jika hasilnya imbang / draw, tim yang kasih voor <strong>kalah setengah</strong> dari nominal taruhannya. Akan <strong>kalah full</strong> jika tim yang kasih voor hasilnya kalah.</p>
+                <p><strong>Contoh:</strong> Anda pasang Lazio nge voor ¼ Roma</p>
+                <ul><li>Lazio 1-0 Roma → <span class="w">Menang Full</span></li><li>Lazio 1-1 Roma → <span class="h">Kalah Setengah</span></li><li>Lazio 0-1 Roma → <span class="l">Kalah Full</span></li><li>Lazio 1-1 Roma → <span class="h">Kalah Setengah kita menang setengah jika mengambil tim roma</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#4caf50"><h4 style="color:#4caf50">Voor ½ (0.50) – 0.5</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 1 gol. Jika hasilnya imbang / draw, tim yang kasih voor akan <strong>kalah full</strong>. Tidak ada menang dan kalah setengah pada vooran ini.</p>
+                <p><strong>Contoh:</strong> Anda pasang Arsenal nge voor ½ Chelsea</p>
+                <ul><li>Arsenal 1-0 Chelsea → <span class="w">Menang</span></li><li>Arsenal 0-0 Chelsea → <span class="l">Kalah</span></li><li>Arsenal 0-1 Chelsea → <span class="l">Kalah Full</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#60a5fa"><h4 style="color:#60a5fa">Voor ¾ (0.75) – 0.5-1</h4>
+                <p>Tim yang kasih voor akan menang full dengan selisih minimal 2 gol. <strong>Menang setengah</strong> jika selisih 1 gol saja. <strong>Kalah full</strong> jika hasil imbang / draw.</p>
+                <p><strong>Contoh:</strong> Anda pegang Barcelona nge voor ¾ Madrid</p>
+                <ul><li>Barcelona 2-0 Madrid → <span class="w">Menang</span></li><li>Barcelona 2-1 Madrid → <span class="h">Menang Setengah</span></li><li>Barcelona 2-2 Madrid → <span class="l">Kalah Full</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#a855f7"><h4 style="color:#a855f7">Voor 1 (1.00) – 1.0</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 2 gol. Jika hanya menang dengan selisih 1 gol, taruhan <strong>draw</strong>. <strong>Kalah</strong> jika hasil imbang / seri. Tidak ada menang dan kalah setengah.</p>
+                <p><strong>Contoh:</strong> Anda pegang Dortmund nge voor 1 Stuttgart</p>
+                <ul><li>Dortmund 2-0 Stuttgart → <span class="w">Menang</span></li><li>Dortmund 1-0 Stuttgart → <span class="d">Draw</span></li><li>Dortmund 1-1 Stuttgart → <span class="l">Kalah</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#ec4899"><h4 style="color:#ec4899">Voor 1¼ (1.25) – 1-1.5</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 2 gol. Akan <strong>kalah setengah</strong> jika hanya menang dengan selisih 1 gol. <strong>Kalah full</strong> jika hasil seri / imbang.</p>
+                <p><strong>Contoh:</strong> Anda pegang Juventus nge voor 1¼ Torino</p>
+                <ul><li>Juventus 2-0 Torino → <span class="w">Menang</span></li><li>Juventus 2-1 Torino → <span class="h">Kalah Setengah</span></li><li>Juventus 1-1 Torino → <span class="l">Kalah Full</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#06b6d4"><h4 style="color:#06b6d4">Voor 1½ (1.50) – 1.5</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 2 gol. Akan <strong>kalah</strong> jika hanya menang dengan selisih 1 gol. Tidak ada menang dan kalah setengah.</p>
+                <p><strong>Contoh:</strong> Anda pegang Inter nge voor 1½ Genoa</p>
+                <ul><li>Inter 2-0 Genoa → <span class="w">Menang</span></li><li>Inter 1-0 Genoa → <span class="l">Kalah</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#84cc16"><h4 style="color:#84cc16">Voor 1¾ (1.75) – 1.5-2</h4>
+                <p>Tim yang kasih voor akan menang full dengan selisih minimal 3 gol. <strong>Menang setengah</strong> jika selisih 2 gol saja. <strong>Kalah full</strong> jika menang dengan selisih 1 gol.</p>
+                <p><strong>Contoh:</strong> Anda pegang PSG nge voor 1¾ Nice</p>
+                <ul><li>PSG 3-0 Nice → <span class="w">Menang</span></li><li>PSG 2-0 Nice → <span class="h">Menang Setengah</span></li><li>PSG 1-0 Nice → <span class="l">Kalah</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#ef4444"><h4 style="color:#ef4444">Voor 2 (2.00) – 2.0</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 3 gol. Jika hanya menang dengan selisih 2 gol, taruhan <strong>draw</strong>. Akan <strong>kalah</strong> jika hanya menang dengan selisih 1 gol. Tidak ada menang dan kalah setengah.</p>
+                <p><strong>Contoh:</strong> Anda pegang Munchen nge voor 2 Koln</p>
+                <ul><li>Munchen 3-0 Koln → <span class="w">Menang</span></li><li>Munchen 2-0 Koln → <span class="d">Draw</span></li><li>Munchen 1-0 Koln → <span class="l">Kalah</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#f97316"><h4 style="color:#f97316">Voor 2¼ (2.25) – 2-2.5</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 3 gol. Akan <strong>kalah setengah</strong> jika hanya menang dengan selisih 2 gol. <strong>Kalah full</strong> jika hanya menang dengan selisih 1 gol.</p>
+                <p><strong>Contoh:</strong> Anda pegang Liverpool nge voor 2¼ Fulham</p>
+                <ul><li>Liverpool 3-0 Fulham → <span class="w">Menang</span></li><li>Liverpool 2-0 Fulham → <span class="h">Kalah Setengah</span></li><li>Liverpool 1-0 Fulham → <span class="l">Kalah Full</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#6366f1"><h4 style="color:#6366f1">Voor 2½ (2.50) – 2.5</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 3 gol. Akan <strong>kalah</strong> jika hanya menang dengan selisih 2 gol. Tidak ada menang dan kalah setengah.</p>
+                <p><strong>Contoh:</strong> Anda pegang M.City nge voor 2½ Cardiff</p>
+                <ul><li>M.City 3-0 Cardiff → <span class="w">Menang</span></li><li>M.City 2-0 Cardiff → <span class="l">Kalah</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#14b8a6"><h4 style="color:#14b8a6">Voor 2¾ (2.75) – 2.5-3</h4>
+                <p>Tim yang kasih voor akan menang full dengan selisih minimal 4 gol. <strong>Menang setengah</strong> jika selisih 3 gol saja. <strong>Kalah full</strong> jika menang dengan selisih 2 gol.</p>
+                <p><strong>Contoh:</strong> Anda pegang Madrid nge voor 2¾ Girona</p>
+                <ul><li>Madrid 4-0 Girona → <span class="w">Menang</span></li><li>Madrid 3-0 Girona → <span class="h">Menang Setengah</span></li><li>Madrid 2-0 Girona → <span class="l">Kalah</span></li></ul>
+            </div>
+            <div class="dbox" style="border-left-color:#d946ef"><h4 style="color:#d946ef">Voor 3 (3.00) – 3.0</h4>
+                <p>Tim yang kasih voor harus menang dengan minimal selisih 4 gol. Jika hanya menang dengan selisih 3 gol, taruhan <strong>draw</strong>. Akan <strong>kalah</strong> jika hanya menang dengan selisih 2 gol. Tidak ada menang dan kalah setengah.</p>
+                <p><strong>Contoh:</strong> Anda pegang Barcelona nge voor 3 Levante</p>
+                <ul><li>Barcelona 4-0 Levante → <span class="w">Menang</span></li><li>Barcelona 3-0 Levante → <span class="d">Draw</span></li><li>Barcelona 2-0 Levante → <span class="l">Kalah</span></li></ul>
+            </div>
+        </div>
+
+        <!-- Card: Contoh Kasus Fenerbahce -->
+        <div class="card">
+            <div class="card-head"><h3>⚠️ Contoh Kasus: Fenerbahce voor 0.5 saat skor 0-2</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Kasus:</strong> Member betting di Fenerbahce memberi voor 0.5 ke lawan saat skor sudah 0-2.</p>
+            <p><strong>Hasil:</strong> Member <span class="l">KALAH</span>. Karena saat skor 0-2, tim yang diberi voor sudah unggul 2 gol, dan voor 0.5 tidak cukup untuk mengejar. Jadi taruhan kalah.</p>
+            <div class="note"><strong>📌</strong> "Ini member betting di fenerbache memberi voor 0.5 ke lawan saat score sudah 0-2 Pak jadi member kalah"</div>
+        </div>
+
+        <!-- Card: Penjelasan Pooran 0, 0.25, 0.5, 0.75, 1 -->
+        <div class="card">
+            <div class="card-head"><h3>📋 Penjelasan Pooran (Handicap) 0, 0.25, 0.5, 0.75, 1</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+
+            <div class="dbox" style="border-left-color:#9e9e9e"><h4 style="color:#9e9e9e">Pooran 0 (lek-lekan)</h4>
+                <p>Jika sudah memasang taruhan pada team, maka pemain akan <strong>menang</strong> taruhan apabila team yang dipilih dengan minimal goal 1 : 1–0, 2–0 dan seterusnya.</p>
+                <p><strong>Seri</strong> apabila pertandingan berakhir dengan skor 0–0, 1–1 dan seterusnya.</p>
+                <p><strong>Kalah penuh</strong> jika team yang dipasang taruhan kalah goal 1 : 0–1, 1–2 dan seterusnya.</p>
+            </div>
+            <div class="dbox" style="border-left-color:#f59e0b"><h4 style="color:#f59e0b">Pooran 0 – 0.5 atau 1/4 (0.25)</h4>
+                <p>Akan <strong>menang</strong> apabila team dipasang taruhan menang dengan minimal goal 1.</p>
+                <p>Mendapati <strong>kalah setengah</strong> jika team dipasang taruhan berakhir dengan skor imbang atau seri.</p>
+                <p><strong>Kalah penuh</strong> jika memasang taruhan team memberikan pooran mengalami kekalahan.</p>
+            </div>
+            <div class="dbox" style="border-left-color:#4caf50"><h4 style="color:#4caf50">Pooran 0.5 atau 1/2 (0.50)</h4>
+                <p>Mendapati <strong>kemenangan</strong> apabila team yang dipasang taruhan menang dengan minimal goal 1 : 1–0, 2–0.</p>
+                <p><strong>Kalah</strong> apabila team yang dipilih pasang taruhan mendapati skor seri atau kalah : 1–1, 0–1.</p>
+            </div>
+            <div class="dbox" style="border-left-color:#60a5fa"><h4 style="color:#60a5fa">Pooran 0.5 – 1 atau 3/4 (0.75)</h4>
+                <p><strong>Menang penuh</strong> apabila team yang dipilih pasang taruhan menang dengan skor minimal goal 2 : 2–0, 3–1.</p>
+                <p>Menerima <strong>menang setengah</strong> jika team yang dipilih pasang taruhan menang dengan 1 goal saja : 1–0, 2–1.</p>
+                <p><strong>Kalah penuh</strong> jika team yang dipilih mendapati skor seri atau kalah : 1–1, 0–1.</p>
+            </div>
+            <div class="dbox" style="border-left-color:#a855f7"><h4 style="color:#a855f7">Pooran 1 (1.00)</h4>
+                <p><strong>Menang</strong> jika memilih team tersebut menang dengan skor 2 goal.</p>
+                <p><strong>Seri</strong> apabila memilih tersebut mendapati hasil 1 goal.</p>
+                <p><strong>Kalah</strong> jika memilih team tersebut dan mendapati hasil akhir dengan skor seri atau kalah : 1–1, 0–1.</p>
+            </div>
+        </div>
+
+        <!-- Card: Perhitungan Odds Menang Setengah -->
+        <div class="card">
+            <div class="card-head"><h3>🧮 Perhitungan Odds Menang Setengah</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Rumus yang digunakan untuk menghitung kemenangan jika hasil taruhan adalah <strong>Menang Setengah</strong>:</p>
+            <div class="code-block">(Odds – 1) : 2 × Modal = Kemenangan</div>
+            <p><strong>Contoh:</strong> Odds 1.520, Modal 200.000</p>
+            <div class="code-block">1.520 - 1 = 0.520
+0.520 : 2 = 0.26
+0.26 × 200.000 = Rp 52.000</div>
+            <p>Jadi, kemenangan bersih yang didapat adalah <strong>Rp 52.000</strong>.</p>
+            <div class="note"><strong>💡</strong> "odds nya di -1 di bagi 2 kali modal" — ini adalah cara cepat menghitung kemenangan untuk taruhan menang setengah.</div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 2: PARLAY
+         ════════════════════════════════════════════════ -->
+    <div id="tab2" class="tab-content">
+        <div class="tab-title">🔥 Parlay <span class="badge">Mix &amp; Combo</span></div>
+
+        <div class="card">
+            <div class="card-head"><h3>📐 Rumus Dasar Mix Parlay</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <div class="code-block">(Hasil Perkalian Odds × Jumlah Betting) – Jumlah Betting</div>
+            <ul><li>Jika hasil <strong>minus</strong>, Anda kalah.</li><li>Jika hasil <strong>plus</strong>, Anda menang.</li></ul>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>⚙️ Aturan Perubahan Odds</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Kondisi</th><th>Rumus / Perubahan</th></tr></thead>
+                <tbody>
+                    <tr><td>Menang Full</td><td>Odds tetap</td></tr>
+                    <tr><td>Menang Setengah</td><td><strong>[(Odds – 1) : 2] + 1</strong></td></tr>
+                    <tr><td>Kalah Setengah</td><td>Odds menjadi <strong>0.5</strong></td></tr>
+                    <tr><td>Seri / Draw</td><td>Odds menjadi <strong>1.00</strong></td></tr>
+                    <tr><td>Dibatalkan</td><td>Odds menjadi <strong>1.00</strong></td></tr>
+                </tbody>
+            </table></div>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>📦 Combo Parlay</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Combo parlay adalah fitur tambahan pada mix parlay yang memudahkan Anda memasang beberapa paket taruhan dari kombinasi seluruh pertandingan yang telah dipilih.</p>
+            <ul>
+                <li><strong>Double</strong> (6 paket – AB, AC, AD, BC, BD, CD)</li>
+                <li><strong>Treble</strong> (4 paket – ABC, ABD, ACD, BCD)</li>
+                <li><strong>4-Folds</strong> (1 paket – ABCD)</li>
+            </ul>
+            <p><strong>Rumus Kalah:</strong> <code>Jumlah Pilihan – Kombinasi Terkecil + 1</code></p>
+            <ul>
+                <li>Pilihan 9, kombinasi 5 fold: (9-5)+1 = 5</li>
+                <li>Pilihan 6, kombinasi 4 fold: (6-4)+1 = 3</li>
+                <li>Pilihan 10, kombinasi 7 fold: (10-7)+1 = 4</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 3: OVER/UNDER
+         ════════════════════════════════════════════════ -->
+    <div id="tab3" class="tab-content">
+        <div class="tab-title">📈 Over / Under <span class="badge">O/U</span></div>
+
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu Over/Under (O/U)?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>O/U</strong> atau <strong>Over Under</strong> adalah jenis taruhan menebak total gol akhir di atas atau di bawah dari gol yang dipasarkan.</p>
+            <ul><li><strong>Goal</strong> = Pasaran taruhan</li><li><strong>Over</strong> = Atas (total gol &gt; pasaran)</li><li><strong>Under</strong> = Bawah (total gol &lt; pasaran)</li></ul>
+            <div class="note"><strong>⚡</strong> Pada taruhan Over/Under, <strong>tidak peduli tim mana yang menang</strong>. Yang dihitung adalah <strong>total gol gabungan</strong> dari kedua tim.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>📊 Kolom O/U di Situs Taruhan</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Di dalam tabel yang Anda jumpai pada situs taruhan online, kolom <strong>O/U</strong> umumnya terletak berdampingan dengan kolom <strong>HDP</strong> (Handicap).</p>
+            <p>Pada kolom O/U, Anda akan menemukan angka pasaran untuk suatu pertandingan. Misalnya pada kolom O/U terdapat angka <strong>2/2.5</strong> atau <strong>2.25</strong>. Maka:</p>
+            <ul>
+                <li>Jika Anda yakin skor total pertandingan <strong>lebih dari 2</strong>, maka Anda memasang taruhan <strong>Over</strong>.</li>
+                <li>Jika yakin skor total pertandingan <strong>di bawah 2</strong>, maka pasanglah taruhan <strong>Under</strong>.</li>
+            </ul>
+            <div class="note"><strong>📌</strong> Angka pasaran bisa berupa 0.5, 1, 1.5, 2, 2.25, 2.5, 2.75, 3, dan seterusnya.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>📋 Tabel Lengkap Over/Under Semua Pasaran</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <div class="table-wrap"><table>
+                <thead><tr><th>Pasaran</th><th>Total Gol</th><th>Over</th><th>Under</th></tr></thead>
+                <tbody>
+                    <tr><td rowspan="2"><strong>0.25</strong></td><td>0</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>1+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="2"><strong>0.5</strong></td><td>0</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>1+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>0.75</strong></td><td>0</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>1</td><td class="h">Menang ½</td><td class="h">Kalah ½</td></tr>
+                    <tr><td>2+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>1.0</strong></td><td>0</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>1</td><td class="d">Draw</td><td class="d">Draw</td></tr>
+                    <tr><td>2+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>1.25</strong></td><td>0-1</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>2</td><td class="h">Kalah ½</td><td class="h">Menang ½</td></tr>
+                    <tr><td>3+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="2"><strong>1.5</strong></td><td>0-1</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>2+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>1.75</strong></td><td>0-1</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>2</td><td class="h">Menang ½</td><td class="h">Kalah ½</td></tr>
+                    <tr><td>3+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>2.0</strong></td><td>0-1</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>2</td><td class="d">Draw</td><td class="d">Draw</td></tr>
+                    <tr><td>3+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>2.25</strong></td><td>0-1</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>2</td><td class="h">Kalah ½</td><td class="h">Menang ½</td></tr>
+                    <tr><td>3+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="2"><strong>2.5</strong></td><td>0-2</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>3+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>2.75</strong></td><td>0-2</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>3</td><td class="h">Menang ½</td><td class="h">Kalah ½</td></tr>
+                    <tr><td>4+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>3.0</strong></td><td>0-2</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>3</td><td class="d">Draw</td><td class="d">Draw</td></tr>
+                    <tr><td>4+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>3.25</strong></td><td>0-2</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>3</td><td class="h">Kalah ½</td><td class="h">Menang ½</td></tr>
+                    <tr><td>4+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="2"><strong>3.5</strong></td><td>0-3</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>4+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                    <tr><td rowspan="3"><strong>3.75</strong></td><td>0-3</td><td class="l">Kalah</td><td class="w">Menang</td></tr>
+                    <tr><td>4</td><td class="h">Menang ½</td><td class="h">Kalah ½</td></tr>
+                    <tr><td>5+</td><td class="w">Menang</td><td class="l">Kalah</td></tr>
+                </tbody>
+            </table></div>
+            <div class="note"><strong>💡</strong> Pola pasaran:<br>• <strong>0.25</strong> (¼) → selisih 1 gol menghasilkan menang/kalah setengah<br>• <strong>0.5</strong> (½) → tidak ada hasil setengah<br>• <strong>0.75</strong> (¾) → selisih 1 gol menghasilkan menang/kalah setengah<br>• <strong>0.0</strong> (bulat) → draw jika total gol tepat di angka pasaran</div>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>🔺 Pasaran 2.75 (2 ¾) – Contoh</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Aturan:</strong></p>
+            <ul>
+                <li><strong>Over 2.75</strong> → minimal total gol adalah <strong>4</strong> untuk menang full.</li>
+                <li>Jika total gol <strong>3</strong> → Over <span class="h">menang setengah</span>, Under <span class="h">kalah setengah</span>.</li>
+                <li>Jika total gol <strong>4</strong> → Over <span class="w">menang full</span>, Under <span class="l">kalah full</span>.</li>
+                <li>Jika total gol <strong>2</strong> → Over <span class="l">kalah full</span>, Under <span class="w">menang full</span>.</li>
+            </ul>
+            <div class="code-block">Contoh:
+• Bet Over 2.75, skor akhir 3-1 (total 4) → ✅ Menang Full
+• Bet Over 2.75, skor akhir 2-1 (total 3) → ⚡ Menang Setengah
+• Bet Under 2.75, skor akhir 2-1 (total 3) → ⚡ Kalah Setengah
+• Bet Under 2.75, skor akhir 1-1 (total 2) → ✅ Menang Full</div>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>🔻 Pasaran 2.25 (2 ¼) – Contoh</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Aturan:</strong></p>
+            <ul>
+                <li><strong>Over 2.25</strong> → minimal total gol adalah <strong>3</strong> untuk menang full.</li>
+                <li>Jika total gol <strong>3</strong> → Over <span class="w">menang full</span>, Under <span class="l">kalah full</span>.</li>
+                <li>Jika total gol <strong>2</strong> → Over <span class="h">kalah setengah</span>, Under <span class="h">menang setengah</span>.</li>
+                <li>Jika total gol <strong>1</strong> → Over <span class="l">kalah full</span>, Under <span class="w">menang full</span>.</li>
+            </ul>
+            <div class="code-block">Contoh:
+• Bet Over 2.25, skor akhir 2-1 (total 3) → ✅ Menang Full
+• Bet Over 2.25, skor akhir 1-1 (total 2) → ⚡ Kalah Setengah
+• Bet Under 2.25, skor akhir 1-1 (total 2) → ⚡ Menang Setengah
+• Bet Under 2.25, skor akhir 1-0 (total 1) → ✅ Menang Full</div>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>⚽ Pasaran Penalti (Adu Penalti)</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Aturan khusus untuk taruhan Over/Under pada adu penalti:</strong></p>
+            <ul>
+                <li>Pasaran penalti Atas/Bawah hanya menghitung <strong>tembakan penalti sampai 5 tendangan penalti per tim</strong>.</li>
+                <li>Gol yang dibuat saat <strong>sudden death</strong> (setelah 5 tendangan) <strong>tidak akan dihitung</strong> dalam perhitungan taruhan Atas/Bawah.</li>
+            </ul>
+            <div class="note"><strong>📌</strong> Contoh: Jika skor penalti 5-4 setelah 10 tendangan (5 masing-masing), maka total gol penalti yang dihitung adalah <strong>10</strong> (5+5). Jika kemudian dilanjutkan sudden death dan ada gol tambahan, itu <strong>tidak dihitung</strong> untuk taruhan O/U.</div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 8: TOTAL BOOKINGS
+         ════════════════════════════════════════════════ -->
+    <div id="tab8" class="tab-content">
+        <div class="tab-title">🟨 Total Bookings <span class="badge">Kartu Kuning &amp; Merah</span></div>
+
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu Total Bookings?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Total Bookings</strong> adalah total perhitungan dari <strong>Total Pelanggaran</strong> atau <strong>Total kartu</strong> yang didapatkan oleh kedua tim dalam suatu pertandingan.</p>
+            <p><strong>Total Bookings = Total Pelanggaran</strong>, bosku. Ini bukan taruhan skor akhir, melainkan taruhan berdasarkan jumlah kartu yang dikeluarkan wasit.</p>
+            <ul><li><strong>🟨 Kartu Kuning</strong> = dihitung <strong>1</strong></li><li><strong>🟥 Kartu Merah</strong> = dihitung <strong>2</strong></li></ul>
+            <p>Jadi, <strong>Total Bookings</strong> adalah menebak total kartu yang didapatkan oleh kedua tim selama pertandingan berlangsung.</p>
+            <div class="note"><strong>⚡ PENTING:</strong> Ini adalah taruhan berdasarkan <strong>kartu (kuning + merah)</strong>, <strong>BUKAN skor akhir</strong>! Apabila ingin menebak skor akhir, Anda bisa bermain di kategori lainnya seperti <strong>FULL TIME, Handicap, Over/Under, 1X2,</strong> atau <strong>Bet Menang/Kalah</strong>.</div>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>📌 Contoh Pertandingan: Australia vs Prancis</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Berdasarkan contoh pada gambar di atas:</p>
+            <ul><li><strong>Home</strong> = Prancis</li><li><strong>Away</strong> = Australia</li></ul>
+            <p>Pada pertandingan tersebut:</p>
+            <ul>
+                <li>Tim <strong>Australia (Away)</strong> mendapatkan kartu.</li>
+                <li>Tim <strong>Prancis (Home)</strong> tidak mendapatkan kartu sama sekali.</li>
+            </ul>
+            <p>Karena dari gambar di atas, taruhan (bet) yang dilakukan adalah <strong>bet HOME</strong>, dan yang dimaksud <strong>HOME adalah Prancis</strong>.</p>
+            <div class="note"><strong>🔔 Hasil:</strong> Yang mendapatkan kartu adalah tim Australia (Away), sedangkan tim Prancis (Home) tidak ada kartu. Maka, taruhan Anda dinyatakan <span class="l"><strong>KALAH</strong></span>, bosku.</div>
+            <p><strong>Kesimpulan:</strong> Anda bet Home (Prancis), tapi yang dapat kartu adalah tim Australia. Prancis tidak mendapat kartu, jadi Anda kalah.</p>
+        </div>
+
+        <div class="card">
+            <div class="card-head"><h3>💡 Poin Penting Total Bookings</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <ul>
+                <li><strong>TOTAL BOOKINGS = Total Pelanggaran</strong> (kartu kuning + kartu merah).</li>
+                <li>Kartu kuning dihitung <strong>1</strong>, kartu merah dihitung <strong>2</strong>.</li>
+                <li>Taruhan ini <strong>bukan skor akhir</strong>, melainkan total kartu yang didapat.</li>
+                <li>Jika ingin menebak skor akhir, silakan bermain di kategori lain: <strong>FULL TIME, Handicap, Over/Under, 1X2, Bet Menang/Kalah</strong>.</li>
+                <li>Pastikan Anda memahami tim mana yang menjadi <strong>Home</strong> dan <strong>Away</strong> sebelum memasang taruhan.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 9: 1X2
+         ════════════════════════════════════════════════ -->
+    <div id="tab9" class="tab-content">
+        <div class="tab-title">🎯 1X2 <span class="badge">Menang / Seri / Kalah</span></div>
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu 1X2 dalam bola?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>TARUHAN 1X2</strong> – Tipe dari permainan ini adalah memilih di antara tuan rumah yang menang, seri, ataupun tim tamu yang menang.</p>
+            <p><strong>1X2</strong> adalah odds untuk menebak <strong>menang, seri, atau kalah</strong>.</p>
+            <ul><li><strong>1</strong> = Tuan rumah (Home)</li><li><strong>X</strong> = Draw (Seri)</li><li><strong>2</strong> = Tamu (Away)</li></ul>
+            <div class="note"><strong>📌</strong> 1 bertindak sebagai regu tuan rumah, X sebagai hasil imbang, dan 2 sebagai regu tamu.</div>
+            <div style="margin-top:14px;text-align:center;">
+                <img src="https://sleekshot.app/download/Zl3VpPpQtCZT" alt="Contoh Pasaran 1X2" style="max-width:100%;height:auto;border-radius:12px;border:1px solid rgba(212,168,67,.2);box-shadow:0 4px 12px rgba(0,0,0,.3);">
+                <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">📸 Contoh tampilan pasaran 1X2 pada situs taruhan</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>🧮 Rumus Perhitungan 1X2</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <div class="code-block">Kemenangan = (Odds – 1) × Jumlah Taruhan</div>
+            <p><strong>Catatan:</strong> Jika single bet, modal kembali apabila taruhan draw/seri pada pasaran 1X2 (bukan double chance).</p>
+            <p><strong>Contoh:</strong> Odds 2.00, Bet 100.000 → (2.00 - 1) × 100.000 = <strong>Rp 100.000</strong> (kemenangan bersih).</p>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>🔁 1X2 Double Chance</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Jenis taruhan Double Chance</strong> memberikan opsi tambahan dengan menggabungkan dua kemungkinan hasil:</p>
+            <ul><li><strong>1X</strong> = Home atau Draw</li><li><strong>12</strong> = Home atau Away</li><li><strong>X2</strong> = Draw atau Away</li></ul>
+            <p><strong>Contoh:</strong> Pasang taruhan Double Chance untuk pertandingan Fiorentina vs Udinese, lalu Anda memasang <strong>1X</strong>. Pertandingan akhir harus <strong>Fiorentina menang atau draw</strong> maka Anda menang taruhan. Di luar antara 2 pilihan tersebut, taruhan Anda kalah.</p>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>⚽ Contoh Terkait Handicap &amp; 1X2</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>Pertanyaan Member:</strong> "Bos kalau saya voor 0.75 minimal buat menang, skor harus berapa ya?"</p>
+            <p><strong>Jawaban:</strong> 0.5-1 = 0.75 = voor 3/4 harus menang berapa? Contoh pasang Atalanta ngepur 3/4 SPAL, taruhan akan menang jika Atalanta menang dengan minimal selisih 2 gol, contoh kasusnya:</p>
+            <ul><li>Atalanta 2-0 SPAL → <span class="w">Menang</span></li><li>Atalanta 1-0 SPAL → <span class="h">Menang Setengah</span></li><li>Atalanta 0-0 SPAL → <span class="l">Kalah</span></li></ul>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>🕒 HT/FT (Half Time / Full Time)</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Berikut ini adalah contoh singkat berupa seluruh pilihan yang ada agar Anda dapat lebih mudah mengerti:</p>
+            <div class="htft-grid">
+                <div class="htft-item"><strong>1. Home Home (HH)</strong><br>Babak Pertama dimenangkan Juventus, Babak Kedua juga dimenangkan Juventus.<br>Contoh skor: [FH 1-0, FT 1-0], [FH 1-0, FT 3-0], [FH 1-0, FT 3-2]</div>
+                <div class="htft-item"><strong>2. Home Draw (HD)</strong><br>Babak Pertama dimenangkan Juventus, Babak Kedua hasil seri.<br>Contoh skor: [FH 1-0, FT 1-1], [FH 2-0, FT 2-2]</div>
+                <div class="htft-item"><strong>3. Home Away (HA)</strong><br>Babak Pertama dimenangkan Juventus, Babak Kedua dimenangkan Real Madrid.<br>Contoh skor: [FH 1-0, FT 1-2], [FH 2-0, FT 2-3]</div>
+                <div class="htft-item"><strong>4. Draw Home (DH)</strong><br>Babak Pertama berakhir Seri, Babak Kedua dimenangkan Juventus.<br>Contoh skor: [FH 0-0, FT 1-0], [FH 1-1, FT 2-1]</div>
+                <div class="htft-item"><strong>5. Draw Draw (DD)</strong><br>Babak Pertama berakhir Seri, Babak Kedua juga berakhir Seri.<br>Contoh skor: [FH 0-0, FT 0-0], [FH 0-0, FT 1-1]</div>
+                <div class="htft-item"><strong>6. Draw Away (DA)</strong><br>Babak Pertama berakhir Seri, Babak Kedua dimenangkan Real Madrid.<br>Contoh skor: [FH 0-0, FT 0-1], [FH 1-1, FT 1-2]</div>
+                <div class="htft-item"><strong>7. Away Draw (AD)</strong><br>Babak Pertama dimenangkan Real Madrid, Babak Kedua berakhir seri.<br>Contoh skor: [FH 0-1, FT 1-1], [FH 0-2, FT 2-2]</div>
+                <div class="htft-item"><strong>8. Away Away (AA)</strong><br>Babak Pertama dimenangkan Real Madrid, Babak Kedua juga dimenangkan Real Madrid.<br>Contoh skor: [FH 0-1, FT 0-1], [FH 1-2, FT 1-2], [FH 0-2, FT 2-3]</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 10: ODD/EVEN
+         ════════════════════════════════════════════════ -->
+    <div id="tab10" class="tab-content">
+        <div class="tab-title">🔢 Odd/Even <span class="badge">Ganjil / Genap</span></div>
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu Odd/Even?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Odd/Even adalah jenis taruhan menebak jumlah total gol dari kedua tim, apakah <strong>ganjil (Odd)</strong> atau <strong>genap (Even)</strong>.</p>
+            <ul><li><strong>Odd</strong> = Ganjil (1, 3, 5, 7, ...)</li><li><strong>Even</strong> = Genap (0, 2, 4, 6, ...)</li></ul>
+            <div class="note"><strong>⚡</strong> Dalam Odd/Even <strong>tidak ada istilah seri</strong>.</div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 11: AOS / CORRECT SCORE
+         ════════════════════════════════════════════════ -->
+    <div id="tab11" class="tab-content">
+        <div class="tab-title">🎯 Correct Score / AOS <span class="badge">Tebak Skor</span></div>
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu AOS?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p><strong>AOS</strong> = <strong>"Any Other Score"</strong>. Jika memilih AOS, Anda bertaruh pada skor akhir yang <strong>tidak tercantum dalam daftar</strong> yang disediakan bandar.</p>
+            <div class="note"><strong>💡</strong> Contoh: Jika daftar skor hanya sampai 10-9, maka skor 11-0 atau 0-5 termasuk AOS.</div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 12: TOTAL CORNERS
+         ════════════════════════════════════════════════ -->
+    <div id="tab12" class="tab-content">
+        <div class="tab-title">📍 Total Corners <span class="badge">Tendangan Sudut</span></div>
+        <div class="card">
+            <div class="card-head"><h3>📖 Apa itu Total Corners?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Total Corners adalah taruhan memprediksi <strong>berapa total corner</strong> (tendangan sudut) dalam sebuah pertandingan. Sistem ini hampir sama dengan Over/Under dan Odd/Even.</p>
+        </div>
+        <div class="card">
+            <div class="card-head"><h3>⚽ Apa itu Corner Kick?</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <p>Tendangan sudut atau tendangan penjuru (bahasa Inggris: <em>Corner kick</em>) adalah metode tendangan pada salah satu sisi pojok lapangan dalam laga sepak bola. Metode ini berasal dari Aturan Sheffield tahun 1867 dan diterapkan secara resmi oleh federasi The FA pada 17 Februari 1872.</p>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 4: LAINNYA
+         ════════════════════════════════════════════════ -->
+    <div id="tab4" class="tab-content">
+        <div class="tab-title">🃏 Jenis Taruhan Lainnya</div>
+        <div class="grid-2">
+            <div class="card"><div class="card-head"><h3>1X2</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>1 = Home</li><li>X = Draw</li><li>2 = Away</li></ul></div>
+            <div class="card"><div class="card-head"><h3>Odd/Even</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Odd = Ganjil</li><li>Even = Genap</li></ul></div>
+            <div class="card"><div class="card-head"><h3>Total Bookings</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Kuning = 1</li><li>Merah = 2</li></ul></div>
+            <div class="card"><div class="card-head"><h3>Total Corner</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Menebak total tendangan sudut</li></ul></div>
+            <div class="card"><div class="card-head"><h3>HT/FT</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>HH, HD, HA, DH, DD, DA, AH, AD, AA</li></ul></div>
+            <div class="card"><div class="card-head"><h3>Correct Score – AOS</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li><strong>AOS</strong> = Any Other Score</li></ul></div>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 5: ODDS TT
+         ════════════════════════════════════════════════ -->
+    <div id="tab5" class="tab-content">
+        <div class="tab-title">💰 Odds TT <span class="badge">5 Jenis</span></div>
+        <div class="odds-subnav">
+            <button class="sub-tab active-sub" data-odds="odds1">🇭🇰 HK</button>
+            <button class="sub-tab" data-odds="odds2">🇲🇾 MY</button>
+            <button class="sub-tab" data-odds="odds3">🇮🇩 Indo</button>
+            <button class="sub-tab" data-odds="odds4">🔢 Dec</button>
+            <button class="sub-tab" data-odds="odds5">🇺🇸 US</button>
+        </div>
+        <div id="odds1" class="odds-card active-odds"><div class="card"><div class="card-head"><h3>🇭🇰 Hong Kong</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Positif tanpa minus</li><li>Contoh: 0.96 → menang 96</li></ul></div></div>
+        <div id="odds2" class="odds-card"><div class="card"><div class="card-head"><h3>🇲🇾 Malaysia</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Bisa (+) atau (-)</li><li>+0.65 → untung 65</li><li>-0.50 → untung 100 risiko 50</li></ul></div></div>
+        <div id="odds3" class="odds-card"><div class="card"><div class="card-head"><h3>🇮🇩 Indonesia</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Hitam (+) = profit, Merah (-) = risiko</li><li>+1.03 → untung 103</li><li>-1.08 → kalah 108</li></ul></div></div>
+        <div id="odds4" class="odds-card"><div class="card"><div class="card-head"><h3>🔢 Desimal</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Profit = (Odds – 1) × modal</li><li>Contoh: 1.93 → profit 93</li></ul></div></div>
+        <div id="odds5" class="odds-card"><div class="card"><div class="card-head"><h3>🇺🇸 Amerika</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div><ul><li>Dinyatakan dalam %</li><li>Contoh: 101 → menang 101%</li></ul></div></div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 6: CASH OUT
+         ════════════════════════════════════════════════ -->
+    <div id="tab6" class="tab-content">
+        <div class="tab-title">💸 Cash Out</div>
+        <div class="card">
+            <div class="card-head"><h3>Aturan</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <ul>
+                <li>✅ <strong>Bisa</strong> di CMD368 &amp; SABA SPORTS</li>
+                <li>❌ <strong>Tidak bisa</strong> di SBOBET</li>
+                <li>❌ <strong>Tidak bisa</strong> untuk Parlay</li>
+                <li>✅ Hanya untuk <strong>Single Bet</strong></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════
+         TAB 7: FAQ
+         ════════════════════════════════════════════════ -->
+    <div id="tab7" class="tab-content">
+        <div class="tab-title">❓ FAQ</div>
+        <div class="card">
+            <div class="card-head"><h3>Pertanyaan Populer</h3><button class="copy-btn" onclick="copyCard(this)">📋 Salin</button></div>
+            <div class="faq-item"><div class="faq-q">Q: Apa arti handicap dalam Parlay?</div><div class="faq-a">A: Handicap (voor) adalah taruhan di mana salah satu tim diberi keunggulan/defisit gol. Dalam Parlay, setiap pertandingan dengan handicap dihitung odds-nya sesuai aturan menang/kalah setengah, seri, atau full, lalu dikalikan semua.</div></div>
+            <div class="faq-item"><div class="faq-q">Q: Pasang voor 0.75, skor 1-0, bagaimana?</div><div class="faq-a">A: Menang <strong>setengah</strong>.</div></div>
+            <div class="faq-item"><div class="faq-q">Q: Bet Fenerbahce voor 0.5 saat skor 0-2, bagaimana?</div><div class="faq-a">A: <strong>Kalah</strong>.</div></div>
+            <div class="faq-item"><div class="faq-q">Q: Bisakah parlay untuk bola jalan (live)?</div><div class="faq-a">A: ❌ Tidak di UBO. ✅ Bisa di SBOBET, CMD368, SABA.</div></div>
+            <div class="faq-item"><div class="faq-q">Q: Berapa minimal gol Over 2.75?</div><div class="faq-a">A: 4 gol = menang full. 3 gol = menang setengah.</div></div>
+            <div class="faq-item"><div class="faq-q">Q: Apa arti Even dalam Parlay?</div><div class="faq-a">A: <strong>Even</strong> = Genap. Odd = Ganjil.</div></div>
+        </div>
+    </div>
+
+    <div class="footer-note">⚡ Dashboard lengkap • Fitur Copy di setiap kartu • Salin Semua di header</div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click',function(){
+        document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+        document.getElementById(this.dataset.tab)?.classList.add('active');
+        this.classList.add('active');
+        requestAnimationFrame(filterCards);
+    });
+});
+
+// Odds sub-tabs
+document.querySelectorAll('.sub-tab').forEach(btn=>{
+    btn.addEventListener('click',function(){
+        document.querySelectorAll('.odds-card').forEach(c=>c.classList.remove('active-odds'));
+        document.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active-sub'));
+        document.getElementById(this.dataset.odds)?.classList.add('active-odds');
+        this.classList.add('active-sub');
+    });
+});
+
+// Toast
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2000);}
+
+// Copy single card
+function copyCard(btn){
+    const card=btn.closest('.card');if(!card)return;
+    const clone=card.cloneNode(true);
+    clone.querySelectorAll('.copy-btn').forEach(b=>b.remove());
+    const text=clone.innerText.trim();
+    navigator.clipboard.writeText(text).then(()=>{
+        btn.innerHTML='✅ Tersalin!';btn.classList.add('copied');
+        setTimeout(()=>{btn.innerHTML='📋 Salin';btn.classList.remove('copied');},2000);
+        showToast('✅ Tersalin! ('+text.length+' karakter)');
+    }).catch(()=>{
+        const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+        document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');btn.innerHTML='✅ Tersalin!';btn.classList.add('copied');setTimeout(()=>{btn.innerHTML='📋 Salin';btn.classList.remove('copied');},2000);showToast('✅ Tersalin!');}catch(e){showToast('❌ Gagal menyalin');}
+        document.body.removeChild(ta);
+    });
+}
+
+// Copy all cards in active tab
+function copyAll(){
+    const active=document.querySelector('.tab-content.active');if(!active)return;
+    const clone=active.cloneNode(true);
+    clone.querySelectorAll('.copy-btn,.btn-copy-all').forEach(b=>b.remove());
+    const text=clone.innerText.trim();
+    if(!text){showToast('⚠️ Tidak ada teks untuk disalin.');return;}
+    navigator.clipboard.writeText(text).then(()=>showToast('✅ Semua tersalin! ('+text.length+' karakter)'))
+        .catch(()=>{
+            const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.left='-9999px';
+            document.body.appendChild(ta);ta.select();
+            try{document.execCommand('copy');showToast('✅ Tersalin!');}catch(e){showToast('❌ Gagal menyalin');}
+            document.body.removeChild(ta);
+        });
+}
+
+// Search filter
+const searchInput=document.getElementById('guideSearch');
+const searchClear=document.getElementById('searchClear');
+const searchInfo=document.getElementById('searchInfo');
+const noResult=document.getElementById('noResult');
+
+function filterCards(){
+    const kw=(searchInput?.value||'').toLowerCase().trim();
+    const active=document.querySelector('.tab-content.active');if(!active)return;
+    const cards=active.querySelectorAll('.card');let shown=0;
+    cards.forEach(c=>{const match=!kw||c.innerText.toLowerCase().includes(kw);c.style.display=match?'':'none';if(match)shown++;});
+    searchClear?.classList.toggle('visible',Boolean(kw));
+    if(noResult)noResult.style.display=kw&&!shown?'block':'none';
+    if(searchInfo)searchInfo.textContent=kw?shown+' bagian ditemukan untuk "'+searchInput.value.trim()+'" pada kategori aktif.':'Pilih kategori atau cari istilah yang ingin dipelajari.';
+}
+
+searchInput?.addEventListener('input',filterCards);
+searchClear?.addEventListener('click',()=>{searchInput.value='';filterCards();searchInput.focus();});
+</script>
+</body>
+</html>

@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sport Bet Calculator</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080e16'/%3E%3Ccircle cx='32' cy='32' r='20' fill='%2300e87b' opacity='.9'/%3E%3Cpath d='M30 15 19 35h10l-2 14 16-22H33l3-12z' fill='%23080e16'/%3E%3C/svg%3E">
+<style>
+/* ── tokens ── */
+:root{
+  --bg:#060b12;--card:#0c1520;--input:#111c28;--border:#1e3044;
+  --txt:#f0f6ff;--dim:#8a9cb2;--dim2:#5e7182;
+  --green:#00e87b;--yellow:#ffc800;--red:#ff3860;--blue:#5ca8ff;
+  --radius:16px;--shadow:0 20px 60px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,Segoe UI,sans-serif;color:var(--txt);
+  background:var(--bg);min-height:100vh;
+  background-image:
+    radial-gradient(circle at 5% 5%,rgba(0,232,123,.18),transparent 30%),
+    radial-gradient(circle at 95% 90%,rgba(255,200,0,.12),transparent 28%);
+}
+
+/* ── layout ── */
+.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 40px}
+
+/* ── header ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  padding:16px 20px;border-radius:20px;margin-bottom:16px;
+  border:1px solid rgba(255,255,255,.08);
+  background:linear-gradient(135deg,rgba(14,24,36,.95),rgba(6,11,18,.98));
+  box-shadow:var(--shadow)}
+.hdr-brand{display:flex;align-items:center;gap:14px}
+.hdr-icon{width:52px;height:52px;display:grid;place-items:center;border-radius:16px;
+  background:linear-gradient(135deg,var(--yellow),#ff9500);color:#1a1000;font-size:26px;
+  box-shadow:0 0 24px rgba(255,200,0,.2)}
+.hdr h1{font-size:28px;letter-spacing:.8px;text-transform:uppercase;line-height:1}
+.hdr-sub{color:var(--dim);font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-top:4px}
+
+/* ── mode tabs ── */
+.tabs{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+.tab{flex:1;max-width:220px;height:44px;border-radius:12px;border:1px solid var(--border);
+  background:rgba(255,255,255,.04);color:var(--dim);font-weight:800;font-size:13px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:.15s}
+.tab:hover{border-color:rgba(255,255,255,.18)}
+.tab.on{background:linear-gradient(135deg,#0070ff,#4020c8);color:#fff;
+  border-color:rgba(92,168,255,.7);box-shadow:0 0 20px rgba(92,168,255,.2)}
+
+/* ── panels ── */
+.mode{display:none}.mode.on{display:block}
+
+/* ── card ── */
+.card{border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);
+  background:linear-gradient(180deg,rgba(14,22,32,.96),rgba(7,12,19,.98));
+  box-shadow:var(--shadow);overflow:hidden}
+.card-head{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.025);display:flex;align-items:center;justify-content:space-between}
+.card-head h2{font-size:14px;text-transform:uppercase;letter-spacing:.8px}
+.card-head small{color:var(--green);font-size:11px;font-weight:800;text-transform:uppercase}
+.card-body{padding:16px;display:grid;gap:12px}
+
+/* ── grid ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.app-grid{display:grid;grid-template-columns:1fr 380px;gap:16px;align-items:start}
+
+/* ── box ── */
+.box{border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:14px;
+  background:rgba(255,255,255,.025)}
+.box-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.box-title b{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#dce7f2}
+.box-title span{color:var(--dim2);font-size:11px;font-weight:800}
+
+/* ── form ── */
+label{display:block;color:var(--dim);font-size:10px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+input,select{width:100%;height:42px;border:1px solid var(--border);border-radius:11px;
+  background:var(--input);color:var(--txt);padding:0 12px;font-size:14px;font-weight:800;
+  font-family:inherit;outline:none;transition:.15s}
+input::placeholder{color:var(--dim2)}
+input:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(0,232,123,.1)}
+select option{color:#111;background:#fff}
+.helper{margin-top:5px;color:var(--dim2);font-size:11px;font-weight:700}
+
+.money-wrap{position:relative}
+.money-wrap .pfx{position:absolute;left:12px;top:50%;transform:translateY(-50%);
+  color:var(--green);font-weight:900;pointer-events:none}
+.money-wrap input{padding-left:38px;text-align:right}
+
+/* ── chips ── */
+.chips{display:grid;gap:6px}
+.chips.c2{grid-template-columns:1fr 1fr}
+.chips.c3{grid-template-columns:1fr 1fr 1fr}
+.chips.c4{grid-template-columns:1fr 1fr 1fr 1fr}
+.chip{min-height:44px;border-radius:11px;border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.04);color:#ccd8e6;padding:8px 10px;font-weight:800;
+  font-size:13px;cursor:pointer;transition:.12s;font-family:inherit;text-align:left}
+.chip small{display:block;margin-top:2px;color:var(--dim2);font-size:10px;font-weight:700}
+.chip:hover{border-color:rgba(255,255,255,.2)}
+.chip.on{background:linear-gradient(180deg,#12ff94,var(--green));color:#001a0b;
+  border-color:rgba(0,232,123,.8);box-shadow:0 0 18px rgba(0,232,123,.18)}
+.chip.on small{color:#003a1e}
+
+/* market chips blue */
+.chips.mkt .chip{border-color:rgba(92,168,255,.2);background:rgba(92,168,255,.08)}
+.chips.mkt .chip.on{background:linear-gradient(180deg,#2bb7ff,#0070ff);color:#001225;
+  border-color:rgba(92,168,255,.8);box-shadow:0 0 18px rgba(92,168,255,.2)}
+.chips.mkt .chip.on small{color:#002b52}
+
+/* bettype chips yellow */
+.chips.bt .chip{border-color:rgba(255,200,0,.2);background:rgba(255,200,0,.08)}
+.chips.bt .chip.on{background:linear-gradient(180deg,#ffe066,var(--yellow));color:#1a1200;
+  border-color:rgba(255,200,0,.8);box-shadow:0 0 18px rgba(255,200,0,.18)}
+
+/* ── conditional boxes ── */
+.cond{display:none;margin-top:8px;border:1px solid rgba(0,232,123,.16);
+  border-left:3px solid var(--green);border-radius:12px;padding:12px;
+  background:rgba(0,232,123,.04)}
+.cond.on{display:block}
+.cond.yellow{border-color:rgba(255,200,0,.2);border-left-color:var(--yellow);
+  background:rgba(255,200,0,.04)}
+
+/* ── score grid ── */
+.score-grid{display:grid;grid-template-columns:1fr 36px 1fr;gap:8px;align-items:end}
+.score-grid input{text-align:center;font-size:18px;height:48px}
+.colon{height:48px;display:grid;place-items:center;color:var(--green);font-size:22px;font-weight:900}
+
+/* ── inline voor ── */
+.voor-inline{display:flex;gap:6px}
+.voor-inline .mini{width:64px;flex:none}
+
+/* ── buttons ── */
+button{font-family:inherit;outline:none;cursor:pointer;transition:.12s}
+button:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.btn{height:42px;border:0;border-radius:12px;padding:0 18px;font-weight:900;
+  font-size:13px;text-transform:uppercase}
+.btn-main{background:linear-gradient(180deg,#ffd63d,var(--yellow));color:#1a1100;
+  box-shadow:0 0 20px rgba(255,200,0,.15)}
+.btn-danger{background:rgba(255,56,96,.08);border:1px solid rgba(255,56,96,.5);color:var(--red)}
+.btn-green{background:rgba(0,232,123,.08);border:1px solid rgba(0,232,123,.4);color:var(--green)}
+.btn-row{display:grid;grid-template-columns:1fr .4fr;gap:8px;margin-top:10px}
+
+/* ── result panel ── */
+.result{position:sticky;top:16px}
+.result-body{padding:16px}
+.result-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+.result-top h2{color:var(--yellow);font-size:18px;text-transform:uppercase;letter-spacing:.6px}
+.badge{display:inline-flex;align-items:center;min-height:30px;padding:5px 10px;border-radius:8px;
+  border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:var(--dim);
+  font-weight:900;font-size:11px;text-transform:uppercase;white-space:nowrap}
+.badge.win{color:var(--green);background:rgba(0,232,123,.1);border-color:rgba(0,232,123,.35)}
+.badge.hwin{color:var(--blue);background:rgba(92,168,255,.1);border-color:rgba(92,168,255,.35)}
+.badge.draw{color:#b0c0ff;background:rgba(120,145,255,.1);border-color:rgba(120,145,255,.3)}
+.badge.hlose{color:var(--yellow);background:rgba(255,200,0,.1);border-color:rgba(255,200,0,.35)}
+.badge.lose{color:var(--red);background:rgba(255,56,96,.1);border-color:rgba(255,56,96,.35)}
+
+.main-result{margin-bottom:10px;padding:16px;text-align:center;border:1px solid rgba(255,200,0,.16);
+  border-radius:14px;background:linear-gradient(135deg,rgba(255,200,0,.08),rgba(0,0,0,.15))}
+.main-result small{color:var(--dim);font-weight:900;text-transform:uppercase;letter-spacing:.6px;font-size:11px}
+.main-result strong{display:block;margin-top:6px;color:var(--green);font-size:24px}
+
+.rows{display:grid;gap:7px}
+.row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;
+  border:1px solid rgba(255,255,255,.06);border-radius:11px;background:rgba(0,0,0,.18);font-weight:800}
+.row span{color:#c8d4e2;font-size:12px}
+.row strong{text-align:right;font-size:14px}
+.row.profit strong{color:var(--yellow)}
+
+.explain{margin-top:10px;min-height:100px;border:1px solid rgba(0,232,123,.16);border-radius:12px;
+  background:rgba(0,232,123,.04);padding:14px;color:#d0e0f0;line-height:1.55;font-weight:700;font-size:13px}
+.explain .ph{color:var(--dim2);font-style:italic}
+.explain details{margin-top:8px;border-top:1px dashed rgba(255,255,255,.08);padding-top:8px}
+.explain summary{cursor:pointer;color:var(--green);font-weight:900;margin-bottom:6px;font-size:12px}
+.copy-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+
+/* ── toggle switch ── */
+.toggle{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;
+  padding:5px 10px;border:1px solid rgba(255,200,0,.28);border-radius:999px;
+  background:rgba(255,200,0,.06);font-size:11px;font-weight:800;color:var(--yellow)}
+.toggle input{position:absolute;opacity:0;pointer-events:none}
+.sw{width:36px;height:20px;border-radius:999px;background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.16);position:relative;flex:none;transition:.2s}
+.sw::after{content:"";position:absolute;width:14px;height:14px;left:2px;top:2px;
+  border-radius:50%;background:#c0c8d0;transition:.2s}
+.toggle input:checked+.sw{background:rgba(0,232,123,.3);border-color:rgba(0,232,123,.7)}
+.toggle input:checked+.sw::after{transform:translateX(16px);background:var(--green)}
+
+/* ── toast ── */
+.toast{position:fixed;right:16px;bottom:16px;z-index:99;padding:10px 14px;border-radius:10px;
+  background:#0e1820;border:1px solid rgba(0,232,123,.6);color:var(--green);font-weight:900;
+  opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s;font-size:13px}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* ── simple parlay table ── */
+.sp-wrap{overflow-x:auto;border-radius:14px;border:1px solid rgba(255,255,255,.07);
+  background:rgba(4,8,14,.5)}
+.sp-head,.sp-row{min-width:980px;display:grid;
+  grid-template-columns:36px 1fr 1fr 72px 120px 120px 1fr 72px 140px 30px;
+  gap:6px;align-items:center}
+.sp-head{padding:8px 10px;color:var(--dim2);font-size:10px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid rgba(255,255,255,.06)}
+.sp-row{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.04)}
+.sp-row:last-child{border-bottom:0}
+.sp-no{color:var(--green);font-weight:900;text-align:center;font-size:13px}
+.sp-row input,.sp-row select{height:32px;min-height:32px;border-radius:7px;padding:0 7px;
+  font-size:12px;font-weight:800;background:#070e14;border:1px solid rgba(255,255,255,.08)}
+.sp-row select{appearance:auto}
+.sp-score{display:grid;grid-template-columns:1fr 10px 1fr;gap:3px;align-items:center}
+.sp-score span{color:var(--green);font-weight:900;text-align:center;font-size:12px}
+.sp-score input{text-align:center;width:100%}
+.sp-voor{display:grid;grid-template-columns:44px 1fr;gap:4px}
+.sp-st{height:28px;display:flex;align-items:center;justify-content:center;padding:0 6px;
+  border-radius:6px;border:1px solid rgba(92,168,255,.16);background:rgba(92,168,255,.08);
+  color:var(--dim);font-size:10px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sp-st.good{background:rgba(0,232,123,.1);border-color:rgba(0,232,123,.3);color:var(--green)}
+.sp-st.bad{background:rgba(255,56,96,.1);border-color:rgba(255,56,96,.3);color:#ff6e8e}
+.sp-st.push{background:rgba(255,200,0,.1);border-color:rgba(255,200,0,.3);color:var(--yellow)}
+.sp-rm{width:28px;height:28px;border-radius:7px;border:1px solid rgba(255,56,96,.3);
+  background:rgba(255,56,96,.08);color:var(--red);font-weight:900;font-size:16px;
+  display:grid;place-items:center;padding:0;min-height:28px}
+.sp-actions{display:grid;grid-template-columns:1fr 140px 1fr;gap:8px;margin-top:10px;align-items:center}
+.sp-topbar{display:grid;grid-template-columns:280px 1fr;gap:10px;align-items:end;
+  padding:10px;border-radius:12px;border:1px solid rgba(255,200,0,.16);background:rgba(255,200,0,.03)}
+.sp-note{display:flex;align-items:center;padding:8px 10px;border-radius:10px;
+  border:1px dashed rgba(0,232,123,.2);background:rgba(0,232,123,.03);
+  color:var(--dim);font-size:11px;font-weight:700;gap:8px}
+
+/* parlay detail rows */
+.pd-row{padding:8px 10px;border-radius:10px;border:1px solid rgba(255,255,255,.06);
+  background:rgba(255,255,255,.025);margin-bottom:6px;font-size:12px}
+.pd-row b{display:block;color:var(--txt)}
+.pd-row span{display:block;color:#b8c8da;margin-top:3px}
+.pd-row small{display:block;color:var(--dim2);margin-top:3px}
+.pd-row em{display:block;margin-top:4px;color:#a0b0c4;font-style:normal;line-height:1.4}
+.parlay-explain{max-height:350px;overflow-y:auto}
+
+.note-box{margin-top:10px;border:1px dashed rgba(255,255,255,.12);border-radius:11px;
+  padding:10px 12px;color:var(--dim2);font-size:11px;line-height:1.4;font-weight:700;
+  background:rgba(255,255,255,.02)}
+
+/* ── responsive ── */
+@media(max-width:900px){
+  .app-grid{grid-template-columns:1fr}
+  .result{position:static}
+  .sp-actions{grid-template-columns:1fr}
+  .sp-topbar{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .g2{grid-template-columns:1fr}
+  .chips.c3,.chips.c4{grid-template-columns:1fr 1fr}
+  .btn-row,.copy-row{grid-template-columns:1fr}
+  .score-grid{grid-template-columns:1fr 28px 1fr}
+  .row{grid-template-columns:1fr}
+  .row strong{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <!-- HEADER -->
+  <header class="hdr">
+    <div class="hdr-brand">
+      <div class="hdr-icon">⚡</div>
+      <div>
+        <h1 id="hdrTitle">Single Bet Calculator</h1>
+        <div class="hdr-sub" id="hdrSub">Mode Single Bet</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MODE TABS -->
+  <div class="tabs">
+    <button class="tab on" data-mode="single" onclick="switchMode('single')">⚡ Single Bet</button>
+    <button class="tab" data-mode="parlay" onclick="switchMode('parlay')">🎯 Mix Parlay</button>
+  </div>
+
+  <!-- ═══════════════ SINGLE BET ═══════════════ -->
+  <section class="mode on" id="modeSingle">
+    <div class="app-grid">
+      <div class="card">
+        <div class="card-head"><h2>Input Taruhan</h2><small id="sMarketBadge">HDP</small></div>
+        <div class="card-body">
+
+          <!-- 1. Pasaran -->
+          <div class="box">
+            <div class="box-title"><b>1. Pilih Pasaran</b><span>Input menyesuaikan</span></div>
+            <div class="chips c4 mkt" id="sMarketChips">
+              <button class="chip on" data-v="HDP">Handicap<small>Odds</small></button>
+              <button class="chip" data-v="OU">Over / Under<small>Odds</small></button>
+              <button class="chip" data-v="1X2">1X2<small>Odds</small></button>
+              <button class="chip" data-v="OE">Odd / Even<small>Total gol</small></button>
+            </div>
+
+            <div style="margin-top:10px">
+              <label>Jenis Bet</label>
+              <div class="chips c3 bt" id="sBetTypeChips">
+                <button class="chip on" data-v="NORMAL">Fulltime<small>Hitung fulltime</small></button>
+                <button class="chip" data-v="HT">Babak Pertama<small>Hitung HT</small></button>
+                <button class="chip" data-v="LIVE">Bola Jalan<small>Dari skor saat bet</small></button>
+              </div>
+            </div>
+
+            <!-- Live box -->
+            <div class="cond yellow" id="sLiveBox">
+              <label>Skor Saat Bet Dipasang</label>
+              <div class="score-grid">
+                <div><label id="sLiveHomeL">Skor Tim 1 Saat Bet</label><input id="sLiveHome" placeholder="0" inputmode="decimal"></div>
+                <div class="colon">:</div>
+                <div><label id="sLiveAwayL">Skor Tim 2 Saat Bet</label><input id="sLiveAway" placeholder="0" inputmode="decimal"></div>
+              </div>
+              <div class="helper">Bola Jalan menghitung selisih dari skor saat bet sampai skor akhir.</div>
+            </div>
+
+            <!-- HDP box -->
+            <div class="cond on" id="sBoxHDP">
+              <div class="g2">
+                <div>
+                  <label>Tim yang Anda pilih</label>
+                  <div class="chips c2" id="sHdpPick">
+                    <button class="chip on" data-v="HOME">Tim 1<small id="sHdpHomeT">Tim 1</small></button>
+                    <button class="chip" data-v="AWAY">Tim 2<small id="sHdpAwayT">Tim 2</small></button>
+                  </div>
+                </div>
+                <div>
+                  <label>Voor</label>
+                  <div class="voor-inline">
+                    <select id="sLineSign" class="mini"><option value="-">-</option><option value="+">+</option></select>
+                    <select id="sLine"></select>
+                  </div>
+                  <div class="helper">Voor 0 sampai 4.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- OU box -->
+            <div class="cond" id="sBoxOU">
+              <div class="g2">
+                <div>
+                  <label>Pilihan O/U</label>
+                  <div class="chips c2" id="sOuPick">
+                    <button class="chip on" data-v="OVER">Over<small>Lebih besar</small></button>
+                    <button class="chip" data-v="UNDER">Under<small>Lebih kecil</small></button>
+                  </div>
+                </div>
+                <div>
+                  <label>Batas Gol</label>
+                  <select id="sOuLine"></select>
+                  <div class="helper">Batas gol 0 sampai 10.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 1X2 box -->
+            <div class="cond" id="sBox1X2">
+              <label>Pilih Taruhan 1X2</label>
+              <div class="chips c3" id="s1x2Pick">
+                <button class="chip on" data-v="HOME">1<small id="s1x2HomeT">Tim 1 menang</small></button>
+                <button class="chip" data-v="DRAW">X<small>Seri</small></button>
+                <button class="chip" data-v="AWAY">2<small id="s1x2AwayT">Tim 2 menang</small></button>
+              </div>
+            </div>
+
+            <!-- OE box -->
+            <div class="cond" id="sBoxOE">
+              <label>Pilih Odd / Even</label>
+              <div class="chips c2" id="sOePick">
+                <button class="chip on" data-v="ODD">Odd<small>Ganjil</small></button>
+                <button class="chip" data-v="EVEN">Even<small>Genap</small></button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Data Utama -->
+          <div class="box">
+            <div class="box-title">
+              <b>2. Data Utama</b>
+              <label class="toggle" id="sOddsToggle">
+                <input type="checkbox" id="sOddsEu">
+                <span class="sw"></span>
+                <span id="sOddsLabel">Odds Eropa</span>
+              </label>
+            </div>
+            <div class="g2">
+              <div><label>Tim 1</label><input id="sHome" placeholder="Contoh: BRAZIL"></div>
+              <div><label>Tim 2</label><input id="sAway" placeholder="Contoh: PRANCIS"></div>
+              <div><label>Nominal Betting</label>
+                <div class="money-wrap"><span class="pfx">Rp</span><input id="sBet" placeholder="10.000.000" inputmode="numeric" class="money-input"></div>
+              </div>
+              <div>
+                <label id="sOddsLbl">Odds Indo</label>
+                <input id="sOdds" placeholder="0.79 atau -1.49" inputmode="decimal">
+                <div class="helper" id="sOddsHint">Contoh: 0.79 atau -1.49.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Skor -->
+          <div class="box">
+            <div class="box-title"><b id="sScoreTitle">3. Skor Akhir</b><span id="sScoreSub">Hasil pertandingan</span></div>
+            <div class="score-grid">
+              <div><label id="sScoreHomeL">Skor Tim 1</label><input id="sScoreHome" placeholder="0" inputmode="decimal"></div>
+              <div class="colon">:</div>
+              <div><label id="sScoreAwayL">Skor Tim 2</label><input id="sScoreAway" placeholder="0" inputmode="decimal"></div>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-main" id="sCalc">▣ Hitung Sekarang</button>
+              <button class="btn btn-danger" id="sReset">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <aside class="card result">
+        <div class="card-head"><h2>Hasil</h2><small id="rBadge">HDP</small></div>
+        <div class="result-body">
+          <div class="result-top">
+            <h2>📈 Result</h2>
+            <span class="badge" id="rStatus">Belum Dihitung</span>
+          </div>
+          <div class="main-result">
+            <small>Total Diterima</small>
+            <strong id="rTotal">Rp0</strong>
+          </div>
+          <div class="rows">
+            <div class="row"><span>Status</span><strong id="rStat">-</strong></div>
+            <div class="row"><span>Odds</span><strong id="rOdds">-</strong></div>
+            <div class="row"><span>Modal Awal</span><strong id="rBet">Rp0</strong></div>
+            <div class="row"><span id="rModalLbl">Modal Hitung</span><strong id="rModal">Rp0</strong></div>
+            <div class="row profit"><span>Keuntungan Bersih</span><strong id="rProfit">Rp0</strong></div>
+            <div class="row"><span>Catatan</span><strong id="rNote" style="max-width:180px;font-size:12px">-</strong></div>
+          </div>
+          <div class="explain" id="rExplain"><span class="ph">Isi data lalu klik HITUNG SEKARANG.</span></div>
+          <div class="copy-row">
+            <button class="btn btn-green" id="sCopyResult">Salin Hasil</button>
+            <button class="btn btn-green" id="sCopyExplain">Salin Penjelasan</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ═══════════════ MIX PARLAY ═══════════════ -->
+  <section class="mode" id="modeParlay">
+    <div class="card">
+      <div class="card-head"><h2>Input Mix Parlay</h2><small>Min 3 tim</small></div>
+      <div class="card-body">
+        <div class="sp-topbar">
+          <div><label>Nominal Betting</label>
+            <div class="money-wrap"><span class="pfx">Rp</span><input id="pStake" placeholder="500.000" inputmode="numeric" class="money-input"></div>
+          </div>
+          <div class="sp-note" style="justify-content:space-between">
+            <span>HDP, O/U, 1X2, Odd/Even. Default Odds Eropa.</span>
+            <label class="toggle" style="border-color:rgba(255,200,0,.28);background:rgba(255,200,0,.06)">
+              <input type="checkbox" id="pOddsIndo">
+              <span class="sw"></span>
+              <span>Odds Indo</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="sp-wrap">
+          <div class="sp-head">
+            <span>No</span><span>Home</span><span>Away</span><span>Pasaran</span>
+            <span>Voor</span><span>Skor</span><span>Pilihan</span><span>Odds</span>
+            <span>Hasil</span><span></span>
+          </div>
+          <div id="pList"></div>
+        </div>
+
+        <div class="sp-actions">
+          <button class="btn btn-green" id="pAdd" style="width:100%;border-style:dashed;border-width:2px">+ Tambahkan Tim</button>
+          <button class="btn btn-danger" id="pReset">Reset Semua</button>
+          <button class="btn btn-main" id="pCalc" style="width:100%">▣ Hitung Sekarang</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><h2>Hasil Mix Parlay</h2><small>MIX</small></div>
+      <div class="result-body">
+        <div class="result-top">
+          <h2>📌 Result</h2>
+          <span class="badge" id="pStatus">Belum Dihitung</span>
+        </div>
+        <div class="main-result">
+          <small>Payout / Total Diterima</small>
+          <strong id="pTotal">Rp0</strong>
+        </div>
+        <div class="rows">
+          <div class="row"><span>Total Odds</span><strong id="pTotalOdds">0.0000</strong></div>
+          <div class="row"><span>Stake</span><strong id="pModal">Rp0</strong></div>
+          <div class="row profit"><span>Profit</span><strong id="pProfit">Rp0</strong></div>
+          <div class="row"><span>Jumlah Match</span><strong id="pLegs">3</strong></div>
+        </div>
+        <div class="explain parlay-explain" id="pExplain"><span class="ph">Isi data lalu klik HITUNG SEKARANG.</span></div>
+        <div class="copy-row">
+          <button class="btn btn-green" id="pCopyResult">Salin Hasil</button>
+          <button class="btn btn-green" id="pCopyExplain">Salin Penjelasan</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/*──────────────────────────────────────────────
+  SPORT BET CALCULATOR — ENGINE
+  Single Bet + Mix Parlay, full offline
+──────────────────────────────────────────────*/
+(()=>{
+const $=id=>document.getElementById(id);
+const $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ── helpers ── */
+function toast(t){const e=$('toast');e.textContent=t;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),1500)}
+function onlyNum(v){return String(v||'').replace(/[^0-9]/g,'')}
+function fmtMoney(el){const n=onlyNum(el.value);el.value=n?Number(n).toLocaleString('id-ID'):''}
+function moneyVal(v){const r=onlyNum(v);return r?Number(r):0}
+function cleanDec(v){let s=String(v||'').replace(',','.').replace(/[^0-9.\-]/g,'');const mc=(s.match(/-/g)||[]).length;if(mc>0)s='-'+s.replace(/-/g,'');const p=s.split('.');if(p.length>2)s=p[0]+'.'+p.slice(1).join('');return s}
+function num(v){const n=Number(String(v??'').replace(',','.').replace(/[^0-9.\-]/g,''));return Number.isFinite(n)?n:0}
+function cn(v,d=3){let s=Number(v||0).toFixed(d).replace(/\.?0+$/,'');return s==='-0'?'0':s}
+function cnL(v,d=6){let s=Number(v||0).toFixed(d).replace(/\.?0+$/,'');return s==='-0'?'0':s}
+function idr(v){return'Rp'+Math.max(0,Math.round(Number(v||0))).toLocaleString('id-ID')}
+function idrF(v){return'Rp '+Math.floor(Number(v||0)+1e-9).toLocaleString('id-ID')}
+function idrFD(v){v=Number(v||0);const f=Math.floor(v+1e-9);let t='Rp '+f.toLocaleString('id-ID');if(Math.abs(v-f)>1e-6)t+=' ('+cnL(v,6)+')';return t}
+function sidrFD(v){v=Number(v||0);if(v<0){const a=Math.abs(v),f=Math.floor(a+1e-9);let t='- Rp '+f.toLocaleString('id-ID');if(Math.abs(a-f)>1e-6)t+=' (-'+cnL(a,6)+')';return t}return idrFD(v)}
+function sidr(v){v=Math.round(Number(v||0));return v<0?'-Rp'+Math.abs(v).toLocaleString('id-ID'):'Rp'+v.toLocaleString('id-ID')}
+
+function splitAsian(v){const r=Math.round(Math.abs(Number(v||0))*100)/100;const f=Math.floor(r);const d=Math.round((r-f)*100)/100;if(d===.25)return[f,f+.5];if(d===.75)return[f+.5,f+1];return[r,r]}
+function partOut(c){return c>0?'win':c===0?'draw':'lose'}
+function combine(o){const w=o.filter(x=>x==='win').length,d=o.filter(x=>x==='draw').length,l=o.filter(x=>x==='lose').length;if(w===2)return'win';if(w===1&&d===1)return'hWin';if(d===2)return'draw';if(d===1&&l===1)return'hLose';if(l===2)return'lose';return l?'lose':'draw'}
+function stCls(s){return{win:'win',hWin:'hwin',draw:'draw',hLose:'hlose',lose:'lose'}[s]||''}
+function stLbl(s){return{win:'MENANG PENUH',hWin:'MENANG SETENGAH',draw:'DRAW / SERI',hLose:'KALAH SETENGAH',lose:'KALAH PENUH'}[s]||String(s||'').toUpperCase()}
+function btLbl(t){return t==='LIVE'?'Bola Jalan':t==='HT'?'Babak Pertama':'Full Time'}
+function fmtVoor(sign,v){const n=Number(v||0);return n===0?'0':(sign==='+'?'+':'-')+cn(n)}
+
+function lineOpts(max,sel=''){let h='<option value="">Pilih</option>';for(let i=0;i<=max*4;i++){const v=cn(i/4);h+=`<option value="${v}"${String(sel)===String(v)?' selected':''}>${v}</option>`}return h}
+
+/* ── populate selects ── */
+$('sLine').innerHTML=lineOpts(4);
+$('sOuLine').innerHTML=lineOpts(10);
+
+/* ── single state ── */
+let S={market:'HDP',betType:'NORMAL',pick1x2:'HOME',pickHdp:'HOME',pickOu:'OVER',pickOe:'ODD'};
+let sCopyText='',sExplainText='';
+
+function chipGroup(container,cb){$$(container+' .chip').forEach(btn=>btn.addEventListener('click',()=>{$$(container+' .chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');cb(btn.dataset.v)}))}
+
+function syncNames(){const h=$('sHome').value.trim()||'Tim 1',a=$('sAway').value.trim()||'Tim 2';
+  $('s1x2HomeT').textContent=h+' menang';$('s1x2AwayT').textContent=a+' menang';
+  $('sHdpHomeT').textContent=h;$('sHdpAwayT').textContent=a;
+  $('sScoreHomeL').textContent='Skor '+h;$('sScoreAwayL').textContent='Skor '+a;
+  $('sLiveHomeL').textContent='Skor '+h+' Saat Bet';$('sLiveAwayL').textContent='Skor '+a+' Saat Bet'}
+
+function updOddsUI(){const eu=$('sOddsEu').checked;
+  $('sOddsLbl').textContent=eu?'Odds Eropa':'Odds Indo';
+  $('sOdds').placeholder=eu?'1.79':'0.79 atau -1.49';
+  $('sOddsHint').textContent=eu?'Contoh: 1.79, 1.91, 2.05.':'Contoh: 0.79 atau -1.49.'}
+
+chipGroup('#sMarketChips',v=>{S.market=v;
+  ['HDP','OU','1X2','OE'].forEach(m=>$('sBox'+m).classList.toggle('on',m===v));
+  $('sMarketBadge').textContent=v==='OE'?'Odd/Even':v;clearSingle()});
+chipGroup('#sBetTypeChips',v=>{S.betType=v;$('sLiveBox').classList.toggle('on',v==='LIVE');
+  $('sScoreTitle').textContent=v==='HT'?'3. Skor Babak Pertama':'3. Skor Akhir';
+  $('sScoreSub').textContent=v==='HT'?'Hasil babak pertama':'Hasil pertandingan';clearSingle()});
+chipGroup('#sHdpPick',v=>{S.pickHdp=v;clearSingle()});
+chipGroup('#sOuPick',v=>{S.pickOu=v;clearSingle()});
+chipGroup('#s1x2Pick',v=>{S.pick1x2=v;clearSingle()});
+chipGroup('#sOePick',v=>{S.pickOe=v;clearSingle()});
+
+$('sHome').addEventListener('input',()=>{syncNames();clearSingle()});
+$('sAway').addEventListener('input',()=>{syncNames();clearSingle()});
+$$('.money-input').forEach(i=>i.addEventListener('input',()=>fmtMoney(i)));
+['sOdds','sScoreHome','sScoreAway','sLiveHome','sLiveAway'].forEach(id=>{
+  $(id).addEventListener('input',function(){this.value=cleanDec(this.value)})});
+$('sOddsEu').addEventListener('change',()=>{updOddsUI();clearSingle()});
+
+function clearSingle(){
+  $('rStatus').textContent='Belum Dihitung';$('rStatus').className='badge';
+  $('rTotal').textContent='Rp0';$('rStat').textContent='-';$('rOdds').textContent='-';
+  $('rBet').textContent='Rp0';$('rModal').textContent='Rp0';$('rProfit').textContent='Rp0';
+  $('rNote').textContent='-';$('rModalLbl').textContent='Modal Hitung';
+  $('rExplain').innerHTML='<span class="ph">Isi data lalu klik HITUNG SEKARANG.</span>';
+  sCopyText='';sExplainText=''}
+
+/* ── single calc engine ── */
+function oddsToIndo(v,fmt){v=Number(v||0);if(fmt==='EU'){if(v<=1)throw Error('Odds Eropa harus > 1.');return v-1}if(v===0)throw Error('Odds masih kosong.');return v}
+
+function calcPayout(odds,stat,bet){let modal=bet,profit=0,total=0,risk=false;
+  if(stat==='lose'){if(odds<0){risk=true;modal=bet*Math.abs(odds)}return{modal,profit,total,risk}}
+  if(odds>=0){if(stat==='win'){profit=bet*odds;total=bet+profit}else if(stat==='hWin'){profit=(bet*odds)/2;total=bet+profit}else if(stat==='draw')total=bet;else if(stat==='hLose')total=bet/2;modal=bet}
+  else{risk=true;modal=bet*Math.abs(odds);if(stat==='win'){profit=bet;total=modal+profit}else if(stat==='hWin'){profit=bet/2;total=modal+profit}else if(stat==='draw')total=modal;else if(stat==='hLose')total=modal/2}
+  return{modal,profit,total,risk}}
+
+function getCalcScores(d){if(d.betType!=='LIVE')return{h:d.hs,a:d.as,t:d.hs+d.as,lt:''};
+  const ha=d.hs-d.lh,aa=d.as-d.la;if(ha<0||aa<0)throw Error('Skor akhir < skor saat bet.');
+  return{h:ha,a:aa,t:ha+aa,lt:` Saat bet skor ${d.hn} ${cn(d.lh)}-${cn(d.la)} ${d.an}. Dihitung: ${d.hn} ${cn(ha)}-${cn(aa)} ${d.an}.`}}
+
+function calcHDP(d){if(d.lineRaw==='')throw Error('Voor masih kosong.');
+  const c=getCalcScores(d),sel=d.pickHdp==='HOME'?d.hn:d.an,opp=d.pickHdp==='HOME'?d.an:d.hn;
+  const ss=d.pickHdp==='HOME'?c.h:c.a,os=d.pickHdp==='HOME'?c.a:c.h;
+  const sp=splitAsian(d.line),sgn=sp.map(v=>Number(v)===0?0:(d.lineSign==='-'?-v:v));
+  const oc=sgn.map(p=>partOut((ss+p)-os)),stat=combine(oc);
+  const lt=fmtVoor(d.lineSign,d.line),type=btLbl(d.betType);
+  const scTxt=d.betType==='HT'?`Skor HT ${d.hn} ${cn(d.hs)}-${cn(d.as)} ${d.an}.`:`Pertandingan berakhir ${d.hn} ${cn(d.hs)}-${cn(d.as)} ${d.an}.`;
+  let ex=`Bosku, Anda bertaruh pada ${sel} dengan voor ${lt} di ${type}.${c.lt} ${scTxt} Taruhan masuk ${stLbl(stat)}.`;
+  return{stat,explain:ex,detail:`Bet: ${type}. Skor hitung: ${d.hn} ${cn(c.h)}-${cn(c.a)} ${d.an}. Pilihan: ${sel}. Voor: ${lt}.`}}
+
+function calcOU(d){if(d.ouLineRaw==='')throw Error('Line O/U kosong.');
+  const c=getCalcScores(d),line=d.ouLine,total=c.t,pick=d.pickOu;
+  const isQ=Math.abs(((line*2)%1))>1e-5;let stat;
+  if(!isQ){if(pick==='OVER')stat=total>line?'win':(total<line?'lose':'draw');else stat=total<line?'win':(total>line?'lose':'draw')}
+  else{const lo=Math.floor(line*2)/2,hi=Math.ceil(line*2)/2;let rL,rH;
+    if(pick==='OVER'){rL=total>lo?'win':(total<lo?'lose':'draw');rH=total>hi?'win':(total<hi?'lose':'draw')}
+    else{rL=total<lo?'win':(total>lo?'lose':'draw');rH=total<hi?'win':(total>hi?'lose':'draw')}stat=combine([rL,rH])}
+  const pt=pick==='OVER'?'Over':'Under',type=btLbl(d.betType);
+  const scTxt=d.betType==='HT'?`Skor HT ${d.hn} ${cn(d.hs)}-${cn(d.as)} ${d.an}.`:`Pertandingan berakhir ${d.hn} ${cn(d.hs)}-${cn(d.as)} ${d.an}.`;
+  return{stat,explain:`Bosku, Anda memilih ${pt} ${cn(line)} di ${type}.${c.lt} ${scTxt} Total gol ${cn(total)}, taruhan ${stLbl(stat)}.`,detail:`Bet: ${type}. Total gol: ${cn(total)}. Line: ${pt} ${cn(line)}.`}}
+
+function calc1X2(d){const c=getCalcScores(d);let stat,sel;
+  if(d.pick1x2==='HOME'){stat=c.h>c.a?'win':'lose';sel=d.hn}
+  else if(d.pick1x2==='AWAY'){stat=c.a>c.h?'win':'lose';sel=d.an}
+  else{stat=c.h===c.a?'win':'lose';sel='Draw'}
+  const type=btLbl(d.betType);const scTxt=`Pertandingan berakhir ${d.hn} ${cn(d.hs)}-${cn(d.as)} ${d.an}.`;
+  return{stat,explain:`Bosku, pilihan 1X2: ${sel} di ${type}.${c.lt} ${scTxt} Taruhan ${stLbl(stat)}.`,detail:`Bet: ${type}. Pilihan: ${sel}.`}}
+
+function calcOE(d){const c=getCalcScores(d),tg=Math.round(c.t);
+  const pick=d.pickOe==='EVEN'?'EVEN':'ODD',act=tg%2===0?'EVEN':'ODD',stat=pick===act?'win':'lose';
+  const type=btLbl(d.betType);const scTxt=`Pertandingan berakhir ${d.hn} ${cn(d.hs)}-${cn(d.as)} ${d.an}.`;
+  return{stat,explain:`Bosku, pilihan ${pick==='ODD'?'Odd':'Even'} di ${type}.${c.lt} ${scTxt} Total gol ${tg} (${act==='ODD'?'ganjil':'genap'}), taruhan ${stLbl(stat)}.`,detail:`Bet: ${type}. Total gol: ${tg}. Pilihan: ${pick}.`}}
+
+function doSingleCalc(){
+  try{
+    const bet=moneyVal($('sBet').value);if(bet<=0)throw Error('Nominal betting kosong.');
+    const fmt=$('sOddsEu').checked?'EU':'INDO';
+    const rawOdds=num($('sOdds').value),odds=oddsToIndo(rawOdds,fmt);
+    const d={market:S.market,betType:S.betType,pick1x2:S.pick1x2,pickHdp:S.pickHdp,pickOu:S.pickOu,pickOe:S.pickOe,
+      hn:$('sHome').value.trim()||'Tim 1',an:$('sAway').value.trim()||'Tim 2',
+      hs:num($('sScoreHome').value),as:num($('sScoreAway').value),
+      lh:num($('sLiveHome').value),la:num($('sLiveAway').value),
+      lineSign:$('sLineSign').value,line:num($('sLine').value),lineRaw:$('sLine').value,
+      ouLine:num($('sOuLine').value),ouLineRaw:$('sOuLine').value};
+    let r;if(d.market==='1X2')r=calc1X2(d);else if(d.market==='OU')r=calcOU(d);else if(d.market==='OE')r=calcOE(d);else r=calcHDP(d);
+    const po=calcPayout(odds,r.stat,bet),net=po.total-po.modal;
+    const minusNote=po.risk?` Odds minus (${cn(odds)}), modal hitung jadi ${idr(po.modal)}.`:'';
+    const payNote=r.stat==='win'?` Profit ${idr(po.profit)}, total ${idr(po.total)}.`:
+      r.stat==='hWin'?` Menang setengah, profit ${idr(po.profit)}, total ${idr(po.total)}.`:
+      r.stat==='draw'?` Modal dikembalikan ${idr(po.total)}.`:
+      r.stat==='hLose'?` Kalah setengah, kembali ${idr(po.total)}.`:' Kalah full, modal tidak kembali.';
+    const noteMap={win:'Menang penuh.',hWin:'Menang setengah.',draw:'Draw/seri.',hLose:'Kalah setengah.',lose:'Kalah penuh.'};
+    const fullExplain=r.explain+minusNote+payNote;
+    $('rStatus').textContent=stLbl(r.stat);$('rStatus').className='badge '+stCls(r.stat);
+    $('rTotal').textContent=idr(po.total);$('rStat').textContent=stLbl(r.stat);
+    $('rOdds').textContent=cn(rawOdds);$('rBet').textContent=idr(bet);
+    $('rModal').textContent=idr(po.modal);$('rProfit').textContent=sidr(net);
+    $('rNote').textContent=noteMap[r.stat]||'-';$('rBadge').textContent=d.market==='OE'?'Odd/Even':d.market;
+    $('rExplain').innerHTML=esc(fullExplain)+`<details><summary>Detail</summary>${r.detail}</details>`;
+    sCopyText=`HASIL TARUHAN\nStatus: ${stLbl(r.stat)}\nOdds: ${cn(rawOdds)}\nModal: ${idr(bet)}\nModal Hitung: ${idr(po.modal)}\nProfit: ${sidr(net)}\nTotal: ${idr(po.total)}`;
+    sExplainText=fullExplain;toast('Berhasil dihitung')
+  }catch(e){toast(e.message||'Gagal')}}
+
+function resetSingle(){['sHome','sAway','sBet','sOdds','sScoreHome','sScoreAway','sLiveHome','sLiveAway'].forEach(id=>$(id).value='');
+  $('sLineSign').value='-';$('sLine').value='';$('sOuLine').value='';clearSingle();syncNames();toast('Reset')}
+
+$('sCalc').addEventListener('click',doSingleCalc);
+$('sReset').addEventListener('click',resetSingle);
+
+function copyText(t){if(!t){toast('Belum ada hasil');return}
+  if(navigator.clipboard?.writeText)navigator.clipboard.writeText(t).then(()=>toast('Tersalin')).catch(()=>{fallbackCopy(t)});else fallbackCopy(t)}
+function fallbackCopy(t){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();toast('Tersalin')}
+$('sCopyResult').addEventListener('click',()=>copyText(sCopyText));
+$('sCopyExplain').addEventListener('click',()=>copyText(sExplainText));
+
+syncNames();updOddsUI();
+
+/* ── mode switch ── */
+window.switchMode=function(m){
+  $$('.tab').forEach(t=>t.classList.toggle('on',t.dataset.mode===m));
+  $$('.mode').forEach(p=>p.classList.toggle('on',p.id===(m==='parlay'?'modeParlay':'modeSingle')));
+  $('hdrTitle').textContent=m==='parlay'?'Mix Parlay Calculator':'Single Bet Calculator';
+  $('hdrSub').textContent=m==='parlay'?'Mode Mix Parlay (min 3 tim)':'Mode Single Bet';
+  document.title=m==='parlay'?'Mix Parlay Calculator':'Single Bet Calculator'}
+
+/* ═══════════════ MIX PARLAY ENGINE ═══════════════ */
+let pCopyText='',pExplainText='';
+
+function pSideOpts(type,sel=''){
+  const map={ah:[['home','Home'],['away','Away']],ou:[['over','Over'],['under','Under']],
+    '1x2':[['home','Home'],['draw','Draw'],['away','Away']],oe:[['odd','Odd'],['even','Even']]};
+  const opts=map[type]||map.ah;const vals=opts.map(o=>o[0]);
+  const act=vals.includes(sel)?sel:opts[0][0];
+  return opts.map(([v,l])=>`<option value="${v}"${v===act?' selected':''}>${l}</option>`).join('')}
+
+function pVoorHtml(type,sel=''){
+  const split=(()=>{const raw=String(sel||'').trim();if(!raw)return{s:'-',v:''};
+    const n=Number(raw.replace(',','.'));if(!Number.isFinite(n))return{s:'-',v:''};
+    return{s:n<0?'-':'+',v:cn(Math.abs(n))}})();
+  const max=type==='ou'?10:4;
+  return`<select class="pSign" style="width:44px">${['-','+'].map(s=>`<option value="${s}"${s===split.s?' selected':''}>${s}</option>`).join('')}</select>
+    <select class="pLineV">${lineOpts(max,split.v)}</select><input type="hidden" class="pLine" value="${esc(sel||'')}">`}
+
+function addPRow(d={}){
+  const list=$('pList'),row=document.createElement('div');row.className='sp-row';
+  const type=d.type||'ah';
+  row.innerHTML=`<div class="sp-no"></div>
+    <input class="pH" value="${esc(d.home||'')}" placeholder="Home">
+    <input class="pA" value="${esc(d.away||'')}" placeholder="Away">
+    <select class="pType">${['ah','ou','1x2','oe'].map(v=>`<option value="${v}"${v===type?' selected':''}>${{ah:'HDP',ou:'O/U','1x2':'1X2',oe:'O/E'}[v]}</option>`).join('')}</select>
+    <div class="sp-voor">${pVoorHtml(type,d.line||'')}</div>
+    <div class="sp-score"><input type="number" class="pHS" value="${esc(d.hs??'')}" min="0" placeholder="0"><span>:</span><input type="number" class="pAS" value="${esc(d.as??'')}" min="0" placeholder="0"></div>
+    <select class="pSide">${pSideOpts(type,d.side||'home')}</select>
+    <input class="pOdds" value="${esc(d.odds||'')}" placeholder="1.90" inputmode="decimal">
+    <div class="sp-st">-</div>
+    <button class="sp-rm" title="Hapus">×</button>`;
+  list.appendChild(row);
+
+  const typeEl=row.querySelector('.pType'),sideEl=row.querySelector('.pSide'),
+    voorDiv=row.querySelector('.sp-voor');
+
+  function updVoor(){const t=typeEl.value;voorDiv.innerHTML=pVoorHtml(t,'');
+    if(t==='1x2'||t==='oe')voorDiv.style.display='none';else voorDiv.style.display='';
+    bindVoor()}
+  function updSide(){const old=sideEl.value;sideEl.innerHTML=pSideOpts(typeEl.value,old)}
+  function updLine(){const t=typeEl.value,sign=row.querySelector('.pSign'),lv=row.querySelector('.pLineV'),h=row.querySelector('.pLine');
+    if(!h)return;if(t==='1x2'||t==='oe'){h.value='';return}
+    if(t==='ou'){h.value=lv?lv.value:'';return}
+    const v=lv?lv.value:'';if(!v){h.value='';return}
+    if(Number(v)===0){h.value='0';return}h.value=(sign?sign.value:'-')+v}
+  function bindVoor(){row.querySelectorAll('.pSign,.pLineV').forEach(el=>el.addEventListener('change',()=>{updLine();clearPResult()}))}
+
+  typeEl.addEventListener('change',()=>{updVoor();updSide();clearPResult()});
+  row.querySelector('.sp-rm').addEventListener('click',()=>{row.remove();updPNums();clearPResult()});
+  row.querySelectorAll('input,select').forEach(el=>{
+    el.addEventListener('input',()=>{if(el.classList.contains('pOdds'))el.value=cleanDec(el.value);updLine();clearPResult()});
+    el.addEventListener('change',()=>{updLine();clearPResult()})});
+  bindVoor();updPNums();clearPResult()}
+
+function updPNums(){$$('#pList .sp-row').forEach((r,i)=>{r.querySelector('.sp-no').textContent=i+1})}
+
+function clearPResult(){
+  $('pStatus').textContent='Belum Dihitung';$('pStatus').className='badge';
+  $('pTotal').textContent='Rp0';$('pTotalOdds').textContent='0.0000';
+  $('pModal').textContent='Rp0';$('pProfit').textContent='Rp0';
+  $('pLegs').textContent=$$('#pList .sp-row').length;
+  $('pExplain').innerHTML='<span class="ph">Isi data lalu klik HITUNG SEKARANG.</span>';
+  $$('#pList .sp-st').forEach(el=>{el.className='sp-st';el.textContent='-'});
+  pCopyText='';pExplainText=''}
+
+function pOddsToDecimal(v,fmt,n){v=Number(v||0);
+  if(fmt==='INDO'){if(v===0)throw Error('Odds match #'+n+' kosong.');return v>0?1+v:1+(1/Math.abs(v))}
+  if(v<=1)throw Error('Odds Eropa match #'+n+' harus > 1.');return v}
+
+function pCalcAH(h,a,line,side){h=Math.round(h);a=Math.round(a);const sel=side==='away'?a:h,opp=side==='away'?h:a;
+  const parts=splitAsian(Math.abs(line)),sign=line<0?-1:1;
+  const oc=parts.map(p=>{const sp=Number(p)===0?0:sign*Number(p);const c=(sel+sp)-opp;return c>0?'W':c<0?'L':'P'});
+  const w=oc.filter(x=>x==='W').length,p=oc.filter(x=>x==='P').length,l=oc.filter(x=>x==='L').length;
+  if(w===2)return{st:'WIN',f:1};if(w===1&&p===1)return{st:'HALF_WIN',f:.5};if(p===2)return{st:'PUSH',f:1};
+  if(p===1&&l===1)return{st:'HALF_LOSE',f:.5};return{st:'LOSE',f:0}}
+
+function pCalc12(h,a,side){h=Math.round(h);a=Math.round(a);
+  if(side==='home')return h>a?{st:'WIN',f:1}:{st:'LOSE',f:0};
+  if(side==='away')return a>h?{st:'WIN',f:1}:{st:'LOSE',f:0};
+  return h===a?{st:'WIN',f:1}:{st:'LOSE',f:0}}
+
+function pCalcOU(total,line,side){total=Number(total);line=Number(line);
+  const isQ=Math.abs(((line*2)%1))>1e-5;
+  if(!isQ){if(side==='over')return total>line?{st:'WIN',f:1}:(total<line?{st:'LOSE',f:0}:{st:'PUSH',f:1});
+    return total<line?{st:'WIN',f:1}:(total>line?{st:'LOSE',f:0}:{st:'PUSH',f:1})}
+  const lo=Math.floor(line*2)/2,hi=Math.ceil(line*2)/2;let rL,rH;
+  if(side==='over'){rL=total>lo?'W':(total<lo?'L':'P');rH=total>hi?'W':(total<hi?'L':'P')}
+  else{rL=total<lo?'W':(total>lo?'L':'P');rH=total<hi?'W':(total>hi?'L':'P')}
+  const w=[rL,rH].filter(x=>x==='W').length,p=[rL,rH].filter(x=>x==='P').length,l=[rL,rH].filter(x=>x==='L').length;
+  if(w===2)return{st:'WIN',f:1};if(w===1&&p===1)return{st:'HALF_WIN',f:.5};if(p===2)return{st:'PUSH',f:1};
+  if(p===1&&l===1)return{st:'HALF_LOSE',f:.5};return{st:'LOSE',f:0}}
+
+function pCalcOE(total,side){total=Math.round(Number(total));const even=total%2===0;
+  if(side==='even')return even?{st:'WIN',f:1}:{st:'LOSE',f:0};
+  return!even?{st:'WIN',f:1}:{st:'LOSE',f:0}}
+
+const pStLbl=s=>({WIN:'MENANG PENUH',LOSE:'KALAH',PUSH:'PUSH / SERI',HALF_WIN:'MENANG SETENGAH',HALF_LOSE:'KALAH SETENGAH'}[s]||s);
+const pTypeLbl=t=>({ah:'Asian Handicap',ou:'Over/Under',oe:'Odd/Even','1x2':'1X2'}[t]||t);
+const pStCls=s=>(s==='WIN'||s==='HALF_WIN')?'good':(s==='LOSE'||s==='HALF_LOSE')?'bad':'push';
+
+function doParlayCalc(){
+  try{
+    const stake=moneyVal($('pStake').value);if(stake<=0)throw Error('Stake kosong.');
+    const rows=$$('#pList .sp-row');if(rows.length<3)throw Error('Minimal 3 tim.');
+    const fmt=$('pOddsIndo').checked?'INDO':'EU';
+    const details=[];
+    rows.forEach((row,i)=>{
+      const n=i+1,home=row.querySelector('.pH').value.trim()||'Home',away=row.querySelector('.pA').value.trim()||'Away';
+      const hs=Math.round(num(row.querySelector('.pHS').value)),as=Math.round(num(row.querySelector('.pAS').value));
+      const type=row.querySelector('.pType').value,lineRaw=row.querySelector('.pLine')?row.querySelector('.pLine').value:'';
+      const line=num(lineRaw||'0'),side=row.querySelector('.pSide').value;
+      const rawOdds=num(row.querySelector('.pOdds').value),decOdds=pOddsToDecimal(rawOdds,fmt,n);
+      let res;if(type==='ah')res=pCalcAH(hs,as,line,side);else if(type==='1x2')res=pCalc12(hs,as,side);
+      else if(type==='oe')res=pCalcOE(hs+as,side);else res=pCalcOU(hs+as,num(lineRaw||'2.5'),side);
+
+      let eff=1;if(res.st==='WIN')eff=decOdds;else if(res.st==='LOSE')eff=0;
+      else if(res.st==='PUSH')eff=1;else if(res.st==='HALF_WIN')eff=1+((decOdds-1)*.5);else if(res.st==='HALF_LOSE')eff=.5;
+
+      let choice='';if(type==='ah')choice=(side==='home'?home:away)+' '+cn(line);
+      else if(type==='1x2')choice=side==='home'?home:(side==='away'?away:'Draw');
+      else if(type==='oe')choice=side==='even'?'Even':'Odd';
+      else choice=(side==='over'?'Over':'Under')+' '+cn(line);
+
+      const explain=`${choice}. Skor ${home} ${hs}-${as} ${away}. Hasil: ${pStLbl(res.st).toLowerCase()}.`;
+      details.push({n,home,away,hs,as,type,typeLbl:pTypeLbl(type),choice,rawOdds:rawOdds.toFixed(2),
+        decOdds:decOdds.toFixed(2),st:res.st,stText:pStLbl(res.st),eff:cnL(eff,6),effCalc:eff,explain})});
+
+    let totalOdds=1;details.forEach(d=>{if(totalOdds===0)return;if(d.st==='LOSE'){totalOdds=0;return}totalOdds*=d.effCalc});
+    const hasHalf=details.some(d=>d.st==='HALF_WIN'||d.st==='HALF_LOSE');
+    const flooredOdds=hasHalf?totalOdds:Math.floor((totalOdds+1e-10)*1000)/1000;
+    const payout=stake*flooredOdds,profit=payout-stake;
+    const steps=details.map(d=>d.eff).join(' × '),oddsText=hasHalf?cnL(flooredOdds,6):flooredOdds.toFixed(3);
+
+    // Set UI
+    $('pStatus').textContent=profit>0?'Win':(profit<0?'Lose':'Push');
+    $('pStatus').className='badge '+(profit>0?'win':(profit<0?'lose':'draw'));
+    $('pTotal').textContent=idrFD(payout);$('pTotalOdds').textContent=oddsText;
+    $('pModal').textContent=idrF(stake);$('pProfit').textContent=sidrFD(profit);$('pLegs').textContent=details.length;
+
+    rows.forEach((row,i)=>{const d=details[i];if(!d)return;const st=row.querySelector('.sp-st');
+      st.className='sp-st '+pStCls(d.st);st.textContent=d.stText});
+
+    const exLines=['Bosku, hasil Mix Parlay:',
+      `Total odds: ${steps} = ${oddsText}.`,
+      `Modal ${idrF(stake)}, payout ${idrFD(payout)}.`,
+      `Profit: ${sidrFD(profit)}.`,'','Rincian:',''];
+    details.forEach(d=>{exLines.push(`Match ${d.n}: ${d.explain}`);exLines.push(`Odds ${d.rawOdds}, efektif ${d.eff}.`);exLines.push('')});
+    const exText=exLines.join('\n').trimEnd();
+
+    const detailHtml=details.map(d=>`<div class="pd-row"><b>${esc(d.n)}. ${esc(d.home)} ${esc(d.hs)}-${esc(d.as)} ${esc(d.away)}</b>
+      <span>${esc(d.typeLbl)} | ${esc(d.choice)} | Odds ${esc(d.rawOdds)}</span>
+      <small>${esc(d.stText)} | Efektif ${esc(d.eff)}</small>
+      <em>${esc(d.explain)}</em></div>`).join('');
+    $('pExplain').innerHTML=`<div style="margin-bottom:8px"><b style="color:var(--green)">Penjelasan</b><br>${esc(exText).replace(/\n/g,'<br>')}</div>
+      <details open><summary>Rincian per match</summary>${detailHtml}</details>`;
+
+    pCopyText=`=== HASIL PARLAY (${details.length} TIM) ===\nStake: ${idrF(stake)}\n\n`+
+      details.map(d=>`Match ${d.n}: ${d.home} vs ${d.away}\nPasaran: ${d.typeLbl}\nPilihan: ${d.choice}\nSkor: ${d.hs}-${d.as}\nOdds: ${d.rawOdds}\nStatus: ${d.stText}\nEfektif: ${d.eff}\n`).join('\n')+
+      `\nTotal Odds: ${oddsText}\nPayout: ${idrFD(payout)}\nProfit: ${sidrFD(profit)}`;
+    pExplainText=exText;toast('Mix Parlay dihitung')
+  }catch(e){toast(e.message||'Gagal')}}
+
+function resetParlay(){$('pList').innerHTML='';$('pStake').value='';for(let i=0;i<3;i++)addPRow();clearPResult();toast('Reset')}
+
+$('pCalc').addEventListener('click',doParlayCalc);
+$('pReset').addEventListener('click',resetParlay);
+$('pAdd').addEventListener('click',()=>addPRow());
+$('pCopyResult').addEventListener('click',()=>copyText(pCopyText));
+$('pCopyExplain').addEventListener('click',()=>copyText(pExplainText));
+$('pStake').addEventListener('input',function(){fmtMoney(this);clearPResult()});
+$('pOddsIndo').addEventListener('change',clearPResult);
+
+// Init 3 rows
+for(let i=0;i<3;i++)addPRow();
+})();
+</script>
+</body>
+</html>

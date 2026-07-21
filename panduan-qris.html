@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panduan QRIS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg-deep: #0b0e14;
+      --bg-base: #111520;
+      --bg-card: #171c2e;
+      --bg-card-hover: #1d2340;
+      --bg-elevated: #222842;
+      --accent: #00d2c6;
+      --accent-dim: rgba(0,210,198,0.12);
+      --accent-glow: rgba(0,210,198,0.25);
+      --accent-2: #7c6aef;
+      --accent-2-dim: rgba(124,106,239,0.12);
+      --text: #e8eaf0;
+      --text-secondary: #8891a5;
+      --text-muted: #565e72;
+      --border: rgba(255,255,255,0.06);
+      --border-accent: rgba(0,210,198,0.3);
+      --danger: #ff6b6b;
+      --radius-sm: 8px;
+      --radius: 12px;
+      --radius-lg: 16px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-deep);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Subtle dot grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Top Bar ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(11,14,20,0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+    }
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      height: 60px;
+      gap: 1.5rem;
+    }
+    .topbar-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+    .topbar-brand .logo-icon {
+      width: 28px; height: 28px;
+      background: var(--accent);
+      border-radius: 6px;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+      color: var(--bg-deep);
+      font-weight: 700;
+    }
+    .topbar-brand span {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text);
+      letter-spacing: -0.3px;
+    }
+    .topbar-search {
+      flex: 1;
+      max-width: 360px;
+      position: relative;
+    }
+    .topbar-search input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem 0.5rem 2.25rem;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.875rem;
+      transition: border-color 0.2s;
+    }
+    .topbar-search input::placeholder { color: var(--text-muted); }
+    .topbar-search input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+    .topbar-search i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .topbar-meta {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+    .topbar-meta .count-badge {
+      background: var(--accent-dim);
+      color: var(--accent);
+      padding: 0.15rem 0.55rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+
+    /* ── Main layout ── */
+    .main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 1.75rem 2rem 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      margin-bottom: 1.75rem;
+    }
+    .page-header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.65rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.35rem;
+    }
+    .page-header h1 .highlight {
+      color: var(--accent);
+    }
+    .page-header p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* ── Tabs ── */
+    .tab-row {
+      display: flex;
+      gap: 0.35rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0;
+    }
+    .tab-item {
+      padding: 0.65rem 1.25rem;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .tab-item::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0; right: 0;
+      height: 2px;
+      background: transparent;
+      border-radius: 2px 2px 0 0;
+      transition: background 0.2s;
+    }
+    .tab-item.active {
+      color: var(--accent);
+    }
+    .tab-item.active::after {
+      background: var(--accent);
+    }
+    .tab-item:hover:not(.active) {
+      color: var(--text-secondary);
+    }
+    .tab-item .tab-count {
+      font-size: 0.7rem;
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      padding: 0.1rem 0.45rem;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .tab-item.active .tab-count {
+      background: var(--accent-dim);
+      color: var(--accent);
+    }
+
+    /* ── Card grid ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 0.85rem;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+    }
+    .card:hover {
+      border-color: rgba(255,255,255,0.1);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+    }
+    .card-head {
+      display: flex;
+      align-items: center;
+      padding: 0.85rem 1rem;
+      gap: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .card-icon {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      background: var(--bg-elevated);
+      flex-shrink: 0;
+    }
+    .card-info { flex: 1; min-width: 0; }
+    .card-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-type {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+    .card-toggle {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      transition: all 0.25s;
+      flex-shrink: 0;
+    }
+    .card.open .card-toggle {
+      background: var(--accent);
+      color: var(--bg-deep);
+      border-color: var(--accent);
+      transform: rotate(180deg);
+    }
+
+    /* ── Card body (expandable) ── */
+    .card-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card.open .card-body {
+      max-height: 2500px;
+    }
+    .card-body-inner {
+      padding: 0 1rem 1rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Steps ── */
+    .steps-label {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent);
+      margin: 1rem 0 0.75rem;
+    }
+    .step-list {
+      list-style: none;
+      counter-reset: s;
+    }
+    .step-list li {
+      counter-increment: s;
+      display: flex;
+      gap: 0.75rem;
+      padding: 0.6rem 0;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      border-bottom: 1px solid var(--border);
+    }
+    .step-list li:last-child { border-bottom: none; }
+    .step-list li::before {
+      content: counter(s);
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: var(--bg-elevated);
+      color: var(--accent);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+      margin-top: 2px;
+    }
+
+    /* ── Preview image ── */
+    .preview-wrap {
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .preview-wrap img {
+      max-width: 100%;
+      max-height: 260px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .preview-wrap img:hover { opacity: 0.85; }
+    .preview-hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* ── Buttons ── */
+    .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.85rem;
+    }
+    .btn {
+      flex: 1;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s;
+    }
+    .btn-accent {
+      background: var(--accent);
+      color: var(--bg-deep);
+    }
+    .btn-accent:hover { filter: brightness(1.15); }
+    .btn-ghost {
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      background: var(--bg-card-hover);
+      color: var(--text);
+    }
+
+    /* ── Modal ── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      backdrop-filter: blur(6px);
+    }
+    .modal-overlay.show { display: flex; }
+    .modal-overlay img {
+      max-width: 100%;
+      max-height: 90vh;
+      border-radius: var(--radius);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    }
+    .modal-close {
+      position: fixed;
+      top: 1rem; right: 1rem;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: background 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── Toast ── */
+    .toast-msg {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-card);
+      color: var(--text);
+      border: 1px solid var(--border-accent);
+      padding: 0.7rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+      opacity: 0;
+      animation: toastSlide 0.35s ease forwards;
+    }
+    .toast-msg.out {
+      animation: toastOut 0.3s ease forwards;
+    }
+    @keyframes toastSlide {
+      to { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
+    @keyframes toastOut {
+      to { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 2rem 0 1.5rem;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      .topbar { padding: 0 1rem; }
+      .topbar-inner { gap: 0.75rem; }
+      .topbar-brand span { display: none; }
+      .topbar-meta { display: none; }
+      .topbar-search { max-width: none; }
+      .main { padding: 1.25rem 1rem 2rem; }
+      .page-header h1 { font-size: 1.3rem; }
+      .card-grid { grid-template-columns: 1fr; }
+      .btn-row { flex-direction: column; }
+      .tab-item { padding: 0.55rem 0.85rem; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<nav class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">
+      <div class="logo-icon">Q</div>
+      <span>Panduan QRIS</span>
+    </div>
+    <div class="topbar-search">
+      <i class="fas fa-search"></i>
+      <input type="text" id="searchInput" placeholder="Cari aplikasi pembayaran...">
+    </div>
+    <div class="topbar-meta">
+      <span>Total</span>
+      <span class="count-badge" id="totalCount">19</span>
+    </div>
+  </div>
+</nav>
+
+<!-- Main -->
+<div class="main">
+  <div class="page-header">
+    <h1>Langkah-langkah Mengecek Bukti <span class="highlight">Transaksi QRIS</span></h1>
+    <p>Cara mudah cek bukti transaksi QRIS di berbagai aplikasi</p>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-row">
+    <button class="tab-item active" data-tab="ewallet">
+      <i class="fas fa-wallet"></i> E-Wallet
+      <span class="tab-count">5</span>
+    </button>
+    <button class="tab-item" data-tab="bank">
+      <i class="fas fa-building-columns"></i> Mobile Banking
+      <span class="tab-count">14</span>
+    </button>
+  </div>
+
+  <!-- Card containers -->
+  <div id="ewallet-grid" class="card-grid"></div>
+  <div id="bank-grid" class="card-grid" style="display:none;"></div>
+
+  <div class="footer">Panduan QRIS Interaktif 2024</div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="imgModal">
+  <button class="modal-close" onclick="closeModal()"><i class="fas fa-xmark"></i></button>
+  <img id="modalImg" src="" alt="Preview">
+</div>
+
+<script>
+// ═══════ DATA ═══════
+const eWalletData = [
+  {
+    name:"ovo", title:"OVO", subtitle:"E-Wallet",
+    icon:"https://i.postimg.cc/NFvmLS5X/761abfb9e4c628b0f4b9943c390e93b3.jpg",
+    image:"https://i.postimg.cc/66hG48mD/gabungan-HD-1757727498549.png",
+    steps:[
+      "Buka Aplikasi OVO: Pastikan aplikasi OVO sudah terpasang di ponsel Anda.",
+      "Login: Masuk ke akun OVO Anda dengan kode keamanan (PIN).",
+      "Pilih Menu Riwayat Transaksi: Cari dan ketuk menu 'History' (Riwayat). Lokasinya bisa di pojok kanan atas atau di bagian bawah layar, tergantung pada pembaruan aplikasi.",
+      "Pilih Transaksi: Klik pada transaksi QRIS yang ingin Anda periksa untuk melihat detailnya.",
+      "Temukan Kode RRN: Di dalam detail transaksi, Anda akan menemukan Kode RRN (Reference Number) yang menjadi bukti transaksi."
+    ]
+  },
+  {
+    name:"dana", title:"DANA", subtitle:"E-Wallet",
+    icon:"https://i.postimg.cc/8zfpn5y1/dana-virtual-payment-logo-icon-indonesia-company-free-png.webp",
+    image:"https://i.postimg.cc/NjBQC8zB/Untitled-design-1.png",
+    steps:[
+      "Buka aplikasi DANA Anda.",
+      "Klik menu 'Riwayat' di bagian bawah layar aplikasi untuk melihat daftar transaksi Anda.",
+      "Pilih transaksi yang ingin Anda cek untuk melihat detailnya.",
+      "Perhatikan bagian keterangan transaksi, Anda akan menemukan kode yang diawali dengan 'Reff ID'. Kode ini adalah kode RRN atau nomor referensi transaksi Anda."
+    ]
+  },
+  {
+    name:"gopay", title:"GoPay", subtitle:"E-Wallet",
+    icon:"https://i.postimg.cc/hvNwJSVr/gopay-logo-square-rounded-gopay-logo-free-download-gopay-logo-free-png.webp",
+    image:"https://i.postimg.cc/VvvCtQXZ/gabungan-gambar-1757932622868.png",
+    steps:[
+      "Buka aplikasi GoPay: Pastikan Anda sudah masuk ke akun GoPay Anda.",
+      "Akses riwayat transaksi: Di halaman utama (Beranda), cari dan ketuk bagian 'Lihat semua' atau 'Lihat semua transaksi' yang biasanya ada di bawah bagian transaksi terakhir.",
+      "Pilih transaksi yang diinginkan: Gulir ke bawah untuk menemukan transaksi yang Anda cari dan ketuk transaksi tersebut.",
+      "Lihat rincian transaksi: Setelah transaksi dipilih, Anda akan melihat halaman detail transaksi yang menampilkan informasi lengkap seperti tanggal, waktu, ID transaksi, dan status pembayaran.",
+      "Bagikan bukti: Di halaman detail ini, Anda akan menemukan opsi untuk 'Bagiin bukti bayar' atau 'Kirim Bukti', yang memungkinkan Anda mengirimkan bukti transaksi melalui aplikasi lain atau email."
+    ]
+  },
+  {
+    name:"shopeepay", title:"ShopeePay", subtitle:"E-Wallet",
+    icon:"https://i.postimg.cc/GhGVCyTt/shopee-pay-logo-png-seeklogo-406839-1.png",
+    image:"https://i.postimg.cc/ydGXJvtK/gabungan-gambar-1758409346693.png",
+    steps:[
+      "Buka aplikasi Shopeepay Anda.",
+      "Klik isi saldo, dan scroll atau gulir layar Anda kebawah.",
+      "Periksa transaksi Anda di 'Transaksi terakhir'.",
+      "Klik pembayaran sesuai transaksi yang ingin Anda cek untuk melihat kode RRN.",
+      "Kode RRN akan terlihat pada keterangan No.Transaksi.",
+      "Kirimkan screenshot transaksi Anda kepada kami untuk dilakukan pengecekan."
+    ]
+  },
+  {
+    name:"linkaja", title:"LinkAja", subtitle:"E-Wallet",
+    icon:"https://i.postimg.cc/WzZdSvp9/Link-Aja-svg.png",
+    image:"https://i.postimg.cc/13QqCfqD/c-Nqc-VOh-QR6yx3x-Mz2k-3dg.png",
+    steps:[
+      "Buka Aplikasi LinkAja: Jalankan aplikasi LinkAja di ponsel Anda.",
+      "Akses Riwayat Transaksi: Cari dan klik menu 'Riwayat' atau 'History' untuk melihat semua transaksi yang pernah Anda lakukan.",
+      "Pilih Transaksi: Gulir daftar riwayat transaksi untuk menemukan transaksi QRIS yang ingin Anda periksa.",
+      "Lihat Detail Transaksi: Ketuk transaksi tersebut untuk membuka halaman detailnya.",
+      "Periksa Bukti Transfer: Pada halaman detail, perhatikan informasi berikut: Nominal Transaksi, Status Transaksi (pastikan 'Berhasil' atau 'Selesai'), Tanggal dan Jam Transaksi, dan Nomor Transaksi/RRN."
+    ]
+  }
+];
+
+const bankData = [
+  {
+    name:"bri", title:"BRI (BRImo)", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/PNG8whBQ/images.png",
+    image:"https://i.postimg.cc/XqSVJkwT/Screenshot-7.png",
+    steps:[
+      "Buka aplikasi BRImo di smartphone kamu.",
+      "Masuk ke akun kamu dengan menggunakan PIN atau sidik jari.",
+      "Pilih menu 'Aktivitas' di bagian bawah layar.",
+      "Pilih transaksi yang ingin kamu cek untuk melihat detail lengkapnya, termasuk tanggal, waktu, dan jumlah transaksi.",
+      "Rincian transaksi akan muncul, termasuk ID Transaksi dan status",
+      "Kamu bisa simpan atau screenshot bukti transaksi tersebut untuk keperluan lebih lanjut."
+    ]
+  },
+  {
+    name:"bca", title:"BCA Mobile", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/fWj157KM/bca-mobile-app-logo-png-seeklogo-399947.png",
+    image:"https://i.postimg.cc/26vf7VkM/Pyfz-Yhm-TTfu-WOB5yb2pt8w.png",
+    steps:[
+      "Buka aplikasi M-BCA.",
+      "Masuk dengan password.",
+      "Pilih menu Qris https://sleekshot.app/v/bTCGLLpyZXf4",
+      "kemudian klik pada menu inbox dan memilih transaksi qris tersebut  https://sleekshot.app/v/O8bdojVwyLXF",
+      "Lalu anda dapat melihat bukti qris tersebut."
+    ]
+  },
+  {
+    name:"mybca", title:"myBCA", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/5NTq97vS/20250620-promo-mybca-logo.png",
+    image:"https://i.postimg.cc/90nChp5k/RDv-Ld-WWe-Qfu-I5-Fua-4f-BA.png",
+    steps:[
+      "Pertama buka aplikasi My-bca dan login dengan akun Bank anda.",
+      "Kemudian di halaman utama klik pada menu aktivitas seperti berikut https://sleekshot.app/v/uCgL3WcWwqeG",
+      "Selanjutnya pilih dan klik pada mutasi perihal untuk bukti transfer https://sleekshot.app/v/0XrHvPJcCSRB",
+      "kemudian anda dapat menampilkan perihal bukti transfer seperti berikut https://sleekshot.app/v/liLQr0sxJGF9"
+    ]
+  },
+  {
+    name:"bniwondr", title:"BNI Wondr", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/mrxg66Mg/images-1.png",
+    image:"https://i.postimg.cc/tJbzh2pV/d-ZS0-Lr-NYTPa0-CJRXWm6wi-Q.png",
+    steps:[
+      "Buka aplikasi Wondr by BNI di smartphone kamu.",
+      "Masuk ke akun kamu jika belum masuk.",
+      "Pilih menu Bukti transaksi yang terletak di bagian kanan atas  https://sleekshot.app/v/OrSXQ0h2AX4f",
+      "Cari bukti transaksi QRIS dan klik bukti QRIS tersebut https://sleekshot.app/v/5Io2bwg1GQDt",
+      "Kamu bisa menyimpan bukti transaksi tersebut dengan melakukan screenshot atau tangkapan layar seperti contoh berikut bosku https://sleekshot.app/v/W6LCU2QDe0jE"
+    ]
+  },
+  {
+    name:"bnimobile", title:"BNI Mobile", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/CLLk8f5J/images-2.png",
+    image:"https://i.postimg.cc/3R520S0D/Ni3-CBf-Xb-QN2-RO-AWp-Uy-Vo-Q.png",
+    steps:[
+      "Buka aplikasi BNI Mobile Banking di smartphone Anda.",
+      "Login menggunakan User ID dan m-PIN BNI Anda.",
+      "Silahkan klik pada menu riwayat seperti ini   https://sleekshot.app/v/EJuHZbL8L2xP",
+      "JIka sudah masuk menu riwayat silahkan klik jenis transaksinya dan  pilih periode pencarian kemudian klik selanjutnya seperti berikut https://sleekshot.app/v/MgIOfJpxev3n",
+      "Pilih periode mutasi yang ingin Anda lihat serta klik periode tersebut contoh gambar https://sleekshot.app/v/AdcmV1FxO8fj",
+      "Apabila sudah selesai semua silahkan anda screenshot bukti seperti ini ya bosku  https://sleekshot.app/v/rYpjevynkT27"
+    ]
+  },
+  {
+    name:"jago", title:"Bank Jago", subtitle:"Digital Bank",
+    icon:"https://i.postimg.cc/25W1DZFx/1-3gueq-Kw-W0-kkw3r-OOXh4-w.jpg",
+    image:"https://i.postimg.cc/hvTz17hj/9gw-Q0-O91-Ra-CCF014-Cgw-LFQ.png",
+    steps:[
+      "Buka Aplikasi Bank Jago: Masuk ke aplikasi Bank Jago Anda.",
+      "Cari Riwayat Transaksi: Pada halaman utama, cari dan pilih bagian 'Rincian Kantong'.",
+      "Pilih Transaksi QRIS: Pilih transaksi QRIS yang ingin Anda periksa.",
+      "Lihat Rincian Transaksi: Anda akan diarahkan ke halaman rincian transaksi, di mana Anda bisa melihat bukti pembayaran QRIS."
+    ]
+  },
+  {
+    name:"seabank", title:"SeaBank", subtitle:"Digital Bank",
+    icon:"https://i.postimg.cc/k46Zg7h9/01ge158kbwb82ba8mrc0s8qc6t.webp",
+    image:"https://i.postimg.cc/bwgRX4gT/BG4-Kgzp-QRu-OQ19-Ht-Im-G-q-A.png",
+    steps:[
+      "Buka Aplikasi SeaBank: Masuk ke akun SeaBank Anda.",
+      "Pilih Menu Beranda: Pada halaman utama aplikasi SeaBank, cari dan ketuk menu Beranda.",
+      "Akses Riwayat Transaksi: Pilih menu Riwayat Transaksi untuk melihat semua daftar transaksi Anda.",
+      "Cari Transaksi QRIS: Pilih transaksi QRIS yang ingin Anda cek untuk melihat bukti pembayarannya."
+    ]
+  },
+  {
+    name:"bsibyond", title:"BSI byond", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/CM6127bq/cara-migrasi-ke-byond-by-bsi-untuk-nasabah-lama.webp",
+    image:"https://i.postimg.cc/d30hySrq/r-N2m-RFl3-Sa-Gj-Mx8ktro-CUA.png",
+    steps:[
+      "Buka aplikasi Beyond by BSI.",
+      "Akses menu History atau riwayat transaksi yang tersedia di aplikasi.",
+      "Cari transaksi yang ingin Anda cek dengan menggunakan kata kunci 'QRIS dana keluar' dan Pilih transaksi yang dimaksud untuk melihat detailnya.",
+      "Periksa detail transaksi seperti nama merchant, nominal, dan waktu transaksi untuk memastikan kebenarannya serta Simpan bukti transaksi qris dengan memilih opsi download atau unduh jika Anda membutuhkannya."
+    ]
+  },
+  {
+    name:"bsimobile", title:"BSI Mobile", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/7ZJmzKnM/unnamed-1.png",
+    image:"https://i.postimg.cc/fLDK6DnB/bt-Xl-Phus-Rj-GCh02-Uh-Jnzj-Q.png",
+    steps:[
+      "Buka aplikasi BSI Mobile di ponsel Anda.",
+      "Login ke aplikasi dengan informasi login Anda. Setelah masuk, ketuk ikon tiga baris yang biasanya terletak di pojok kiri atas layar. Pilih menu 'Info Rekening' dari daftar yang muncul.",
+      "Selanjutnya, pilih opsi 'Daftar Mutasi' untuk melihat riwayat transaksi. Pilih rekening yang ingin Anda cek mutasinya. Atur periode transaksi yang ingin Anda lihat, biasanya antara 5 hingga 20 transaksi terakhir.",
+      "Masukkan PIN BSI Mobile Anda untuk verifikasi và melihat daftar mutasi. Daftar riwayat transaksi akan muncul di layar Anda, tempat Anda bisa menemukan bukti transaksi QRIS Anda."
+    ]
+  },
+  {
+    name:"cimb", title:"CIMB (OCTO)", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/T1Wp057S/CIMB-logo.png",
+    image:"https://i.postimg.cc/Qx9ygNXT/WDYr-LCLMS2-CNMj-TJz-DY0j-A.png",
+    steps:[
+      "Buka Aplikasi OCTO Mobile: Pastikan Anda sudah mengunduh dan menginstal aplikasi OCTO Mobile by CIMB Niaga di ponsel Anda.",
+      "Pilih Rekening: Pilih menu notifikasi perihal tersebut berada pada pojok kanan atas https://sleekshot.app/v/fE7TGS3NNvTT",
+      "klik salah satu transaksi perihal pembayaran QRIS anda seperti berikut https://sleekshot.app/v/PNFul7KgefwE",
+      "Kamu bisa menyimpan bukti transaksi tersebut dengan melakukan screenshot atau tangkapan layar seperti contoh berikut bosku https://sleekshot.app/v/QggiHjLBaPr9"
+    ]
+  },
+  {
+    name:"SINARMAS", title:"SIMOBI", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/DZNJ39pk/Simobi-Profile-Picture-Rounded.webp",
+    image:"https://i.postimg.cc/JhbPnqVf/Screenshot-1.png",
+    steps:[
+      "Login ke aplikasi SimobiPlus, lalu pilih menu 'QRIS' pada halaman utama",
+      "silahkan anda klik pada show account details  https://sleekshot.app/v/9vXybdnsMg2f",
+      "kemudian klik detail pembayaran, nama merchant, dan nominal sudah benar https://sleekshot.app/v/kMyysjXIvtL0",
+      "Kamu bisa menyimpan bukti transaksi tersebut dengan melakukan screenshot atau tangkapan layar ya bosku  seperti ini https://sleekshot.app/v/IGpeaqdXk92V"
+    ]
+  },
+  {
+    name:"livin", title:"Livin' by Mandiri", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/prt3ygFS/images-1.jpg",
+    image:"https://i.postimg.cc/vDFkgCxj/s-YUHrxc0-Tl-W3-M0-Ge-Q1-NYg.png",
+    steps:[
+      "Pertama buka aplikasi Mandiri Mobile banking dan login dengan akun Bank anda",
+      "Kemudian di halaman utama masuk ke opsi menu pesan dibagian bawah  seperti gambar berikut https://imghostr.com/10aef6_p5e",
+      "Selanjutnya pilih menu 'Status Transaksi' seperti berikut https://imghostr.com/ccdc8d_r3q",
+      "Silahkan isi rentang tanggal pencarian, dan di bagian pilihan 'menu' silahkan klik saja pada 'semua menu' atau bisa mempersempit pencarian dengan opsi lain seperti transfer, pembelian, pembayaran dan sebagainya",
+      "Di bagian nomor rekening, pilih semua akun atau klik pada nomor rekening anda",
+      "Lalu di di menu 'status' pilih transaksi sukses atau gagal, bisa juga memilih opsi semua status agar hasil pencarian mencakup semuanya",
+      "Setelah semua terisi, klik tombol Cari dan tunggu halaman Daftar status transaksi ditampilkan di layar",
+      "Untuk melihat detail resi / bukti transaksi QRIS bisa klik pada salah satu nomor referensi yang ditunjukkan dan dapat anda screenshotkan"
+    ]
+  },
+  {
+    name:"ALLO BANK", title:"ALLOBANK", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/QxDK59YJ/1200x630wa.jpg",
+    image:"https://i.postimg.cc/Y2DrbchS/Screenshot-2.png",
+    steps:[
+      "Buka Aplikasi: Masuk ke aplikasi Allo Bank",
+      "Pilih Menu Pay: Pada halaman utama (Home), pilih menu 'Pay'",
+      "Lihat Riwayat: Pilih ikon atau menu riwayat (history) transaksi yang ada di halaman tersebut untuk melihat daftar pembayaran QRIS terakhir",
+      "Detail Transaksi: Klik transaksi spesifik yang ingin dicek untuk melihat bukti transfer digital yang memuat detail waktu, nominal, dan status berhasil.",
+      "Simpan/Screenshot: Bukti transaksi ini dapat di-screenshot sebagai bukti pembayaran sah."
+    ]
+  },
+  {
+    name:"UOB", title:"BANK UOB", subtitle:"Mobile Banking",
+    icon:"https://i.postimg.cc/RZxygXwC/images-(1).png",
+    image:"https://i.postimg.cc/qMV1rgqC/Screenshot-1.png",
+    steps:[
+      "Buka aplikasi UOB TMRW.",
+      "Pilih Menu Pay: Pada halaman utama (Home), pilih menu 'Pay'",
+      "Pilih menu 'Akun' atau 'Aktivitas' (di bagian bawah).",
+      "Pilih transaksi QRIS yang baru saja dilakukan.",
+      "Bukti transaksi (RRN/ID Referensi) akan tertera di detail transaksi tersebut"
+    ]
+  }
+];
+
+// ═══════ RENDER ═══════
+function buildCard(item) {
+  return `
+    <div class="card" data-name="${item.name}" data-title="${item.title}">
+      <div class="card-head" onclick="toggle(this)">
+        <img src="${item.icon}" alt="${item.title}" class="card-icon" loading="lazy">
+        <div class="card-info">
+          <div class="card-name">${item.title}</div>
+          <div class="card-type">${item.subtitle}</div>
+        </div>
+        <div class="card-toggle"><i class="fas fa-chevron-down"></i></div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <span class="steps-label">Langkah-langkah</span>
+          <ol class="step-list">
+            ${item.steps.map(s => `<li>${s}</li>`).join('')}
+          </ol>
+          <div class="preview-wrap">
+            <img src="${item.image}" alt="Bukti" loading="lazy" onclick="openModal('${item.image}')">
+            <div class="preview-hint"><i class="fas fa-search-plus"></i> Klik gambar untuk memperbesar</div>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-accent" onclick="copySteps('${item.name}')"><i class="fas fa-copy"></i> Salin Panduan</button>
+            <button class="btn btn-ghost" onclick="copyImage('${item.image}')"><i class="fas fa-image"></i> Salin Gambar</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+const eGrid = document.getElementById('ewallet-grid');
+const bGrid = document.getElementById('bank-grid');
+eGrid.innerHTML = eWalletData.map(buildCard).join('');
+bGrid.innerHTML = bankData.map(buildCard).join('');
+
+// ═══════ INTERACTIONS ═══════
+function toggle(el) {
+  el.closest('.card').classList.toggle('open');
+}
+
+// Tabs
+document.querySelectorAll('.tab-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const t = btn.dataset.tab;
+    eGrid.style.display = t === 'ewallet' ? 'grid' : 'none';
+    bGrid.style.display = t === 'bank' ? 'grid' : 'none';
+    document.getElementById('searchInput').value = '';
+    filterCards();
+  });
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', filterCards);
+function filterCards() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const tab = document.querySelector('.tab-item.active').dataset.tab;
+  const container = tab === 'ewallet' ? eGrid : bGrid;
+  let visible = 0;
+  container.querySelectorAll('.card').forEach(c => {
+    const match = c.dataset.name.toLowerCase().includes(q) || c.dataset.title.toLowerCase().includes(q);
+    c.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  document.getElementById('totalCount').textContent = visible;
+}
+
+// Copy steps
+function copySteps(appName) {
+  const all = [...eWalletData, ...bankData];
+  const app = all.find(i => i.name === appName);
+  if (!app) return toast('Data tidak ditemukan');
+  const txt = `Langkah-langkah Mengecek Bukti Transaksi QRIS ${app.title}\n\n` +
+    app.steps.map((s,i) => `${i+1}. ${s}`).join('\n');
+  navigator.clipboard.writeText(txt)
+    .then(() => toast('Panduan berhasil disalin!'))
+    .catch(() => toast('Gagal menyalin teks'));
+}
+
+// Copy image
+async function copyImage(url) {
+  try {
+    const r = await fetch(url);
+    const b = await r.blob();
+    await navigator.clipboard.write([new ClipboardItem({[b.type]: b})]);
+    toast('Gambar berhasil disalin');
+  } catch {
+    toast('Browser tidak mendukung, buka gambar manual');
+    window.open(url, '_blank');
+  }
+}
+
+// Modal
+function openModal(src) {
+  document.getElementById('modalImg').src = src;
+  document.getElementById('imgModal').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('imgModal').classList.remove('show');
+  document.body.style.overflow = '';
+}
+document.getElementById('imgModal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// Toast
+function toast(msg) {
+  const old = document.querySelector('.toast-msg');
+  if (old) old.remove();
+  const el = document.createElement('div');
+  el.className = 'toast-msg';
+  el.innerHTML = `<i class="fas fa-check-circle" style="color:var(--accent)"></i> ${msg}`;
+  document.body.appendChild(el);
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 300); }, 2800);
+}
+
+// Init count
+filterCards();
+</script>
+</body>
+</html>

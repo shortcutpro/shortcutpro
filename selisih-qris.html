@@ -43,7 +43,6 @@
             overflow-x: hidden;
         }
 
-        /* Grid background */
         body::before {
             content: '';
             position: fixed;
@@ -64,7 +63,6 @@
             padding: 2rem;
         }
 
-        /* HEADER */
         .header {
             display: flex;
             align-items: center;
@@ -100,7 +98,6 @@
             font-family: var(--mono);
         }
 
-        /* UPLOAD SECTION */
         .upload-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -228,7 +225,6 @@
 
         .remove-file:hover { color: var(--red); }
 
-        /* FORMAT HINT */
         .format-hint {
             background: var(--surface2);
             border: 1px solid var(--border);
@@ -243,7 +239,21 @@
 
         .format-hint .col-label { color: var(--text2); font-weight: 600; }
 
-        /* ACTIONS */
+        .detected-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.2rem 0.55rem;
+            border-radius: 5px;
+            font-family: var(--mono);
+            font-size: 0.7rem;
+            font-weight: 700;
+            background: var(--gold-glow);
+            color: var(--gold);
+            border: 1px solid var(--gold-dim);
+            margin-left: 0.5rem;
+        }
+
         .action-row {
             display: flex;
             gap: 0.75rem;
@@ -305,7 +315,6 @@
             background: rgba(34,197,94,0.2);
         }
 
-        /* SUMMARY */
         .summary-bar {
             display: grid;
             grid-template-columns: repeat(6, 1fr);
@@ -341,7 +350,6 @@
         .stat-val.warning { color: var(--amber); }
         .stat-val.success { color: var(--green); }
 
-        /* RESULT SECTION */
         #resultSection { display: none; }
 
         .result-grid {
@@ -468,7 +476,6 @@
 
         .empty-state i { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; color: var(--green); }
 
-        /* TOAST */
         .toast {
             position: fixed;
             bottom: 1.5rem;
@@ -495,7 +502,6 @@
         .toast.err { border-color: rgba(255,74,74,0.4); }
         .toast.err i { color: var(--red); }
 
-        /* Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
@@ -510,7 +516,6 @@
 <body>
 <div class="page">
 
-    <!-- HEADER -->
     <div class="header">
         <div class="header-icon"><i class="fas fa-code-compare"></i></div>
         <div>
@@ -519,19 +524,21 @@
         </div>
     </div>
 
-    <!-- UPLOAD -->
     <div class="upload-grid">
 
-        <!-- Admin -->
         <div class="upload-card">
             <div class="upload-label">
                 <span class="dot dot-admin"></span>
                 Data Admin
+                <span class="detected-badge" id="adminFormatBadge" style="display:none">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="adminFormatLabel">—</span>
+                </span>
             </div>
             <div class="dropzone" id="dropAdmin">
                 <input type="file" id="fileAdmin" accept=".xlsx,.xls,.csv">
                 <div class="dropzone-icon"><i class="fas fa-file-excel"></i></div>
-                <div class="dropzone-title">Drop file Excel di sini</div>
+                <div class="dropzone-title">Drop file Excel / CSV di sini</div>
                 <div class="dropzone-hint">atau klik untuk pilih file</div>
             </div>
             <div class="file-preview" id="previewAdmin">
@@ -544,20 +551,24 @@
                 <span class="col-label">Kolom yang dipakai (auto-detect):</span><br>
                 <span style="color:var(--blue);font-weight:600">Format 1</span> → A = Jumlah &nbsp;|&nbsp; C = Dari Rekening Bank (KEY) &nbsp;|&nbsp; L = UserId<br>
                 <span style="color:var(--text2);font-weight:600">Format 2</span> → A = Akun Pemain &nbsp;|&nbsp; C = Jumlah Operator &nbsp;|&nbsp; E = No. Rek Pembayar (KEY)<br>
+                <span style="color:var(--green);font-weight:600">Format 3</span> → B = UserId &nbsp;|&nbsp; E = Dari Rekening Bank (KEY) &nbsp;|&nbsp; J = Jumlah<br>
                 Baris 1 = header (otomatis di-skip)
             </div>
         </div>
 
-        <!-- QRIS -->
         <div class="upload-card">
             <div class="upload-label">
                 <span class="dot dot-qris"></span>
                 Data QRIS
+                <span class="detected-badge" id="qrisFormatBadge" style="display:none">
+                    <i class="fas fa-check-circle"></i>
+                    <span id="qrisFormatLabel">—</span>
+                </span>
             </div>
             <div class="dropzone" id="dropQris">
                 <input type="file" id="fileQris" accept=".xlsx,.xls,.csv">
                 <div class="dropzone-icon"><i class="fas fa-qrcode"></i></div>
-                <div class="dropzone-title">Drop file Excel di sini</div>
+                <div class="dropzone-title">Drop file Excel / CSV di sini</div>
                 <div class="dropzone-hint">atau klik untuk pilih file</div>
             </div>
             <div class="file-preview" id="previewQris">
@@ -578,7 +589,6 @@
 
     </div>
 
-    <!-- ACTIONS -->
     <div class="action-row">
         <button class="btn btn-primary" id="btnCompare" disabled>
             <i class="fas fa-bolt"></i> Proses Selisih
@@ -588,10 +598,8 @@
         </button>
     </div>
 
-    <!-- RESULT -->
     <div id="resultSection">
 
-        <!-- SUMMARY -->
         <div class="summary-bar" id="summaryBar">
             <div class="stat-card">
                 <div class="stat-label">Admin Records</div>
@@ -619,10 +627,8 @@
             </div>
         </div>
 
-        <!-- TABLES -->
         <div class="result-grid">
 
-            <!-- Not in QRIS -->
             <div class="result-card">
                 <div class="result-card-header">
                     <div class="result-card-title">
@@ -649,7 +655,6 @@
                 </div>
             </div>
 
-            <!-- Not in Admin -->
             <div class="result-card">
                 <div class="result-card-header">
                     <div class="result-card-title">
@@ -678,7 +683,7 @@
 
         </div>
 
-    </div><!-- /resultSection -->
+    </div>
 
 </div>
 
@@ -695,6 +700,7 @@ let qrisKeyCol      = 1;
 let qrisAmtCol      = 2;
 let qrisStripDec    = false;
 let qrisTypeDetected = '';
+let adminTypeDetected = '';
 
 // Admin column indices (auto-detected from header)
 let adminKeyCol     = 4;  // default: col E = Nomor Rekening Pembayar
@@ -707,11 +713,10 @@ function parseNum(v) {
     return parseInt(String(v).replace(/[^\d-]/g, ''), 10) || 0;
 }
 
-// Parse amount, strip trailing decimal part (,00 / .00) before converting
 function parseAmt(v) {
     if (v == null) return 0;
     let s = String(v).trim();
-    // Strip trailing decimal: "10000,00" → "10000", "100.000,00" → "100.000"
+    // Strip trailing decimal: "10000,00" → "10000", "100000.000" → "100000"
     s = s.replace(/[,.]\d+$/, '');
     // Remove remaining non-digit chars (thousand separators etc)
     return parseInt(s.replace(/[^\d-]/g, ''), 10) || 0;
@@ -736,6 +741,15 @@ function updateCompareBtn() {
     document.getElementById('btnCompare').disabled = !(adminRows.length && qrisRows.length);
 }
 
+// ─── Trim all cells (handles trailing tabs inside quoted CSV values) ──────────
+function trimRow(row) {
+    return row.map(cell => {
+        if (cell == null) return '';
+        if (typeof cell === 'string') return cell.replace(/[\t\r\n]+/g, '').trim();
+        return cell;
+    });
+}
+
 // ─── Excel parser ─────────────────────────────────────────────────────────────
 function parseExcel(file, rawMode, cb) {
     const reader = new FileReader();
@@ -746,14 +760,18 @@ function parseExcel(file, rawMode, cb) {
             const raw = XLSX.utils.sheet_to_json(ws, { header: 1, defval: '', raw: rawMode });
 
             // XPay: first cell of row0 contains 'mutasi' or 'xpay' → header at row1
-            const row0first = String(raw[0]?.[0] ?? '').toLowerCase();
+            const row0first = String(raw[0]?.[0] ?? '').replace(/[\t\r\n]/g,'').trim().toLowerCase();
             const isXPay = row0first.includes('mutasi') || row0first.includes('xpay');
 
             const headerRowIdx = isXPay ? 1 : 0;
             const dataStartIdx = headerRowIdx + 1;
 
-            const header = (raw[headerRowIdx] || []).map(h => String(h).toLowerCase().trim());
-            const data   = raw.slice(dataStartIdx).filter(r => r[0] && String(r[0]).trim() !== '');
+            const header = (raw[headerRowIdx] || []).map(h =>
+                String(h).replace(/[\t\r\n]/g,'').trim().toLowerCase()
+            );
+            const data = raw.slice(dataStartIdx)
+                .map(trimRow)
+                .filter(r => r[0] && String(r[0]).trim() !== '');
 
             cb(null, data, header, isXPay);
         } catch(err) {
@@ -774,31 +792,59 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
 
     function loadFile(file) {
         if (!file) return;
-        // Admin: raw:true (numbers stay as integers)
-        // QRIS:  raw:false (keep comma-decimal values as strings e.g. "10000,00")
         const rawMode = target === 'admin';
         parseExcel(file, rawMode, (err, data, header, isXPay) => {
             if (err) { showToast('Gagal baca file: ' + file.name, 'err'); return; }
             if (target === 'admin') {
                 adminRows = data;
-                // Auto-detect admin format from header (already lowercased)
-                if (header[0] === 'jumlah') {
-                    // New format: A=Jumlah, C=Dari Rekening Bank, L=UserId
+
+                // ── Auto-detect Admin format ──
+                const h0 = header[0] || '';
+                const hasRekBank = header.some(h => h.includes('dari rekening bank'));
+                const hasJumlahCol = header.findIndex(h => h === 'jumlah');
+
+                if (h0 === 'jumlah') {
+                    // Format 1 (new): A=Jumlah, C=Dari Rekening Bank, L=UserId
                     adminAmtCol = 0;
                     adminKeyCol = 2;
                     adminAccCol = 11;
+                    adminTypeDetected = 'format1';
+
+                } else if (h0.includes('tanggal') && hasRekBank) {
+                    // Format 3 (TransaksiBaruDetail CSV):
+                    //   A=Tanggal, B=UserId, C=Tindakan, D=Dari Nama Bank,
+                    //   E=Dari Rekening Bank(KEY), ..., J=Jumlah
+                    const rekIdx = header.findIndex(h => h.includes('dari rekening bank'));
+                    const jumlahIdx = hasJumlahCol >= 0 ? hasJumlahCol : header.findIndex(h => h === 'jumlah');
+                    const userIdx = header.findIndex(h => h === 'userid' || h === 'user id' || h === 'user_id');
+
+                    adminKeyCol = rekIdx >= 0 ? rekIdx : 4;
+                    adminAmtCol = jumlahIdx >= 0 ? jumlahIdx : 9;
+                    adminAccCol = userIdx >= 0 ? userIdx : 1;
+                    adminTypeDetected = 'format3';
+
                 } else {
-                    // Old format: A=Akun Pemain, C=Jumlah Operator, E=Nomor Rekening Pembayar
+                    // Format 2 (old): A=Akun Pemain, C=Jumlah Operator, E=No. Rek Pembayar
                     adminAmtCol = 2;
                     adminKeyCol = 4;
                     adminAccCol = 0;
+                    adminTypeDetected = 'format2';
                 }
+
+                const labels = {
+                    format1: 'Format 1 — Jumlah | Dari Rek Bank | UserId',
+                    format2: 'Format 2 — Akun Pemain | Jumlah Op | No Rek',
+                    format3: 'Format 3 — Tanggal | UserId | Dari Rek Bank | Jumlah'
+                };
+                document.getElementById('adminFormatLabel').textContent = labels[adminTypeDetected] || '?';
+                document.getElementById('adminFormatBadge').style.display = 'inline-flex';
+                showToast(`Admin: ${labels[adminTypeDetected]}`);
+
             } else {
                 qrisRows     = data;
-                qrisStripDec = false; // reset
+                qrisStripDec = false;
 
                 if (isXPay) {
-                    // XPay: KEY=PARTNER ID (col J=9), AMT=RECORD VALUE (col C=2)
                     const partnerIdx = header.findIndex(h => h === 'partner id');
                     const recValIdx  = header.findIndex(h => h === 'record value');
                     qrisKeyCol   = partnerIdx >= 0 ? partnerIdx : 9;
@@ -806,9 +852,8 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
                     qrisStripDec = true;
                     qrisTypeDetected = 'xpay';
 
-                } else if (header[3] && header[3].toLowerCase().includes('order id') ||
+                } else if (header[3] && header[3].includes('order id') ||
                            header.some(h => h.includes('p2mih'))) {
-                    // P2MIH: KEY=col D (Order ID, idx 3), AMT=col F (Amount, idx 5), strip decimal
                     const orderIdx = header.findIndex(h => h.includes('order id'));
                     const amtIdx   = header.findIndex(h => h === 'amount' || h === 'nominal');
                     qrisKeyCol   = orderIdx >= 0 ? orderIdx : 3;
@@ -817,16 +862,16 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
                     qrisTypeDetected = 'p2mih';
 
                 } else {
-                    // Minera/Orion or VIP — key always col B (1)
                     qrisKeyCol = 1;
                     const amtIdx = header.findIndex(h => h === 'amount');
                     qrisAmtCol = amtIdx >= 0 ? amtIdx : 2;
-                    // VIP has amount at col G (6+), Minera/Orion at col C (2)
                     qrisTypeDetected = qrisAmtCol >= 6 ? 'vip' : 'minera';
                 }
 
                 const typeLabel = { xpay:'XPay', p2mih:'P2MIH', vip:'VIP', minera:'Minera / Orion' }[qrisTypeDetected] || '?';
-                showToast(`Terdeteksi format: ${typeLabel}`);
+                document.getElementById('qrisFormatLabel').textContent = typeLabel;
+                document.getElementById('qrisFormatBadge').style.display = 'inline-flex';
+                showToast(`QRIS: Terdeteksi format ${typeLabel}`);
             }
             fname.textContent = file.name;
             frows.textContent = data.length + ' baris';
@@ -848,8 +893,15 @@ function setupUpload(inputId, dropId, previewId, fnameId, frowsId, removeId, tar
 
     remove.addEventListener('click', e => {
         e.stopPropagation();
-        if (target === 'admin') { adminRows = []; adminKeyCol = 4; adminAmtCol = 2; adminAccCol = 0; }
-        else { qrisRows = []; qrisKeyCol = 1; qrisAmtCol = 2; qrisStripDec = false; qrisTypeDetected = ''; }
+        if (target === 'admin') {
+            adminRows = []; adminKeyCol = 4; adminAmtCol = 2; adminAccCol = 0;
+            adminTypeDetected = '';
+            document.getElementById('adminFormatBadge').style.display = 'none';
+        } else {
+            qrisRows = []; qrisKeyCol = 1; qrisAmtCol = 2; qrisStripDec = false;
+            qrisTypeDetected = '';
+            document.getElementById('qrisFormatBadge').style.display = 'none';
+        }
         input.value = '';
         prev.classList.remove('show');
         updateCompareBtn();
@@ -862,14 +914,8 @@ setupUpload('fileQris',  'dropQris',  'previewQris',  'fnameQris',  'frowsQris',
 
 // ─── Compare ──────────────────────────────────────────────────────────────────
 document.getElementById('btnCompare').addEventListener('click', () => {
-    // Build maps
-    // Admin:      col0=Akun Pemain(A)  col2=Jumlah Operator(C)  col4=No.Rek Pembayar(E) ← KEY
-    // Minera/Orion: keyCol=1(B ref_no),     amtCol=2(C amount)
-    // VIP:          keyCol=1(B id_trx),     amtCol=6(G amount)
-    // XPay:         keyCol=9(J partner_id), amtCol=2(C record_value), strip decimal
-    // P2MIH:        keyCol=3(D order_id),   amtCol=5(F amount),       strip decimal
 
-    const adminMap = new Map(); // key → {akunPemain, nominal, noRek}
+    const adminMap = new Map();
     adminRows.forEach(r => {
         const noRek = String(r[adminKeyCol] ?? '').trim();
         if (!noRek) return;
@@ -880,7 +926,7 @@ document.getElementById('btnCompare').addEventListener('click', () => {
         });
     });
 
-    const qrisMap = new Map(); // key → {refNo, nominal}
+    const qrisMap = new Map();
     qrisRows.forEach(r => {
         const refNo = String(r[qrisKeyCol] ?? '').trim();
         if (!refNo) return;
@@ -890,10 +936,10 @@ document.getElementById('btnCompare').addEventListener('click', () => {
         });
     });
 
-    const adminOnlyRows   = []; // ada di Admin, tidak ada di QRIS
-    const qrisOnlyRows    = []; // ada di QRIS, tidak ada di Admin
-    const mismatchAdmin   = []; // ada di keduanya, tapi nominal beda (dari sisi Admin)
-    const mismatchQris    = []; // ada di keduanya, tapi nominal beda (dari sisi QRIS)
+    const adminOnlyRows   = [];
+    const qrisOnlyRows    = [];
+    const mismatchAdmin   = [];
+    const mismatchQris    = [];
 
     let matchedOK = 0;
     const seen = new Set();
@@ -917,7 +963,6 @@ document.getElementById('btnCompare').addEventListener('click', () => {
         }
     });
 
-    // Combine for display
     const adminDiscrepancy = [...mismatchAdmin, ...adminOnlyRows];
     const qrisDiscrepancy  = [...mismatchQris, ...qrisOnlyRows];
 
@@ -928,7 +973,6 @@ document.getElementById('btnCompare').addEventListener('click', () => {
     let sumAdmin = 0; adminMap.forEach(a => sumAdmin += a.nominal);
     let sumQris  = 0; qrisMap.forEach(q => sumQris  += q.nominal);
 
-    // Summary
     document.getElementById('sAdminTotal').textContent = fmt(totalAdmin);
     document.getElementById('sQrisTotal').textContent  = fmt(totalQris);
     document.getElementById('sMatched').textContent    = fmt(matchedOK);
@@ -936,7 +980,6 @@ document.getElementById('btnCompare').addEventListener('click', () => {
     document.getElementById('sAdminAmt').textContent   = fmt(sumAdmin);
     document.getElementById('sAmtDiff').textContent    = fmt(Math.abs(sumAdmin - sumQris));
 
-    // Tables
     renderAdminTable(adminDiscrepancy);
     renderQrisTable(qrisDiscrepancy);
 
@@ -1023,8 +1066,10 @@ document.getElementById('btnCopyQris').addEventListener('click',  () => copyTabl
 // ─── Reset ────────────────────────────────────────────────────────────────────
 document.getElementById('btnClear').addEventListener('click', () => {
     adminRows = []; qrisRows = [];
+    adminTypeDetected = ''; qrisTypeDetected = '';
     ['fileAdmin','fileQris'].forEach(id => document.getElementById(id).value = '');
     ['previewAdmin','previewQris'].forEach(id => document.getElementById(id).classList.remove('show'));
+    ['adminFormatBadge','qrisFormatBadge'].forEach(id => document.getElementById(id).style.display = 'none');
     document.getElementById('resultSection').style.display = 'none';
     document.getElementById('btnCompare').disabled = true;
     showToast('Reset selesai');

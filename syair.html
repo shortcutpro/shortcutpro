@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="id">
-<head>
+<html lang="id"><script src="chrome-extension://pphgdbgldlmicfdkhondlafkiomnelnk/content/location/location.js" id="pphgdbgldlmicfdkhondlafkiomnelnk"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><head><style>body {transition: opacity ease-in 0.2s; } 
+body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
+</style>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Syair Generator</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700;900&family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&amp;family=Cinzel:wght@600;700;900&amp;family=Playfair+Display:ital,wght@1,700&amp;display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -157,7 +158,7 @@ body{
 @keyframes spin{to{transform:rotate(360deg);}}
 </style>
 </head>
-<body>
+<body __processed_2c309294-8a91-4028-8264-f294e58cee5e__="true">
 <div class="main-layout">
 
   <div class="cw"><div id="card">
@@ -167,17 +168,15 @@ body{
         <button onclick="rz('el-logo','w',-10)">W-</button><span class="sv" id="sv-lw">324</span><button onclick="rz('el-logo','w',10)">W+</button>
         <button onclick="rz('el-logo','h',-10)">H-</button><span class="sv" id="sv-lh">116</span><button onclick="rz('el-logo','h',10)">H+</button>
       </div>
-      <img id="logo-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/logo-mobile.png"
-        crossorigin="anonymous" onerror="this.style.display='none'" alt="LOGO"
-        style="width:324px;height:116px;object-fit:contain;display:block;filter:drop-shadow(0 0 14px rgba(200,150,44,.85));">
+      <img id="logo-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/logo-mobile.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="LOGO" style="width:324px;height:116px;object-fit:contain;display:block;filter:drop-shadow(0 0 14px rgba(200,150,44,.85));">
       <div class="rh" data-el="el-logo"></div>
     </div>
 
-    <div class="el" id="el-date" style="top:128px;left:352px;">
+    <div class="el active" id="el-date" style="top: 131px; left: 327px;">
       <div class="el-ctrl">
-        <button onclick="fs('date-txt',-1)">A-</button><span class="sv" id="sv-dfs">36</span><button onclick="fs('date-txt',1)">A+</button>
+        <button onclick="fs('date-txt',-1)">A-</button><span class="sv" id="sv-dfs">30</span><button onclick="fs('date-txt',1)">A+</button>
       </div>
-      <span id="date-txt" class="gt" style="font-size:36px;letter-spacing:2px;">30 MEI 2026</span>
+      <span id="date-txt" class="gt" style="font-size:30px;letter-spacing:2px;">2 AGUSTUS 2026</span>
       <div class="rh" data-el="el-date"></div>
     </div>
 
@@ -186,24 +185,23 @@ body{
         <button onclick="rz('el-pasaran','w',-10)">W-</button><span class="sv" id="sv-pw">216</span><button onclick="rz('el-pasaran','w',10)">W+</button>
         <button onclick="rz('el-pasaran','h',-10)">H-</button><span class="sv" id="sv-ph">83</span><button onclick="rz('el-pasaran','h',10)">H+</button>
       </div>
-      <img id="pas-img" src="" crossorigin="anonymous" onerror="this.style.display='none'" alt=""
-        style="width:216px;height:83px;object-fit:contain;display:none;filter:drop-shadow(0 0 18px rgba(200,150,44,.9));">
+      <img id="pas-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/logo%20florida.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:216px;height:83px;object-fit:contain;display:block;filter:drop-shadow(0 0 18px rgba(200,150,44,.9));">
       <div class="rh" data-el="el-pasaran"></div>
     </div>
 
     <div class="el" id="el-c1" style="top:422px;left:46px;">
       <div class="el-ctrl"><button onclick="fs('c1',-2)">A-</button><span class="sv" id="sv-c1">46</span><button onclick="fs('c1',2)">A+</button></div>
-      <span id="c1" class="gt" style="font-size:46px;line-height:1;display:block;">3</span>
+      <span id="c1" class="gt" style="font-size:46px;line-height:1;display:block;">1</span>
       <div class="rh" data-el="el-c1"></div>
     </div>
     <div class="el" id="el-c2" style="top:424px;left:215px;">
       <div class="el-ctrl"><button onclick="fs('c2',-2)">A-</button><span class="sv" id="sv-c2">46</span><button onclick="fs('c2',2)">A+</button></div>
-      <span id="c2" class="gt" style="font-size:46px;line-height:1;display:block;">5</span>
+      <span id="c2" class="gt" style="font-size:46px;line-height:1;display:block;">4</span>
       <div class="rh" data-el="el-c2"></div>
     </div>
     <div class="el" id="el-c3" style="top:581px;left:48px;">
       <div class="el-ctrl"><button onclick="fs('c3',-2)">A-</button><span class="sv" id="sv-c3">46</span><button onclick="fs('c3',2)">A+</button></div>
-      <span id="c3" class="gt" style="font-size:46px;line-height:1;display:block;">8</span>
+      <span id="c3" class="gt" style="font-size:46px;line-height:1;display:block;">7</span>
       <div class="rh" data-el="el-c3"></div>
     </div>
     <div class="el" id="el-c4" style="top:579px;left:203px;">
@@ -214,13 +212,13 @@ body{
 
     <div class="el" id="el-bbfs" style="top:325px;left:766px;">
       <div class="el-ctrl"><button onclick="fs('bbfs-num',-1)">A-</button><span class="sv" id="sv-bfs">34</span><button onclick="fs('bbfs-num',1)">A+</button></div>
-      <div id="bbfs-num" class="gt" style="font-size:34px;letter-spacing:4px;line-height:1.55;text-align:center;">1 2 3 4<br>5 6 7 8</div>
+      <div id="bbfs-num" class="gt" style="font-size:34px;letter-spacing:4px;line-height:1.55;text-align:center;">0 1 4 5<br>6 7 8 9</div>
       <div class="rh" data-el="el-bbfs"></div>
     </div>
 
     <div class="el" id="el-tarung" style="top:589px;left:744px;">
       <div class="el-ctrl"><button onclick="fs('tarung-num',-1)">A-</button><span class="sv" id="sv-tfs">31</span><button onclick="fs('tarung-num',1)">A+</button></div>
-      <div id="tarung-num" class="gt" style="font-size:31px;letter-spacing:3px;text-align:center;">1-2-3-4-5</div>
+      <div id="tarung-num" class="gt" style="font-size:31px;letter-spacing:3px;text-align:center;">2-4-5-6-9</div>
       <div class="rh" data-el="el-tarung"></div>
     </div>
 
@@ -229,14 +227,13 @@ body{
         <button onclick="rz('el-shio','w',-10)">W-</button><span class="sv" id="sv-sw">452</span><button onclick="rz('el-shio','w',10)">W+</button>
         <button onclick="rz('el-shio','h',-10)">H-</button><span class="sv" id="sv-sh">451</span><button onclick="rz('el-shio','h',10)">H+</button>
       </div>
-      <img id="shio-img" src="" crossorigin="anonymous" onerror="this.style.display='none'" alt=""
-        style="width:452px;height:451px;object-fit:contain;display:none;filter:drop-shadow(0 0 20px rgba(200,150,44,.7));">
+      <img id="shio-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/shio%20anjing.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:452px;height:451px;object-fit:contain;display:block;filter:drop-shadow(0 0 20px rgba(200,150,44,.7));">
       <div class="rh" data-el="el-shio"></div>
     </div>
 
     <div class="el" id="el-syair" style="top:756px;left:372px;">
       <div class="el-ctrl"><button onclick="fs('syair-txt',-1)">A-</button><span class="sv" id="sv-sfs">15</span><button onclick="fs('syair-txt',1)">A+</button></div>
-      <span id="syair-txt" class="gt-syair" style="font-size:15px;line-height:1.75;display:block;text-align:center;">–</span>
+      <span id="syair-txt" class="gt-syair" style="font-size:15px;line-height:1.75;display:block;text-align:center;">Roda berputar tiada henti,<br>Angka jitu datang kembali.<br>Satu hingga sembilan berjajar,<br>Rezeki mengalir semakin besar.</span>
       <div class="rh" data-el="el-syair"></div>
     </div>
 
@@ -274,7 +271,7 @@ body{
             <option value="4">Naga</option>
             <option value="5">Ular</option>
             <option value="6">Kuda</option>
-            <option value="7" selected>Kambing</option>
+            <option value="7" selected="">Kambing</option>
             <option value="8">Monyet</option>
             <option value="9">Ayam</option>
             <option value="10">Anjing</option>
@@ -796,5 +793,6 @@ function init(){
 
 init();
 </script>
-</body>
-</html>
+
+
+<veepn-intro-offer><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2-variations");font-weight:100 1000;font-display:swap}</style></veepn-intro-offer></body></html>

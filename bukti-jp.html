@@ -77,7 +77,7 @@
   .screen .inner{position:relative;width:100%;height:100%;overflow:hidden;
     border-radius:clamp(18px,5%,46px);background:#fff;
     display:flex;align-items:flex-start;justify-content:center;}
-  .screen .inner img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;-webkit-user-drag:none;background:#fff;}
+  .screen .inner img{width:100%;height:100%;object-fit:contain;object-position:center top;display:block;-webkit-user-drag:none;background:#fff;}
   .screen .inner .ph{color:#666;font-size:min(1.4vw,13px);text-align:center;padding:10px;line-height:1.5;}
   /* Dynamic Island pill (real element) */
   .screen .island{position:absolute;top:2.4%;left:50%;transform:translateX(-50%);
@@ -193,7 +193,7 @@
       <label class="upload" id="uploadBox" for="iFile">
         <div class="u1">&#128228;</div>
         <div class="u2" id="uText">Upload Bukti Transfer</div>
-        <div class="u3">Struk otomatis mengisi layar iPhone. Klik untuk pilih gambar.</div>
+        <div class="u3">Struk otomatis masuk ke layar iPhone dan di-fit penuh agar tidak tertutup. Klik untuk pilih gambar.</div>
         <input type="file" id="iFile" accept="image/*">
       </label>
 
@@ -452,11 +452,60 @@
   window.addEventListener('touchend',endMove);
   window.addEventListener('resize',()=>{ applyAll(); fitControlPanel(); });
 
+  function cropReceiptWhitespace(src){
+    return new Promise(resolve=>{
+      const img=new Image();
+      img.onload=()=>{
+        try{
+          const w=img.naturalWidth||img.width, h=img.naturalHeight||img.height;
+          const c=document.createElement('canvas'); c.width=w; c.height=h;
+          const x=c.getContext('2d',{willReadFrequently:true});
+          x.drawImage(img,0,0);
+          const data=x.getImageData(0,0,w,h).data;
+          let minX=w, minY=h, maxX=-1, maxY=-1;
+          const thr=245;
+          for(let y=0;y<h;y++){
+            for(let xx=0;xx<w;xx++){
+              const i=(y*w+xx)*4;
+              const a=data[i+3], r=data[i], g=data[i+1], b=data[i+2];
+              const isBlank=(a<10)|| (r>=thr && g>=thr && b>=thr);
+              if(!isBlank){
+                if(xx<minX) minX=xx; if(xx>maxX) maxX=xx;
+                if(y<minY) minY=y; if(y>maxY) maxY=y;
+              }
+            }
+          }
+          if(maxX<0 || maxY<0){ resolve(src); return; }
+          const padX=Math.max(4, Math.round(w*0.008));
+          const padTop=Math.max(4, Math.round(h*0.006));
+          const padBottom=Math.max(2, Math.round(h*0.002));
+          minX=Math.max(0, minX-padX);
+          maxX=Math.min(w-1, maxX+padX);
+          minY=Math.max(0, minY-padTop);
+          maxY=Math.min(h-1, maxY+padBottom);
+          const cw=maxX-minX+1, ch=maxY-minY+1;
+          const out=document.createElement('canvas'); out.width=cw; out.height=ch;
+          out.getContext('2d').drawImage(c, minX,minY,cw,ch, 0,0,cw,ch);
+          resolve(out.toDataURL('image/png'));
+        }catch(err){
+          console.warn('cropReceiptWhitespace failed', err);
+          resolve(src);
+        }
+      };
+      img.onerror=()=>resolve(src);
+      img.src=src;
+    });
+  }
+
   // upload
   $('iFile').addEventListener('change',e=>{
     const f=e.target.files[0];if(!f)return;
     const r=new FileReader();
-    r.onload=ev=>{ setReceipt(ev.target.result, f.name); try{localStorage.setItem(IMGKEY, ev.target.result);}catch(_){} };
+    r.onload=async ev=>{
+      const cropped=await cropReceiptWhitespace(ev.target.result);
+      setReceipt(cropped, f.name);
+      try{localStorage.setItem(IMGKEY, cropped);}catch(_){}
+    };
     r.readAsDataURL(f);
   });
   function setReceipt(src,name){
@@ -540,11 +589,16 @@
       g.fillStyle='#fff'; g.fillRect(sx,sy,sw,sh);
       const im=$('screen').querySelector('img');
       if(im && im.complete && im.naturalWidth){
-        // object-fit: cover anchored to top (fills screen, top aligned)
+        // object-fit: contain so the full receipt stays visible inside the phone
         const ir=im.naturalWidth/im.naturalHeight, sr=sw/sh;
         let dw,dh,dx,dy;
-        if(ir>sr){ dh=sh; dw=sh*ir; dx=sx-(dw-sw)/2; dy=sy; }
-        else { dw=sw; dh=sw/ir; dx=sx; dy=sy; } // top-aligned
+        if(ir>sr){
+          dw=sw; dh=sw/ir;
+          dx=sx; dy=sy + (sh-dh)/2;
+        }else{
+          dh=sh; dw=sh*ir;
+          dx=sx + (sw-dw)/2; dy=sy;
+        }
         try{ g.drawImage(im,dx,dy,dw,dh); }catch(e){}
       }
       g.restore();

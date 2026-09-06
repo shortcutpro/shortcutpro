@@ -64,8 +64,8 @@
   .poster .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;}
 
   /* receipt image placed directly into the white box - NO phone frame */
-  .receipt{position:absolute;z-index:2;touch-action:none;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;background:transparent;}
-  .receipt img{width:100%;height:100%;object-fit:fill;display:block;-webkit-user-drag:none;}
+  .receipt{position:absolute;z-index:2;touch-action:none;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;background:transparent;border-radius:18px;}
+  .receipt img{width:100%;height:100%;object-fit:fill;display:block;-webkit-user-drag:none;border-radius:18px;}
   .receipt .ph{color:#9db4d6;font-size:min(1.4vw,13px);text-align:center;padding:10px;line-height:1.5;align-self:center;}
 
   .ov{position:absolute;z-index:3;transform:translate(-50%,-50%);white-space:nowrap;font-weight:900;touch-action:none;text-align:center;}
@@ -100,6 +100,7 @@
   }
   @media(max-height:620px){
     .slider label{display:none;}
+    #rotWrap label{display:flex!important;}
     .control{padding:6px;} .ctitle{font-size:12px;} .ctitle .dot{width:20px;height:20px;font-size:12px;}
     .fld label,.toggle label{font-size:9px;} .fld input,.fld select{padding:4px 6px;font-size:10px;}
     .adjust{padding:4px;} .upload{grid-template-columns:22px 1fr;padding:4px 6px;} .upload .u1{font-size:14px;} .upload .u2{font-size:9px;}
@@ -142,6 +143,7 @@
           <div class="slider"><label>Atas &#8597; Bawah <span id="vY">50%</span></label><input type="range" id="rY" min="0" max="100" step="0.1"></div>
           <div class="slider" id="sizeWrap"><label>Ukuran <span id="vS">100%</span></label><input type="range" id="rS" min="8" max="120" step="0.5"></div>
         </div>
+        <div class="slider" id="rotWrap" style="margin-top:8px;border-top:1px solid #234067;padding-top:8px;"><label style="color:#38bdf8;font-weight:800;">&#9711; Lengkung Sudut Bukti <span id="vR">18px</span></label><input type="range" id="rR" min="0" max="80" step="1" value="18"></div>
       </div>
 
       <label class="upload" id="uploadBox" for="iFile">
@@ -155,7 +157,7 @@
         <button class="btn" onclick="downloadImg()">&#11015;&#65039; Download Gambar</button>
         <button class="btn btn2" onclick="resetPos()">&#8635; Reset Posisi</button>
       </div>
-      <div class="cnote">&#128161; Mode Atur: seret untuk pindah. Titik <b style="color:#38bdf8">biru</b> = lebar, <b style="color:#f59e0b">oranye</b> = tinggi, <b style="color:#22c55e">hijau</b> = bebas. Tersimpan otomatis.</div>
+      <div class="cnote">&#128161; Mode Atur: seret untuk pindah. Titik <b style="color:#38bdf8">biru</b> = lebar, <b style="color:#f59e0b">oranye</b> = tinggi, <b style="color:#22c55e">hijau</b> = bebas. Slider &#9711; Lengkung Sudut untuk membulatkan sudut struk agar tidak lancip. Tersimpan otomatis.</div>
     </aside>
 
     <div class="poster-wrap">
@@ -172,7 +174,7 @@
 <script>
   const $=id=>document.getElementById(id);
   const poster=$('poster'), editChk=$('editMode');
-  const KEY='ziatogel_pencapaian_v2', IMGKEY='ziatogel_pencapaian_img';
+  const KEY='ziatogel_pencapaian_v5', IMGKEY='ziatogel_pencapaian_img';
 
   /* Positions calibrated to this ZIATOGEL background (1622x970).
      Text boxes on the left, white receipt box on the right. */
@@ -180,7 +182,7 @@
     total:  {x:41.1, y:58.5, s:30, type:'text'},
     game:   {x:30.8, y:73.0, s:20, type:'text'},
     user:   {x:51.7, y:73.0, s:20, type:'text'},
-    receipt:{x:84.31, y:49.12, w:25.32, h:79.09, type:'box'}
+    receipt:{x:84.31, y:49.12, w:25.32, h:79.09, rad:18, type:'box'}
   };
   let st = load();
   for(const k in DEFAULT){
@@ -213,6 +215,9 @@
     }else if(s.type==='box'){
       el.style.left=(s.x - s.w/2)+'%'; el.style.top=(s.y - s.h/2)+'%';
       el.style.width=s.w+'%'; el.style.height=s.h+'%';
+      const rad=(s.rad!=null?s.rad:18)*(pw()/1619); // scale design px to on-screen px
+      el.style.borderRadius=rad+'px';
+      const img=el.querySelector('img'); if(img) img.style.borderRadius=rad+'px';
     }
   }
   function applyAll(){ for(const k in st) applyOne(k); }
@@ -233,7 +238,7 @@
   $('iGame').addEventListener('input',e=>{setOvText('oGame',e.target.value);});
   $('iUser').addEventListener('input',e=>{setOvText('oUser',e.target.value);});
 
-  const pick=$('pick'), rX=$('rX'), rY=$('rY'), rS=$('rS');
+  const pick=$('pick'), rX=$('rX'), rY=$('rY'), rS=$('rS'), rR=$('rR');
   function loadPick(){
     const k=pick.value; let s=st[k];
     if(!s||!s.type){ s=st[k]=JSON.parse(JSON.stringify(DEFAULT[k])); }
@@ -241,6 +246,16 @@
     $('vX').textContent=s.x.toFixed(1)+'%'; $('vY').textContent=s.y.toFixed(1)+'%';
     if(s.type==='text'){ rS.min=8;rS.max=120;rS.value=s.s; $('vS').textContent=s.s.toFixed(0)+'px'; }
     else { rS.min=12;rS.max=70;rS.value=s.w; $('vS').textContent=s.w.toFixed(0)+'%'; }
+    // corner-rounding slider: always visible; enable only for receipt box
+    const rotWrap=$('rotWrap');
+    const curRad=(st.receipt&&st.receipt.rad!=null)?st.receipt.rad:18;
+    if(k==='receipt'){
+      rotWrap.style.opacity='1'; rR.disabled=false;
+      rR.value=(s.rad!=null?s.rad:18); $('vR').textContent=(s.rad!=null?s.rad:18)+'px';
+    } else {
+      rotWrap.style.opacity='.4'; rR.disabled=true;
+      rR.value=curRad; $('vR').textContent=curRad+'px';
+    }
     highlight();
   }
   pick.addEventListener('change',loadPick);
@@ -251,6 +266,12 @@
     if(s.type==='text'){s.s=parseFloat(rS.value);$('vS').textContent=s.s.toFixed(0)+'px';}
     else {const r=s.h/s.w;s.w=parseFloat(rS.value);s.h=s.w*r;$('vS').textContent=s.w.toFixed(0)+'%';}
     applyOne(k);save();
+  });
+  rR.addEventListener('input',()=>{
+    const s=st.receipt;
+    if(!s) return;
+    s.rad=parseFloat(rR.value); $('vR').textContent=s.rad+'px';
+    applyOne('receipt'); save();
   });
 
   editChk.addEventListener('change',()=>{
@@ -419,7 +440,19 @@
       if(im && im.complete && im.naturalWidth){
         const bx=(s.x - s.w/2)/100*NW, by=(s.y - s.h/2)/100*NH;
         const bw=s.w/100*NW, bh=s.h/100*NH;
+        const rad=Math.min((s.rad!=null?s.rad:18), bw/2, bh/2);
+        g.save();
+        // rounded-rect clip
+        g.beginPath();
+        g.moveTo(bx+rad,by);
+        g.arcTo(bx+bw,by,   bx+bw,by+bh, rad);
+        g.arcTo(bx+bw,by+bh,bx,   by+bh, rad);
+        g.arcTo(bx,   by+bh,bx,   by,    rad);
+        g.arcTo(bx,   by,   bx+bw,by,    rad);
+        g.closePath();
+        g.clip();
         try{ g.drawImage(im,bx,by,bw,bh); }catch(e){}
+        g.restore();
       }
     }
 

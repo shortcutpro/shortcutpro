@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>LINETOGEL - Live Score</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+html, body { margin:0; padding:0; background:#000; }
+#livescore-root .ls-boot{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:320px;gap:14px;font-family:'Poppins',sans-serif;background:#000;border-radius:12px;padding:30px 20px;}
+#livescore-root .ls-boot-spin{width:46px;height:46px;border:4px solid #FFD70033;border-top-color:#FFD700;border-radius:50%;animation:lsBoot .7s linear infinite;}
+@keyframes lsBoot{to{transform:rotate(360deg)}}
+#livescore-root .ls-boot-txt{color:#FFD700;font-size:13px;font-weight:700;letter-spacing:1.5px;text-shadow:0 0 10px #FFD70080;text-align:center;}
+#livescore-root .ls-boot-sub{color:#FFD70080;font-size:10px;letter-spacing:1px;text-align:center;margin-top:-8px;}
+</style>
+</head>
+<body>
+
+<div id="livescore-root">
+    <div class="ls-boot">
+        <div class="ls-boot-spin"></div>
+        <div class="ls-boot-txt">MEMUAT LIVE SCORE...</div>
+        <div class="ls-boot-sub">LINETOGEL</div>
+    </div>
+</div>
+
+<!-- GANTI URL di bawah dengan lokasi file di GitHub Pages KAMU -->
+<script src="https://USERNAME.github.io/REPO/livescore-main.js"></script>
+
+<script>
+/* Kirim tinggi konten ke halaman induk (opsional, sama seperti hokbentoto) */
+(function () {
+    var lastH = 0;
+    function sendHeight() {
+        var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+        if (h !== lastH) { lastH = h; try { parent.postMessage({ ziaEmbedHeight: h }, '*'); } catch (e) {} }
+    }
+    setInterval(sendHeight, 800);
+    window.addEventListener('load', sendHeight);
+})();
+</script>
+
+</body>
+</html>

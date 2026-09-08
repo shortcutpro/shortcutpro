@@ -1,0 +1,299 @@
+/* LIVE SCORE SportScore — GitHub Pages static build */
+(function () {
+  'use strict';
+
+  var ROOT_ID = 'live-score-root';
+  var SOURCE_BASE = 'https://sportscore.com/football/live-ticker/';
+  var REFRESH_MS = 20000;
+
+  var PROXIES = [
+    {
+      name: 'AllOrigins',
+      url: function (u) { return 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u); },
+      parse: async function (r) { return JSON.parse(await r.text()); }
+    },
+    {
+      name: 'Hexlet',
+      url: function (u) { return 'https://allorigins.hexlet.app/get?disableCache=true&url=' + encodeURIComponent(u); },
+      parse: async function (r) {
+        var j = await r.json();
+        return JSON.parse(j.contents || '{}');
+      }
+    },
+    {
+      name: 'CodeTabs',
+      url: function (u) { return 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u); },
+      parse: async function (r) { return JSON.parse(await r.text()); }
+    },
+    {
+      name: 'corsproxy.io',
+      url: function (u) { return 'https://corsproxy.io/?' + encodeURIComponent(u); },
+      parse: async function (r) { return JSON.parse(await r.text()); }
+    }
+  ];
+
+  var root = document.getElementById(ROOT_ID);
+  if (!root) return;
+
+  injectStyles();
+
+  var state = {
+    loading: false,
+    lastGood: [],
+    lastScores: Object.create(null),
+    timer: null
+  };
+
+  root.innerHTML = loadingHTML('Memuat LIVE SCORE...');
+
+  function esc(v) {
+    return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c];
+    });
+  }
+
+  function normalizeStatus(v) {
+    var s = String(v == null ? '' : v).trim();
+    if (/^\d+$/.test(s)) return s + "'";
+    return s || 'LIVE';
+  }
+
+  function sourceURL() {
+    return SOURCE_BASE + '?b=' + Math.floor(Date.now() / 15000);
+  }
+
+  async function fetchJSON() {
+    var src = sourceURL();
+    var lastErr = null;
+
+    for (var i = 0; i < PROXIES.length; i++) {
+      var p = PROXIES[i];
+      var ctrl = new AbortController();
+      var timeout = setTimeout(function () { ctrl.abort(); }, 9000);
+      try {
+        var res = await fetch(p.url(src), {
+          cache: 'no-store',
+          signal: ctrl.signal,
+          headers: { 'Accept': 'application/json,text/plain,*/*' }
+        });
+        clearTimeout(timeout);
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        var data = await p.parse(res);
+        if (!data || !Array.isArray(data.matches)) throw new Error('Format data tidak sesuai');
+        return data;
+      } catch (e) {
+        clearTimeout(timeout);
+        lastErr = e;
+        console.warn('[LIVE SCORE] ' + p.name + ' gagal:', e && e.message ? e.message : e);
+      }
+    }
+
+    throw lastErr || new Error('Semua proxy gagal');
+  }
+
+  function rowKey(m) {
+    return m.u || [m.h, m.a].join('|');
+  }
+
+  function scoreKey(m) {
+    return String(m.hs == null ? '-' : m.hs) + ':' + String(m.as == null ? '-' : m.as);
+  }
+
+  function matchURL(m) {
+    var u = String(m.u || '');
+    if (!u) return 'https://sportscore.com/football/';
+    if (/^https?:\/\//i.test(u)) return u;
+    return 'https://sportscore.com' + (u.charAt(0) === '/' ? u : '/' + u);
+  }
+
+  function logo(src, name) {
+    if (!src) return '<span class="ls-logo ls-logo-empty">⚽</span>';
+    return '<span class="ls-logo"><img src="' + esc(src) + '" alt="' + esc(name) + '" loading="lazy" onerror="this.parentNode.innerHTML=\'⚽\'"></span>';
+  }
+
+  function matchRow(m) {
+    var key = rowKey(m);
+    var score = scoreKey(m);
+    var prev = state.lastScores[key];
+    var changed = prev != null && prev !== score;
+    state.lastScores[key] = score;
+
+    return '' +
+      '<a class="ls-match' + (changed ? ' ls-score-changed' : '') + '" href="' + esc(matchURL(m)) + '" target="_blank" rel="noopener noreferrer">' +
+        '<div class="ls-status"><span class="ls-live-dot"></span><b>' + esc(normalizeStatus(m.m)) + '</b></div>' +
+        '<div class="ls-team ls-home">' +
+          '<span class="ls-team-name">' + esc(m.h || '-') + '</span>' +
+          logo(m.hl, m.h || '') +
+        '</div>' +
+        '<div class="ls-score"><strong>' + esc(m.hs == null ? '-' : m.hs) + '</strong><span>-</span><strong>' + esc(m.as == null ? '-' : m.as) + '</strong></div>' +
+        '<div class="ls-team ls-away">' +
+          logo(m.al, m.a || '') +
+          '<span class="ls-team-name">' + esc(m.a || '-') + '</span>' +
+        '</div>' +
+      '</a>';
+  }
+
+  function render(matches) {
+    matches = Array.isArray(matches) ? matches : [];
+    state.lastGood = matches;
+
+    var now = new Date();
+    var clock = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+    var body = matches.length
+      ? matches.map(matchRow).join('')
+      : '<div class="ls-empty"><div class="ls-ball">⚽</div><b>Tidak ada pertandingan LIVE saat ini</b><span>Data akan diperiksa otomatis.</span></div>';
+
+    root.innerHTML = '' +
+      '<section class="ls-shell">' +
+        '<div class="ls-head">' +
+          '<div class="ls-title-wrap">' +
+            '<div class="ls-title"><span class="ls-head-dot"></span>LIVE SCORE SEPAK BOLA</div>' +
+            '<div class="ls-source">Sumber: SportScore</div>' +
+          '</div>' +
+          '<div class="ls-head-right">' +
+            '<span class="ls-count">' + matches.length + ' LIVE</span>' +
+            '<button type="button" class="ls-refresh" id="ls-refresh" title="Refresh sekarang">↻</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="ls-subhead"><span>UPDATE OTOMATIS 20 DETIK</span><span>Terakhir: ' + esc(clock) + '</span></div>' +
+        '<div class="ls-list">' + body + '</div>' +
+      '</section>';
+
+    var btn = document.getElementById('ls-refresh');
+    if (btn) btn.addEventListener('click', function () { load(true); });
+    sendHeight();
+  }
+
+  function loadingHTML(text) {
+    return '' +
+      '<div class="ls-loading">' +
+        '<div class="ls-spinner"></div>' +
+        '<div class="ls-loading-title">' + esc(text || 'Memuat...') + '</div>' +
+        '<div class="ls-loading-sub">SPORTSCORE FOOTBALL</div>' +
+      '</div>';
+  }
+
+  function showSoftError(err) {
+    if (state.lastGood.length) {
+      render(state.lastGood);
+      var sh = root.querySelector('.ls-shell');
+      if (sh) {
+        var n = document.createElement('div');
+        n.className = 'ls-warning';
+        n.textContent = 'Koneksi sumber terputus sementara. Menampilkan data terakhir.';
+        sh.insertBefore(n, sh.children[2]);
+      }
+      return;
+    }
+
+    root.innerHTML = '' +
+      '<div class="ls-error">' +
+        '<b>LIVE SCORE belum dapat dimuat</b>' +
+        '<span>' + esc(err && err.message ? err.message : 'Koneksi ke sumber gagal') + '</span>' +
+        '<button id="ls-retry" type="button">COBA LAGI</button>' +
+      '</div>';
+    var retry = document.getElementById('ls-retry');
+    if (retry) retry.addEventListener('click', function () { load(true); });
+    sendHeight();
+  }
+
+  async function load(manual) {
+    if (state.loading) return;
+    if (document.hidden && !manual) return;
+    state.loading = true;
+
+    var currentBtn = document.getElementById('ls-refresh');
+    if (currentBtn) currentBtn.classList.add('is-loading');
+
+    try {
+      var data = await fetchJSON();
+      render(data.matches || []);
+    } catch (e) {
+      showSoftError(e);
+    } finally {
+      state.loading = false;
+      var b = document.getElementById('ls-refresh');
+      if (b) b.classList.remove('is-loading');
+    }
+  }
+
+  function sendHeight() {
+    try {
+      var h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+      parent.postMessage({ liveScoreEmbedHeight: h, ziaEmbedHeight: h }, '*');
+    } catch (e) {}
+  }
+
+  function injectStyles() {
+    if (document.getElementById('live-score-style')) return;
+    var st = document.createElement('style');
+    st.id = 'live-score-style';
+    st.textContent = `
+      #${ROOT_ID}{--ls-red:#d10000;--ls-red2:#9d0000;--ls-dark:#111217;--ls-panel:#191b22;--ls-border:#30333d;--ls-text:#f5f7fb;--ls-muted:#9ca3af;font-family:Arial,Helvetica,sans-serif;color:var(--ls-text);width:100%;box-sizing:border-box}
+      #${ROOT_ID} *{box-sizing:border-box}
+      #${ROOT_ID} .ls-shell{width:100%;background:#0d0e12;border:1px solid #252831;border-radius:10px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+      #${ROOT_ID} .ls-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:linear-gradient(180deg,#181a20,#101116);border-bottom:3px solid var(--ls-red)}
+      #${ROOT_ID} .ls-title-wrap{min-width:0}
+      #${ROOT_ID} .ls-title{font-size:20px;font-weight:900;letter-spacing:.5px;display:flex;align-items:center;gap:9px}
+      #${ROOT_ID} .ls-head-dot{width:10px;height:10px;border-radius:50%;background:#ff1e1e;box-shadow:0 0 0 0 rgba(255,30,30,.7);animation:lsPulse 1.4s infinite}
+      #${ROOT_ID} .ls-source{font-size:11px;color:var(--ls-muted);margin-top:3px}
+      #${ROOT_ID} .ls-head-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+      #${ROOT_ID} .ls-count{font-size:11px;font-weight:800;padding:6px 9px;border-radius:20px;background:rgba(209,0,0,.16);border:1px solid rgba(255,42,42,.4);color:#ff5a5a}
+      #${ROOT_ID} .ls-refresh{width:32px;height:32px;border-radius:8px;border:1px solid #3a3d46;background:#20222a;color:#fff;font-size:18px;cursor:pointer;line-height:1;transition:.2s}
+      #${ROOT_ID} .ls-refresh:hover{background:#2b2e37;border-color:#555a67}
+      #${ROOT_ID} .ls-refresh.is-loading{animation:lsSpin .8s linear infinite}
+      #${ROOT_ID} .ls-subhead{display:flex;justify-content:space-between;gap:10px;padding:7px 18px;background:#14161b;border-bottom:1px solid #252831;color:#747b88;font-size:9px;font-weight:700;letter-spacing:.6px}
+      #${ROOT_ID} .ls-list{background:#101116}
+      #${ROOT_ID} .ls-match{display:grid;grid-template-columns:62px minmax(0,1fr) 74px minmax(0,1fr);align-items:center;min-height:62px;padding:8px 12px;border-bottom:1px solid #24262e;color:inherit;text-decoration:none;transition:background .2s}
+      #${ROOT_ID} .ls-match:last-child{border-bottom:0}
+      #${ROOT_ID} .ls-match:hover{background:#181a21}
+      #${ROOT_ID} .ls-status{display:flex;align-items:center;gap:6px;color:#ff5555;font-size:12px;white-space:nowrap}
+      #${ROOT_ID} .ls-live-dot{width:7px;height:7px;border-radius:50%;background:#ff3434;flex-shrink:0;animation:lsPulse 1.4s infinite}
+      #${ROOT_ID} .ls-team{display:flex;align-items:center;gap:9px;min-width:0;font-size:13px;font-weight:700}
+      #${ROOT_ID} .ls-home{justify-content:flex-end;text-align:right}
+      #${ROOT_ID} .ls-away{justify-content:flex-start;text-align:left}
+      #${ROOT_ID} .ls-team-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      #${ROOT_ID} .ls-logo{width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;background:#fff;border-radius:50%;padding:3px;overflow:hidden;color:#111;font-size:16px}
+      #${ROOT_ID} .ls-logo img{width:100%;height:100%;object-fit:contain}
+      #${ROOT_ID} .ls-logo-empty{background:#20232b;color:#fff;border:1px solid #363a45}
+      #${ROOT_ID} .ls-score{display:flex;align-items:center;justify-content:center;gap:7px;font-size:18px;font-weight:900;color:#fff}
+      #${ROOT_ID} .ls-score strong{min-width:19px;text-align:center}
+      #${ROOT_ID} .ls-score span{color:#ff3b3b}
+      #${ROOT_ID} .ls-score-changed{animation:lsFlash 1.8s ease-out}
+      #${ROOT_ID} .ls-empty{padding:44px 16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:7px;color:#b3b8c4}
+      #${ROOT_ID} .ls-empty .ls-ball{font-size:34px;margin-bottom:3px}
+      #${ROOT_ID} .ls-empty b{color:#fff;font-size:14px}
+      #${ROOT_ID} .ls-empty span{font-size:11px;color:#777e8b}
+      #${ROOT_ID} .ls-loading,#${ROOT_ID} .ls-error{min-height:260px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:#0d0e12;border:1px solid #252831;border-radius:10px;text-align:center;padding:30px}
+      #${ROOT_ID} .ls-spinner{width:38px;height:38px;border:4px solid rgba(255,255,255,.12);border-top-color:#e00000;border-radius:50%;animation:lsSpin .8s linear infinite}
+      #${ROOT_ID} .ls-loading-title,#${ROOT_ID} .ls-error b{font-weight:900;font-size:13px;color:#fff}
+      #${ROOT_ID} .ls-loading-sub,#${ROOT_ID} .ls-error span{font-size:10px;color:#7d8490}
+      #${ROOT_ID} .ls-error button{margin-top:6px;border:0;border-radius:7px;background:#c40000;color:#fff;font-weight:800;font-size:11px;padding:9px 15px;cursor:pointer}
+      #${ROOT_ID} .ls-warning{padding:7px 12px;background:#3a2c00;color:#ffd56b;border-bottom:1px solid #5c4700;font-size:10px;text-align:center}
+      @keyframes lsSpin{to{transform:rotate(360deg)}}
+      @keyframes lsPulse{0%{box-shadow:0 0 0 0 rgba(255,40,40,.6)}70%{box-shadow:0 0 0 6px rgba(255,40,40,0)}100%{box-shadow:0 0 0 0 rgba(255,40,40,0)}}
+      @keyframes lsFlash{0%{background:rgba(255,191,0,.30)}100%{background:transparent}}
+      @media(max-width:640px){
+        #${ROOT_ID} .ls-head{padding:13px 12px}
+        #${ROOT_ID} .ls-title{font-size:17px}
+        #${ROOT_ID} .ls-subhead{padding:6px 12px}
+        #${ROOT_ID} .ls-match{grid-template-columns:49px minmax(0,1fr) 54px minmax(0,1fr);padding:8px 7px;min-height:58px}
+        #${ROOT_ID} .ls-status{font-size:10px;gap:4px}
+        #${ROOT_ID} .ls-team{font-size:11px;gap:5px}
+        #${ROOT_ID} .ls-logo{width:25px;height:25px;flex-basis:25px;padding:2px}
+        #${ROOT_ID} .ls-score{font-size:15px;gap:4px}
+        #${ROOT_ID} .ls-count{display:none}
+      }
+    `;
+    document.head.appendChild(st);
+  }
+
+  load(false);
+  state.timer = setInterval(function () { load(false); }, REFRESH_MS);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) load(false);
+  });
+  window.addEventListener('load', sendHeight);
+  setInterval(sendHeight, 1000);
+})();

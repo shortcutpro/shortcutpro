@@ -623,16 +623,46 @@ async function downloadCard(){
   const ctrls=card.querySelectorAll('.el-ctrl,.rh');
   ctrls.forEach(el=>el.style.display='none');
   card.querySelectorAll('.el').forEach(el=>{el.classList.remove('active');el.style.outline='none';});
+  let downloadOldTransform = card.style.transform;
+  let downloadOldTransformOrigin = card.style.transformOrigin;
   try{
     const imgs=[...card.querySelectorAll('img')];
     await Promise.all(imgs.map(img=>{if(img.complete&&img.naturalHeight!==0)return Promise.resolve();return new Promise(res=>{img.onload=res;img.onerror=res;});}));
     await new Promise(r=>setTimeout(r,300));
     card.classList.add('dl-mode');
     await new Promise(r=>setTimeout(r,80));
+    // Saat dibuka di HP, #card diperkecil dengan CSS transform agar muat di layar.
+    // Untuk hasil download, paksa kembali ke ukuran asli supaya PNG tidak ikut mengecil.
+    card.style.setProperty('transform','none','important');
+    card.style.setProperty('transform-origin','top left','important');
+
     const canvas=await html2canvas(card,{
-      useCORS:true,allowTaint:false,scale:1,width:960,height:960,backgroundColor:null,logging:false,imageTimeout:20000,
-      onclone:(doc)=>{const c=doc.getElementById('card');if(c){c.classList.add('dl-mode');c.querySelectorAll('.el-ctrl,.rh').forEach(el=>el.style.display='none');c.querySelectorAll('.el').forEach(el=>{el.classList.remove('active');el.style.outline='none';});}}
+      useCORS:true,
+      allowTaint:false,
+      scale:1.125, // 960 x 1.125 = 1080 px
+      width:960,
+      height:960,
+      backgroundColor:null,
+      logging:false,
+      imageTimeout:20000,
+      onclone:(doc)=>{
+        const c=doc.getElementById('card');
+        if(c){
+          c.classList.add('dl-mode');
+          c.style.setProperty('transform','none','important');
+          c.style.setProperty('transform-origin','top left','important');
+          c.style.width='960px';
+          c.style.height='960px';
+          c.querySelectorAll('.el-ctrl,.rh').forEach(el=>el.style.display='none');
+          c.querySelectorAll('.el').forEach(el=>{
+            el.classList.remove('active');
+            el.style.outline='none';
+          });
+        }
+      }
     });
+
+    // Kembalikan tampilan mobile setelah proses screenshot selesai.
     card.classList.remove('dl-mode');
     const dateStr=document.getElementById('date-txt').textContent.replace(/\s+/g,'-');
     const pasName=(PASARAN.find(p=>p.id===curPas)||{name:'syair'}).name.replace(/\s+/g,'_');
@@ -641,7 +671,20 @@ async function downloadCard(){
     link.href=canvas.toDataURL('image/png');
     link.click();
   }catch(e){card.classList.remove('dl-mode');alert('Gagal: '+e.message);}
-  finally{ctrls.forEach(el=>el.style.display='');overlay.classList.remove('show');}
+  finally{
+    if(downloadOldTransform){
+      card.style.transform = downloadOldTransform;
+    }else{
+      card.style.removeProperty('transform');
+    }
+    if(downloadOldTransformOrigin){
+      card.style.transformOrigin = downloadOldTransformOrigin;
+    }else{
+      card.style.removeProperty('transform-origin');
+    }
+    ctrls.forEach(el=>el.style.display='');
+    overlay.classList.remove('show');
+  }
 }
 
 // ===== SIMPAN POSISI KE FILE =====

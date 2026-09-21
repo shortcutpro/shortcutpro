@@ -197,11 +197,11 @@ body{
       <div class="rh" data-el="el-logo"></div>
     </div>
 
-    <div class="el active" id="el-date" style="top: 138px; left: 336px;">
+    <div class="el active" id="el-date" style="top: 138px; left: 260px;width:440px;text-align:center;">
       <div class="el-ctrl">
         <button onclick="fs('date-txt',-1)">A-</button><span class="sv" id="sv-dfs">23</span><button onclick="fs('date-txt',1)">A+</button>
       </div>
-      <span id="date-txt" class="gt" style="font-size:23px;letter-spacing:2px;">18 SEPTEMBER 2026</span>
+      <span id="date-txt" class="gt" style="font-size:23px;letter-spacing:2px;width:100%;" data-userfs="23">18 SEPTEMBER 2026</span>
       <div class="rh" data-el="el-date"></div>
     </div>
 
@@ -210,7 +210,7 @@ body{
         <button onclick="rz('el-pasaran','w',-10)">W-</button><span class="sv" id="sv-pw">216</span><button onclick="rz('el-pasaran','w',10)">W+</button>
         <button onclick="rz('el-pasaran','h',-10)">H-</button><span class="sv" id="sv-ph">83</span><button onclick="rz('el-pasaran','h',10)">H+</button>
       </div>
-      <img id="pas-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/logo%20sydney%20lotto.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:216px;height:83px;object-fit:contain;display:block;filter:drop-shadow(0 0 18px rgba(200,150,44,.9));">
+      <img id="pas-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/Logo%20togel/logo%20sydney%20lotto.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:216px;height:83px;object-fit:contain;display:block;filter:drop-shadow(0 0 18px rgba(200,150,44,.9));">
       <div class="rh" data-el="el-pasaran"></div>
     </div>
 
@@ -252,7 +252,7 @@ body{
         <button onclick="rz('el-shio','w',-10)">W-</button><span class="sv" id="sv-sw">452</span><button onclick="rz('el-shio','w',10)">W+</button>
         <button onclick="rz('el-shio','h',-10)">H-</button><span class="sv" id="sv-sh">451</span><button onclick="rz('el-shio','h',10)">H+</button>
       </div>
-      <img id="shio-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/shio%20kelinci.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:452px;height:451px;object-fit:contain;display:block;filter:drop-shadow(0 0 20px rgba(200,150,44,.7));">
+      <img id="shio-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/SHIO%20HOKBEN/shio%20kelinci.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:452px;height:451px;object-fit:contain;display:block;filter:drop-shadow(0 0 20px rgba(200,150,44,.7));">
       <div class="rh" data-el="el-shio"></div>
     </div>
 
@@ -324,8 +324,10 @@ body{
 
 <script>
 const RAW='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/';
+const RAW_SHIO='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/SHIO%20HOKBEN/';
+const RAW_TOGEL='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/Logo%20togel/';
 const PASARAN=[
-  {id:'sgp',name:'Singapore',file:'LOGO SINGAPORE.png'},
+  {id:'sgp',name:'Singapore',file:'logo singapore.png'},
   {id:'hk',name:'Hongkong',file:'logo hongkong-lotto.png'},
   {id:'sydney',name:'Sydney',file:'logo sydney lotto.png'},
   {id:'macau',name:'Toto Macau',file:'logo toto macau.png'},
@@ -335,8 +337,8 @@ const PASARAN=[
   {id:'poipet',name:'Poipet',file:'logo poipet.png'},
   {id:'brunei',name:'Brunei',file:'logo brunei.png'},
   {id:'magnum',name:'Magnum',file:'logo magnum.jpg'},
-  {id:'pcso',name:'PCSO',file:'LOGO PCSO.png'},
-  {id:'kentucky',name:'Kentucky',file:'LOGO KENTUCKY.png'},
+  {id:'pcso',name:'PCSO',file:'logo pcso.png'},
+  {id:'kentucky',name:'Kentucky',file:'logo kentucky.png'},
   {id:'california',name:'California',file:'logo california.png'},
   {id:'florida',name:'Florida',file:'logo florida.png'},
   {id:'newyork',name:'New York',file:'logo newyork.png'},
@@ -478,7 +480,7 @@ function setPasaran(id){
   curPas=id;
   const p=PASARAN.find(x=>x.id===id); if(!p)return;
   const img=document.getElementById('pas-img');
-  img.src=RAW+encodeURIComponent(p.file);
+  img.src=RAW_TOGEL+encodeURIComponent(p.file);
   img.style.display='block';
   img.onerror=()=>{img.style.display='none';};
 }
@@ -486,7 +488,7 @@ function setShio(idx){
   curShio=Number(idx);
   const s=SHIO[curShio]; if(!s)return;
   const img=document.getElementById('shio-img');
-  img.src=RAW+encodeURIComponent(s.file);
+  img.src=RAW_SHIO+encodeURIComponent(s.file);
   img.style.display='block';
   img.onerror=()=>{img.style.display='none';};
   document.getElementById('sel-shio').value=curShio;
@@ -561,6 +563,27 @@ function fs(txtId,delta){
   el.style.fontSize=nf+'px';
   const m={'date-txt':'sv-dfs','c1':'sv-c1','c2':'sv-c2','c3':'sv-c3','c4':'sv-c4','bbfs-num':'sv-bfs','tarung-num':'sv-tfs','syair-txt':'sv-sfs'};
   if(m[txtId])document.getElementById(m[txtId]).textContent=Math.round(nf);
+  if(txtId==='date-txt'){el.dataset.userfs=nf;fitDate();}
+}
+
+// Auto-shrink tanggal agar tidak melewati bingkai (lebar #el-date)
+function fitDate(){
+  const box=document.getElementById('el-date');
+  const el=document.getElementById('date-txt');
+  if(!box||!el)return;
+  // ukuran ideal = pilihan user (A-/A+), fallback ke fontSize saat ini
+  const ideal=parseFloat(el.dataset.userfs||el.style.fontSize||23);
+  const maxW=box.clientWidth||440;
+  el.style.whiteSpace='nowrap';
+  let fs=ideal;
+  el.style.fontSize=fs+'px';
+  // kecilkan bertahap selama teks lebih lebar dari bingkai
+  while(el.scrollWidth>maxW&&fs>8){
+    fs-=0.5;
+    el.style.fontSize=fs+'px';
+  }
+  const sv=document.getElementById('sv-dfs');
+  if(sv)sv.textContent=Math.round(fs);
 }
 
 // ===== RANDOM ALL — ANTI-REPEAT =====
@@ -595,6 +618,7 @@ function generate(){
     const dt=new Date(dv+'T00:00:00');
     const M=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
     document.getElementById('date-txt').textContent=`${dt.getDate()} ${M[dt.getMonth()]} ${dt.getFullYear()}`;
+    fitDate();
   }
 
   const cv=(document.getElementById('inp-colok').value||rColok()).padEnd(4,'0');

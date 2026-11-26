@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bukti Pencapaian - ZIATOGEL</title>
+<style>
+  :root{ --gold:#ffd24a; --gold-dk:#b8891f; --line:rgba(245,197,66,.3); --value-fill:#113d7a; --value-stroke:#ffffff; --value-glow:rgba(255,255,255,.45); }
+  *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;}
+  html,body{width:100%;height:100%;overflow:hidden;}
+  body{height:100vh;color:#fff;padding:10px;display:flex;justify-content:center;align-items:flex-start;
+    background:linear-gradient(160deg,#04122c,#020814);}
+  .app{width:100%;height:100%;max-width:1500px;display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);
+    gap:12px;align-items:center;overflow:hidden;}
+
+  .control{position:relative;background:linear-gradient(180deg,#0a1830,#050c1c);
+    border:1px solid var(--line);border-radius:16px;padding:clamp(7px,1.25vh,12px);height:auto;max-height:100%;overflow:hidden;min-width:0;
+    transform-origin:top left;will-change:transform;align-self:center;
+    box-shadow:0 12px 34px rgba(0,0,0,.55),inset 0 1px 0 rgba(245,197,66,.12);}
+  .ctitle{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:15px;font-weight:800;}
+  .ctitle .dot{width:26px;height:26px;border-radius:8px;background:linear-gradient(180deg,#ffe9a8,#b8891f);
+    display:flex;align-items:center;justify-content:center;color:#2a1e00;font-size:15px;box-shadow:0 0 14px rgba(245,197,66,.5);}
+  .csub{color:#8fb3e6;font-size:10px;margin:clamp(2px,.45vh,4px) 0 clamp(4px,.8vh,8px);}
+  .fld{display:flex;flex-direction:column;gap:clamp(2px,.4vh,4px);margin-bottom:clamp(4px,.7vh,7px);min-height:0;min-width:0;width:100%;max-width:100%;}
+  .fld label{color:#cfe0f8;font-size:10px;font-weight:700;display:flex;gap:4px;align-items:center;}
+  .fld input,.fld select{background:#071226;border:1px solid #234067;border-radius:8px;padding:clamp(5px,.75vh,7px) 9px;color:#fff;font-size:12px;outline:none;transition:.15s;min-width:0;width:100%;max-width:100%;display:block;}
+  .fld input:focus,.fld select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,197,66,.15);}
+
+  .toggle{display:flex;align-items:center;gap:7px;background:#0d1930;border:1px solid #24406e;border-radius:9px;padding:clamp(5px,.7vh,7px) 9px;margin-bottom:clamp(4px,.7vh,7px);}
+  .toggle input{width:15px;height:15px;}
+  .toggle label{font-size:11px;color:#cfe0f8;font-weight:700;}
+
+  .adjust{border:1px solid #234067;border-radius:10px;padding:clamp(5px,.8vh,8px);margin-bottom:clamp(4px,.7vh,7px);}
+  .adjust .at{color:#7fd4ff;font-size:10px;font-weight:800;margin-bottom:5px;text-transform:uppercase;letter-spacing:.4px;}
+  .sel{width:100%;background:#071226;border:1px solid #234067;border-radius:8px;padding:6px 8px;color:#fff;font-size:11px;margin-bottom:6px;}
+  .slider{margin-bottom:0;min-width:0;}
+  .slider label{font-size:9px;color:#9fc0ef;display:flex;justify-content:space-between;margin-bottom:1px;gap:3px;}
+  .slider input[type=range]{width:100%;}
+
+  .upload{display:grid;grid-template-columns:30px 1fr;align-items:center;border:1px dashed #3a6096;border-radius:10px;padding:clamp(5px,.7vh,7px) 9px;text-align:left;
+    color:#9fc0ef;cursor:pointer;transition:.15s;background:#08152b;margin-bottom:clamp(4px,.7vh,7px);}
+  .upload:hover{border-color:var(--gold);color:#fff;background:#0d1c38;}
+  .upload .u1{font-size:19px;margin:0;grid-row:1 / span 2;}
+  .upload .u2{font-size:11px;font-weight:800;}
+  .upload .u3{font-size:9px;color:#7fa3d6;margin-top:1px;line-height:1.2;}
+  .upload input{display:none;}
+  .upload.has{border-color:#4ade80;color:#bff0cf;background:#0c2417;}
+  .btn{width:100%;padding:clamp(6px,.8vh,8px);border:none;border-radius:9px;font-size:11px;font-weight:800;cursor:pointer;
+    background:linear-gradient(180deg,#ffe9a8,#b8891f);color:#2a1e00;box-shadow:0 5px 14px rgba(245,197,66,.24);transition:.15s;margin-bottom:5px;}
+  .btn:hover{filter:brightness(1.06);transform:translateY(-1px);}
+  .btn2{background:#152744;color:#cfe0f8;box-shadow:none;border:1px solid #2c4b78;}
+  .cnote{font-size:9px;color:#7fa3d6;line-height:1.3;margin-top:5px;border-top:1px solid #234067;padding-top:5px;}
+  .data-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 7px;width:100%;max-width:100%;min-width:0;overflow:hidden;}
+  .data-grid .span2{grid-column:1 / -1;}
+  .bg-picker{border:1px solid #234067;border-radius:10px;padding:7px;margin-bottom:7px;background:#08152b;}
+  .bg-picker .bg-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px;}
+  .bg-picker .bg-title{font-size:10px;font-weight:800;color:#7fd4ff;text-transform:uppercase;letter-spacing:.4px;}
+  .bg-picker .bg-status{font-size:9px;color:#7fa3d6;white-space:nowrap;}
+  .bg-picker-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px;align-items:center;}
+  .bg-picker select{width:100%;min-width:0;background:#071226;border:1px solid #234067;border-radius:8px;padding:6px 8px;color:#fff;font-size:11px;outline:none;}
+  .bg-picker select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,197,66,.12);}
+  .bg-refresh{border:1px solid #2c4b78;background:#152744;color:#cfe0f8;border-radius:8px;padding:6px 9px;font-size:10px;font-weight:800;cursor:pointer;white-space:nowrap;}
+  .bg-refresh:hover{border-color:var(--gold);color:#fff;}
+  .slider-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;}
+  .button-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+  .button-grid .btn{margin:0;}
+  .adjust,.toggle,.upload,.button-grid,.cnote{min-width:0;max-width:100%;width:100%;}
+  .slider-grid>*{min-width:0;}
+
+  .poster-wrap{display:flex;justify-content:center;align-items:center;width:100%;height:100%;min-width:0;min-height:0;align-self:center;}
+  .poster{position:relative;width:min(100%,calc((100vh - 20px) * 811 / 653));max-height:calc(100vh - 20px);aspect-ratio:811/653;border-radius:12px;overflow:hidden;
+    box-shadow:0 20px 55px rgba(0,0,0,.7);}
+  .poster .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;-webkit-user-drag:none;}
+
+  /* receipt image placed directly into the white box - NO phone frame */
+  .receipt{position:absolute;z-index:2;touch-action:none;overflow:hidden;display:flex;align-items:flex-start;justify-content:center;background:transparent;border-radius:18px;}
+  .receipt img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none;border-radius:18px;background:transparent;}
+  .receipt .ph{color:#9db4d6;font-size:min(1.4vw,13px);text-align:center;padding:10px;line-height:1.5;align-self:center;}
+
+  .ov{position:absolute;z-index:3;transform:translate(-50%,-50%);white-space:nowrap;font-weight:900;touch-action:none;text-align:center;}
+  .ovtext{display:inline-block;line-height:1;}
+  #oTotal .ovtext{color:var(--value-fill);text-shadow:0 1px 0 var(--value-stroke), 0 0 8px var(--value-glow);}
+  #oGame .ovtext{color:var(--value-fill);text-shadow:0 1px 0 var(--value-stroke), 0 0 7px var(--value-glow);}
+  #oUser .ovtext{color:var(--value-fill);text-shadow:0 1px 0 var(--value-stroke), 0 0 7px var(--value-glow);}
+
+  .editable{cursor:move;}
+  .selbox{outline:2px dashed #ff3b6b;outline-offset:2px;}
+  .selbox.green{outline-color:#22c55e;}
+  .handle{position:absolute;background:#22c55e;border:2px solid #fff;z-index:9;display:none;touch-action:none;}
+  /* corner handle: free (width + height) */
+  .handle.hc{right:-9px;bottom:-9px;width:18px;height:18px;border-radius:4px;cursor:nwse-resize;}
+  /* right edge handle: width only */
+  .handle.hr{right:-9px;top:50%;transform:translateY(-50%);width:14px;height:34px;border-radius:6px;cursor:ew-resize;background:#38bdf8;}
+  /* bottom edge handle: height only */
+  .handle.hb{bottom:-9px;left:50%;transform:translateX(-50%);width:34px;height:14px;border-radius:6px;cursor:ns-resize;background:#f59e0b;}
+  /* text uses only a single corner handle for font size */
+  .ov .handle.hc{right:-12px;bottom:-12px;width:16px;height:16px;border-radius:50%;cursor:nwse-resize;}
+  .showhandle .handle{display:block;}
+
+  @media(max-height:760px){
+    .csub,.cnote,.upload .u3{display:none;}
+    .control{padding:8px;}
+    .ctitle{font-size:13px;} .ctitle .dot{width:23px;height:23px;font-size:13px;}
+    .fld{margin-bottom:4px;} .fld input,.fld select{padding:5px 7px;font-size:11px;}
+    .toggle{padding:5px 7px;margin-bottom:4px;}
+    .adjust{padding:5px;margin-bottom:4px;} .adjust .at{margin-bottom:3px;}
+    .sel{padding:4px 6px;margin-bottom:4px;}
+    .upload{padding:5px 7px;margin-bottom:4px;} .upload .u1{font-size:16px;}
+    .button-grid .btn{padding:6px 5px;font-size:10px;}
+  }
+  @media(max-height:620px){
+    .slider label{display:none;}
+    #rotWrap label{display:flex!important;}
+    .control{padding:6px;} .ctitle{font-size:12px;} .ctitle .dot{width:20px;height:20px;font-size:12px;}
+    .fld label,.toggle label{font-size:9px;} .fld input,.fld select{padding:4px 6px;font-size:10px;}
+    .adjust{padding:4px;} .upload{grid-template-columns:22px 1fr;padding:4px 6px;} .upload .u1{font-size:14px;} .upload .u2{font-size:9px;}
+  }
+  @media(max-width:760px){
+    .app{grid-template-columns:minmax(205px,36vw) minmax(0,1fr);gap:8px;}
+    .control{padding:7px;} .csub,.cnote,.upload .u3{display:none;}
+    .data-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:0 5px;}
+    .slider-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;} .slider label{font-size:8px;}
+  }
+
+
+#host{--line:#283345;--gold:#e9c77e;--muted:#93a1b5;--text:#f3f5f9; color-scheme:dark;width:100%;height:100%;min-width:0;align-self:center;}
+#host>#panel{background:rgba(17,25,37,.93);border:1px solid var(--line);border-radius:14px;min-width:0;min-height:0; color:var(--text);font:13px 'Segoe UI',Arial,sans-serif;}
+#panel button,#panel input,#panel select{font:inherit;min-width:0;}
+#panel button,#panel input,#panel select{font:inherit}
+#panel button,#panel select,#panel input{min-width:0}
+#panel button{cursor:pointer}
+#panel button:disabled{opacity:.5;cursor:default}
+#host>#panel{border:1px solid var(--line);border-radius:14px;background:rgba(17,25,37,.93);min-width:0;min-height:0}
+#host>#panel{padding:14px;display:flex;flex-direction:column;gap:9px;justify-content:center}
+#panel .section{display:flex;align-items:center;justify-content:space-between;gap:5px;font-weight:650;font-size:11px;color:var(--gold);letter-spacing:.5px;text-transform:uppercase}
+#panel .section:not(:first-child){border-top:1px solid var(--line);padding-top:8px}
+#panel .row{display:flex;gap:6px;align-items:center}
+#panel .row>*{min-width:0}
+#panel .fill{flex:1}
+#panel .grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+#panel .full{grid-column:1/-1}
+#panel label.field{display:grid;gap:3px;color:var(--muted);font-size:11px}
+#panel input:not([type=checkbox]):not([type=file]),#panel select{width:100%;height:32px;background:#0b1220;border:1px solid #354359;border-radius:7px;color:var(--text);padding:5px 8px;outline:none}
+#panel input:focus,#panel select:focus{border-color:var(--gold)!important}
+#panel button,#panel .filebtn{display:inline-flex;justify-content:center;align-items:center;gap:4px;border:1px solid #354359;background:#182335;color:var(--text);border-radius:7px;padding:7px 9px;white-space:nowrap;font-weight:600;font-size:11px;cursor:pointer}
+#panel button:hover,#panel .filebtn:hover{border-color:var(--gold)}
+#panel .primary{background:linear-gradient(135deg,#f5d996,#d1a956);color:#241a0b;border-color:#e6c77f;font-weight:800;font-size:13px;flex:1}
+#panel .tiny{font-size:10px;color:var(--muted);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;min-height:13px}
+#panel .upload{border:1px dashed #465670;background:#0b1421;border-radius:8px;display:flex;align-items:center;justify-content:center;height:36px;cursor:pointer;color:#cbd7e8;font-size:11px;overflow:hidden;padding:0 8px}
+#panel .upload span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#panel .upload.over{border-color:var(--gold)}
+#panel input[type=file]{display:none}
+#panel .geometry{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}
+#panel .geometry input{padding:4px!important;text-align:center}
+#panel .geometry label{gap:3px}
+#panel .check{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted);white-space:nowrap}
+#panel .check input{accent-color:#e9c77e}
+#panel .status{color:#a9b8cd;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-height:13px}
+#panel .err{color:#ffbd99}
+#panel .adjustline{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+#panel .adjustline select{font-size:11px}
+#host{min-height:0;position:relative;overflow:hidden}
+#host>#panel{position:absolute;inset:0;transform-origin:top left}
+@media(max-width:850px){#host>#panel{padding:10px;gap:6px}}
+@media(max-height:760px){#host>#panel{gap:6px;padding:10px}
+#panel .section:not(:first-child){padding-top:5px}
+#panel input:not([type=checkbox]):not([type=file]),#panel select{height:28px}
+#panel .upload{height:29px}}
+@media(max-height:620px){#host>#panel{gap:4px;padding:7px}
+#panel .section:not(:first-child){padding-top:3px}
+#panel .tiny{min-height:10px;font-size:9px}
+#panel .section{font-size:10px}
+#panel .geometry label,#panel .field{font-size:9px!important}
+#panel input:not([type=checkbox]):not([type=file]),#panel select{height:25px}
+#panel .upload{height:25px}
+#panel button,#panel .filebtn{padding:4px 7px}
+#panel .status{font-size:9px}}
+#panel .upload{margin:0;display:flex;grid-template-columns:none;transition:none;text-align:center;}
+#panel .upload:hover{background:#0b1421;color:#cbd7e8;border-color:var(--gold)}
+#panel .upload.has{background:#0b1421;color:#cbd7e8;border-color:#465670}
+#panel [hidden]{display:none!important}
+#panel .section{line-height:normal}
+#panel .primary{font-size:13px;font-weight:800}
+#panel button:disabled{opacity:.5;cursor:default}
+
+
+#textArt,#resizeGuide{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:4}
+#resizeGuide{z-index:6;touch-action:none}#resizeGuide.active{pointer-events:auto;cursor:move}
+.poster .ov{display:none!important}.poster .handle{display:none!important}.poster .receipt img{object-fit:fill!important;background:transparent!important}
+#panel .upload{width:auto;min-width:0;flex:1}.poster .receipt .ph{display:none!important}
+
+.poster.waiting{background:#090e17}.poster.waiting>*{visibility:hidden;pointer-events:none!important}
+</style>
+</head>
+<body>
+  <div class="app">
+    <div class="scalehost" id="host"><section class="panel" id="panel"><div class="section">01 / Background</div><div class="row"><select id="bgSelect" class="fill" aria-label="Background"><option value="">Memuat background GitHub...</option></select><button id="bgRefresh" title="Muat ulang GitHub">↻</button><label class="filebtn" title="Pilih background lokal">Lokal<input id="local" type="file" accept="image/*"></label></div><div class="tiny" id="bgStatus">Memuat daftar GitHub…</div><div class="section">02 / Data</div><div class="grid"><label class="field full">Total (Rp)<input id="iTotal" placeholder="51.000.000" inputmode="numeric" maxlength="40"></label><label class="field">Permainan<input id="iGame" placeholder="Nama game" maxlength="100"></label><label class="field">User ID<input id="iUser" placeholder="User ID" maxlength="100"></label></div><div class="row"><label class="upload fill" id="uploadBox"><span id="uText">＋ Bukti transfer / Ctrl+V</span><input id="iFile" type="file" accept="image/*"></label><button id="remove" title="Hapus bukti transfer">Hapus</button></div><div class="section">03 / Ukuran & posisi <label class="check"><input id="editMode" type="checkbox" checked> Panduan</label></div><div class="row"><select id="pick" class="fill" aria-label="Elemen"><option value="total">Total (Rp)</option><option value="game">Permainan</option><option value="user">User ID</option><option value="receipt">Bukti Transfer</option></select><button id="resetOne" title="Reset elemen terpilih">Reset</button></div><div class="geometry"><label class="field">X<input id="x" type="number" min="0" max="810"></label><label class="field">Y<input id="y" type="number" min="0" max="652"></label><label class="field">Lebar<input id="w" type="number" min="8" max="811"></label><label class="field">Tinggi<input id="h" type="number" min="8" max="653"></label></div><div class="adjustline" id="textSettings"><label class="field">Ukuran font (px)<input id="font" type="number" min="1" max="653"></label><label class="field">Lebar huruf (%)<input id="stretch" type="number" min="1" max="10000"></label></div><div class="adjustline" id="receiptSettings" hidden><label class="field">Skala foto (%)<input id="zoom" type="number" min="1" max="1000"></label><label class="field">Proporsi awal<button id="fitReset" type="button">Reset proporsi foto</button></label></div><div class="adjustline" id="receiptRadiusWrap" hidden><label class="field">Sudut bukti (px)<input id="radius" type="number" min="0" max="80"></label><label class="field">Kualitas PNG<button id="pngMode" type="button" disabled>PNG asli</button></label></div><style>[hidden]{display:none!important}</style><div class="tiny" id="receiptHint">Tepi: satu arah · Sudut: dua arah · Tengah: geser.</div><div class="section">04 / Ekspor <button id="resetAll">Reset posisi</button></div><div class="row"><button id="download" class="primary">Unduh PNG</button><button id="copy">Salin</button><button id="clear">Kosongkan</button></div><div class="status" id="status" role="status"></div></section></div>
+
+    <div class="poster-wrap">
+      <div class="poster waiting" id="poster">
+        <img class="bg" id="bgImage" alt="Background Bukti JP">
+        <div class="receipt" id="oReceipt">
+          <img id="receiptImg" alt="Bukti Transfer yang diunggah" style="display:none">
+          <div class="ph" id="receiptPlaceholder">Upload Bukti Transfer<br>untuk memasukkan struk</div>
+          <div class="handle hc" data-handle="both" title="Ubah lebar & tinggi"></div>
+          <div class="handle hr" data-handle="width" title="Ubah lebar"></div>
+          <div class="handle hb" data-handle="height" title="Ubah tinggi"></div>
+        </div>
+        <div class="ov" id="oTotal"><span class="ovtext"></span><div class="handle hc" data-handle="font"></div></div>
+        <div class="ov" id="oGame"><span class="ovtext"></span><div class="handle hc" data-handle="font"></div></div>
+        <div class="ov" id="oUser"><span class="ovtext"></span><div class="handle hc" data-handle="font"></div></div>
+        <canvas id="textArt" width="811" height="653"></canvas><canvas id="resizeGuide" width="811" height="653"></canvas>
+      </div>
+    </div>
+  </div>
+<script>
+'use strict';
+const W=811,H=653;
+const GITHUB_API='https://api.github.com/repos/shortcutpro/shortcutpro/contents/Bukti%20JP?ref=main';
+const STORE_LAYOUTS='ziatogel_buktipencapaian_811x653_v17_geometry_v3';
+const STORE_BG='ziatogel_buktipencapaian_811x653_last_bg_v2';
+const $=id=>document.getElementById(id);
+const poster=$('poster'), bgImage=$('bgImage'), receiptImg=$('receiptImg');
+const controls={total:$('iTotal'),game:$('iGame'),user:$('iUser')};
+const nodes={total:$('oTotal'),game:$('oGame'),user:$('oUser'),receipt:$('oReceipt')};
+const backgrounds=new Map();
+const state={bgId:'',selected:'total',editing:true,receipt:null,drag:null,detect:null};
+let layouts={};try{layouts=JSON.parse(localStorage.getItem(STORE_LAYOUTS)||'{}')||{}}catch(e){}
+const v17Base={total:{x:199,y:378,w:329,h:39,font:31,stretch:100},game:{x:177,y:457,w:153,h:27,font:20,stretch:100},user:{x:382,y:457,w:152,h:27,font:20,stretch:100},receipt:{x:558,y:135,w:235,h:378,r:18}};
+function baseLayout(id=state.bgId){return deepCopy(v17Base);}
+const guide=$('resizeGuide'),g=guide.getContext('2d'),textCtx=$('textArt').getContext('2d');
+const all=['total','game','user','receipt'];
+function handles(e){return [['nw',e.x,e.y],['n',e.x+e.w/2,e.y],['ne',e.x+e.w,e.y],['w',e.x,e.y+e.h/2],['e',e.x+e.w,e.y+e.h/2],['sw',e.x,e.y+e.h],['s',e.x+e.w/2,e.y+e.h],['se',e.x+e.w,e.y+e.h]]}
+function drawGuide(){g.clearRect(0,0,W,H);guide.classList.toggle('active',state.editing);if(!state.editing)return;const e=current()[state.selected];g.save();g.strokeStyle='#00dfb9';g.lineWidth=2;g.setLineDash([5,3]);g.strokeRect(e.x,e.y,e.w,e.h);g.setLineDash([]);for(const [name,x,y] of handles(e)){g.fillStyle=name.length===2?'#00c6a4':(['n','s'].includes(name)?'#f6b94e':'#4bb7ff');g.strokeStyle='#fff';g.fillRect(x-5,y-5,10,10);g.strokeRect(x-5,y-5,10,10)}g.restore()}
+function limit(n,a,b){return Math.max(a,Math.min(b,n))}
+function scaleText(e,o){const sx=e.w/o.w,sy=e.h/o.h;e.font=o.font*sy;e.stretch=o.stretch*sx/sy;}
+function valueText(k){let v=controls[k].value.trim();if(k==='total'&&v){v=v.replace(/^rp\s*/i,'');if(/^\d[\d.\s]*$/.test(v))v=v.replace(/\D/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,'.');v='Rp '+v}return v;}
+
+function deepCopy(v){return JSON.parse(JSON.stringify(v))}
+function current(){if(!layouts[state.bgId])layouts[state.bgId]=baseLayout();return layouts[state.bgId]}
+function persist(){try{localStorage.setItem(STORE_LAYOUTS,JSON.stringify(layouts))}catch(e){}}
+function inform(t){$('bgStatus').textContent=t}
+function setSource(img,url){return new Promise((resolve,reject)=>{const onload=()=>{cleanup();resolve()};const onerror=()=>{cleanup();reject(new Error('Gambar gagal dimuat'))};const cleanup=()=>{img.removeEventListener('load',onload);img.removeEventListener('error',onerror)};img.addEventListener('load',onload,{once:true});img.addEventListener('error',onerror,{once:true});img.src=url;if(img.complete&&img.naturalWidth){cleanup();resolve()}})}
+function loadImage(url){return new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=()=>reject(new Error('Gambar tidak dapat dibuka'));im.src=url})}
+function saveLayout(){persist();refresh()}
+function refresh(){
+ const l=current(),scale=poster.getBoundingClientRect().width/W;const r=l.receipt,el=nodes.receipt;
+ el.style.left=r.x/W*100+'%';el.style.top=r.y/H*100+'%';el.style.width=r.w/W*100+'%';el.style.height=r.h/H*100+'%';el.style.borderRadius=r.r*scale+'px';receiptImg.style.borderRadius=r.r*scale+'px';
+ textCtx.clearRect(0,0,W,H);for(const k of all.slice(0,3))drawExportText(textCtx,k);
+ drawGuide();syncSliders();
+}
+function geometry(k){const e=current()[k];return {x:e.x,y:e.y,w:e.w,h:e.h};}
+function syncSliders(){const k=state.selected,e=current()[k];for(const f of ['x','y','w','h'])$(f).value=Math.round(e[f]);$('textSettings').hidden=k==='receipt';$('receiptSettings').hidden=k!=='receipt';$('receiptRadiusWrap').hidden=k!=='receipt';$('font').value=Math.round(e.font||20);$('stretch').value=Math.round(e.stretch||100);$('radius').value=Math.round(current().receipt.r??18);const f=receiptFrame();$('zoom').value=Math.round(100*Math.sqrt(e.w*e.h/(f.w*f.h)));$('pick').value=k;$('receiptHint').textContent=k==='receipt'&&state.receipt?`${state.receipt.naturalWidth} × ${state.receipt.naturalHeight} asli · tepi 1 arah · sudut ${e.r}px`:'Tepi: satu arah · Sudut: dua arah · Tengah: geser.';}
+function receiptFrame(){const f=deepCopy(baseLayout().receipt),im=state.receipt;if(im){const scale=Math.min(f.w/im.naturalWidth,f.h/im.naturalHeight),w=im.naturalWidth*scale,h=im.naturalHeight*scale;return {...f,x:f.x+(f.w-w)/2,y:f.y+(f.h-h)/2,w,h};}return f;}
+function resetReceipt(){const r=current().receipt.r??baseLayout().receipt.r;current().receipt={...receiptFrame(),r};clamp('receipt');}
+function setGeometry(k,geo,scale=false){const e=current()[k],o=deepCopy(e);Object.assign(e,geo);clamp(k);if(k!=='receipt'&&scale){scaleText(e,o);clamp(k);}}
+function resetOne(){const k=state.selected;if(k==='receipt')resetReceipt();else current()[k]=deepCopy(baseLayout()[k]);saveLayout();}
+
+function msg(t){$('status').textContent=t;$('status').title=t;}
+function removeReceipt(){state.receipt=null;receiptImg.removeAttribute('src');receiptImg.style.display='none';$('receiptPlaceholder').style.display='';$('uploadBox').classList.remove('has');$('uText').textContent='＋ Bukti transfer / Ctrl+V';$('iFile').value='';resetReceipt();saveLayout();}
+let receiptSerial=0;
+async function setReceipt(file){if(!file)return;const token=++receiptSerial;try{const data=await imageFromFile(file),img=await loadImage(data);if(token!==receiptSerial)return;state.receipt=img;receiptImg.src=data;receiptImg.style.display='block';$('receiptPlaceholder').style.display='none';$('uploadBox').classList.add('has');$('uText').textContent=file.name||'Gambar clipboard';resetReceipt();state.selected='receipt';saveLayout();msg(`Foto asli ${img.naturalWidth} × ${img.naturalHeight} px`);}catch(e){msg('Gagal memuat Bukti Transfer: '+e.message);}}
+function clamp(key){const e=current()[key];e.x=limit(Math.round(e.x),0,W-8);e.y=limit(Math.round(e.y),0,H-8);e.w=limit(Math.round(e.w),8,W-e.x);e.h=limit(Math.round(e.h),8,H-e.y);if(key==='receipt'){e.r=limit(Number(e.r??18),0,80);}else{e.font=limit(e.font||20,1,653);e.stretch=limit(e.stretch||100,1,10000);}}
+function imageFromFile(file){return new Promise((resolve,reject)=>{const fr=new FileReader();fr.onload=()=>resolve(fr.result);fr.onerror=()=>reject(new Error('File tidak terbaca'));fr.readAsDataURL(file)})}
+function canvasPosition(ev){const b=guide.getBoundingClientRect();return{x:W*(ev.clientX-b.left)/b.width,y:H*(ev.clientY-b.top)/b.height};}
+function hit(p,e){return p.x>=e.x&&p.x<=e.x+e.w&&p.y>=e.y&&p.y<=e.y+e.h;}
+function handleAt(p,e){const tol=Math.max(7,10*W/guide.getBoundingClientRect().width);return handles(e).find(h=>Math.hypot(p.x-h[1],p.y-h[2])<=tol)?.[0];}
+
+function initEvents(){
+ for(const key of ['total','game','user'])controls[key].addEventListener('input',refresh);
+ $('pick').addEventListener('change',()=>{state.selected=$('pick').value;refresh()});
+ $('editMode').addEventListener('change',()=>{state.editing=$('editMode').checked;refresh()});
+ for(const field of ['x','y','w','h','font','stretch','zoom','radius'])$(field).addEventListener('change',()=>{const v=$(field).value,n=Number(v),k=state.selected,e=current()[k],geo=geometry(k);if(v===''||!Number.isFinite(n))return;if(['x','y','w','h'].includes(field)){geo[field]=n;setGeometry(k,geo,field==='w'||field==='h');}else if(field==='font'&&k!=='receipt')e.font=limit(n,1,653);else if(field==='stretch'&&k!=='receipt')e.stretch=limit(n,1,10000);else if(field==='radius')e.r=limit(n,0,80);else if(field==='zoom'&&k==='receipt'){const f=receiptFrame(),old=Math.sqrt(e.w*e.h/(f.w*f.h)),factor=limit(n,1,1000)/100/old,sz=Math.min(factor,W/e.w,H/e.h),w=e.w*sz,h=e.h*sz;setGeometry(k,{x:e.x+(e.w-w)/2,y:e.y+(e.h-h)/2,w,h});}saveLayout();});
+ $('fitReset').onclick=()=>{resetReceipt();saveLayout();};
+ $('resetOne').onclick=resetOne;$('resetAll').onclick=()=>{resetPos();msg('Posisi awal dikembalikan.');};
+ $('iFile').onchange=ev=>{setReceipt(ev.target.files?.[0]);ev.target.value='';};
+ $('remove').onclick=()=>{receiptSerial++;removeReceipt();};
+ $('clear').onclick=()=>{for(const c of Object.values(controls))c.value='';$('remove').click();msg('Data dikosongkan.');};
+ for(const event of ['dragover','dragleave','drop'])$('uploadBox').addEventListener(event,ev=>{ev.preventDefault();$('uploadBox').classList.toggle('over',event==='dragover');if(event==='drop')setReceipt(ev.dataTransfer.files[0]);});
+ window.addEventListener('paste',ev=>{const i=[...(ev.clipboardData?.items||[])].find(x=>x.kind==='file'&&x.type.startsWith('image/'));if(i){ev.preventDefault();setReceipt(i.getAsFile());}});
+ $('local').onchange=async ev=>{const file=ev.target.files?.[0];if(!file)return;try{const data=await imageFromFile(file),id='local:'+file.name+':'+file.size+':'+file.lastModified;addBackground(id,file.name+' (lokal)',data,'local');await selectBackground(id);}catch(e){msg('Background lokal gagal: '+e.message);}ev.target.value='';};
+ $('download').onclick=downloadImg;$('copy').onclick=async()=>{try{if(!navigator.clipboard?.write||!window.ClipboardItem)throw Error('Clipboard tidak didukung');const blob=await makePNG();await navigator.clipboard.write([new ClipboardItem({'image/png':blob})]);msg('Gambar disalin.');}catch(e){msg('Salin gagal: '+e.message+' — gunakan Unduh PNG.');}};
+ $('bgSelect').addEventListener('change',ev=>selectBackground(ev.target.value));
+ $('bgRefresh').addEventListener('click',()=>refreshGithub(false));
+ guide.onpointerdown=ev=>{if(!state.editing)return;const p=canvasPosition(ev);let k=state.selected,e=current()[k],handle=handleAt(p,e);if(!handle&&!hit(p,e)){const found=all.find(key=>hit(p,current()[key]));if(!found)return;k=state.selected=found;}state.drag={key:k,p,e:deepCopy(current()[k]),handle:handle||'move'};guide.setPointerCapture(ev.pointerId);ev.preventDefault();refresh();};
+ guide.onpointermove=ev=>{const p=canvasPosition(ev),d=state.drag;if(!d){const h=handleAt(p,current()[state.selected]);guide.style.cursor=h?h+'-resize':all.some(k=>hit(p,current()[k]))?'move':'default';return;}const dx=p.x-d.p.x,dy=p.y-d.p.y,e=deepCopy(d.e),h=d.handle;if(h==='move'){e.x=limit(e.x+dx,0,W-e.w);e.y=limit(e.y+dy,0,H-e.h);}else{let l=e.x,t=e.y,r=e.x+e.w,b=e.y+e.h;if(h.includes('w'))l=limit(l+dx,0,r-8);if(h.includes('e'))r=limit(r+dx,l+8,W);if(h.includes('n'))t=limit(t+dy,0,b-8);if(h.includes('s'))b=limit(b+dy,t+8,H);Object.assign(e,{x:l,y:t,w:r-l,h:b-t});if(d.key!=='receipt')scaleText(e,d.e);}current()[d.key]=e;clamp(d.key);refresh();};
+ guide.onpointerup=guide.onpointercancel=guide.onlostpointercapture=()=>{if(state.drag){state.drag=null;persist();refresh();}};
+
+ window.addEventListener('resize',refresh);
+ if(window.ResizeObserver){new ResizeObserver(refresh).observe(poster)}
+}
+
+function saveLastBg(id){try{localStorage.setItem(STORE_BG,id)}catch(e){}}
+function addBackground(id,name,url,kind){if(backgrounds.has(id))return;backgrounds.set(id,{id,name,url,kind});
+ const opt=document.createElement('option');opt.value=id;opt.textContent=name;$('bgSelect').appendChild(opt)}
+async function remoteImage(url){
+ const candidates=[url];if(url.includes('raw.githubusercontent.com/shortcutpro/shortcutpro/main/'))candidates.push(url.replace('https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/','https://cdn.jsdelivr.net/gh/shortcutpro/shortcutpro@main/'));
+ let problem;for(const link of [...new Set(candidates)])try{
+   const res=await fetch(link,{mode:'cors'});if(!res.ok)throw Error('HTTP '+res.status);
+   const blob=await res.blob();if(!blob.type.startsWith('image/'))throw Error('Bukan gambar');
+   const data=await imageFromFile(blob);return await loadImage(data)
+ }catch(e){problem=e}
+ throw problem||new Error('Gambar GitHub tidak tersedia');
+}
+async function selectBackground(id){
+ const bg=backgrounds.get(id);if(!bg)return;
+ const previous=state.bgId;$('bgSelect').disabled=true;inform('Memuat gambar...');
+ try{
+  const image=bg.image||(bg.kind==='local'?await loadImage(bg.url):await remoteImage(bg.url));bg.image=image;
+  await setSource(bgImage,image.src);
+  state.bgId=id;
+   poster.classList.remove('waiting');
+  if(!layouts[id]){layouts[id]=baseLayout();if(state.receipt)resetReceipt();}
+  all.forEach(clamp);
+  saveLastBg(id);persist();refresh();$('bgSelect').value=id;
+  inform(bg.name+(bg.kind==='local'?' (offline)':' — siap'));
+ }catch(e){state.bgId=previous;$('bgSelect').value=previous;inform('Gagal memuat: '+e.message)}finally{$('bgSelect').disabled=false}
+}
+async function refreshGithub(loadPrevious){
+ $('bgRefresh').disabled=true;inform('Mengambil dari GitHub...');
+ try{
+  const res=await fetch(GITHUB_API,{headers:{Accept:'application/vnd.github+json'},cache:'no-store'});
+  if(!res.ok)throw Error('HTTP '+res.status);
+  const list=await res.json();if(!Array.isArray(list))throw Error('Format GitHub tidak sesuai');
+  const imgs=list.filter(x=>x.type==='file'&&/\.(png|jpe?g|webp|gif|bmp)$/i.test(x.name)).sort((a,b)=>a.name.localeCompare(b.name,'id',{numeric:true}));
+  for(const [key,b] of backgrounds)if(b.kind==='github'){backgrounds.delete(key);const opt=[...$('bgSelect').options].find(o=>o.value===key);opt?.remove();}
+  for(const opt of [...$('bgSelect').options])if(!opt.value)opt.remove();
+  for(const obj of imgs){let url=obj.download_url||'https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/'+obj.path.split('/').map(encodeURIComponent).join('/');addBackground('github:'+obj.path,obj.name,url,'github')}
+  if(!imgs.length)throw Error('Tidak ada background gambar di folder GitHub');
+  inform(imgs.length+' background GitHub tersedia');
+  let chosen='';
+  if(loadPrevious){try{const saved=localStorage.getItem(STORE_BG)||'';if(saved.startsWith('github:'))chosen=saved;}catch(e){}}else if(state.bgId.startsWith('github:'))chosen=state.bgId;
+  if(!backgrounds.has(chosen)){const z=imgs.find(x=>/^zia01\.[^.]+$/i.test(x.name));chosen='github:'+(z||imgs[0]).path;}
+  await selectBackground(chosen);
+ }catch(e){if(!state.bgId){if(!backgrounds.size)$('bgSelect').innerHTML='<option value="">GitHub gagal dimuat</option>';else $('bgSelect').selectedIndex=-1;}else $('bgSelect').value=state.bgId;inform('Gagal mengambil background GitHub: '+e.message)}
+ finally{$('bgRefresh').disabled=false}
+}
+function roundPath(ctx,x,y,w,h,r){r=Math.min(Math.max(0,r),w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
+function drawExportText(ctx,key){const e=current()[key],v=valueText(key);if(!v)return;ctx.save();ctx.beginPath();ctx.rect(e.x,e.y,e.w,e.h);ctx.clip();ctx.font='900 100px "Segoe UI", Arial, sans-serif';const m=ctx.measureText(v),sy=Math.min(e.font,e.h*.85)/100,sx=Math.min(e.font*e.stretch/10000,e.w*.96/Math.max(1,m.width));ctx.translate(e.x+e.w/2,e.y+e.h/2);ctx.scale(sx,sy);ctx.textAlign='center';ctx.textBaseline='alphabetic';const y=((m.actualBoundingBoxAscent||73)-(m.actualBoundingBoxDescent||0))/2;ctx.shadowColor='rgba(255,255,255,.45)';ctx.shadowBlur=7;ctx.shadowOffsetY=1;ctx.lineJoin='round';ctx.strokeStyle='#ffffff';ctx.lineWidth=3/Math.max(.001,sy);ctx.strokeText(v,0,y);ctx.fillStyle='#113d7a';ctx.fillText(v,0,y);ctx.restore();}
+
+async function makePNG(){
+  if(!state.bgId||!bgImage.complete||!bgImage.naturalWidth)throw Error('Background belum siap. Muat background GitHub terlebih dahulu.');
+  const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d');
+  await bgImage.decode().catch(()=>{});
+  ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';ctx.drawImage(bgImage,0,0,W,H);
+  if(state.receipt){const r=current().receipt,x=r.x,y=r.y,w=r.w,h=r.h;
+    ctx.save();roundPath(ctx,x,y,w,h,r.r);ctx.clip();ctx.drawImage(state.receipt,x,y,w,h);ctx.restore();}
+  for(const key of ['total','game','user'])drawExportText(ctx,key);
+  const blob=await new Promise((resolve,reject)=>canvas.toBlob(result=>result?resolve(result):reject(Error('PNG gagal dibuat')),'image/png'));
+  return blob;
+}
+async function downloadImg(){
+ const btn=$('download'),label=btn.textContent;btn.disabled=true;btn.textContent='Membuat PNG...';
+ try{const blob=await makePNG();msg('PNG '+Math.round(blob.size/1024)+' KB'+(blob.size>1048576?' · di atas 1 MB, kualitas asli dipertahankan.':' · kualitas asli.'));
+  const u=URL.createObjectURL(blob),a=document.createElement('a');a.download='ZIATOGEL_BUKTI_JP_811x653.png';a.href=u;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);
+ }catch(e){alert('Download gagal: '+e.message)}finally{btn.disabled=false;btn.textContent=label}
+}
+function resetPos(){layouts[state.bgId]=baseLayout();if(state.receipt)resetReceipt();saveLayout()}
+function resizePanel(){const host=$('host'),p=$('panel');p.style.transform='none';p.style.width='100%';p.style.height='100%';const need=p.scrollHeight;if(need>host.clientHeight&&host.clientHeight>0){const scale=host.clientHeight/need;p.style.width=(100/scale)+'%';p.style.height=need+'px';p.style.transform=`scale(${scale})`;}}
+if(window.ResizeObserver)new ResizeObserver(resizePanel).observe($('host'));window.addEventListener('resize',resizePanel);
+(async function main(){
+ initEvents();
+ resizePanel();
+ refresh();
+ refreshGithub(true);
+})();
+</script>
+</body>
+</html>

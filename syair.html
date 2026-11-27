@@ -1,911 +1,326 @@
-<!DOCTYPE html>
-<html lang="id"><script src="chrome-extension://pphgdbgldlmicfdkhondlafkiomnelnk/content/location/location.js" id="pphgdbgldlmicfdkhondlafkiomnelnk"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><head><style>body {transition: opacity ease-in 0.2s; } 
-body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
-</style><script src="chrome-extension://pphgdbgldlmicfdkhondlafkiomnelnk/content/location/location.js" id="pphgdbgldlmicfdkhondlafkiomnelnk"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/content/location/location.js" id="eppiocemhmnlbhjplcgkofciiegomcon"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/extend-native-history-api.js"></script><script src="chrome-extension://eppiocemhmnlbhjplcgkofciiegomcon/libs/requests.js"></script><style>body {transition: opacity ease-in 0.2s; } 
-body[unresolved] {opacity: 0; display: block; overflow: hidden; position: relative; } 
-</style>
+<!doctype html>
+<html lang="id">
+<head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Syair Generator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&amp;family=Cinzel:wght@600;700;900&amp;family=Playfair+Display:ital,wght@1,700&amp;display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Syair Harian | HOKBENTOTO &amp; ZIATOGEL</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&amp;family=Cinzel:wght@600;700;900&amp;family=Playfair+Display:ital,wght@1,700&amp;family=Poppins:wght@400;600;800&amp;display=swap" rel="stylesheet" />
 <style>
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  font-family:'Cinzel',serif;
-  background:#0a0a0a;
-  display:flex;
-  justify-content:center;
-  min-height:100vh;
-  padding:20px;
-}
-.main-layout{
-  display:flex;
-  gap:14px;
-  align-items:flex-start;
-  width:100%;
-  max-width:1220px;
-}
-.cw{flex-shrink:0;}
-#card{
-  width:960px;height:960px;
-  position:relative;overflow:hidden;
+body{margin:0;background:#000;color:#fff;font-family:Poppins,Arial,sans-serif;line-height:1.6}
+.content{max-width:700px;margin:30px auto;padding:20px;background:rgba(0,0,0,0.6);border-radius:12px;box-shadow:0 8px 24px rgba(255,215,0,0.3)}
+.content .entry{display:flex;justify-content:center;margin-bottom:20px;padding:20px;border:1px solid #B8860B;border-radius:8px;background:rgba(255,215,0,0.05)}
+
+/* ===== SYAIR CARD (auto-render) ===== */
+.card-wrap{width:100%;max-width:655px;margin:0 auto}
+#syair-card{
+  position:relative;width:960px;height:960px;
+  transform-origin:top left;
   background-image:url('https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/background.png');
   background-size:cover;background-position:center;
+  border-radius:8px;overflow:hidden;font-family:'Cinzel',serif;
+  border:2px solid #B8860B;box-sizing:border-box; background-color:#17130c;
 }
-.side-panel{
-  flex-shrink:0;
-  width:220px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  position:sticky;
-  top:20px;
-}
-.panel-box{
-  width:100%;
-  background:linear-gradient(135deg,#1a1a1a,#2a2000);
-  border:2px solid #c8962c;
-  border-radius:10px;
-  overflow:hidden;
-}
-.panel-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:10px 14px;
-  cursor:pointer;
-  user-select:none;
-  border-bottom:1px solid rgba(200,150,44,.0);
-  transition:border-color .2s;
-}
-.panel-header.open{border-bottom:1px solid rgba(200,150,44,.3);}
-.panel-header h3{
-  color:#e8b84b;
-  font-family:'Cinzel Decorative',serif;
-  font-size:10px;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-  flex:1;
-  text-align:center;
-}
-.panel-header .arrow{
-  color:#c8962c;font-size:12px;
-  transition:transform .25s;flex-shrink:0;
-}
-.panel-header.open .arrow{transform:rotate(180deg);}
-.panel-header.static{cursor:default;}
-.panel-header.static .arrow{display:none;}
-.panel-body{
-  max-height:0;
-  overflow:hidden;
-  transition:max-height .3s ease;
-}
-.panel-body.open{
-  max-height:600px;
-  overflow-y:auto;
-}
-.panel-body::-webkit-scrollbar{width:4px;}
-.panel-body::-webkit-scrollbar-track{background:rgba(0,0,0,.3);}
-.panel-body::-webkit-scrollbar-thumb{background:#c8962c;border-radius:2px;}
-.panel-body.always-open{
-  max-height:none;
-  overflow:visible;
-  padding:10px 12px;
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-}
-.cg{display:flex;flex-direction:column;gap:3px;}
-.cg label{color:#c8962c;font-size:8px;letter-spacing:1px;text-transform:uppercase;}
-.cg input,.cg select{
-  background:#0d0d0d;border:1px solid #c8962c;border-radius:5px;
-  color:#fff;padding:6px 8px;font-family:'Cinzel',serif;font-size:11px;
-  width:100%;
-}
-.cg input:focus,.cg select:focus{outline:none;border-color:#e8b84b;}
-.btn-row{display:flex;flex-direction:column;gap:6px;margin-top:2px;}
-.btn{
-  border:none;border-radius:6px;padding:9px 10px;
-  font-family:'Cinzel',serif;font-weight:700;font-size:9px;
-  letter-spacing:1px;cursor:pointer;text-transform:uppercase;
-  transition:all .2s;width:100%;
-}
-.btn:hover{transform:scale(1.03);}
-.btn-g{background:linear-gradient(135deg,#c8962c,#e8b84b,#c8962c);color:#000;}
-.btn-r{background:linear-gradient(135deg,#8b0000,#cc0000,#8b0000);color:#fff;}
-.btn-dl{background:linear-gradient(135deg,#003366,#0055aa,#003366);color:#fff;}
-.btn-save{background:linear-gradient(135deg,#004d00,#00aa44,#004d00);color:#fff;}
+#syair-card .el{position:absolute}
+#syair-card .gt{font-family:'Cinzel Decorative',serif;font-weight:900;color:#e8c84a;text-align:center;display:block;white-space:nowrap;text-shadow:0 2px 8px rgba(0,0,0,.95)}
+#syair-card .gt-syair{font-family:'Playfair Display',serif;font-style:italic;color:#e8c84a;display:block;text-align:center;text-shadow:0 2px 8px rgba(0,0,0,.95)}
+#syair-card img{display:block;object-fit:contain}
+/* tanggal auto-fit di dalam bingkai */
+#date-box{width:288px;text-align:center;overflow:hidden}
+#date-txt{display:inline-block}
 
-.gt{font-family:'Cinzel Decorative',serif;font-weight:900;
-  background:linear-gradient(180deg,#fffbe0 0%,#f5d060 18%,#c8962c 40%,#8b5e0a 58%,#c8962c 76%,#f5d060 92%,#fffbe0 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  text-align:center;display:block;white-space:nowrap;}
-.gt-syair{font-family:'Playfair Display',serif;font-style:italic;
-  background:linear-gradient(180deg,#fffbe0 0%,#f5d060 18%,#c8962c 40%,#8b5e0a 58%,#c8962c 76%,#f5d060 92%,#fffbe0 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  display:block;text-align:center;}
-.dl-mode .gt,.dl-mode .gt-syair{
-  background:none !important;-webkit-background-clip:unset !important;
-  -webkit-text-fill-color:#e8c84a !important;background-clip:unset !important;
-  color:#e8c84a !important;text-shadow:0 2px 8px rgba(0,0,0,.95) !important;filter:none !important;}
-.el{position:absolute;z-index:10;cursor:move;user-select:none;}
-.el:hover{outline:1.5px dashed rgba(100,220,40,.7);}
-.el.active{outline:2px solid rgba(100,220,40,1);z-index:50;}
-.el:hover .el-ctrl{opacity:1;}
-.el-ctrl{position:absolute;top:-30px;left:50%;transform:translateX(-50%);
-  display:flex;gap:3px;align-items:center;background:rgba(0,0,0,.9);
-  border:1px solid #4a8000;border-radius:5px;padding:3px 6px;
-  opacity:0;transition:opacity .15s;pointer-events:auto;white-space:nowrap;z-index:100;}
-.el-ctrl button{background:rgba(200,150,44,.2);border:1px solid rgba(200,150,44,.4);
-  color:#e8b84b;font-size:10px;border-radius:3px;padding:2px 5px;cursor:pointer;
-  font-family:'Cinzel',serif;font-weight:700;line-height:1;}
-.el-ctrl button:hover{background:rgba(200,150,44,.5);}
-.el-ctrl .sv{color:#8adc40;font-size:9px;min-width:26px;text-align:center;font-family:monospace;}
-.rh{position:absolute;bottom:-5px;right:-5px;width:12px;height:12px;
-  background:#4adc20;border-radius:50%;cursor:se-resize;opacity:0;transition:opacity .15s;}
-.el:hover .rh,.el.active .rh{opacity:1;}
-
-#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(60px);
-  background:linear-gradient(135deg,#003300,#007700);color:#b8ff80;
-  font-family:'Cinzel',serif;font-size:11px;letter-spacing:1px;
-  padding:9px 22px;border-radius:7px;border:1px solid #00cc44;
-  z-index:99999;transition:transform .3s;pointer-events:none;}
-#toast.show{transform:translateX(-50%) translateY(0);}
-#dl-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:9999;align-items:center;justify-content:center;flex-direction:column;gap:14px;}
-#dl-overlay.show{display:flex;}
-#dl-overlay p{color:#e8b84b;font-family:'Cinzel',serif;font-size:13px;letter-spacing:2px;}
-.spinner{width:42px;height:42px;border:4px solid rgba(200,150,44,.2);border-top-color:#e8b84b;border-radius:50%;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-/* ===== RESPONSIVE / MOBILE ===== */
-.cw{--scale:1;}
-@media (max-width:1240px){
-  body{padding:12px;}
-  .main-layout{flex-direction:column;align-items:center;gap:16px;max-width:100%;}
-  .cw{
-    width:calc(960px * var(--scale));
-    height:calc(960px * var(--scale));
-    overflow:hidden;
-  }
-  #card{
-    transform:scale(var(--scale));
-    transform-origin:top left;
-  }
-  .side-panel{
-    position:static;
-    top:auto;
-    width:100%;
-    max-width:420px;
-  }
-  .panel-body.always-open{max-height:none;}
-}
+*{box-sizing:border-box}
+.content{width:calc(100% - 24px)}
+.content .entry{padding:clamp(6px,2vw,20px)}
+.toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 10px}
+.brand-switch{display:flex;gap:4px;flex:1;background:#17150f;border:1px solid #514429;border-radius:12px;padding:4px}
+.toolbar button{font:700 12px Poppins,Arial,sans-serif;letter-spacing:.3px;min-height:42px;border-radius:8px;cursor:pointer;border:0;padding:10px 15px;transition:background .15s,color .15s}
+.brand-switch button{flex:1;background:transparent;color:#d1c3a0}
+.brand-switch button[aria-pressed=true]{background:#e4c46d;color:#181309}
+#download-png{background:#d7b454;color:#171108;white-space:nowrap}
+#download-png:disabled{opacity:.45;cursor:wait}
+.toolbar button:focus-visible{outline:2px solid white;outline-offset:3px}
+.asset-status{font:12px/1.5 Poppins,Arial,sans-serif;color:#c9ba94;min-height:18px;margin:0 0 12px;overflow-wrap:anywhere}
+#brand-word{width:324px;height:116px;line-height:116px;text-align:center;font:900 41px/116px 'Cinzel Decorative',serif;color:#e8c84a;text-shadow:0 2px 8px #000}
+#brand-word[hidden],#logo-img[hidden]{display:none}
+#syair-card[data-brand=zia] .gt,#syair-card[data-brand=zia] .gt-syair,#syair-card[data-brand=zia] #brand-word{color:var(--zia-text,#e8c84a)}
+@media(max-width:480px){.content{margin:12px auto;padding:10px}.toolbar{gap:6px}.toolbar button{padding:8px 10px}#download-png{width:100%}}
 </style>
 </head>
-<body __processed_2c309294-8a91-4028-8264-f294e58cee5e__="true" __processed_84ed5062-8c87-49df-9a47-ac44deaad53d__="true">
-<div class="main-layout">
-
-  <div class="cw"><div id="card">
-
-    <div class="el" id="el-logo" style="top:0px;left:313px;">
-      <div class="el-ctrl">
-        <button onclick="rz('el-logo','w',-10)">W-</button><span class="sv" id="sv-lw">324</span><button onclick="rz('el-logo','w',10)">W+</button>
-        <button onclick="rz('el-logo','h',-10)">H-</button><span class="sv" id="sv-lh">116</span><button onclick="rz('el-logo','h',10)">H+</button>
-      </div>
-      <img id="logo-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/logo-mobile.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="LOGO" style="width:324px;height:116px;object-fit:contain;display:block;filter:drop-shadow(0 0 14px rgba(200,150,44,.85));">
-      <div class="rh" data-el="el-logo"></div>
-    </div>
-
-    <div class="el active" id="el-date" style="top: 138px; left: 260px;width:440px;text-align:center;">
-      <div class="el-ctrl">
-        <button onclick="fs('date-txt',-1)">A-</button><span class="sv" id="sv-dfs">23</span><button onclick="fs('date-txt',1)">A+</button>
-      </div>
-      <span id="date-txt" class="gt" style="font-size:23px;letter-spacing:2px;width:100%;" data-userfs="23">18 SEPTEMBER 2026</span>
-      <div class="rh" data-el="el-date"></div>
-    </div>
-
-    <div class="el" id="el-pasaran" style="top:197px;left:381px;">
-      <div class="el-ctrl">
-        <button onclick="rz('el-pasaran','w',-10)">W-</button><span class="sv" id="sv-pw">216</span><button onclick="rz('el-pasaran','w',10)">W+</button>
-        <button onclick="rz('el-pasaran','h',-10)">H-</button><span class="sv" id="sv-ph">83</span><button onclick="rz('el-pasaran','h',10)">H+</button>
-      </div>
-      <img id="pas-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/Logo%20togel/logo%20sydney%20lotto.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:216px;height:83px;object-fit:contain;display:block;filter:drop-shadow(0 0 18px rgba(200,150,44,.9));">
-      <div class="rh" data-el="el-pasaran"></div>
-    </div>
-
-    <div class="el" id="el-c1" style="top:422px;left:46px;">
-      <div class="el-ctrl"><button onclick="fs('c1',-2)">A-</button><span class="sv" id="sv-c1">46</span><button onclick="fs('c1',2)">A+</button></div>
-      <span id="c1" class="gt" style="font-size:46px;line-height:1;display:block;">4</span>
-      <div class="rh" data-el="el-c1"></div>
-    </div>
-    <div class="el" id="el-c2" style="top:424px;left:215px;">
-      <div class="el-ctrl"><button onclick="fs('c2',-2)">A-</button><span class="sv" id="sv-c2">46</span><button onclick="fs('c2',2)">A+</button></div>
-      <span id="c2" class="gt" style="font-size:46px;line-height:1;display:block;">7</span>
-      <div class="rh" data-el="el-c2"></div>
-    </div>
-    <div class="el" id="el-c3" style="top:581px;left:48px;">
-      <div class="el-ctrl"><button onclick="fs('c3',-2)">A-</button><span class="sv" id="sv-c3">46</span><button onclick="fs('c3',2)">A+</button></div>
-      <span id="c3" class="gt" style="font-size:46px;line-height:1;display:block;">8</span>
-      <div class="rh" data-el="el-c3"></div>
-    </div>
-    <div class="el" id="el-c4" style="top:579px;left:203px;">
-      <div class="el-ctrl"><button onclick="fs('c4',-2)">A-</button><span class="sv" id="sv-c4">46</span><button onclick="fs('c4',2)">A+</button></div>
-      <span id="c4" class="gt" style="font-size:46px;line-height:1;display:block;">9</span>
-      <div class="rh" data-el="el-c4"></div>
-    </div>
-
-    <div class="el" id="el-bbfs" style="top:325px;left:766px;">
-      <div class="el-ctrl"><button onclick="fs('bbfs-num',-1)">A-</button><span class="sv" id="sv-bfs">34</span><button onclick="fs('bbfs-num',1)">A+</button></div>
-      <div id="bbfs-num" class="gt" style="font-size:34px;letter-spacing:4px;line-height:1.55;text-align:center;">0 1 2 3<br>4 5 6 7</div>
-      <div class="rh" data-el="el-bbfs"></div>
-    </div>
-
-    <div class="el" id="el-tarung" style="top:589px;left:744px;">
-      <div class="el-ctrl"><button onclick="fs('tarung-num',-1)">A-</button><span class="sv" id="sv-tfs">31</span><button onclick="fs('tarung-num',1)">A+</button></div>
-      <div id="tarung-num" class="gt" style="font-size:31px;letter-spacing:3px;text-align:center;">1-2-5-8-9</div>
-      <div class="rh" data-el="el-tarung"></div>
-    </div>
-
-    <div class="el" id="el-shio" style="top:283px;left:266px;">
-      <div class="el-ctrl">
-        <button onclick="rz('el-shio','w',-10)">W-</button><span class="sv" id="sv-sw">452</span><button onclick="rz('el-shio','w',10)">W+</button>
-        <button onclick="rz('el-shio','h',-10)">H-</button><span class="sv" id="sv-sh">451</span><button onclick="rz('el-shio','h',10)">H+</button>
-      </div>
-      <img id="shio-img" src="https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/SHIO%20HOKBEN/shio%20kelinci.png" crossorigin="anonymous" onerror="this.style.display='none'" alt="" style="width:452px;height:451px;object-fit:contain;display:block;filter:drop-shadow(0 0 20px rgba(200,150,44,.7));">
-      <div class="rh" data-el="el-shio"></div>
-    </div>
-
-    <div class="el" id="el-syair" style="top:756px;left:372px;">
-      <div class="el-ctrl"><button onclick="fs('syair-txt',-1)">A-</button><span class="sv" id="sv-sfs">15</span><button onclick="fs('syair-txt',1)">A+</button></div>
-      <span id="syair-txt" class="gt-syair" style="font-size:15px;line-height:1.75;display:block;text-align:center;">Bunga mekar di taman indah,<br>Angka jitu membawa berkah.<br>Satu dua tiga empat lima,<br>Rezeki mengalir tiada tara.</span>
-      <div class="rh" data-el="el-syair"></div>
-    </div>
-
-  </div></div>
-
-  <div class="side-panel">
-    <div class="panel-box">
-      <div class="panel-header static">
-        <h3>⚜ Syair Generator</h3>
-      </div>
-      <div class="panel-body always-open">
-        <div class="cg">
-          <label>Pasaran</label>
-          <select id="sel-pas" onchange="setPasaran(this.value)">
-            <option value="sgp">Singapore</option><option value="hk">Hongkong</option>
-            <option value="sydney">Sydney</option><option value="macau">Toto Macau</option>
-            <option value="cambodia">Cambodia</option><option value="bangkok">Bangkok</option>
-            <option value="huahin">Huahin</option><option value="poipet">Poipet</option>
-            <option value="brunei">Brunei</option><option value="magnum">Magnum</option>
-            <option value="pcso">PCSO</option><option value="kentucky">Kentucky</option>
-            <option value="california">California</option><option value="florida">Florida</option>
-            <option value="newyork">New York</option><option value="nevada">Nevada</option>
-            <option value="oregon">Oregon</option><option value="carolina">Carolina</option>
-            <option value="bullseye">Bullseye</option><option value="kingkong">King Kong</option>
-            <option value="hokidraw">Hoki Draw</option><option value="totoMali">Toto Mali</option>
-          </select>
-        </div>
-        <div class="cg">
-          <label>Shio</label>
-          <select id="sel-shio" onchange="setShio(this.selectedIndex)">
-            <option value="0">Tikus</option>
-            <option value="1">Kerbau</option>
-            <option value="2">Harimau</option>
-            <option value="3">Kelinci</option>
-            <option value="4">Naga</option>
-            <option value="5">Ular</option>
-            <option value="6">Kuda</option>
-            <option value="7" selected="">Kambing</option>
-            <option value="8">Monyet</option>
-            <option value="9">Ayam</option>
-            <option value="10">Anjing</option>
-            <option value="11">Babi</option>
-          </select>
-        </div>
-        <div class="cg"><label>Tanggal</label><input type="date" id="inp-date"></div>
-        <div class="cg"><label>Colok (4 angka)</label><input type="text" id="inp-colok" maxlength="4" placeholder="1234"></div>
-        <div class="cg"><label>BBFS (8 angka)</label><input type="text" id="inp-bbfs" maxlength="8" placeholder="12345678"></div>
-        <div class="cg"><label>Angka Tarung</label><input type="text" id="inp-tarung" maxlength="15" placeholder="1-2-3-4-5"></div>
-        <div class="btn-row">
-          <button class="btn btn-g" onclick="randomAll()">🎲 Acak Semua</button>
-          <button class="btn btn-r" onclick="generate()">⚡ Generate</button>
-          <button class="btn btn-dl" onclick="downloadCard()">⬇ Download PNG</button>
-          <button class="btn btn-save" onclick="savePositions()">💾 Simpan Posisi ke File</button>
-        </div>
-      </div>
-    </div>
+<body>
+<div class="content">
+<div class="toolbar" aria-label="Pilihan desain">
+  <div class="brand-switch" role="group" aria-label="Situs">
+    <button type="button" data-brand="hokben" aria-pressed="true">HOKBENTOTO</button>
+    <button type="button" data-brand="zia" aria-pressed="false">ZIATOGEL</button>
   </div>
-
+  <button type="button" id="download-png" disabled>↓ Download PNG</button>
 </div>
-
-<div id="dl-overlay"><div class="spinner"></div><p id="dl-msg">Sedang memproses...</p></div>
-<div id="toast">Done</div>
-
+<div class="asset-status" id="asset-status" role="status" aria-live="polite"></div>
+<div class="entry">
+<div class="card-wrap">
+<div id="syair-card">
+<div class="el" style="top: 0px; left: 313px;"><img id="logo-img" crossorigin="anonymous" alt="LOGO" style="width: 324px; height: 116px; filter: drop-shadow(0 0 14px rgba(200,150,44,.85));" /><div id="brand-word" hidden>ZIATOGEL</div></div>
+<div class="el" id="date-box" style="top: 138px; left: 336px;"><span id="date-txt" class="gt" style="font-size: 23px; letter-spacing: 2px;"></span></div>
+<div class="el" style="top: 197px; left: 381px;"><img id="pas-img" crossorigin="anonymous" alt="" style="width: 216px; height: 83px; filter: drop-shadow(0 0 18px rgba(200,150,44,.9));" /></div>
+<div class="el" style="top: 283px; left: 266px;"><img id="shio-img" crossorigin="anonymous" alt="" style="width: 452px; height: 451px; filter: drop-shadow(0 0 20px rgba(200,150,44,.7));" /></div>
+<div class="el" style="top: 422px; left: 46px;"><span id="c1" class="gt" style="font-size: 46px; line-height: 1;"></span></div>
+<div class="el" style="top: 424px; left: 215px;"><span id="c2" class="gt" style="font-size: 46px; line-height: 1;"></span></div>
+<div class="el" style="top: 581px; left: 48px;"><span id="c3" class="gt" style="font-size: 46px; line-height: 1;"></span></div>
+<div class="el" style="top: 579px; left: 203px;"><span id="c4" class="gt" style="font-size: 46px; line-height: 1;"></span></div>
+<div class="el" style="top: 325px; left: 766px;">
+<div id="bbfs-num" class="gt" style="font-size: 34px; letter-spacing: 4px; line-height: 1.55;"></div>
+</div>
+<div class="el" style="top: 589px; left: 744px;">
+<div id="tarung-num" class="gt" style="font-size: 31px; letter-spacing: 3px;"></div>
+</div>
+<div class="el" style="top: 756px; left: 372px;"><span id="syair-txt" class="gt-syair" style="font-size: 15px; line-height: 1.75;"></span></div>
+</div>
+</div>
+</div>
 <script>
-const RAW='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/';
-const RAW_SHIO='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/SHIO%20HOKBEN/';
-const RAW_TOGEL='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/Logo%20togel/';
-const PASARAN=[
-  {id:'sgp',name:'Singapore',file:'logo singapore.png'},
-  {id:'hk',name:'Hongkong',file:'logo hongkong-lotto.png'},
-  {id:'sydney',name:'Sydney',file:'logo sydney lotto.png'},
-  {id:'macau',name:'Toto Macau',file:'logo toto macau.png'},
-  {id:'cambodia',name:'Cambodia',file:'logo cambodia.png'},
-  {id:'bangkok',name:'Bangkok',file:'logo bangkok.png'},
-  {id:'huahin',name:'Huahin',file:'logo huahin.png'},
-  {id:'poipet',name:'Poipet',file:'logo poipet.png'},
-  {id:'brunei',name:'Brunei',file:'logo brunei.png'},
-  {id:'magnum',name:'Magnum',file:'logo magnum.jpg'},
-  {id:'pcso',name:'PCSO',file:'logo pcso.png'},
-  {id:'kentucky',name:'Kentucky',file:'logo kentucky.png'},
-  {id:'california',name:'California',file:'logo california.png'},
-  {id:'florida',name:'Florida',file:'logo florida.png'},
-  {id:'newyork',name:'New York',file:'logo newyork.png'},
-  {id:'nevada',name:'Nevada',file:'logo nevada.png'},
-  {id:'oregon',name:'Oregon',file:'logo oregon.png'},
-  {id:'carolina',name:'Carolina',file:'logo CAROLINa.png'},
-  {id:'bullseye',name:'Bullseye',file:'logo bulseye.png'},
-  {id:'kingkong',name:'King Kong',file:'logo king kong.png'},
-  {id:'hokidraw',name:'Hoki Draw',file:'logo hoki draw.png'},
-  {id:'totoMali',name:'Toto Mali',file:'logo toto mali.png'},
-];
-const SHIO=[
-  {name:'Tikus',file:'shio tikus.png'},{name:'Kerbau',file:'shio kerbau.png'},
-  {name:'Harimau',file:'shio harimau.png'},{name:'Kelinci',file:'shio kelinci.png'},
-  {name:'Naga',file:'shio naga.png'},{name:'Ular',file:'shio ular.png'},
-  {name:'Kuda',file:'shio kuda.png'},{name:'Kambing',file:'shio kambing.png'},
-  {name:'Monyet',file:'shio monyet.png'},{name:'Ayam',file:'shio ayam.png'},
-  {name:'Anjing',file:'shio anjing.png'},{name:'Babi',file:'shio babi.png'},
-];
-const SYAIR=[
-  "Bunga mekar di taman indah,\nAngka jitu membawa berkah.\nSatu dua tiga empat lima,\nRezeki mengalir tiada tara.",
-  "Air mengalir ke laut luas,\nPetunjuk datang terang dan jelas.\nHitung baik angka pilihan,\nMudah-mudahan turun keberuntungan.",
-  "Bintang bersinar di langit malam,\nAngka turun dari kedalaman alam.\nSemoga hoki menyertai kita,\nRezeki lancar tiada dusta.",
-  "Naga emas terbang melayang,\nBawa hoki sepanjang zaman.\nAngka sakti telah tertulis,\nRezeki mengalir tiada habis.",
-  "Bulan purnama bersinar terang,\nAngka jitu kan datang serang.\nSemua petunjuk sudah nyata,\nKemenangan ada di mata.",
-  "Singa mengaum di padang luas,\nAngka hadir terang dan jelas.\nTiga enam delapan sembilan,\nKemenangan ada di tangan.",
-  "Awan berarak di langit biru,\nPetunjuk angka datang selalu.\nSemua hewan membawa tanda,\nNomor jitu ada di sana.",
-  "Dari timur matahari terbit,\nAngka jitu makin mendekat.\nHitung cermat dan teliti,\nRezeki datang pasti.",
-  "Lautan luas penuh misteri,\nAngka sakti hadir kembali.\nDua angka di depan mata,\nHoki datang membawa serta.",
-  "Pohon bambu tumbuh tinggi,\nAngka jitu turun hari ini.\nDua kali tiga sama enam,\nKemenangan pasti akan datang.",
-  "Di balik awan ada cahaya,\nAngka berkilau penuh pesona.\nSemua bilangan sudah terpilih,\nKeberuntungan datang berlipih.",
-  "Roda berputar tiada henti,\nAngka jitu datang kembali.\nSatu hingga sembilan berjajar,\nRezeki mengalir semakin besar.",
-];
-
-// ===== ANTI-REPEAT STATE =====
-let lastPasIdx = -1;
-let lastShioIdx = -1;
-let lastColok = '';
-let lastBBFS = '';
-let lastTarung = '';
-let curPas = 'bullseye';
-let curShio = 7;
-
-// Pick random index, never same as last
-function pickDiff(total, last) {
-  if (total <= 1) return 0;
-  let idx;
-  do { idx = Math.floor(Math.random() * total); } while (idx === last);
-  return idx;
-}
-
-// ===== SYAIR SHUFFLE DECK — semua 12 harus keluar dulu sebelum ada yang diulang =====
-let syairDeck = [];
-let syairUsed = [];
-
-function shuffleArray(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-function initSyairDeck() {
-  // Buat deck berisi index 0..11, di-shuffle
-  syairDeck = shuffleArray([...Array(SYAIR.length).keys()]);
-  syairUsed = [];
-}
-
-function pickNextSyair() {
-  // Jika deck habis, refill (pastikan index pertama baru ≠ index terakhir yang dipakai)
-  if (syairDeck.length === 0) {
-    const lastUsed = syairUsed[syairUsed.length - 1];
-    let newDeck;
-    do {
-      newDeck = shuffleArray([...Array(SYAIR.length).keys()]);
-    } while (newDeck[0] === lastUsed);
-    syairDeck = newDeck;
-    syairUsed = [];
-  }
-  const idx = syairDeck.shift();
-  syairUsed.push(idx);
-  return idx;
-}
-
-// Generate unique 4-digit colok (never same as last)
-function rColok() {
-  const digits = [0,1,2,3,4,5,6,7,8,9];
-  let result;
-  let tries = 0;
-  do {
-    for (let i = digits.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random()*(i+1));
-      [digits[i],digits[j]]=[digits[j],digits[i]];
-    }
-    result = digits.slice(0,4).sort((a,b)=>a-b).join('');
-    tries++;
-  } while (result === lastColok && tries < 20);
-  lastColok = result;
-  return result;
-}
-
-// Generate unique 8-digit BBFS (never same as last)
-function rBBFS() {
-  const digits = [0,1,2,3,4,5,6,7,8,9];
-  let result;
-  let tries = 0;
-  do {
-    for (let i = digits.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random()*(i+1));
-      [digits[i],digits[j]]=[digits[j],digits[i]];
-    }
-    result = digits.slice(0,8).sort((a,b)=>a-b).join('');
-    tries++;
-  } while (result === lastBBFS && tries < 20);
-  lastBBFS = result;
-  return result;
-}
-
-// Generate unique angka tarung (never same as last)
-function rTarung(n) {
-  const digits = [0,1,2,3,4,5,6,7,8,9];
-  let result;
-  let tries = 0;
-  do {
-    for (let i = digits.length-1; i > 0; i--) {
-      const j = Math.floor(Math.random()*(i+1));
-      [digits[i],digits[j]]=[digits[j],digits[i]];
-    }
-    result = digits.slice(0,n).sort((a,b)=>a-b).join('-');
-    tries++;
-  } while (result === lastTarung && tries < 20);
-  lastTarung = result;
-  return result;
-}
-
-function setPasaran(id){
-  curPas=id;
-  const p=PASARAN.find(x=>x.id===id); if(!p)return;
-  const img=document.getElementById('pas-img');
-  img.src=RAW_TOGEL+encodeURIComponent(p.file);
-  img.style.display='block';
-  img.onerror=()=>{img.style.display='none';};
-}
-function setShio(idx){
-  curShio=Number(idx);
-  const s=SHIO[curShio]; if(!s)return;
-  const img=document.getElementById('shio-img');
-  img.src=RAW_SHIO+encodeURIComponent(s.file);
-  img.style.display='block';
-  img.onerror=()=>{img.style.display='none';};
-  document.getElementById('sel-shio').value=curShio;
-}
-
-// skala visual card saat ini (untuk koreksi drag/resize di mobile)
-function getScale(){
-  const cw=document.querySelector('.cw');
-  const s=cw?parseFloat(getComputedStyle(cw).getPropertyValue('--scale')):1;
-  return s&&s>0?s:1;
-}
-
-// ===== DRAG =====
-function initDrag(){
-  document.querySelectorAll('.el').forEach(el=>{
-    let drag=false,sx,sy,ox,oy;
-    const start=(cx,cy)=>{
-      drag=true;
-      document.querySelectorAll('.el').forEach(x=>x.classList.remove('active'));
-      el.classList.add('active');
-      sx=cx;sy=cy;
-      ox=parseInt(el.style.left)||0;
-      oy=parseInt(el.style.top)||0;
-    };
-    const move=(cx,cy)=>{if(!drag)return;const k=getScale();el.style.left=(ox+(cx-sx)/k)+'px';el.style.top=(oy+(cy-sy)/k)+'px';};
-    const end=()=>{drag=false;};
-    el.addEventListener('mousedown',e=>{if(e.target.closest('.el-ctrl,.rh'))return;start(e.clientX,e.clientY);e.preventDefault();});
-    document.addEventListener('mousemove',e=>move(e.clientX,e.clientY));
-    document.addEventListener('mouseup',end);
-    el.addEventListener('touchstart',e=>{if(e.target.closest('.el-ctrl,.rh'))return;start(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();},{passive:false});
-    document.addEventListener('touchmove',e=>{if(drag){move(e.touches[0].clientX,e.touches[0].clientY);e.preventDefault();}},{passive:false});
-    document.addEventListener('touchend',end);
-  });
-}
-
-// ===== RESIZE =====
-function initResize(){
-  document.querySelectorAll('.rh').forEach(handle=>{
-    const elId=handle.dataset.el;
-    let resizing=false,sx,sy,sw,sh;
-    const start=(cx,cy)=>{
-      resizing=true;sx=cx;sy=cy;
-      const el=document.getElementById(elId);
-      const img=el.querySelector('img');
-      if(img){sw=img.offsetWidth;sh=img.offsetHeight;}
-      else{sw=el.offsetWidth;sh=el.offsetHeight;}
-    };
-    const move=(cx,cy)=>{if(!resizing)return;const k=getScale();applyRZ(elId,Math.max(20,sw+(cx-sx)/k),Math.max(14,sh+(cy-sy)/k));};
-    handle.addEventListener('mousedown',e=>{start(e.clientX,e.clientY);e.stopPropagation();e.preventDefault();});
-    document.addEventListener('mousemove',e=>{if(resizing)move(e.clientX,e.clientY);});
-    document.addEventListener('mouseup',()=>{resizing=false;});
-    handle.addEventListener('touchstart',e=>{start(e.touches[0].clientX,e.touches[0].clientY);e.stopPropagation();e.preventDefault();},{passive:false});
-    document.addEventListener('touchmove',e=>{if(resizing)move(e.touches[0].clientX,e.touches[0].clientY);},{passive:false});
-    document.addEventListener('touchend',()=>{resizing=false;});
-  });
-}
-function applyRZ(elId,w,h){
-  const el=document.getElementById(elId);const img=el.querySelector('img');if(!img)return;
-  img.style.width=w+'px';img.style.height=h+'px';
-  const wM={'el-logo':'sv-lw','el-pasaran':'sv-pw','el-shio':'sv-sw'};
-  const hM={'el-logo':'sv-lh','el-pasaran':'sv-ph','el-shio':'sv-sh'};
-  if(wM[elId])document.getElementById(wM[elId]).textContent=Math.round(w);
-  if(hM[elId])document.getElementById(hM[elId]).textContent=Math.round(h);
-}
-function rz(elId,axis,delta){
-  const img=document.getElementById(elId).querySelector('img');if(!img)return;
-  if(axis==='w'){const nw=Math.max(20,img.offsetWidth+delta);img.style.width=nw+'px';const sv={'el-logo':'sv-lw','el-pasaran':'sv-pw','el-shio':'sv-sw'}[elId];if(sv)document.getElementById(sv).textContent=nw;}
-  else{const nh=Math.max(14,img.offsetHeight+delta);img.style.height=nh+'px';const sv={'el-logo':'sv-lh','el-pasaran':'sv-ph','el-shio':'sv-sh'}[elId];if(sv)document.getElementById(sv).textContent=nh;}
-}
-function fs(txtId,delta){
-  const el=document.getElementById(txtId);const nf=Math.max(8,parseFloat(el.style.fontSize||16)+delta);
-  el.style.fontSize=nf+'px';
-  const m={'date-txt':'sv-dfs','c1':'sv-c1','c2':'sv-c2','c3':'sv-c3','c4':'sv-c4','bbfs-num':'sv-bfs','tarung-num':'sv-tfs','syair-txt':'sv-sfs'};
-  if(m[txtId])document.getElementById(m[txtId]).textContent=Math.round(nf);
-  if(txtId==='date-txt'){el.dataset.userfs=nf;fitDate();}
-}
-
-// Auto-shrink tanggal agar tidak melewati bingkai (lebar #el-date)
-function fitDate(){
-  const box=document.getElementById('el-date');
-  const el=document.getElementById('date-txt');
-  if(!box||!el)return;
-  // ukuran ideal = pilihan user (A-/A+), fallback ke fontSize saat ini
-  const ideal=parseFloat(el.dataset.userfs||el.style.fontSize||23);
-  const maxW=box.clientWidth||440;
-  el.style.whiteSpace='nowrap';
-  let fs=ideal;
-  el.style.fontSize=fs+'px';
-  // kecilkan bertahap selama teks lebih lebar dari bingkai
-  while(el.scrollWidth>maxW&&fs>8){
-    fs-=0.5;
-    el.style.fontSize=fs+'px';
-  }
-  const sv=document.getElementById('sv-dfs');
-  if(sv)sv.textContent=Math.round(fs);
-}
-
-// ===== RANDOM ALL — ANTI-REPEAT =====
-function randomAll(){
-  // Pasaran anti-repeat
-  const piNew = pickDiff(PASARAN.length, lastPasIdx);
-  lastPasIdx = piNew;
-  curPas = PASARAN[piNew].id;
-  document.getElementById('sel-pas').value = curPas;
-
-  // Shio anti-repeat
-  const siNew = pickDiff(SHIO.length, lastShioIdx);
-  lastShioIdx = siNew;
-  curShio = siNew;
-  document.getElementById('sel-shio').value = curShio;
-
-  // Angka anti-repeat
-  const colokNew = rColok();
-  const bbfsNew = rBBFS();
-  const tarungNew = rTarung(5);
-
-  document.getElementById('inp-colok').value = colokNew;
-  document.getElementById('inp-bbfs').value = bbfsNew;
-  document.getElementById('inp-tarung').value = tarungNew;
-
-  generate();
-}
-
-function generate(){
-  const dv=document.getElementById('inp-date').value;
-  if(dv){
-    const dt=new Date(dv+'T00:00:00');
-    const M=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
-    document.getElementById('date-txt').textContent=`${dt.getDate()} ${M[dt.getMonth()]} ${dt.getFullYear()}`;
-    fitDate();
-  }
-
-  const cv=(document.getElementById('inp-colok').value||rColok()).padEnd(4,'0');
-  ['c1','c2','c3','c4'].forEach((id,i)=>document.getElementById(id).textContent=cv[i]||'?');
-
-  const bv=document.getElementById('inp-bbfs').value||rBBFS();
-  document.getElementById('bbfs-num').innerHTML=bv.slice(0,4).split('').join(' ')+'<br>'+bv.slice(4,8).split('').join(' ');
-
-  document.getElementById('tarung-num').textContent=document.getElementById('inp-tarung').value||rTarung(5);
-
-  // Syair shuffle deck — semua 12 keluar dulu sebelum ada yang diulang
-  const siNew = pickNextSyair();
-  const s = SYAIR[siNew];
-  document.getElementById('syair-txt').innerHTML=s.replace(/\n/g,'<br>');
-
-  setPasaran(curPas);
-  setShio(curShio);
-}
-
-// ===== DOWNLOAD PNG =====
-async function downloadCard(){
-  const overlay=document.getElementById('dl-overlay');
-  document.getElementById('dl-msg').textContent='Sedang memproses...';
-  overlay.classList.add('show');
-  const card=document.getElementById('card');
-  const ctrls=card.querySelectorAll('.el-ctrl,.rh');
-  ctrls.forEach(el=>el.style.display='none');
-  card.querySelectorAll('.el').forEach(el=>{el.classList.remove('active');el.style.outline='none';});
-  let downloadOldTransform = card.style.transform;
-  let downloadOldTransformOrigin = card.style.transformOrigin;
-  try{
-    const imgs=[...card.querySelectorAll('img')];
-    await Promise.all(imgs.map(img=>{if(img.complete&&img.naturalHeight!==0)return Promise.resolve();return new Promise(res=>{img.onload=res;img.onerror=res;});}));
-    await new Promise(r=>setTimeout(r,300));
-    card.classList.add('dl-mode');
-    await new Promise(r=>setTimeout(r,80));
-    // Saat dibuka di HP, #card diperkecil dengan CSS transform agar muat di layar.
-    // Untuk hasil download, paksa kembali ke ukuran asli supaya PNG tidak ikut mengecil.
-    card.style.setProperty('transform','none','important');
-    card.style.setProperty('transform-origin','top left','important');
-
-    const canvas=await html2canvas(card,{
-      useCORS:true,
-      allowTaint:false,
-      scale:1.125, // 960 x 1.125 = 1080 px
-      width:960,
-      height:960,
-      backgroundColor:null,
-      logging:false,
-      imageTimeout:20000,
-      onclone:(doc)=>{
-        const c=doc.getElementById('card');
-        if(c){
-          c.classList.add('dl-mode');
-          c.style.setProperty('transform','none','important');
-          c.style.setProperty('transform-origin','top left','important');
-          c.style.width='960px';
-          c.style.height='960px';
-          c.querySelectorAll('.el-ctrl,.rh').forEach(el=>el.style.display='none');
-          c.querySelectorAll('.el').forEach(el=>{
-            el.classList.remove('active');
-            el.style.outline='none';
-          });
-        }
-      }
-    });
-
-    // Kembalikan tampilan mobile setelah proses screenshot selesai.
-    card.classList.remove('dl-mode');
-    const dateStr=document.getElementById('date-txt').textContent.replace(/\s+/g,'-');
-    const pasName=(PASARAN.find(p=>p.id===curPas)||{name:'syair'}).name.replace(/\s+/g,'_');
-    const link=document.createElement('a');
-    link.download=`syair_${pasName}_${dateStr}.png`;
-    link.href=canvas.toDataURL('image/png');
-    link.click();
-  }catch(e){card.classList.remove('dl-mode');alert('Gagal: '+e.message);}
-  finally{
-    if(downloadOldTransform){
-      card.style.transform = downloadOldTransform;
-    }else{
-      card.style.removeProperty('transform');
-    }
-    if(downloadOldTransformOrigin){
-      card.style.transformOrigin = downloadOldTransformOrigin;
-    }else{
-      card.style.removeProperty('transform-origin');
-    }
-    ctrls.forEach(el=>el.style.display='');
-    overlay.classList.remove('show');
-  }
-}
-
-// ===== SIMPAN POSISI KE FILE =====
-function savePositions(){
-  // Kumpulkan semua posisi & ukuran elemen saat ini
-  const elIds=['el-logo','el-date','el-pasaran','el-c1','el-c2','el-c3','el-c4','el-bbfs','el-tarung','el-shio','el-syair'];
-  const positions={};
-  elIds.forEach(id=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    const img=el.querySelector('img');
-    const txt=el.querySelector('[id]');
-    positions[id]={
-      top:el.style.top,
-      left:el.style.left,
-      imgW:img?img.style.width:'',
-      imgH:img?img.style.height:'',
-      txtFs:txt?txt.style.fontSize:''
-    };
-  });
-
-  // Baca source HTML halaman ini
-  const doctype='<!DOCTYPE html>';
-  let html=document.documentElement.outerHTML;
-
-  // Inject posisi ke dalam HTML sebagai override pada setiap elemen
-  elIds.forEach(id=>{
-    const p=positions[id];
-    if(!p)return;
-
-    // Ganti style top/left pada elemen .el
-    // Pattern: id="el-xxx" style="top:...;left:...;"
-    const elPattern=new RegExp(`(id="${id}"[^>]*style=")([^"]*)(")`, 'g');
-    html=html.replace(elPattern,(match,pre,styleStr,post)=>{
-      // Update top dan left
-      styleStr=styleStr.replace(/top:[^;]+;?/,'').replace(/left:[^;]+;?/,'');
-      styleStr=`top:${p.top};left:${p.left};`+styleStr.trim();
-      return pre+styleStr+post;
-    });
-
-    // Ganti width/height pada img di dalam elemen ini jika ada
-    if(p.imgW){
-      // Cari img setelah id="el-xxx" dan update style width/height
-      // Kita inject style langsung via data attribute untuk keamanan
-    }
-  });
-
-  // Cara lebih reliable: bangun ulang style inline tiap .el
-  // Gunakan DOM snapshot untuk mendapatkan outerHTML card
-  const card=document.getElementById('card');
-  // Clone card, hapus outline/ctrl, ambil HTML-nya
-  const cardClone=card.cloneNode(true);
-  cardClone.querySelectorAll('.el-ctrl').forEach(el=>el.remove());
-  cardClone.querySelectorAll('.rh').forEach(el=>el.remove());
-  cardClone.querySelectorAll('.el').forEach(el=>{
-    el.classList.remove('active');
-    el.style.outline='none';
-    el.style.cursor='move';
-  });
-  const cardHTML=cardClone.outerHTML;
-
-  // Bangun HTML baru dengan card HTML yang sudah berisi posisi terkini
-  const fullHTML=document.documentElement.outerHTML;
-  // Ganti blok card dengan versi yang sudah ter-update
-  const cardStart=fullHTML.indexOf('<div class="cw"><div id="card">');
-  const cardEnd=fullHTML.indexOf('</div></div>\n  <!-- END CARD -->');
-  let newHTML;
-  if(cardStart>-1&&cardEnd>-1){
-    newHTML=fullHTML.substring(0,cardStart)+'<div class="cw">'+cardHTML+fullHTML.substring(cardEnd+'</div></div>\n  <!-- END CARD -->'.length);
-  } else {
-    // fallback: ganti seluruh #card innerHTML
-    newHTML=fullHTML.replace(/<div id="card"[^>]*>[\s\S]*?<\/div>\s*<\/div>\s*<!-- END CARD -->/, '<div class="cw">'+cardHTML);
-  }
-
-  // Gunakan metode yang lebih robust: serialisasi posisi via script inject
-  savePositionsRobust(positions);
-}
-
-function savePositionsRobust(positions){
-  // Ambil full source HTML
-  const src=`<!DOCTYPE html>\n`+document.documentElement.outerHTML;
-
-  // Parse dan modifikasi: ganti style setiap .el berdasarkan posisi aktual dari DOM
-  const card=document.getElementById('card');
-  const elEls=card.querySelectorAll('.el');
-  
-  // Buat map id -> style string terkini dari DOM
-  const styleMap={};
-  elEls.forEach(el=>{
-    const id=el.id;
-    // Ambil computed/actual style
-    const top=el.style.top||'0px';
-    const left=el.style.left||'0px';
-    // Untuk img dalam el
-    const img=el.querySelector('img');
-    const imgStyle=img?`width:${img.style.width};height:${img.style.height};`:'';
-    styleMap[id]={top,left,imgStyle,el};
-  });
-
-  // Rekonstruksi: ganti setiap occurance id="el-xxx" style="..."  
-  let newSrc=src;
-  
-  Object.entries(styleMap).forEach(([id,{top,left}])=>{
-    // Match: <div class="el" id="el-xxx" style="...">
-    const re=new RegExp(`(<div class="el" id="${id}" style=")[^"]*(")`,'g');
-    newSrc=newSrc.replace(re,`$1top:${top};left:${left};$2`);
-  });
-
-  // Ganti juga ukuran img di dalam tiap el
-  // img logo
-  const logoImg=document.getElementById('logo-img');
-  if(logoImg){
-    const re=/(id="logo-img"[^>]*style=")[^"]*(")/g;
-    newSrc=newSrc.replace(re,(m,pre,post)=>{
-      return `${pre}width:${logoImg.style.width};height:${logoImg.style.height};object-fit:contain;display:block;filter:drop-shadow(0 0 14px rgba(200,150,44,.85));${post}`;
-    });
-  }
-  const pasImg=document.getElementById('pas-img');
-  if(pasImg){
-    const re=/(id="pas-img"[^>]*style=")[^"]*(")/g;
-    newSrc=newSrc.replace(re,(m,pre,post)=>{
-      return `${pre}width:${pasImg.style.width};height:${pasImg.style.height};object-fit:contain;display:${pasImg.style.display||'none'};filter:drop-shadow(0 0 18px rgba(200,150,44,.9));${post}`;
-    });
-  }
-  const shioImg=document.getElementById('shio-img');
-  if(shioImg){
-    const re=/(id="shio-img"[^>]*style=")[^"]*(")/g;
-    newSrc=newSrc.replace(re,(m,pre,post)=>{
-      return `${pre}width:${shioImg.style.width};height:${shioImg.style.height};object-fit:contain;display:${shioImg.style.display||'none'};filter:drop-shadow(0 0 20px rgba(200,150,44,.7));${post}`;
-    });
-  }
-
-  // Ganti ukuran font text elements
-  const fontEls=[
-    {id:'date-txt', extra:'letter-spacing:2px;'},
-    {id:'c1', extra:'line-height:1;display:block;'},
-    {id:'c2', extra:'line-height:1;display:block;'},
-    {id:'c3', extra:'line-height:1;display:block;'},
-    {id:'c4', extra:'line-height:1;display:block;'},
-    {id:'bbfs-num', extra:'letter-spacing:4px;line-height:1.55;text-align:center;'},
-    {id:'tarung-num', extra:'letter-spacing:3px;text-align:center;'},
-    {id:'syair-txt', extra:'line-height:1.75;display:block;text-align:center;'},
+(function(){
+  var RAW='https://raw.githubusercontent.com/shortcutpro/shortcutpro/main/';
+  var PAS_DIR='Logo togel/';
+  function enc(dir,file){ return dir.split('/').map(encodeURIComponent).join('/')+encodeURIComponent(file); }
+  var PASARAN=[
+    'logo singapore.png','logo hongkong-lotto.png','logo sydney lotto.png',
+    'logo toto macau.png','logo cambodia.png','logo bangkok.png',
+    'logo huahin.png','logo poipet.png','logo brunei.png',
+    'logo magnum.jpg','logo pcso.png','logo kentucky.png',
+    'logo california.png','logo florida.png','logo newyork.png',
+    'logo nevada.png','logo oregon.png','logo CAROLINa.png',
+    'logo bulseye.png','logo king kong.png','logo hoki draw.png',
+    'logo toto mali.png','logo chealse.png'
+  ]
+  var SHIO_DIR='SHIO HOKBEN/';
+  var ZIA_DIR='Shio Zia/';
+  var SHIO=['shio tikus.png','shio kerbau.png','shio harimau.png','shio kelinci.png','shio naga.png','shio ular.png','shio kuda.png','shio kambing.png','shio monyet.png','shio ayam.png','shio anjing.png','shio babi.png'];
+  var SYAIR=[
+    "Bunga mekar di taman indah,\nAngka jitu membawa berkah.\nSatu dua tiga empat lima,\nRezeki mengalir tiada tara.",
+    "Air mengalir ke laut luas,\nPetunjuk datang terang dan jelas.\nHitung baik angka pilihan,\nMudah-mudahan turun keberuntungan.",
+    "Bintang bersinar di langit malam,\nAngka turun dari kedalaman alam.\nSemoga hoki menyertai kita,\nRezeki lancar tiada dusta.",
+    "Naga emas terbang melayang,\nBawa hoki sepanjang zaman.\nAngka sakti telah tertulis,\nRezeki mengalir tiada habis.",
+    "Bulan purnama bersinar terang,\nAngka jitu kan datang serang.\nSemua petunjuk sudah nyata,\nKemenangan ada di mata.",
+    "Singa mengaum di padang luas,\nAngka hadir terang dan jelas.\nTiga enam delapan sembilan,\nKemenangan ada di tangan.",
+    "Awan berarak di langit biru,\nPetunjuk angka datang selalu.\nSemua hewan membawa tanda,\nNomor jitu ada di sana.",
+    "Dari timur matahari terbit,\nAngka jitu makin mendekat.\nHitung cermat dan teliti,\nRezeki datang pasti.",
+    "Lautan luas penuh misteri,\nAngka sakti hadir kembali.\nDua angka di depan mata,\nHoki datang membawa serta.",
+    "Pohon bambu tumbuh tinggi,\nAngka jitu turun hari ini.\nDua kali tiga sama enam,\nKemenangan pasti akan datang.",
+    "Di balik awan ada cahaya,\nAngka berkilau penuh pesona.\nSemua bilangan sudah terpilih,\nKeberuntungan datang berlipih.",
+    "Roda berputar tiada henti,\nAngka jitu datang kembali.\nSatu hingga sembilan berjajar,\nRezeki mengalir semakin besar."
   ];
-  fontEls.forEach(({id,extra})=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    const fs=el.style.fontSize||'16px';
-    const re=new RegExp(`(id="${id}"[^>]*style=")[^"]*(")`,'g');
-    newSrc=newSrc.replace(re,`$1font-size:${fs};${extra}$2`);
+
+  var now=new Date();
+  var target=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+  var seed0=target.getFullYear()*10000+(target.getMonth()+1)*100+target.getDate();
+  var seed=seed0;
+  function rng(){ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; }
+  function pick(arr){ return arr[Math.floor(rng()*arr.length)]; }
+  function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){var j=Math.floor(rng()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;} return a; }
+  function hash32(n){ n=n>>>0; n=(((n>>>16)^n)*0x45d9f3b)>>>0; n=(((n>>>16)^n)*0x45d9f3b)>>>0; n=((n>>>16)^n)>>>0; return n; }
+  // reseed acak per-kategori supaya tiap jenis (shio, pasaran, dst) tersebar & tidak terkait
+  function reseed(off){ seed=(hash32((seed0*2654435761 + off*2246822519)>>>0)&0x7fffffff); }
+
+  var M=['JANUARI','FEBRUARI','MARET','APRIL','MEI','JUNI','JULI','AGUSTUS','SEPTEMBER','OKTOBER','NOVEMBER','DESEMBER'];
+  var dateEl=document.getElementById('date-txt');
+  dateEl.textContent=target.getDate()+' '+M[target.getMonth()]+' '+target.getFullYear();
+
+  // auto-fit tanggal agar tidak melewati bingkai
+  function fitDate(){
+    var box=document.getElementById('date-box');
+    var maxW=box.clientWidth, size=23;
+    dateEl.style.fontSize=size+'px';
+    while(dateEl.scrollWidth>maxW && size>10){ size-=1; dateEl.style.fontSize=size+'px'; }
+  }
+  fitDate();
+
+  // Jika halaman dibiarkan terbuka melewati pukul 00:00, muat ulang otomatis
+  // agar tanggal, shio, pasaran, angka, dan syair ikut diperbarui.
+  (function refreshAtNextDay(){
+    var nextDay=new Date();
+    nextDay.setHours(24,0,2,0);
+    setTimeout(function(){ window.location.reload(); }, Math.max(1000,nextDay.getTime()-Date.now()));
+  })();
+
+  var VER='?v='+seed0;
+  reseed(101); var pas=pick(PASARAN);
+
+  // SHIO: wajib berganti setiap pergantian tanggal, tanpa mengulang shio hari sebelumnya.
+  // Menggunakan nomor hari kalender (bukan random), sehingga 12 shio berputar 1x per 12 hari.
+  var dayNumber=Math.floor(Date.UTC(target.getFullYear(),target.getMonth(),target.getDate())/86400000);
+  var shioIndex=((dayNumber%SHIO.length)+SHIO.length)%SHIO.length;
+  var shio=SHIO[shioIndex];
+
+
+  reseed(303);
+  var colok=shuffle([0,1,2,3,4,5,6,7,8,9]).slice(0,4).sort(function(a,b){return a-b;});
+  ['c1','c2','c3','c4'].forEach(function(id,i){document.getElementById(id).textContent=colok[i];});
+
+  reseed(404);
+  var bbfs=shuffle([0,1,2,3,4,5,6,7,8,9]).slice(0,8).sort(function(a,b){return a-b;});
+  document.getElementById('bbfs-num').innerHTML=bbfs.slice(0,4).join(' ')+'<br>'+bbfs.slice(4,8).join(' ');
+
+  reseed(505);
+  var tarung=shuffle([0,1,2,3,4,5,6,7,8,9]).slice(0,5).sort(function(a,b){return a-b;});
+  document.getElementById('tarung-num').textContent=tarung.join('-');
+
+  reseed(606);
+  document.getElementById('syair-txt').innerHTML=pick(SYAIR).replace(/\n/g,'<br>');
+
+  function fit(){
+    var card=document.getElementById('syair-card');
+    var wrap=card.parentElement;
+    var s=wrap.clientWidth/960;
+    card.style.transform='scale('+s+')';
+    wrap.style.height=(960*s)+'px';
+  }
+  fit();
+  if(document.fonts) document.fonts.ready.then(fitDate);
+  window.addEventListener('resize',fit);
+
+  // Asset discovery runs in the user's browser, not at build time.
+  // Optional exact filenames for ZIATOGEL (leave blank for automatic discovery).
+  var ZIA_ASSETS={background:'',logo:''};
+  var card=document.getElementById('syair-card');
+  var logo=document.getElementById('logo-img'), shioImg=document.getElementById('shio-img');
+  var brandWord=document.getElementById('brand-word'), download=document.getElementById('download-png');
+  var status=document.getElementById('asset-status');
+  var defaultBg=RAW+'background.png';
+  var backgroundImage=null, activeBrand='hokben', revision=0, ready=false;
+  var listingCache={};
+  function assetURL(path){return RAW+path.split('/').map(encodeURIComponent).join('/');}
+  function loadImage(url){return new Promise(function(resolve,reject){
+    var im=new Image(); im.crossOrigin='anonymous';
+    var timer=setTimeout(function(){im.onload=im.onerror=null;reject(new Error('Waktu muat gambar habis'));},12000);
+    im.onload=function(){clearTimeout(timer);resolve(im);};
+    im.onerror=function(){clearTimeout(timer);reject(new Error('Gagal memuat '+url));};
+    im.src=url;
+  });}
+  function listing(dir){
+    if(!listingCache[dir]) listingCache[dir]=(async function(){
+      var controller=new AbortController(); var timeout=setTimeout(function(){controller.abort();},6500);
+      try{
+        var path=dir.split('/').filter(Boolean).map(encodeURIComponent).join('/');
+        var response=await fetch('https://api.github.com/repos/shortcutpro/shortcutpro/contents/'+path+'?ref=main',{signal:controller.signal});
+        if(!response.ok) throw Error('GitHub '+response.status);
+        var entries=await response.json();
+        return Array.isArray(entries)?entries.filter(function(e){return e.type==='file'&&/\.(png|webp|jpe?g|gif)$/i.test(e.name);}):[];
+      }catch(e){delete listingCache[dir];return [];}
+      finally{clearTimeout(timeout);}
+    })();
+    return listingCache[dir];
+  }
+  function normalized(name){return name.toLowerCase().replace(/\.[^.]+$/,'').replace(/[^a-z0-9]/g,'');}
+  function findAnimal(files,animal){
+    var key=normalized(animal).replace(/^shio/,'');
+    return files.find(function(f){return normalized(f.name)===key||normalized(f.name)==='shio'+key;})||files.find(function(f){return normalized(f.name).includes(key);});
+  }
+  function findDecor(files,kind,root){
+    return files.find(function(f){var n=normalized(f.name);return (kind==='background'?/background|backdrop|^bg/.test(n):/logo/.test(n))&&(!root||/zia/.test(n));});
+  }
+  function imageFile(file){return file?assetURL(file.path):'';}
+  async function selectBrand(brand){
+    var token=++revision;activeBrand=brand;ready=false;download.disabled=true;
+    card.dataset.brand=brand;
+    document.querySelectorAll('[data-brand] button,button[data-brand]').forEach(function(b){b.setAttribute('aria-pressed',String(b.dataset.brand===brand));});
+    try{localStorage.setItem('syair-brand',brand);}catch(e){}
+    status.textContent='Memuat gambar '+(brand==='zia'?'ZIATOGEL':'HOKBENTOTO')+'…';
+    // Remove old brand assets while changing themes.
+    shioImg.removeAttribute('src');logo.removeAttribute('src');logo.hidden=true;brandWord.hidden=true;
+    card.style.backgroundImage='none';
+    try{
+      var animalUrl=RAW+enc(brand==='zia'?ZIA_DIR:SHIO_DIR,shio)+VER;
+      var bgUrl=defaultBg, logoUrl=RAW+'logo-mobile.png';
+      var warnings=[];
+      if(brand==='zia'){
+        var results=await Promise.all([listing(ZIA_DIR),listing('')]);
+        var ziaFiles=results[0], rootFiles=results[1];
+        var animalFile=findAnimal(ziaFiles,shio);
+        if(animalFile) animalUrl=imageFile(animalFile)+VER;
+        var bgFile=findDecor(ziaFiles,'background',false)||findDecor(rootFiles,'background',true);
+        var logoFile=findDecor(ziaFiles,'logo',false)||findDecor(rootFiles,'logo',true);
+        bgUrl=ZIA_ASSETS.background?assetURL(ZIA_ASSETS.background):imageFile(bgFile)||defaultBg;
+        logoUrl=ZIA_ASSETS.logo?assetURL(ZIA_ASSETS.logo):imageFile(logoFile);
+        if(bgUrl===defaultBg) warnings.push('Background memakai template asli');
+        if(!logoUrl) warnings.push('Logo ZIA belum ditemukan; memakai tulisan ZIATOGEL');
+      }
+      if(token!==revision)return;
+      var images=await Promise.all([loadImage(bgUrl),loadImage(animalUrl),loadImage(RAW+enc(PAS_DIR,pas)+VER),logoUrl?loadImage(logoUrl).catch(function(){return null;}):Promise.resolve(null)]);
+      if(token!==revision)return;
+      if(!images[3]&&brand==='hokben')throw Error('Logo HOKBENTOTO gagal dimuat.');
+      backgroundImage=images[0];card.style.backgroundImage='url("'+bgUrl+'")';
+      shioImg.src=images[1].src;shioImg.alt=shio.replace(/^shio |\.png$/g,'');
+      document.getElementById('pas-img').src=images[2].src;
+      if(images[3]){logo.src=images[3].src;logo.hidden=false;}
+      else{brandWord.hidden=false;if(logoUrl)warnings.push('Logo ZIA gagal dimuat; memakai tulisan ZIATOGEL');}
+      if(document.fonts)await document.fonts.ready;
+      await Promise.all([shioImg.decode(),document.getElementById('pas-img').decode(),images[3]?logo.decode():Promise.resolve()]);
+      if(token!==revision)return;
+      fitDate();ready=true;download.disabled=false;
+      status.textContent=warnings.length?warnings.join(' · '):'Siap diunduh · PNG 960 × 960 px';
+    }catch(err){if(token!==revision)return;status.textContent='Gambar belum lengkap. '+err.message+' Klik pilihan situs untuk mencoba lagi.';}
+  }
+  document.querySelectorAll('button[data-brand]').forEach(function(b){b.addEventListener('click',function(){selectBrand(b.dataset.brand);});});
+
+  // Native canvas export: full-size PNG, independent of the preview zoom and toolbar.
+  function drawFitted(ctx,img,x,y,w,h,cover){
+    var scale=cover?Math.max(w/img.naturalWidth,h/img.naturalHeight):Math.min(w/img.naturalWidth,h/img.naturalHeight);
+    var dw=img.naturalWidth*scale,dh=img.naturalHeight*scale;
+    ctx.drawImage(img,x+(w-dw)/2,y+(h-dh)/2,dw,dh);
+  }
+  function drawText(ctx,el,x,y){
+    var style=getComputedStyle(el),fontSize=parseFloat(style.fontSize),lineHeight=parseFloat(style.lineHeight)||fontSize*1.2;
+    var lines=el.innerHTML.split(/<br\s*\/?\s*>/i).map(function(line){var temp=document.createElement('span');temp.innerHTML=line;return temp.textContent;});
+    ctx.save();ctx.font=style.fontStyle+' '+style.fontWeight+' '+style.fontSize+' '+style.fontFamily;
+    ctx.fillStyle=style.color;ctx.shadowColor='rgba(0,0,0,.95)';ctx.shadowBlur=8;ctx.shadowOffsetY=2;
+    ctx.textBaseline='alphabetic';
+    var spacing=parseFloat(style.letterSpacing)||0;
+    function width(line){return ctx.measureText(line).width+Math.max(0,line.length-1)*spacing;}
+    var blockWidth=el.offsetWidth;
+    lines.forEach(function(line,i){
+      var metrics=ctx.measureText(line),asc=metrics.fontBoundingBoxAscent||fontSize*.8,desc=metrics.fontBoundingBoxDescent||fontSize*.2;
+      var start=x+(blockWidth-width(line))/2, baseline=y+i*lineHeight+(lineHeight-asc-desc)/2+asc;
+      if(spacing===0){ctx.fillText(line,start,baseline);}else{
+        Array.from(line).forEach(function(ch){ctx.fillText(ch,start,baseline);start+=ctx.measureText(ch).width+spacing;});
+      }
+    });ctx.restore();
+  }
+  download.addEventListener('click',async function(){
+    if(!ready)return;
+    var token=revision;download.disabled=true;
+    try{
+      if(document.fonts)await document.fonts.ready;
+      if(token!==revision)return;
+      var canvas=document.createElement('canvas');canvas.width=canvas.height=960;
+      var ctx=canvas.getContext('2d');ctx.imageSmoothingQuality='high';
+      ctx.fillStyle='#17130c';ctx.fillRect(0,0,960,960);
+      drawFitted(ctx,backgroundImage,0,0,960,960,true);
+      card.querySelectorAll('.el').forEach(function(el){
+        var x=parseFloat(el.style.left)+2,y=parseFloat(el.style.top)+2;
+        var img=el.querySelector('img');
+        if(img&&!img.hidden&&img.complete&&img.naturalWidth){
+          ctx.save();ctx.shadowColor='rgba(200,150,44,.75)';ctx.shadowBlur=img.id==='logo-img'?14:18;
+          drawFitted(ctx,img,x,y,img.offsetWidth,img.offsetHeight,false);ctx.restore();
+        }
+        var text=el.querySelector('.gt,.gt-syair,#brand-word');
+        if(text&&!text.hidden){
+          var extra=text.id==='date-txt'?(el.clientWidth-text.offsetWidth)/2:0;
+          drawText(ctx,text,x+extra,y);
+        }
+      });
+      ctx.strokeStyle='#B8860B';ctx.lineWidth=2;ctx.strokeRect(1,1,958,958);
+      var blob=await new Promise(function(resolve){canvas.toBlob(resolve,'image/png');});
+      if(!blob)throw Error('PNG gagal dibuat');
+      if(token!==revision)return;
+      var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='Syair_'+(activeBrand==='zia'?'ZIATOGEL':'HOKBENTOTO')+'_'+seed0+'.png';
+      document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href);},30000);
+    }catch(err){status.textContent='Gagal mengunduh PNG: '+err.message;}
+    finally{if(token===revision)download.disabled=!ready;}
   });
+  var initial='hokben';try{if(localStorage.getItem('syair-brand')==='zia')initial='zia';}catch(e){}
+  selectBrand(initial);
 
-  // Download file HTML
-  const blob=new Blob([newSrc],{type:'text/html;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement('a');
-  link.download='syair_generator_saved.html';
-  link.href=url;
-  link.click();
-  setTimeout(()=>URL.revokeObjectURL(url),3000);
-
-  showToast('✅ Posisi tersimpan ke file!');
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg||'Done';
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
-}
-
-function fitScale(){
-  const cw=document.querySelector('.cw');
-  if(!cw)return;
-  // lebar tersedia = viewport dikurangi padding body (12px kiri-kanan saat mobile)
-  const isMobile=window.innerWidth<=1240;
-  if(!isMobile){cw.style.setProperty('--scale','1');return;}
-  const avail=window.innerWidth-24;
-  const scale=Math.min(1,avail/960);
-  cw.style.setProperty('--scale',scale);
-}
-window.addEventListener('resize',fitScale);
-window.addEventListener('orientationchange',fitScale);
-
-function init(){
-  initSyairDeck();
-  fitScale();
-  // Set tanggal default = besok
-  const t=new Date();t.setDate(t.getDate()+1);
-  const y=t.getFullYear(),m=String(t.getMonth()+1).padStart(2,'0'),d=String(t.getDate()).padStart(2,'0');
-  document.getElementById('inp-date').value=`${y}-${m}-${d}`;
-  initDrag();initResize();
-  // Acak semua otomatis setiap kali file dibuka
-  randomAll();
-}
-
-init();
+})();
 </script>
-
-
-<veepn-intro-offer><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2-variations");font-weight:100 1000;font-display:swap}</style><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2-variations");font-weight:100 1000;font-display:swap}</style></veepn-intro-offer><veepn-intro-offer><style>@font-face{font-family:FigtreeVF;src:url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2 supports variations"),url(chrome-extension://majdfhpaihoncoakbjgbdhglocklcgno/fonts/FigtreeVF.woff2)format("woff2-variations");font-weight:100 1000;font-display:swap}</style></veepn-intro-offer></body></html>
+</body>
+</html>
